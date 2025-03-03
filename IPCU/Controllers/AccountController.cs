@@ -60,16 +60,18 @@ public class AccountController : Controller
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
             if (result.Succeeded)
             {
-                return RedirectToAction("Dashboard", "Home");
+                return RedirectToAction("Index", "Home");
             }
             ModelState.AddModelError("", "Invalid login attempt.");
         }
         return View(model);
     }
 
+    [HttpPost]
+    [ValidateAntiForgeryToken] // Security protection against CSRF attacks
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();
-        return RedirectToAction("Login");
+        return RedirectToAction("Login", "Account");
     }
 }

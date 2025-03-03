@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using IPCU.Data;
 using IPCU.Models;
 using IPCU.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IPCU.Controllers
 {
+    [Authorize]
     public class PatientFormController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,7 +29,6 @@ namespace IPCU.Controllers
         public async Task<IActionResult> PrintPdf(int id)
         {
             var patient = await _context.PatientForms.FirstOrDefaultAsync(m => m.Id == id);
-
             if (patient == null)
             {
                 return NotFound("Patient data not found.");
@@ -35,8 +36,10 @@ namespace IPCU.Controllers
 
             var pdfData = _pdfService.GeneratePdf(patient);
 
-            return File(pdfData, "application/pdf", $"Patient_{patient.Id}_Report.pdf");
+            // Show PDF inline instead of downloading
+            return File(pdfData, "application/pdf");
         }
+
 
         // GET: PatientForms
         public async Task<IActionResult> Index()
@@ -70,10 +73,13 @@ namespace IPCU.Controllers
             {
                 _context.Add(patientForm);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                // Redirect to the PrintPdf action to show the preview
+                return RedirectToAction("PrintPdf", new { id = patientForm.Id });
             }
             return View(patientForm);
         }
+
 
         // GET: PatientForms/Edit/5
         public async Task<IActionResult> Edit(int? id)
