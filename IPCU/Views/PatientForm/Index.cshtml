@@ -1,0 +1,114 @@
+﻿@model IEnumerable<IPCU.Models.PatientForm>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Suffix)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Disease)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Building)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NurseFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NurseMiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NurseLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NurseSuffix)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sex)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Suffix)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Disease)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Room)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Building)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NurseFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NurseMiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NurseLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NurseSuffix)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sex)
+            </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-action="PrintPdf" asp-route-id="@item.Id" target="_blank">Print</a>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>
