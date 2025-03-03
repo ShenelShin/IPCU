@@ -1,99 +1,137 @@
 ﻿@model IPCU.Models.PatientForm
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Patient Record";
 }
 
-<h1>Edit</h1>
+<!-- Bootstrap & Font Awesome -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<h4>PatientForm</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h2 class="text-center text-primary"><i class="fa fa-edit"></i> Edit Patient Record</h2>
+        <hr>
+
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+
+            <div class="row">
+                <!-- Left Column -->
+                <div class="col-md-6">
+                    <h5 class="text-secondary">Patient Details</h5>
+                    <div class="form-group mb-3">
+                        <label asp-for="FirstName" class="form-label">First Name</label>
+                        <input asp-for="FirstName" class="form-control" placeholder="Enter first name" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="MiddleName" class="form-label">Middle Name</label>
+                        <input asp-for="MiddleName" class="form-control" placeholder="Enter middle name" />
+                        <span asp-validation-for="MiddleName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="LastName" class="form-label">Last Name</label>
+                        <input asp-for="LastName" class="form-control" placeholder="Enter last name" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Suffix" class="form-label">Suffix (Jr, Sr, III, etc.)</label>
+                        <input asp-for="Suffix" class="form-control" placeholder="Enter suffix (if any)" />
+                        <span asp-validation-for="Suffix" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Age" class="form-label">Age</label>
+                        <input asp-for="Age" class="form-control" type="number" placeholder="Enter age" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Sex" class="form-label">Sex</label>
+                        <select asp-for="Sex" class="form-select">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <span asp-validation-for="Sex" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-6">
+                    <h5 class="text-secondary">Medical & Room Details</h5>
+                    <div class="form-group mb-3">
+                        <label asp-for="Disease" class="form-label">Disease</label>
+                        <input asp-for="Disease" class="form-control" placeholder="Enter disease" />
+                        <span asp-validation-for="Disease" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Status" class="form-label">Status</label>
+                        <select asp-for="Status" class="form-select">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Room" class="form-label">Room</label>
+                        <input asp-for="Room" class="form-control" placeholder="Enter room number" />
+                        <span asp-validation-for="Room" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Building" class="form-label">Building</label>
+                        <input asp-for="Building" class="form-control" placeholder="Enter building name" />
+                        <span asp-validation-for="Building" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="MiddleName" class="control-label"></label>
-                <input asp-for="MiddleName" class="form-control" />
-                <span asp-validation-for="MiddleName" class="text-danger"></span>
+
+            <h5 class="text-secondary mt-4">Assigned Nurse</h5>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label asp-for="NurseFirstName" class="form-label">First Name</label>
+                        <input asp-for="NurseFirstName" class="form-control" placeholder="Enter nurse's first name" />
+                        <span asp-validation-for="NurseFirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label asp-for="NurseMiddleName" class="form-label">Middle Name</label>
+                        <input asp-for="NurseMiddleName" class="form-control" placeholder="Enter nurse's middle name" />
+                        <span asp-validation-for="NurseMiddleName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label asp-for="NurseLastName" class="form-label">Last Name</label>
+                        <input asp-for="NurseLastName" class="form-control" placeholder="Enter nurse's last name" />
+                        <span asp-validation-for="NurseLastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group mb-3">
+                        <label asp-for="NurseSuffix" class="form-label">Suffix</label>
+                        <input asp-for="NurseSuffix" class="form-control" placeholder="Enter nurse's suffix (if any)" />
+                        <span asp-validation-for="NurseSuffix" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Suffix" class="control-label"></label>
-                <input asp-for="Suffix" class="form-control" />
-                <span asp-validation-for="Suffix" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Disease" class="control-label"></label>
-                <input asp-for="Disease" class="form-control" />
-                <span asp-validation-for="Disease" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Room" class="control-label"></label>
-                <input asp-for="Room" class="form-control" />
-                <span asp-validation-for="Room" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Building" class="control-label"></label>
-                <input asp-for="Building" class="form-control" />
-                <span asp-validation-for="Building" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NurseFirstName" class="control-label"></label>
-                <input asp-for="NurseFirstName" class="form-control" />
-                <span asp-validation-for="NurseFirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NurseMiddleName" class="control-label"></label>
-                <input asp-for="NurseMiddleName" class="form-control" />
-                <span asp-validation-for="NurseMiddleName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NurseLastName" class="control-label"></label>
-                <input asp-for="NurseLastName" class="form-control" />
-                <span asp-validation-for="NurseLastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NurseSuffix" class="control-label"></label>
-                <input asp-for="NurseSuffix" class="form-control" />
-                <span asp-validation-for="NurseSuffix" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Age" class="control-label"></label>
-                <input asp-for="Age" class="form-control" />
-                <span asp-validation-for="Age" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sex" class="control-label"></label>
-                <input asp-for="Sex" class="form-control" />
-                <span asp-validation-for="Sex" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <!-- Action Buttons -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-lg btn-success">
+                    <i class="fa fa-save"></i> Save Changes
+                </button>
+                <a asp-action="Index" class="btn btn-lg btn-secondary">
+                    <i class="fa fa-arrow-left"></i> Back to List
+                </a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
