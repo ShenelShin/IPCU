@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 IPCU/appsettings.json
 IPCU/appsettings.json
+/IPCU/appsettings.json
