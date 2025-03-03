@@ -1,0 +1,129 @@
+﻿@model IPCU.Models.FitTestingForm
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>FitTestingForm</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HCW_Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HCW_Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DUO)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DUO)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Limitation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Limitation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fit_Test_Solution)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fit_Test_Solution)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Sensitivity_Test)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Sensitivity_Test)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Respiratory_Type)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Respiratory_Type)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Model)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Model)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Size)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Size)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Normal_Breathing)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Normal_Breathing)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Deep_Breathing)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Deep_Breathing)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Turn_head_side_to_side)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Turn_head_side_to_side)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Move_head_up_and_down)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Move_head_up_and_down)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Reading)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Reading)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Bending_Jogging)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Bending_Jogging)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Normal_Breathing_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Normal_Breathing_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name_of_Fit_Tester)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name_of_Fit_Tester)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DUO_Tester)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DUO_Tester)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SubmittedAt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SubmittedAt)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
