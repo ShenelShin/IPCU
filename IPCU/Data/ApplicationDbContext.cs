@@ -11,5 +11,6 @@ namespace IPCU.Data
         {
         }
         public DbSet<PatientForm> PatientForms { get; set; }
+        public DbSet<IPCU.Models.TrainingEvaluation> TrainingEvaluation { get; set; } = default!;
     }
 }

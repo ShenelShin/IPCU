@@ -1,0 +1,317 @@
+﻿@model IEnumerable<IPCU.Models.TrainingEvaluation>
+
+@{
+    ViewData["Title"] = "Training Summary";
+}
+
+<!-- Bootstrap & Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-primary"><i class="fas fa-clipboard-list"></i> Training Summary Form</h2>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="fas fa-plus"></i> Create New
+        </a>
+    </div>
+    <p class="text-muted">A summary of all training sessions conducted.</p>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover shadow-sm">
+            <thead class="table-dark">
+                <tr class="text-center">
+                    <th>Title</th>
+                    <th>Venue</th>
+                    <th>Date</th>
+                    <th>Methodology</th>
+                    <th>Category</th>
+                    <th>Male Participants</th>
+                    <th>Female Participants</th>
+                    <th>Post-Test Grade</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.Venue</td>
+                        <td>@item.DateOfTraining.ToString("yyyy-MM-dd")</td>
+                        <td>@item.TrainingMethodology</td>
+                        <td>@item.ProfessionalCategory</td>
+                        <td class="text-center">@item.TotalParticipantsMale</td>
+                        <td class="text-center">@item.TotalParticipantsFemale</td>
+                        <td class="text-center">@item.PostTestEvaluationGrade</td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <!-- Edit Button -->
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Edit Training">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+
+                                <!-- Details Button -->
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="View Details">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+
+                                <!-- Delete Button -->
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Delete Training">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+
+                                <!-- Preview PDF Button -->
+                                <a asp-action="GeneratePdf" asp-route-id="@item.Id" class="btn btn-primary btn-sm" target="_blank" data-bs-toggle="tooltip" title="Preview as PDF">
+                                    <i class="fas fa-file-pdf"></i>
+                                </a>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@model IEnumerable<IPCU.Models.TrainingEvaluation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<!-- Bootstrap & Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<div class="container mt-4">
+    <h2 class="text-center text-primary">Training Summary Form</h2>
+    <p class="text-center">This is where your Training Summary Form will appear.</p>
+</div>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Venue)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfTraining)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TrainingMethodology)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProfessionalCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalParticipantsMale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalParticipantsFemale)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostTestEvaluationGrade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlowFollowed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RulesEstablished)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InitiateDiscussion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TechnicalCapability)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContentOrganization)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ObjectiveStated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContentQuality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FlowOfTopic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RelevanceOfTopic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PracticeApplication)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LearningActivities)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VisualAids)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PresentKnowledge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BalancePrinciples)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AddressClarifications)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Preparedness)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TeachingPersonality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstablishRapport)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RespectForParticipants)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VoicePersonality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TimeManagement)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SuggestionsForImprovement)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Venue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfTraining)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TrainingMethodology)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfessionalCategory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalParticipantsMale)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalParticipantsFemale)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostTestEvaluationGrade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlowFollowed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RulesEstablished)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InitiateDiscussion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TechnicalCapability)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContentOrganization)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ObjectiveStated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContentQuality)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlowOfTopic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RelevanceOfTopic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PracticeApplication)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LearningActivities)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VisualAids)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PresentKnowledge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BalancePrinciples)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AddressClarifications)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Preparedness)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeachingPersonality)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstablishRapport)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RespectForParticipants)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VoicePersonality)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TimeManagement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SuggestionsForImprovement)
+            </td>
+           
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="GeneratePdf" asp-route-id="@item.Id" class="btn btn-primary" target="_blank">Preview PDF</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+ *@

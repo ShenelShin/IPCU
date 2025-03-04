@@ -1,0 +1,129 @@
+﻿@model IPCU.Models.TrainingEvaluation
+
+@{
+    ViewData["Title"] = "Training Evaluation Details";
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<h1 class="mb-4 text-primary">Training Evaluation Details</h1>
+
+<!-- Training Information -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5>Training Information</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Title)</th>
+                    <td>@Html.DisplayFor(model => model.Title)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Venue)</th>
+                    <td>@Html.DisplayFor(model => model.Venue)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.DateOfTraining)</th>
+                    <td>@Html.DisplayFor(model => model.DateOfTraining)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.TrainingMethodology)</th>
+                    <td>@Html.DisplayFor(model => model.TrainingMethodology)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.ProfessionalCategory)</th>
+                    <td>@Html.DisplayFor(model => model.ProfessionalCategory)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.TotalParticipantsMale)</th>
+                    <td>@Html.DisplayFor(model => model.TotalParticipantsMale)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.TotalParticipantsFemale)</th>
+                    <td>@Html.DisplayFor(model => model.TotalParticipantsFemale)</td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.PostTestEvaluationGrade)</th>
+                    <td>@Html.DisplayFor(model => model.PostTestEvaluationGrade)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Program Facilitation -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-secondary text-white">
+        <h5>Program Facilitation</h5>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item"><strong>Flow Followed:</strong> @Html.DisplayFor(model => model.FlowFollowed)</li>
+            <li class="list-group-item"><strong>Rules Established:</strong> @Html.DisplayFor(model => model.RulesEstablished)</li>
+            <li class="list-group-item"><strong>Initiate Discussion:</strong> @Html.DisplayFor(model => model.InitiateDiscussion)</li>
+            <li class="list-group-item"><strong>Technical Capability:</strong> @Html.DisplayFor(model => model.TechnicalCapability)</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Module Evaluation -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-success text-white">
+        <h5>Module Evaluation</h5>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item"><strong>Content Organization:</strong> @Html.DisplayFor(model => model.ContentOrganization)</li>
+            <li class="list-group-item"><strong>Objective Stated:</strong> @Html.DisplayFor(model => model.ObjectiveStated)</li>
+            <li class="list-group-item"><strong>Content Quality:</strong> @Html.DisplayFor(model => model.ContentQuality)</li>
+            <li class="list-group-item"><strong>Flow of Topic:</strong> @Html.DisplayFor(model => model.FlowOfTopic)</li>
+            <li class="list-group-item"><strong>Relevance of Topic:</strong> @Html.DisplayFor(model => model.RelevanceOfTopic)</li>
+            <li class="list-group-item"><strong>Practice Application:</strong> @Html.DisplayFor(model => model.PracticeApplication)</li>
+            <li class="list-group-item"><strong>Learning Activities:</strong> @Html.DisplayFor(model => model.LearningActivities)</li>
+            <li class="list-group-item"><strong>Visual Aids:</strong> @Html.DisplayFor(model => model.VisualAids)</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Trainer-related Characteristics -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-info text-white">
+        <h5>Trainer-Related Characteristics</h5>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item"><strong>Mastery of Subject:</strong> @Html.DisplayFor(model => model.PresentKnowledge)</li>
+            <li class="list-group-item"><strong>Balance Principles:</strong> @Html.DisplayFor(model => model.BalancePrinciples)</li>
+            <li class="list-group-item"><strong>Address Clarifications:</strong> @Html.DisplayFor(model => model.AddressClarifications)</li>
+            <li class="list-group-item"><strong>Preparedness:</strong> @Html.DisplayFor(model => model.Preparedness)</li>
+            <li class="list-group-item"><strong>Teaching Personality:</strong> @Html.DisplayFor(model => model.TeachingPersonality)</li>
+            <li class="list-group-item"><strong>Establish Rapport:</strong> @Html.DisplayFor(model => model.EstablishRapport)</li>
+            <li class="list-group-item"><strong>Respect for Participants:</strong> @Html.DisplayFor(model => model.RespectForParticipants)</li>
+            <li class="list-group-item"><strong>Voice Personality:</strong> @Html.DisplayFor(model => model.VoicePersonality)</li>
+            <li class="list-group-item"><strong>Time Management:</strong> @Html.DisplayFor(model => model.TimeManagement)</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Suggestions for Improvement -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-warning text-dark">
+        <h5>Suggestions for Improvement</h5>
+    </div>
+    <div class="card-body">
+        <p>@Html.DisplayFor(model => model.SuggestionsForImprovement)</p>
+    </div>
+</div>
+
+<!-- Action Buttons -->
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary">
+        <i class="fas fa-edit"></i> Edit
+    </a>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to List
+    </a>
+</div>
+
