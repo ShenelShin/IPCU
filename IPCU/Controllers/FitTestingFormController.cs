@@ -158,22 +158,12 @@ namespace IPCU.Controllers
 
         public IActionResult PrintPdf(int id)
         {
-            var fitTestingForm = _context.FitTestingForm.FirstOrDefault(f => f.Id == id);
-            if (fitTestingForm == null)
-            {
-                return NotFound();
-            }
+            var form = _context.FitTestingForm.FirstOrDefault(f => f.Id == id);
+            if (form == null) return NotFound();
 
             var pdfService = new FitTestingFormPdfService();
-            var fileName = $"{fitTestingForm.HCW_Name}_FitTestingForm.pdf";
-            var filePath = Path.Combine(Path.GetTempPath(), fileName);
-
-            pdfService.GeneratePdf(fitTestingForm, filePath);
-
-            var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
-
-            Response.Headers.Add("Content-Disposition", "inline; filename=" + fileName);
-            return File(fileStream, "application/pdf");
+            var pdfBytes = pdfService.GeneratePdf(form);
+            return File(pdfBytes, "application/pdf", $"{form.HCW_Name}_FitTest.pdf");
         }
 
 
