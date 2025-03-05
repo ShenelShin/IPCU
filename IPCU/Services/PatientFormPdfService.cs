@@ -3,11 +3,17 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using IPCU.Models;
 using System;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace IPCU.Services
 {
     public class PatientFormPdfService
     {
+        private static readonly string DarkColor = Colors.Grey.Darken3;
+        private static readonly string AccentColor = Colors.Teal.Darken1;
+        private static readonly float HeaderSize = 14;
+        private static readonly float BodySize = 12;
+
         public byte[] GeneratePdf(PatientForm patient)
         {
             var document = Document.Create(container =>
@@ -15,113 +21,185 @@ namespace IPCU.Services
                 container.Page(page =>
                 {
                     page.Size(PageSizes.A4);
-                    page.Margin(30);
+                    page.Margin(25);
 
-                    page.Header()
-                        .PaddingBottom(20)
-                        .BorderBottom(1).BorderColor(Colors.Grey.Lighten1)
-                        .Text($"PATIENT MEDICAL RECORD")
-                        .Bold()
-                        .FontSize(24)
-                        .FontColor(Colors.Blue.Darken3)
-                        .AlignCenter();
-
-                    page.Content().PaddingVertical(15).Column(column =>
+                    // Header Section
+                    page.Header().Column(header =>
                     {
-                        column.Spacing(15);
+                        header.Item().AlignCenter().Text("NATIONAL KIDNEY AND TRANSPLANT INSTITUTE")
+                            .FontColor(AccentColor)
+                            .Bold()
+                            .FontSize(16);
 
-                        // Patient Information Section
-                        column.Item().Background(Colors.Grey.Lighten3).Padding(10).Column(section =>
+                        header.Item().AlignCenter().Text(" EastAvenue,QuezonCity")
+                            .FontColor(DarkColor)
+                        .FontSize(10)
+                            .Bold();
+
+                        header.Item()
+                            .PaddingVertical(10)
+                            .LineHorizontal(2);
+
+                        header.Item().AlignCenter().Text(" INFECTION PREVENTION AND CONTROL UNIT")
+                            .FontColor(DarkColor)
+                            .FontSize(10)
+                            .Bold();
+
+                        header.Item().AlignCenter().Text(" HANDHY GIENE(HH) DETAILED")
+                            .FontColor(DarkColor)
+                            .FontSize(10)
+                            .Bold();
+
+                        header.Item().AlignCenter().Text(" OBSERVATION AND MONITORING FORM")
+                            .FontColor(DarkColor)
+                            .FontSize(10)
+                            .Bold();
+
+                        header.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten1);
+                    });
+
+                    page.Content().Column(content =>
+                    {
+                        content.Spacing(15);
+
+                        // Patient Information
+                        content.Item().Column(col =>
                         {
-                            section.Spacing(5);
-                            section.Item().Text("PATIENT INFORMATION").Bold().FontSize(16).FontColor(Colors.Blue.Darken2);
-                            section.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten1).PaddingBottom(5);
+                            col.Item().Text("PATIENT RECORD")
+                                .FontColor(AccentColor)
+                                .Bold()
+                                .FontSize(HeaderSize);
 
-                            section.Item().Grid(grid =>
+                            col.Item().Table(table =>
+                            {
+                                table.ColumnsDefinition(columns =>
+                                {
+                                    columns.RelativeColumn(2);
+                                    columns.RelativeColumn(3);
+                                });
+
+                                AddTableRow(table, "Full Name:", $"{patient.LastName}, {patient.FirstName} {patient.MiddleName} {patient.Suffix}");
+                                AddTableRow(table, "Date of Birth:", $"{patient.Age} years old");
+                                AddTableRow(table, "Sex:", patient.Sex);
+                                AddTableRow(table, "Patient ID:", patient.Id.ToString());
+                            });
+                        });
+
+                        // Medical Information Section
+                        content.Item().Border(1).BorderColor(Colors.Grey.Lighten2).Column(col =>
+                        {
+                            col.Item().Padding(10).Background(Colors.Grey.Lighten3).Text("CLINICAL INFORMATION")
+                                .FontColor(DarkColor)
+                                .Bold()
+                                .FontSize(HeaderSize);
+
+                            col.Item().Padding(10).Grid(grid =>
                             {
                                 grid.Columns(2);
-                                grid.Spacing(5);
+                                grid.Spacing(10);
 
-                                grid.Item().Text("Full Name:").Bold().FontColor(Colors.Grey.Darken3);
-                                grid.Item().Text($"{patient.FirstName} {patient.MiddleName ?? ""} {patient.LastName} {patient.Suffix ?? ""}");
+                                grid.Item().Column(c =>
+                                {
+                                    c.Item().Text("PRIMARY DIAGNOSIS").FontSize(BodySize).Bold();
+                                    c.Item().Text(patient.Disease).FontSize(BodySize);
+                                });
 
-                                grid.Item().Text("Sex:").Bold();
-                                grid.Item().Text(patient.Sex);
-
-                                grid.Item().Text("Age:").Bold();
-                                grid.Item().Text(patient.Age);
+                                grid.Item().Column(c =>
+                                {
+                                    c.Item().Text("CURRENT STATUS").FontSize(BodySize).Bold();
+                                    c.Item().Text(patient.Status).FontSize(BodySize);
+                                });
                             });
                         });
 
-                        // Medical Details Section
-                        column.Item().Background(Colors.Grey.Lighten3).Padding(10).Column(section =>
+                        // Care Team Section
+                        content.Item().Border(1).BorderColor(Colors.Grey.Lighten2).Column(col =>
                         {
-                            section.Spacing(5);
-                            section.Item().Text("MEDICAL DETAILS").Bold().FontSize(16).FontColor(Colors.Blue.Darken2);
-                            section.Item().BorderBottom(1).BorderColor(Colors.Grey.Lighten1).PaddingBottom(5);
+                            col.Item().Padding(10).Background(Colors.Grey.Lighten3).Text("CARE TEAM")
+                                .FontColor(DarkColor)
+                                .Bold()
+                                .FontSize(HeaderSize);
 
-                            section.Item().Grid(grid =>
+                            col.Item().Padding(10).Grid(grid =>
                             {
                                 grid.Columns(2);
-                                grid.Spacing(5);
+                                grid.Spacing(15);
 
-                                grid.Item().Text("Primary Diagnosis:").Bold();
-                                grid.Item().Text(patient.Disease);
+                                grid.Item().Column(c =>
+                                {
+                                    c.Item().Text("ATTENDING PHYSICIAN").FontSize(BodySize).Bold();
+                                    c.Item().Text("Dr. Maria Santos, MD").FontSize(BodySize);
+                                });
 
-                                grid.Item().Text("Patient Status:").Bold();
-                                grid.Item().Text(patient.Status);
-
+                                grid.Item().Column(c =>
+                                {
+                                    c.Item().Text("PRIMARY NURSE").FontSize(BodySize).Bold();
+                                    c.Item().Text($"{patient.NurseFirstName} {patient.NurseLastName}").FontSize(BodySize);
+                                });
                             });
                         });
 
-                        // Location and Nurse Information
-                        column.Item().Grid(grid =>
+                        // Location Information
+                        content.Item().Border(1).BorderColor(Colors.Grey.Lighten2).Column(col =>
                         {
-                            grid.Columns(2);
-                            grid.Spacing(10);
+                            col.Item().Padding(10).Background(Colors.Grey.Lighten3).Text("ADMISSION DETAILS")
+                                .FontColor(DarkColor)
+                                .Bold()
+                                .FontSize(HeaderSize);
 
-                            // Location Section
-                            grid.Item().Background(Colors.Grey.Lighten3).Padding(10).Column(col =>
+                            col.Item().Padding(10).Grid(grid =>
                             {
-                                col.Item().Text("ASSIGNED LOCATION").Bold().FontSize(14).FontColor(Colors.Blue.Darken2);
-                                col.Item().PaddingVertical(5);
-                                col.Item().Text($"Building: {patient.Building}").FontSize(14);
-                                col.Item().Text($"Room: {patient.Room}").FontSize(14);
-                            });
+                                grid.Columns(2);
+                                grid.Spacing(15);
 
-                            // Nurse Section
-                            grid.Item().Background(Colors.Grey.Lighten3).Padding(10).Column(col =>
-                            {
-                                col.Item().Text("ASSIGNED NURSE").Bold().FontSize(14).FontColor(Colors.Blue.Darken2);
-                                col.Item().PaddingVertical(5);
-                                col.Item().Text($"{patient.NurseFirstName} {patient.NurseMiddleName ?? ""} {patient.NurseLastName}");
+                                grid.Item().Column(c =>
+                                {
+                                    c.Item().Text("ADMISSION DATE").FontSize(BodySize).Bold();
+                                    c.Item().Text(DateTime.Now.ToString("MMM dd, yyyy")).FontSize(BodySize);
+                                });
+
+                                grid.Item().Column(c =>
+                                {
+                                    c.Item().Text("LOCATION").FontSize(BodySize).Bold();
+                                    c.Item().Text($"Building {patient.Building} - Room {patient.Room}").FontSize(BodySize);
+                                });
                             });
                         });
 
-                        // Additional Notes Section
-                        column.Item().Background(Colors.Grey.Lighten3).Padding(10).Column(col =>
+                        // Observations
+                        content.Item().Border(1).BorderColor(Colors.Grey.Lighten2).Column(col =>
                         {
-                            col.Item().Text("OBSERVATIONS").Bold().FontSize(14).FontColor(Colors.Blue.Darken2);
-                            col.Item().PaddingTop(5);
-                            col.Item().Text("Patient is responding well to treatment. Vital signs stable.")
-                                .FontSize(12)
+                            col.Item().Padding(10).Background(Colors.Grey.Lighten3).Text("CLINICAL NOTES")
+                                .FontColor(DarkColor)
+                                .Bold()
+                                .FontSize(HeaderSize);
+
+                            col.Item().Padding(10).Text("No significant observations recorded")
+                                .FontSize(BodySize)
                                 .FontColor(Colors.Grey.Darken1);
                         });
                     });
 
-                    page.Footer()
-                        .BorderTop(1).BorderColor(Colors.Grey.Lighten1)
-                        .PaddingTop(5)
-                        .AlignCenter()
-                        .Text(text =>
-                        {
-                            text.Span("Generated on ").FontColor(Colors.Grey.Medium);
-                            text.Span($"{DateTime.Now:MMMM dd, yyyy 'at' HH:mm}").Bold();
-                        });
+                    // Footer
+                    page.Footer().AlignCenter().Text(t =>
+                    {
+                        t.Span("Page ").FontColor(Colors.Grey.Medium);
+                        t.CurrentPageNumber().FontColor(AccentColor);
+                        t.Span(" of ").FontColor(Colors.Grey.Medium);
+                        t.TotalPages().FontColor(AccentColor);
+                    });
                 });
             });
 
             return document.GeneratePdf();
+        }
+
+        private void AddTableRow(TableDescriptor table, string label, string value)
+        {
+            table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).Text(label)
+                .FontColor(DarkColor).Bold().FontSize(BodySize);
+            table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten2).PaddingVertical(5).Text(value)
+                .FontColor(Colors.Grey.Darken2).FontSize(BodySize);
         }
     }
 }

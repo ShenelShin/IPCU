@@ -165,7 +165,11 @@ namespace IPCU.Controllers
             }
 
             var pdfBytes = TrainingEvaluationPdfService.GeneratePdf(training);
-            return File(pdfBytes, "application/pdf", "TrainingEvaluation.pdf");
+
+            Response.Headers["Content-Disposition"] = "inline"; // Ensures inline preview
+
+            return File(pdfBytes, "application/pdf");
         }
+
     }
 }
