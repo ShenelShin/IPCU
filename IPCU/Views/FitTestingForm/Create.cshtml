@@ -1,114 +1,152 @@
 ﻿@model IPCU.Models.FitTestingForm
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Fit Testing Record";
 }
 
-<h1>Create</h1>
+<!-- Bootstrap & Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<h4>FitTestingFormgggjgkjgk</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="HCW_Name" class="control-label"></label>
-                <input asp-for="HCW_Name" class="form-control" />
-                <span asp-validation-for="HCW_Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DUO" class="control-label"></label>
-                <input asp-for="DUO" class="form-control" />
-                <span asp-validation-for="DUO" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Limitation" class="control-label"></label>
-                <input asp-for="Limitation" class="form-control" />
-                <span asp-validation-for="Limitation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Fit_Test_Solution" class="control-label"></label>
-                <input asp-for="Fit_Test_Solution" class="form-control" />
-                <span asp-validation-for="Fit_Test_Solution" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sensitivity_Test" class="control-label"></label>
-                <input asp-for="Sensitivity_Test" class="form-control" />
-                <span asp-validation-for="Sensitivity_Test" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Respiratory_Type" class="control-label"></label>
-                <input asp-for="Respiratory_Type" class="form-control" />
-                <span asp-validation-for="Respiratory_Type" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Size" class="control-label"></label>
-                <input asp-for="Size" class="form-control" />
-                <span asp-validation-for="Size" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Normal_Breathing" /> @Html.DisplayNameFor(model => model.Normal_Breathing)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Deep_Breathing" /> @Html.DisplayNameFor(model => model.Deep_Breathing)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Turn_head_side_to_side" /> @Html.DisplayNameFor(model => model.Turn_head_side_to_side)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Move_head_up_and_down" /> @Html.DisplayNameFor(model => model.Move_head_up_and_down)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Reading" /> @Html.DisplayNameFor(model => model.Reading)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Bending_Jogging" /> @Html.DisplayNameFor(model => model.Bending_Jogging)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Normal_Breathing_2" /> @Html.DisplayNameFor(model => model.Normal_Breathing_2)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name_of_Fit_Tester" class="control-label"></label>
-                <input asp-for="Name_of_Fit_Tester" class="form-control" />
-                <span asp-validation-for="Name_of_Fit_Tester" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DUO_Tester" class="control-label"></label>
-                <input asp-for="DUO_Tester" class="form-control" />
-                <span asp-validation-for="DUO_Tester" class="text-danger"></span>
-            </div>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3><i class="fa fa-user-md"></i> Create Fit Testing Record</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="HCW_Name" class="form-label fw-bold"></label>
+                                    <input asp-for="HCW_Name" class="form-control" placeholder="Enter HCW Name" />
+                                    <span asp-validation-for="HCW_Name" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="DUO" class="form-label fw-bold"></label>
+                                    <input asp-for="DUO" class="form-control" placeholder="Enter DUO" />
+                                    <span asp-validation-for="DUO" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Limitation" class="form-label fw-bold"></label>
+                            <input asp-for="Limitation" class="form-control" placeholder="Enter Limitations" />
+                            <span asp-validation-for="Limitation" class="text-danger"></span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Fit_Test_Solution" class="form-label fw-bold"></label>
+                                    <input asp-for="Fit_Test_Solution" class="form-control" placeholder="Enter Fit Test Solution" />
+                                    <span asp-validation-for="Fit_Test_Solution" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Sensitivity_Test" class="form-label fw-bold"></label>
+                                    <input asp-for="Sensitivity_Test" class="form-control" placeholder="Enter Sensitivity Test" />
+                                    <span asp-validation-for="Sensitivity_Test" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold mt-3">Respiratory Information</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Respiratory_Type" class="form-label fw-bold"></label>
+                                    <input asp-for="Respiratory_Type" class="form-control" placeholder="Enter Respiratory Type" />
+                                    <span asp-validation-for="Respiratory_Type" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Model" class="form-label fw-bold"></label>
+                                    <input asp-for="Model" class="form-control" placeholder="Enter Model" />
+                                    <span asp-validation-for="Model" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Size" class="form-label fw-bold"></label>
+                            <input asp-for="Size" class="form-control" placeholder="Enter Size" />
+                            <span asp-validation-for="Size" class="text-danger"></span>
+                        </div>
+
+                        <h5 class="fw-bold mt-3">Breathing & Movement Tests</h5>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Normal_Breathing" />
+                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Normal_Breathing)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Deep_Breathing" />
+                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Deep_Breathing)</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Turn_head_side_to_side" />
+                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Turn_head_side_to_side)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Move_head_up_and_down" />
+                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Move_head_up_and_down)</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Reading" />
+                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Reading)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Bending_Jogging" />
+                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Bending_Jogging)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 mt-3">
+                            <label asp-for="Name_of_Fit_Tester" class="form-label fw-bold"></label>
+                            <input asp-for="Name_of_Fit_Tester" class="form-control" placeholder="Enter Fit Tester Name" />
+                            <span asp-validation-for="Name_of_Fit_Tester" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DUO_Tester" class="form-label fw-bold"></label>
+                            <input asp-for="DUO_Tester" class="form-control" placeholder="Enter DUO Tester" />
+                            <span asp-validation-for="DUO_Tester" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Back</a>
+                            <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Submit</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
