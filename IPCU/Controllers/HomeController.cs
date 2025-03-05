@@ -1,9 +1,12 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using IPCU.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IPCU.Controllers;
 
+
+[Authorize]
 public class HomeController : Controller
 {
     public IActionResult Dashboard() => View();

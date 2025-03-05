@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using IPCU.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace IPCU.Data
@@ -9,5 +10,9 @@ namespace IPCU.Data
             : base(options)
         {
         }
+        public DbSet<PatientForm> PatientForms { get; set; }
+        public DbSet<IPCU.Models.TrainingEvaluation> TrainingEvaluation { get; set; } = default!;
+
+        public DbSet<IPCU.Models.FitTestingForm> FitTestingForm { get; set; } = default!;
     }
 }

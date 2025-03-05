@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250303020311_CreatePatientFormTable")]
+    partial class CreatePatientFormTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,82 +141,6 @@ namespace IPCU.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("IPCU.Models.FitTestingForm", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Bending_Jogging")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("DUO")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DUO_Tester")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Deep_Breathing")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Fit_Test_Solution")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HCW_Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Limitation")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Move_head_up_and_down")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name_of_Fit_Tester")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Normal_Breathing")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Normal_Breathing_2")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Reading")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Respiratory_Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Sensitivity_Test")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("SubmittedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Turn_head_side_to_side")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FitTestingForm");
-                });
-
             modelBuilder.Entity("IPCU.Models.PatientForm", b =>
                 {
                     b.Property<int>("Id")
@@ -274,114 +201,6 @@ namespace IPCU.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PatientForms");
-                });
-
-            modelBuilder.Entity("IPCU.Models.TrainingEvaluation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AddressClarifications")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BalancePrinciples")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ContentOrganization")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ContentQuality")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateOfTraining")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EstablishRapport")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FlowFollowed")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FlowOfTopic")
-                        .HasColumnType("int");
-
-                    b.Property<int>("InitiateDiscussion")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LearningActivities")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ObjectiveStated")
-                        .HasColumnType("int");
-
-                    b.Property<double>("PostTestEvaluationGrade")
-                        .HasColumnType("float");
-
-                    b.Property<int>("PracticeApplication")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Preparedness")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PresentKnowledge")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProfessionalCategory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RelevanceOfTopic")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RespectForParticipants")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RulesEstablished")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SuggestionsForImprovement")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TeachingPersonality")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TechnicalCapability")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TimeManagement")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TotalParticipantsFemale")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalParticipantsMale")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TrainingMethodology")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Venue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("VisualAids")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VoicePersonality")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TrainingEvaluation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
