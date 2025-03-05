@@ -5,6 +5,7 @@
     using QuestPDF.Infrastructure;
     using IPCU.Models;
     using System;
+    using static QuestPDF.Helpers.Colors;
 
     public class TrainingEvaluationPdfService
     {
@@ -30,7 +31,7 @@
                     page.Content().Column(col =>
                     {
                         col.Spacing(15);
-                        col.Item().Border(1).Padding(10).Background(Colors.Grey.Lighten3).Table(table =>
+                        col.Item().Border(1).Padding(1).Background(Grey.Lighten4).Table(table =>
                         {
                             table.ColumnsDefinition(columns =>
                             {
@@ -57,73 +58,177 @@
                                 container.PaddingVertical(2).ExtendHorizontal();
                         });
 
-                        // ===== Section: Program Facilitation =====
-                        col.Item().PaddingTop(10).Row(row =>
+                        // ===== Section: Total Participants =====
+                        col.Item().PaddingTop(5).Border(1).Padding(10).Column(column =>
                         {
-                            row.RelativeItem().Text("PROGRAM FACILITATION").Bold().FontSize(12);
-                            row.AutoItem().Text(" - Rating").Bold().FontSize(12);
-                        });
+                            column.Item()
+         .Background(Colors.Grey.Lighten3) // Light gray background
+         .Padding(2) // Adds padding to make text readable
+         .AlignCenter()
+         .Text("PARTICIPANTS").Bold().FontSize(12);
 
-                        col.Item().Border(1).Padding(10).Table(table =>
-                        {
-                            table.ColumnsDefinition(columns =>
+
+                            column.Item().Row(row =>
                             {
-                                columns.RelativeColumn(); // Criteria Column
-                                columns.ConstantColumn(60); // Rating Column (Fixed Width)
+                                row.RelativeItem().Text("Male Participants:");
+                                row.AutoItem().PaddingLeft(15).Text(training.TotalParticipantsMale.ToString()).Bold();
                             });
 
-                            void AddRatingRow(string label, object value)
+                            column.Item().Row(row =>
                             {
-                                table.Cell().Element(CellStyle).Text(label);
-                                table.Cell().AlignRight().Element(CellStyle).Text(value.ToString()).Bold();
-                                table.Cell().ColumnSpan(2).Element(LineStyle).LineHorizontal(1);
-                            }
+                                row.RelativeItem().Text("Female Participants:");
+                                row.AutoItem().PaddingLeft(15).Text(training.TotalParticipantsFemale.ToString()).Bold();
+                            });
 
-                            AddRatingRow("Flow followed", training.FlowFollowed);
-                            AddRatingRow("Rules clearly established", training.RulesEstablished);
-                            AddRatingRow("Ability to initiate discussion", training.InitiateDiscussion);
-                            AddRatingRow("Technical capability", training.TechnicalCapability);
+                            column.Item().PaddingVertical(5).LineHorizontal(1); // Line separator
 
-                            static IContainer CellStyle(IContainer container) =>
-                                container.PaddingVertical(4).PaddingHorizontal(5);
-
-                            static IContainer LineStyle(IContainer container) =>
-                                container.PaddingVertical(2).ExtendHorizontal();
+                            column.Item().Row(row =>
+                            {
+                                row.RelativeItem().Text("Total Participants:").Bold();
+                                row.AutoItem().PaddingLeft(15).Text((training.TotalParticipantsMale + training.TotalParticipantsFemale).ToString()).Bold();
+                            });
                         });
 
-                        // ===== Section: Module Evaluation =====
-                        col.Item().PaddingTop(15).Text("MODULE EVALUATION").Bold().FontSize(12);
-                        col.Item().Border(1).Padding(10).Column(column =>
+
+                        // ===== Row: Program Facilitation & Trainer Characteristics =====
+                        col.Item().PaddingTop(15).Row(row =>
                         {
-                            column.Item().Text($"Content Organization: {training.ContentOrganization}");
-                            column.Item().Text($"Objective Clearly Stated: {training.ObjectiveStated}");
-                            column.Item().Text($"Content Quality: {training.ContentQuality}");
-                            column.Item().Text($"Flow of Topic: {training.FlowOfTopic}");
-                            column.Item().Text($"Relevance of the Topic: {training.RelevanceOfTopic}");
-                            column.Item().Text($"Learning Activities: {training.LearningActivities}");
-                            column.Item().Text($"Visual Aids (Module Presentation): {training.VisualAids}");
+                            // PROGRAM FACILITATION (Left Box)
+                            // PROGRAM FACILITATION (Left Box)
+                            row.RelativeItem().Border(1).Padding(10).Column(column =>
+                            {
+                                column.Item().Row(rowHeader =>
+                                {
+                                    rowHeader.RelativeItem()
+                                        .Background(Colors.Grey.Lighten3) // Light gray background
+                                        .Padding(5) // Adds padding for better readability
+                                        .Text("PROGRAM FACILITATION").Bold().FontSize(8);
+
+                                    rowHeader.AutoItem()
+                                        .Background(Colors.BlueGrey.Lighten3) // Matching background for consistency
+                                        .Padding(5)
+                                        .Text("  Rating").Bold().FontSize(8);
+                                });
+
+                                void AddFacilitationRow(string label, object value)
+                                {
+                                    column.Item().Row(row =>
+                                    {
+                                        row.RelativeItem().Text(label);
+                                        row.AutoItem().PaddingLeft(10).Text(value.ToString()).Bold();
+                                    });
+                                }
+
+                                AddFacilitationRow("Flow followed:", training.FlowFollowed);
+                                AddFacilitationRow("Rules clearly established:", training.RulesEstablished);
+                                AddFacilitationRow("Ability to initiate discussion:", training.InitiateDiscussion);
+                                AddFacilitationRow("Technical capability:", training.TechnicalCapability);
+                            });
+
+                            row.RelativeItem().Border(1).Padding(10).Column(column =>
+                            {
+                                column.Item().Row(rowHeader =>
+                                {
+                                    rowHeader.RelativeItem()
+     .Background(Colors.Grey.Lighten3) // Light gray background
+     .Padding(5) // Adds padding for readability
+     .Text("TRAINER CHARACTERISTICS").Bold().FontSize(8);
+
+                                    rowHeader.AutoItem()
+                                        .Background(Colors.BlueGrey.Lighten3) // Matching background for consistency
+                                        .Padding(5)
+                                        .Text("  Rating").Bold().FontSize(8);
+
+                                });
+
+                                void AddCharacteristicRow(string label, object value)
+                                {
+                                    column.Item().Row(row =>
+                                    {
+                                        row.RelativeItem().Text(label);
+                                        row.AutoItem().PaddingLeft(10).Text(value.ToString()).Bold();
+                                    });
+                                }
+
+                                AddCharacteristicRow("Preparedness of the SME:", training.Preparedness);
+                                AddCharacteristicRow("Teaching Personality:", training.TeachingPersonality);
+                                AddCharacteristicRow("Ability to Establish Rapport:", training.EstablishRapport);
+                                AddCharacteristicRow("Genuine Respect for Participants:", training.RespectForParticipants);
+                                AddCharacteristicRow("Voice Personality:", training.VoicePersonality);
+                                AddCharacteristicRow("Time Management:", training.TimeManagement);
+                            });
+
                         });
 
-                        // ===== Section: Mastery of Subject Matter =====
-                        col.Item().PaddingTop(15).Text("MASTERY OF SUBJECT MATTER").Bold().FontSize(12);
-                        col.Item().Border(1).Padding(10).Column(column =>
+                        // Define CellStyle and LineStyle functions inside the same scope
+                        static IContainer CellStyle(IContainer container) =>
+                            container.PaddingVertical(4).PaddingHorizontal(5);
+
+                        static IContainer LineStyle(IContainer container) =>
+                            container.PaddingVertical(2).ExtendHorizontal();
+
+
+                        // ===== Row: Module Evaluation & Mastery of Subject Matter =====
+                        col.Item().PaddingTop(15).Row(row =>
                         {
-                            column.Item().Text($"Ability to Present Knowledge: {training.PresentKnowledge}");
-                            column.Item().Text($"Ability to Balance Principles: {training.BalancePrinciples}");
-                            column.Item().Text($"Ability to Address Clarifications: {training.AddressClarifications}");
+                            // MODULE EVALUATION (Left Box)
+                            row.RelativeItem().Border(1).Padding(10).Column(column =>
+                            {
+                                column.Item().Row(rowHeader =>
+                                {
+                                    rowHeader.RelativeItem().Background(Colors.Grey.Lighten3) // Matching background for consistency
+                                        .Padding(5).Text("MODULE EVALUATION").Bold().FontSize(8);
+                                    rowHeader.AutoItem().Background(Colors.BlueGrey.Lighten3) // Matching background for consistency
+                                        .Padding(5).Text("  Rating").Bold().FontSize(8);
+                                });
+
+                                void AddModuleEvaluationRow(string label, object value)
+                                {
+                                    column.Item().Row(row =>
+                                    {
+                                        row.RelativeItem().Text(label);
+                                        row.AutoItem().PaddingLeft(10).Text(value.ToString()).Bold();
+                                    });
+                                }
+
+                                AddModuleEvaluationRow("Content Organization:", training.ContentOrganization);
+                                AddModuleEvaluationRow("Objective Clearly Stated:", training.ObjectiveStated);
+                                AddModuleEvaluationRow("Content Quality:", training.ContentQuality);
+                                AddModuleEvaluationRow("Flow of Topic:", training.FlowOfTopic);
+                                AddModuleEvaluationRow("Relevance of the Topic:", training.RelevanceOfTopic);
+                                AddModuleEvaluationRow("Learning Activities:", training.LearningActivities);
+                                AddModuleEvaluationRow("Visual Aids (Module Presentation):", training.VisualAids);
+                            });
+
+                            // MASTERY OF SUBJECT MATTER (Right Box)
+                            row.RelativeItem().Border(1).Padding(10).Column(column =>
+                            {
+                                column.Item().Row(rowHeader =>
+                                {
+                                    rowHeader.RelativeItem().Background(Colors.Grey.Lighten3) // Matching background for consistency
+                                        .Padding(5).Text("MASTERY OF SUBJECT MATTER").Bold().FontSize(8);
+                                    rowHeader.AutoItem().Background(Colors.BlueGrey.Lighten3) // Matching background for consistency
+                                        .Padding(5).Text("  Rating").Bold().FontSize(8);
+                                });
+
+                                void AddMasteryRow(string label, object value)
+                                {
+                                    column.Item().Row(row =>
+                                    {
+                                        row.RelativeItem().Text(label);
+                                        row.AutoItem().PaddingLeft(10).Text(value.ToString()).Bold();
+                                    });
+                                }
+
+                                AddMasteryRow("Ability to Present Knowledge:", training.PresentKnowledge);
+                                AddMasteryRow("Ability to Balance Principles:", training.BalancePrinciples);
+                                AddMasteryRow("Ability to Address Clarifications:", training.AddressClarifications);
+                            });
+
                         });
 
-                        // ===== Section: Trainer Characteristics =====
-                        col.Item().PaddingTop(15).Text("TRAINER CHARACTERISTICS").Bold().FontSize(12);
-                        col.Item().Border(1).Padding(10).Column(column =>
-                        {
-                            column.Item().Text($"Preparedness of the SME: {training.Preparedness}");
-                            column.Item().Text($"Teaching Personality: {training.TeachingPersonality}");
-                            column.Item().Text($"Ability to Establish Rapport: {training.EstablishRapport}");
-                            column.Item().Text($"Genuine Respect for Participants: {training.RespectForParticipants}");
-                            column.Item().Text($"Voice Personality: {training.VoicePersonality}");
-                            column.Item().Text($"Time Management: {training.TimeManagement}");
-                        });
+
+                       
 
                         // ===== Section: Suggestions for Improvement =====
                         col.Item().PaddingTop(15).Text("SUGGESTIONS FOR IMPROVEMENT").Bold().FontSize(12);
