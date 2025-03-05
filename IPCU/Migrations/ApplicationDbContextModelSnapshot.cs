@@ -206,6 +206,10 @@ namespace IPCU.Migrations
                     b.Property<DateTime>("SubmittedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Test_Results")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Turn_head_side_to_side")
                         .HasColumnType("bit");
 

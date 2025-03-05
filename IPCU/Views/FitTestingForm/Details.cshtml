@@ -1,126 +1,133 @@
-﻿@model IPCU.Models.FitTestingForm
+﻿
+@model IPCU.Models.FitTestingForm
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Fit Testing Details";
 }
 
-<h1>Details</h1>
+<!-- Bootstrap & FontAwesome for styling -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<div>
-    <h4>FitTestingForm</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HCW_Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HCW_Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DUO)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DUO)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Limitation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Limitation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fit_Test_Solution)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fit_Test_Solution)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Sensitivity_Test)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Sensitivity_Test)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Respiratory_Type)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Respiratory_Type)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Model)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Model)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Size)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Size)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Normal_Breathing)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Normal_Breathing)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Deep_Breathing)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Deep_Breathing)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Turn_head_side_to_side)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Turn_head_side_to_side)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Move_head_up_and_down)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Move_head_up_and_down)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Reading)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Reading)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Bending_Jogging)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Bending_Jogging)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Normal_Breathing_2)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Normal_Breathing_2)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name_of_Fit_Tester)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name_of_Fit_Tester)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DUO_Tester)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DUO_Tester)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SubmittedAt)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SubmittedAt)
-        </dd>
-    </dl>
+
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3><i class="fa fa-info-circle"></i> Fit Testing Details</h3>
+                </div>
+                <div class="card-body p-4">
+
+                    <!-- Main Details Table -->
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <i class="fa fa-user"></i>
+                                    Name of Healthcare Worker (HCW):
+                                </th>
+                                <td>@Html.DisplayFor(model => model.HCW_Name)</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-id-badge"></i> Department/Unit/Office </th>
+                                <td>@Html.DisplayFor(model => model.DUO)</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-exclamation-circle"></i> Limitations </th>
+                                <td>@Html.DisplayFor(model => model.Limitation)</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-flask"></i> @Html.DisplayNameFor(model => model.Fit_Test_Solution)</th>
+                                <td>@Html.DisplayFor(model => model.Fit_Test_Solution)</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-vial"></i> Sensitivity Test</th>
+                                <td>@Html.DisplayFor(model => model.Sensitivity_Test)</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-mask"></i> Respiratory Type </th>
+                                <td>@Html.DisplayFor(model => model.Respiratory_Type)</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-cogs"></i> Model </th>
+                                <td>@Html.DisplayFor(model => model.Model)</td>
+                            </tr>
+                            <tr>
+                                <th><i class="fa fa-ruler"></i> Size </th>
+                                <td>@Html.DisplayFor(model => model.Size)</td>
+                            </tr>
+
+                            <!-- Fit Tester Info (Moved Here) -->
+                            <tr>
+                                <th colspan="2" class="text-center bg-light"><i class="fa fa-user-md"></i> Fit Tester Information</th>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-user-check"></i> Name of fit tester </td>
+                                <td>@Html.DisplayFor(model => model.Name_of_Fit_Tester)</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-id-card"></i>Department/Unit/Office:</td>
+                                <td>@Html.DisplayFor(model => model.DUO_Tester)</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa fa-calendar"></i> Date Submited </td>
+                                <td>@Html.DisplayFor(model => model.SubmittedAt)</td>
+                            </tr>
+
+                            <!-- Breathing & Movement Tests (Now After Fit Tester Info) -->
+                            <tr>
+                                <th colspan="2" class="text-center bg-light"><i class="fa fa-wind"></i> Breathing & Movement Tests</th>
+                            </tr>
+                            <tr>
+                                <td>Normal Breathing </td>
+                                <td>@Html.DisplayFor(model => model.Normal_Breathing)</td>
+                            </tr>
+                            <tr>
+                                <td> Deep Breathing </td>
+                                <td>@Html.DisplayFor(model => model.Deep_Breathing)</td>
+                            </tr>
+                            <tr>
+                                <td>Turn head side to side </td>
+                                <td>@Html.DisplayFor(model => model.Turn_head_side_to_side)</td>
+                            </tr>
+                            <tr>
+                                <td>Move head up and down </td>
+                                <td>@Html.DisplayFor(model => model.Move_head_up_and_down)</td>
+                            </tr>
+                            <tr>
+                                <td> Reading </td>
+                                <td>@Html.DisplayFor(model => model.Reading)</td>
+                            </tr>
+                            <tr>
+                                <td>Bending/Jogging</td>
+                                <td>@Html.DisplayFor(model => model.Bending_Jogging)</td>
+                            </tr>
+                            <tr>
+                                <td> Normal Breathing </td>
+                                <td>@Html.DisplayFor(model => model.Normal_Breathing_2)</td>
+                            </tr>
+                            <tr>
+                                <td> Test Results </td>
+                                <td>@Html.DisplayFor(model => model.Test_Results)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Navigation Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Back</a>
+                        <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning"><i class="fa fa-edit"></i> Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

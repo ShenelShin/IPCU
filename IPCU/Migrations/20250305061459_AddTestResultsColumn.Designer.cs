@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250303075911_CreateFitTestingForms")]
-    partial class CreateFitTestingForms
+    [Migration("20250305061459_AddTestResultsColumn")]
+    partial class AddTestResultsColumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -209,6 +209,10 @@ namespace IPCU.Migrations
                     b.Property<DateTime>("SubmittedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Test_Results")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Turn_head_side_to_side")
                         .HasColumnType("bit");
 
@@ -277,6 +281,114 @@ namespace IPCU.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PatientForms");
+                });
+
+            modelBuilder.Entity("IPCU.Models.TrainingEvaluation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AddressClarifications")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BalancePrinciples")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ContentOrganization")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ContentQuality")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateOfTraining")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EstablishRapport")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FlowFollowed")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FlowOfTopic")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InitiateDiscussion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LearningActivities")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ObjectiveStated")
+                        .HasColumnType("int");
+
+                    b.Property<double>("PostTestEvaluationGrade")
+                        .HasColumnType("float");
+
+                    b.Property<int>("PracticeApplication")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Preparedness")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PresentKnowledge")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProfessionalCategory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RelevanceOfTopic")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RespectForParticipants")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RulesEstablished")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SuggestionsForImprovement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TeachingPersonality")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TechnicalCapability")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeManagement")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalParticipantsFemale")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalParticipantsMale")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TrainingMethodology")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Venue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VisualAids")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VoicePersonality")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TrainingEvaluation");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

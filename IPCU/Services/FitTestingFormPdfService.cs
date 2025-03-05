@@ -2,150 +2,200 @@
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using IPCU.Models;
-
 public class FitTestingFormPdfService
 {
-    public void GeneratePdf(FitTestingForm fitTestingForm, string filePath)
-    {
-        QuestPDF.Settings.License = LicenseType.Community; // Set license for QuestPDF
+    // Reduced font sizes
+    private static readonly string DarkColor = Colors.Grey.Darken3;
+    private static readonly string AccentColor = Colors.Indigo.Darken4;
+    private static readonly float HeaderSize = 12;  // Reduced from 14
+    private static readonly float BodySize = 10;    // Reduced from 12
 
-        Document.Create(container =>
+    public byte[] GeneratePdf(FitTestingForm fitTestingForm)
+    {
+        QuestPDF.Settings.License = LicenseType.Community;
+
+        return Document.Create(container =>
         {
             container.Page(page =>
             {
                 page.Size(PageSizes.A4);
-                page.Margin(2, Unit.Centimetre);
-                page.PageColor(Colors.White);
-                page.DefaultTextStyle(x => x.FontSize(12));
+                page.Margin(15);  // Reduced from 25
 
-                // Header Section
-                page.Header()
-                    .AlignCenter()
-                    .Column(column =>
+                // Header Section with tighter spacing
+                page.Header().Column(header =>
+                {
+                    header.Spacing(5);  // Reduced from default
+                    header.Item().AlignCenter().Text("NATIONAL KIDNEY AND TRANSPLANT INSTITUTE")
+                        .FontSize(14)  // Reduced from 16
+                        .Bold()
+                        .FontColor(AccentColor);
+
+                    header.Item().AlignCenter().Text("East Avenue, Quezon City")
+                        .FontSize(9)  // Reduced from 10
+                        .Bold()
+                        .FontColor(DarkColor);
+
+                    header.Item().PaddingVertical(5)  // Reduced from 10
+                        .LineHorizontal(1).LineColor(Colors.Grey.Darken3);
+
+                    header.Item().AlignCenter().Text("INFECTION PREVENTION AND CONTROL UNIT")
+                        .FontSize(9)  // Reduced from 10
+                        .Bold()
+                        .FontColor(DarkColor);
+
+                    header.Item().AlignCenter().Text("QUALITATIVE RESPIRATOR FIT TESTING FORM")
+                        .FontSize(9)  // Reduced from 10
+                        .Bold()
+                        .FontColor(DarkColor);
+                });
+
+                page.Content().Column(content =>
+                {
+                    content.Spacing(8);  // Reduced from 15
+
+                    // Healthcare Worker Information
+                    content.Item().Border(1).BorderColor(Colors.Grey.Darken2).Column(col =>
                     {
-                        column.Spacing(5);
-                        column.Item().Text("NATIONAL KIDNEY AND TRANSPLANT INSTITUTE").Bold().FontSize(18);
-                        column.Item().Text("East Avenue, Quezon City").FontSize(8).AlignCenter();
-                        column.Item().Text("INFECTION PREVENTION AND CONTROL UNIT (IPCU)").FontSize(10).AlignCenter();
-                        column.Item().Text("QUALITATIVE RESPIRATOR FIT TESTING FORM").Bold().FontSize(14).AlignCenter();
-                    });
-
-                // Content Section
-                page.Content()
-                    .PaddingVertical(1, Unit.Centimetre)
-                    .Column(column =>
-                    {
-                        column.Spacing(10);
-
-                        // Healthcare Worker Information
-                        column.Item().Text("Healthcare Worker Information").Bold().FontSize(14);
-                        column.Item().Row(row =>
-                        {
-                            row.RelativeColumn().Text($"HCW Name: {fitTestingForm.HCW_Name}");
-                            row.RelativeColumn().AlignRight().Text($"Department/Unit/Office: {fitTestingForm.DUO}");
-                        });
-                        column.Item().Row(row =>
-                        {
-                            row.RelativeColumn().Text($"Limitations: {fitTestingForm.Limitation}");
-                        });
-
-
-                        // Fit Test Details
-                        column.Item().Text("Fit Test Details").Bold().FontSize(14);
-                        column.Item().Row(row =>
-                        {
-                            row.RelativeColumn().Text($"Fit Test Solution: {fitTestingForm.Fit_Test_Solution}");
-                            row.RelativeColumn().AlignRight().Text($"Sensitivity Test: {fitTestingForm.Sensitivity_Test}");
-
-                        });
-                        column.Item().Row(row =>
-                        {
-                            row.RelativeColumn().AlignLeft().Text($"Respirator Type: {fitTestingForm.Respiratory_Type}");
-                        });
-
-                        column.Item().Row(row =>
-                        {
-                            row.RelativeColumn().Text($"Model: {fitTestingForm.Model}");
-                            row.RelativeColumn().AlignRight().Text($"Size: {fitTestingForm.Size}");
-                        });
-
-                        // Fit Test Activities
-                        column.Item().Text("Fit Test Activities").Bold().FontSize(14);
-                        column.Item().Table(table =>
+                        col.Item().Padding(5).Table(table =>  // Reduced padding
                         {
                             table.ColumnsDefinition(columns =>
                             {
                                 columns.RelativeColumn();
-                                columns.ConstantColumn(50); // Pass column
-                                columns.ConstantColumn(50); // Fail column
+                                columns.RelativeColumn();
                             });
 
+                            AddTableRow(table, "HCW Name:", fitTestingForm.HCW_Name);
+                            AddTableRow(table, "Department/Unit/Office:", fitTestingForm.DUO);
+                            AddTableRow(table, "Limitations:", fitTestingForm.Limitation);
+                        });
+                    });
+
+                    // Fit Test Details
+                    content.Item().Border(1).BorderColor(Colors.Grey.Darken2).Column(col =>
+                    {
+                        col.Item().Padding(5).Table(table =>  // Reduced padding
+                        {
+                            table.ColumnsDefinition(columns =>
+                            {
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                            });
+
+                            AddTableRow(table, "Fit Test Solution:", fitTestingForm.Fit_Test_Solution);
+                            AddTableRow(table, "Sensitivity Test:", fitTestingForm.Sensitivity_Test);
+                            AddTableRow(table, "Respirator Type:", fitTestingForm.Respiratory_Type);
+                            AddTableRow(table, "Model/Size:", $"{fitTestingForm.Model} - {fitTestingForm.Size}");
+                        });
+                    });
+
+                    // Fit Test Activities
+                    content.Item().Border(1).BorderColor(Colors.Grey.Darken2).Column(col =>
+                    {
+                        col.Item().Padding(5).Background(Colors.Grey.Lighten3)  // Reduced padding
+                            .Text("FIT TEST ACTIVITIES")
+                            .FontSize(HeaderSize)
+                            .Bold()
+                            .FontColor(DarkColor);
+
+                        col.Item().Padding(5).Table(table =>  // Reduced padding
+                        {
+                            table.ColumnsDefinition(columns =>
+                            {
+                                columns.RelativeColumn(3);
+                                columns.ConstantColumn(40);  // Narrower columns
+                                columns.ConstantColumn(40);
+                            });
+
+                            // Header with tighter padding
                             table.Header(header =>
                             {
-                                header.Cell().Text("Activity").Bold();
-                                header.Cell().Text("Pass").Bold();
-                                header.Cell().Text("Fail").Bold();
+                                header.Cell().BorderBottom(1).PaddingVertical(3)  // Reduced padding
+                                    .Text("Activity").Bold().FontColor(AccentColor);
+                                header.Cell().BorderBottom(1).PaddingVertical(3)
+                                    .Text("Pass").Bold().FontColor(AccentColor);
+                                header.Cell().BorderBottom(1).PaddingVertical(3)
+                                    .Text("Fail").Bold().FontColor(AccentColor);
                             });
 
-                            table.Cell().Text("1. Normal Breathing");
-                            table.Cell().Text(fitTestingForm.Normal_Breathing ? "✔" : "");
-                            table.Cell().Text(!fitTestingForm.Normal_Breathing ? "✔" : "");
+                            // Modified rows with tighter spacing
+                            void AddCompactActivityRow(string activity, bool? result)
+                            {
+                                table.Cell().BorderBottom(1).PaddingVertical(3)  // Reduced padding
+                                    .Text(activity).FontSize(BodySize);
+                                table.Cell().BorderBottom(1).PaddingVertical(3)
+                                    .AlignCenter().Text(result == true ? "✔" : "").FontColor(Colors.Green.Darken3);
+                                table.Cell().BorderBottom(1).PaddingVertical(3)
+                                    .AlignCenter().Text(result == false ? "✘" : "").FontColor(Colors.Red.Darken3);
+                            }
 
-                            table.Cell().Text("2. Deep Breathing");
-                            table.Cell().Text(fitTestingForm.Deep_Breathing ? "✔" : "");
-                            table.Cell().Text(!fitTestingForm.Deep_Breathing ? "✔" : "");
+                            AddCompactActivityRow("1. Normal Breathing", fitTestingForm.Normal_Breathing);
+                            AddCompactActivityRow("2. Deep Breathing", fitTestingForm.Deep_Breathing);
+                            AddCompactActivityRow("3. Head Side", fitTestingForm.Turn_head_side_to_side);
+                            AddCompactActivityRow("4. Head Up/Down", fitTestingForm.Move_head_up_and_down);
+                            AddCompactActivityRow("5. Reading", fitTestingForm.Reading);
+                            AddCompactActivityRow("6. Bending/Jogging", fitTestingForm.Bending_Jogging);
+                            AddCompactActivityRow("7. Normal Repeat", fitTestingForm.Normal_Breathing_2);
 
-                            table.Cell().Text("3. Turn Head Side to Side");
-                            table.Cell().Text(fitTestingForm.Turn_head_side_to_side ? "✔" : "");
-                            table.Cell().Text(!fitTestingForm.Turn_head_side_to_side ? "✔" : "");
-
-                            table.Cell().Text("4. Move Head Up and Down");
-                            table.Cell().Text(fitTestingForm.Move_head_up_and_down ? "✔" : "");
-                            table.Cell().Text(!fitTestingForm.Move_head_up_and_down ? "✔" : "");
-
-                            table.Cell().Text("5. Reading");
-                            table.Cell().Text(fitTestingForm.Reading ? "✔" : "");
-                            table.Cell().Text(!fitTestingForm.Reading ? "✔" : "");
-
-                            table.Cell().Text("6. Bending/Jogging");
-                            table.Cell().Text(fitTestingForm.Bending_Jogging ? "✔" : "");
-                            table.Cell().Text(!fitTestingForm.Bending_Jogging ? "✔" : "");
-
-                            table.Cell().Text("7. Normal Breathing (Repeat)");
-                            table.Cell().Text(fitTestingForm.Normal_Breathing_2 ? "✔" : "");
-                            table.Cell().Text(!fitTestingForm.Normal_Breathing_2 ? "✔" : "");
+                            table.Cell().BorderBottom(1).PaddingVertical(3)  // Reduced padding
+                                .Text("TEST RESULT (Pass/Fail):").FontSize(BodySize).FontColor(DarkColor);
+                            table.Cell().ColumnSpan(2).BorderBottom(1).PaddingVertical(3)  // Span across Pass/Fail columns
+                                .Text(fitTestingForm.Test_Results).FontSize(BodySize).FontColor(
+                                    fitTestingForm.Test_Results == "Passed" ? Colors.Green.Darken3 : Colors.Red.Darken3);
                         });
-
-                        // Test Result
-                        //column.Item().Text($"Test Result: {fitTestingForm.Test_Result}").Bold().FontSize(14);
-                        column.Item().Text($"Test Result: {"SECRET LANG "}").Bold().FontSize(14);
-
-                        // Certification Section
-                        column.Item().Text("Certification").Bold().FontSize(14);
-                        column.Item().Row(row =>
-                        {
-                            row.RelativeColumn().Text($"Name of Fit Tester: {fitTestingForm.Name_of_Fit_Tester}");
-                            row.RelativeColumn().AlignRight().Text($"Date: {fitTestingForm.SubmittedAt}");
-                        });
-
-                        // Disclaimer
-                        // Disclaimer Section
-                        column.Item().Text("Disclaimer").Bold().FontSize(14).Underline();
-                        column.Item().Border(1).Padding(10).Background(Colors.Grey.Lighten3).Text(
-                            "These procedures are in accordance with accepted standards of fit testing. The above respirator fit test was performed on the HCW named, by the test administrator named. The results indicate the performance of the listed respiratory protective device under controlled conditions. Improper use, maintenance, or application of this or any other respiratory protective device will reduce or eliminate respiratory protection."
-                        ).FontSize(10).LineHeight(1);
                     });
 
-                // Footer Section
-                page.Footer()
-                    .AlignCenter()
-                    .Text(text =>
+                    // Certification Section
+                    content.Item().Border(1).BorderColor(Colors.Grey.Darken2).Column(col =>
                     {
-                        text.Span("Generated on: ");
-                        text.CurrentPageNumber();
+                        col.Item().Padding(5).Table(table =>  // Reduced padding
+                        {
+                            table.ColumnsDefinition(columns =>
+                            {
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                            });
+
+                            AddTableRow(table, "Fit Tester:", fitTestingForm.Name_of_Fit_Tester);
+                            AddTableRow(table, "Date:", fitTestingForm.SubmittedAt.ToString("MMM dd, yyyy"));
+                        });
                     });
+
+                    // Compact Disclaimer
+                    content.Item().Border(1).BorderColor(Colors.Grey.Darken2).Column(col =>
+                    {
+                        col.Item().Padding(5).Background(Colors.Grey.Lighten3)
+                            .Text("DISCLAIMER")
+                            .FontSize(HeaderSize)
+                            .Bold()
+                            .FontColor(DarkColor);
+
+                        col.Item().Padding(5).Text(text =>  // Reduced padding
+                        {
+                            text.Span("These procedures follow accepted fit testing standards. Results reflect device performance under controlled conditions. Proper use and maintenance are essential for effective protection.")
+                                .FontSize(BodySize - 1)  // Smaller than body text
+                                .FontColor(Colors.Grey.Darken2)
+                                .LineHeight(1);  // Tighter line spacing
+                        });
+                    });
+                });
+
+                // Compact Footer
+                page.Footer().AlignCenter().Text(t =>
+                {
+                    t.Span("Page ").FontSize(BodySize).FontColor(Colors.Grey.Medium);
+                    t.CurrentPageNumber().FontSize(BodySize).FontColor(AccentColor);
+                    t.Span(" of ").FontSize(BodySize).FontColor(Colors.Grey.Medium);
+                    t.TotalPages().FontSize(BodySize).FontColor(AccentColor);
+                });
             });
-        })
-        .GeneratePdf(filePath);
+        }).GeneratePdf();
+    }
+
+    private void AddTableRow(TableDescriptor table, string label, string value)
+    {
+        table.Cell().BorderBottom(1).PaddingVertical(3)  // Reduced padding
+            .Text(label).FontSize(BodySize).Bold().FontColor(DarkColor);
+        table.Cell().BorderBottom(1).PaddingVertical(3)
+            .Text(value).FontSize(BodySize).FontColor(Colors.Grey.Darken2);
     }
 }
