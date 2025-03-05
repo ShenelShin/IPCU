@@ -19,13 +19,13 @@ namespace IPCU.Controllers
             _context = context;
         }
 
-        // GET: FitTestingForms
+        // GET: FitTestingForm
         public async Task<IActionResult> Index()
         {
             return View(await _context.FitTestingForm.ToListAsync());
         }
 
-        // GET: FitTestingForms/Details/5
+        // GET: FitTestingForm/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,23 +43,21 @@ namespace IPCU.Controllers
             return View(fitTestingForm);
         }
 
-        // GET: FitTestingForms/Create
+        // GET: FitTestingForm/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: FitTestingForms/Create
+        // POST: FitTestingForm/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,HCW_Name,DUO,Limitation,Fit_Test_Solution,Sensitivity_Test,Respiratory_Type,Model,Size,Normal_Breathing,Deep_Breathing,Turn_head_side_to_side,Move_head_up_and_down,Reading,Bending_Jogging,Normal_Breathing_2,Name_of_Fit_Tester,DUO_Tester,SubmittedAt")] FitTestingForm fitTestingForm)
+        public async Task<IActionResult> Create([Bind("Id,HCW_Name,DUO,Limitation,Fit_Test_Solution,Sensitivity_Test,Respiratory_Type,Model,Size,Normal_Breathing,Deep_Breathing,Turn_head_side_to_side,Move_head_up_and_down,Reading,Bending_Jogging,Normal_Breathing_2,Test_Results,Name_of_Fit_Tester,DUO_Tester,SubmittedAt")] FitTestingForm fitTestingForm)
         {
             if (ModelState.IsValid)
             {
-                fitTestingForm.SubmittedAt = DateTime.Now;
-
                 _context.Add(fitTestingForm);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -67,7 +65,7 @@ namespace IPCU.Controllers
             return View(fitTestingForm);
         }
 
-        // GET: FitTestingForms/Edit/5
+        // GET: FitTestingForm/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -83,12 +81,12 @@ namespace IPCU.Controllers
             return View(fitTestingForm);
         }
 
-        // POST: FitTestingForms/Edit/5
+        // POST: FitTestingForm/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,HCW_Name,DUO,Limitation,Fit_Test_Solution,Sensitivity_Test,Respiratory_Type,Model,Size,Normal_Breathing,Deep_Breathing,Turn_head_side_to_side,Move_head_up_and_down,Reading,Bending_Jogging,Normal_Breathing_2,Name_of_Fit_Tester,DUO_Tester,SubmittedAt")] FitTestingForm fitTestingForm)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,HCW_Name,DUO,Limitation,Fit_Test_Solution,Sensitivity_Test,Respiratory_Type,Model,Size,Normal_Breathing,Deep_Breathing,Turn_head_side_to_side,Move_head_up_and_down,Reading,Bending_Jogging,Normal_Breathing_2,Test_Results,Name_of_Fit_Tester,DUO_Tester,SubmittedAt")] FitTestingForm fitTestingForm)
         {
             if (id != fitTestingForm.Id)
             {
@@ -118,7 +116,7 @@ namespace IPCU.Controllers
             return View(fitTestingForm);
         }
 
-        // GET: FitTestingForms/Delete/5
+        // GET: FitTestingForm/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,7 +134,7 @@ namespace IPCU.Controllers
             return View(fitTestingForm);
         }
 
-        // POST: FitTestingForms/Delete/5
+        // POST: FitTestingForm/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -165,7 +163,5 @@ namespace IPCU.Controllers
             var pdfBytes = pdfService.GeneratePdf(form);
             return File(pdfBytes, "application/pdf", $"{form.HCW_Name}_FitTest.pdf");
         }
-
-
     }
 }

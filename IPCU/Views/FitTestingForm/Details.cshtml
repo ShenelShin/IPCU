@@ -1,4 +1,7 @@
-﻿@model IPCU.Models.FitTestingForm
+﻿//details
+
+
+@model IPCU.Models.FitTestingForm
 
 @{
     ViewData["Title"] = "Fit Testing Details";
@@ -23,8 +26,10 @@
                     <table class="table table-bordered">
                         <tbody>
                             <tr>
-                                <th><i class="fa fa-user"></i>  
-Name of Healthcare Worker (HCW): </th>
+                                <th>
+                                    <i class="fa fa-user"></i>
+                                    Name of Healthcare Worker (HCW):
+                                </th>
                                 <td>@Html.DisplayFor(model => model.HCW_Name)</td>
                             </tr>
                             <tr>
@@ -104,6 +109,10 @@ Name of Healthcare Worker (HCW): </th>
                             <tr>
                                 <td> Normal Breathing </td>
                                 <td>@Html.DisplayFor(model => model.Normal_Breathing_2)</td>
+                            </tr>
+                            <tr>
+                                <td> Test Results </td>
+                                <td>@Html.DisplayFor(model => model.Test_Results)</td>
                             </tr>
                         </tbody>
                     </table>

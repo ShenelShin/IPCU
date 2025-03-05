@@ -67,6 +67,36 @@ namespace IPCU.Models
         [Required]
         public bool Normal_Breathing_2 { get; set; }
 
+        // Backing field for Test_Results
+        private string _testResults;
+
+        // Test Results (stored in the database)
+        public string Test_Results
+        {
+            get
+            {
+                // Compute the value dynamically
+                var booleanFields = new[]
+                {
+                    Normal_Breathing,
+                    Deep_Breathing,
+                    Turn_head_side_to_side,
+                    Move_head_up_and_down,
+                    Reading,
+                    Bending_Jogging,
+                    Normal_Breathing_2
+                };
+
+                return booleanFields.All(b => b) ? "Passed" : "Failed";
+            }
+            set
+            {
+                // Allow EF to set the value when loading from the database
+                _testResults = value;
+            }
+        }
+
+
         // Name of Fit Tester 
         [Required]
         public string Name_of_Fit_Tester { get; set; }

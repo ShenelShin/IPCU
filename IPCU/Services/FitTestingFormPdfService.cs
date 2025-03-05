@@ -135,7 +135,12 @@ public class FitTestingFormPdfService
                             AddCompactActivityRow("5. Reading", fitTestingForm.Reading);
                             AddCompactActivityRow("6. Bending/Jogging", fitTestingForm.Bending_Jogging);
                             AddCompactActivityRow("7. Normal Repeat", fitTestingForm.Normal_Breathing_2);
-                            AddCompactActivityRow("TEST RESULT (Pass/Fail): ", fitTestingForm.Normal_Breathing_2);
+
+                            table.Cell().BorderBottom(1).PaddingVertical(3)  // Reduced padding
+                                .Text("TEST RESULT (Pass/Fail):").FontSize(BodySize).FontColor(DarkColor);
+                            table.Cell().ColumnSpan(2).BorderBottom(1).PaddingVertical(3)  // Span across Pass/Fail columns
+                                .Text(fitTestingForm.Test_Results).FontSize(BodySize).FontColor(
+                                    fitTestingForm.Test_Results == "Passed" ? Colors.Green.Darken3 : Colors.Red.Darken3);
                         });
                     });
 
