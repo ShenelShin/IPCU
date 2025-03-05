@@ -25,9 +25,9 @@ public class FitTestingFormPdfService
                     {
                         column.Spacing(5);
                         column.Item().Text("NATIONAL KIDNEY AND TRANSPLANT INSTITUTE").Bold().FontSize(18);
-                        column.Item().Text("East Avenue, Quezon City").FontSize(14);
-                        column.Item().Text("INFECTION PREVENTION AND CONTROL UNIT (IPCU)").FontSize(14);
-                        column.Item().Text("QUALITATIVE RESPIRATOR FIT TESTING FORM").Bold().FontSize(16).AlignCenter();
+                        column.Item().Text("East Avenue, Quezon City").FontSize(8).AlignCenter();
+                        column.Item().Text("INFECTION PREVENTION AND CONTROL UNIT (IPCU)").FontSize(10).AlignCenter();
+                        column.Item().Text("QUALITATIVE RESPIRATOR FIT TESTING FORM").Bold().FontSize(14).AlignCenter();
                     });
 
                 // Content Section
@@ -44,19 +44,23 @@ public class FitTestingFormPdfService
                             row.RelativeColumn().Text($"HCW Name: {fitTestingForm.HCW_Name}");
                             row.RelativeColumn().AlignRight().Text($"Department/Unit/Office: {fitTestingForm.DUO}");
                         });
-
                         column.Item().Row(row =>
                         {
                             row.RelativeColumn().Text($"Limitations: {fitTestingForm.Limitation}");
-                            row.RelativeColumn().AlignRight().Text($"Fit Test Solution: {fitTestingForm.Fit_Test_Solution}");
                         });
+
 
                         // Fit Test Details
                         column.Item().Text("Fit Test Details").Bold().FontSize(14);
                         column.Item().Row(row =>
                         {
-                            row.RelativeColumn().Text($"Sensitivity Test: {fitTestingForm.Sensitivity_Test}");
-                            row.RelativeColumn().AlignRight().Text($"Respirator Type: {fitTestingForm.Respiratory_Type}");
+                            row.RelativeColumn().Text($"Fit Test Solution: {fitTestingForm.Fit_Test_Solution}");
+                            row.RelativeColumn().AlignRight().Text($"Sensitivity Test: {fitTestingForm.Sensitivity_Test}");
+
+                        });
+                        column.Item().Row(row =>
+                        {
+                            row.RelativeColumn().AlignLeft().Text($"Respirator Type: {fitTestingForm.Respiratory_Type}");
                         });
 
                         column.Item().Row(row =>
@@ -125,8 +129,11 @@ public class FitTestingFormPdfService
                         });
 
                         // Disclaimer
-                        column.Item().Text("Disclaimer").Bold().FontSize(14);
-                        column.Item().Text("These procedures are in accordance with accepted standards of fit testing. The above respirator fit test was performed on the HCW named, by the test administrator named. The results indicate the performance of the listed respiratory protective device under controlled conditions. Improper use, maintenance, or application of this or any other respiratory protective device will reduce or eliminate respiratory protection.");
+                        // Disclaimer Section
+                        column.Item().Text("Disclaimer").Bold().FontSize(14).Underline();
+                        column.Item().Border(1).Padding(10).Background(Colors.Grey.Lighten3).Text(
+                            "These procedures are in accordance with accepted standards of fit testing. The above respirator fit test was performed on the HCW named, by the test administrator named. The results indicate the performance of the listed respiratory protective device under controlled conditions. Improper use, maintenance, or application of this or any other respiratory protective device will reduce or eliminate respiratory protection."
+                        ).FontSize(10).LineHeight(1);
                     });
 
                 // Footer Section
