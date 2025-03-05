@@ -1,4 +1,5 @@
-﻿@model IPCU.Models.FitTestingForm
+﻿
+@model IPCU.Models.FitTestingForm
 
 @{
     ViewData["Title"] = "Create Fit Testing Record";
@@ -118,6 +119,12 @@
                                 <div class="form-check">
                                     <input class="form-check-input" asp-for="Bending_Jogging" />
                                     <label class="form-check-label">@Html.DisplayNameFor(model => model.Bending_Jogging)</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Normal_Breathing_2" />
+                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Normal_Breathing_2)</label>
                                 </div>
                             </div>
                         </div>
