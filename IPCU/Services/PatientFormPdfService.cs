@@ -3,7 +3,6 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using IPCU.Models;
 using System;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace IPCU.Services
 {
@@ -26,31 +25,12 @@ namespace IPCU.Services
                     // Header Section
                     page.Header().Column(header =>
                     {
-                        header.Item().AlignCenter().Text("NATIONAL KIDNEY AND TRANSPLANT INSTITUTE")
+                        header.Item().AlignCenter().Text("St. Michael's General Hospital")
                             .FontColor(AccentColor)
                             .Bold()
                             .FontSize(16);
 
-                        header.Item().AlignCenter().Text(" EastAvenue,QuezonCity")
-                            .FontColor(DarkColor)
-                        .FontSize(10)
-                            .Bold();
-
-                        header.Item()
-                            .PaddingVertical(10)
-                            .LineHorizontal(2);
-
-                        header.Item().AlignCenter().Text(" INFECTION PREVENTION AND CONTROL UNIT")
-                            .FontColor(DarkColor)
-                            .FontSize(10)
-                            .Bold();
-
-                        header.Item().AlignCenter().Text(" HANDHY GIENE(HH) DETAILED")
-                            .FontColor(DarkColor)
-                            .FontSize(10)
-                            .Bold();
-
-                        header.Item().AlignCenter().Text(" OBSERVATION AND MONITORING FORM")
+                        header.Item().AlignCenter().Text("123 Healthcare Avenue, Metro City | Tel: (02) 1234-5678")
                             .FontColor(DarkColor)
                             .FontSize(10)
                             .Bold();
@@ -81,7 +61,7 @@ namespace IPCU.Services
                                 AddTableRow(table, "Full Name:", $"{patient.LastName}, {patient.FirstName} {patient.MiddleName} {patient.Suffix}");
                                 AddTableRow(table, "Date of Birth:", $"{patient.Age} years old");
                                 AddTableRow(table, "Sex:", patient.Sex);
-                                AddTableRow(table, "Patient ID:", patient.Id.ToString());
+                                AddTableRow(table, "Patient ID:", patient.Id.ToString() ?? "N/A");
                             });
                         });
 
