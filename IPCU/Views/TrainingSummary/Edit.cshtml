@@ -60,6 +60,13 @@
                             <input asp-for="PostTestEvaluationGrade" class="form-control" />
                             <span asp-validation-for="PostTestEvaluationGrade" class="text-danger"></span>
                         </div>
+                      
+                        <div class="form-group">
+                            <label asp-for="FinalRating" class="control-label"></label>
+                            <input asp-for="FinalRating" class="form-control" type="number" step="0.01" required />
+                            <span asp-validation-for="FinalRating" class="text-danger"></span>
+                        </div>
+
                     </div>
                 </div>
                 <hr >

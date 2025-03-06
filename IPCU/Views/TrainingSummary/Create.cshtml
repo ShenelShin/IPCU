@@ -95,6 +95,16 @@
                         </div>
                     </div>
                  </div>
+
+                <!-- Final Rating Field -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="FinalRating" class="control-label">Final Rating</label>
+                        <input asp-for="FinalRating" type="number" step="0.01" class="form-control" placeholder="Enter final rating" required />
+                        <span asp-validation-for="FinalRating" class="text-danger"></span>
+                    </div>
+                </div>
+       
                 <h4 class="text-secondary mt-4">Program Facilitation</h4>
                 <hr />
                 <div class="row">

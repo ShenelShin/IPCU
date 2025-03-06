@@ -32,6 +32,8 @@ namespace IPCU.Models
         [Required]
         public double PostTestEvaluationGrade { get; set; }
 
+        [Required]
+        public double FinalRating { get; set; }
         // Program Facilitation Rating
         public int FlowFollowed { get; set; }
         public int RulesEstablished { get; set; }
