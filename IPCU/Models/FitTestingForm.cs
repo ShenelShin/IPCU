@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPCU.Models
 {
@@ -17,8 +18,14 @@ namespace IPCU.Models
         public string DUO { get; set; }
 
         // Limitations
-        public string Limitation { get; set; }
+        [NotMapped]
+        public List<string> Limitation { get; set; } = new List<string>();
 
+        public string LimitationString
+        {
+            get => string.Join(",", Limitation);
+            set => Limitation = value?.Split(',').ToList() ?? new List<string>();
+        }
         // Fit Test Solution used
         [Required]
         public string Fit_Test_Solution { get; set; }

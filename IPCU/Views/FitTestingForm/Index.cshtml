@@ -21,7 +21,7 @@
             <tr>
                 <th>Name of Healthcare Worker (HCW):</th>
                 <th>DUO</th>
-                <th>Limitation</th>
+                @*<th>Limitation</th>*@
                 <th>Test_Results</th>
                 <th>Date</th>
                 <th>Actions</th>
@@ -33,9 +33,11 @@
                 <tr>
                     <td>@Html.DisplayFor(modelItem => item.HCW_Name)</td>
                     <td>@Html.DisplayFor(modelItem => item.DUO)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Limitation)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Test_Results)</td>
-                    <td>@Html.DisplayFor(modelItem => item.SubmittedAt)</td>
+                    @*<td>@Html.DisplayFor(modelItem => item.Limitation)</td>*@
+                    <td style="color: @(item.Test_Results == "Failed" ? "red" : item.Test_Results == "Passed" ? "green" : "black")">
+                        @item.Test_Results
+                    </td>
+                    <td>@item.SubmittedAt.ToString("MMMM dd, yyyy")</td> <!-- Example: March 06, 2025 -->
                     <td>
                         <div class="btn-group">
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">

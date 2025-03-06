@@ -54,10 +54,17 @@ namespace IPCU.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,HCW_Name,DUO,Limitation,Fit_Test_Solution,Sensitivity_Test,Respiratory_Type,Model,Size,Normal_Breathing,Deep_Breathing,Turn_head_side_to_side,Move_head_up_and_down,Reading,Bending_Jogging,Normal_Breathing_2,Test_Results,Name_of_Fit_Tester,DUO_Tester,SubmittedAt")] FitTestingForm fitTestingForm)
+        public async Task<IActionResult> Create(FitTestingForm fitTestingForm, string OtherLimitation)
         {
             if (ModelState.IsValid)
             {
+                // If "Other" is checked and has a value, add it to Limitation list
+                if (!string.IsNullOrWhiteSpace(OtherLimitation) && fitTestingForm.Limitation.Contains("Other"))
+                {
+                    fitTestingForm.Limitation.Remove("Other"); // Remove "Other" text
+                    fitTestingForm.Limitation.Add(OtherLimitation); // Add the custom input
+                }
+
                 _context.Add(fitTestingForm);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

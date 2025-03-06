@@ -36,7 +36,7 @@
                             </tr>
                             <tr>
                                 <th><i class="fa fa-exclamation-circle"></i> Limitations </th>
-                                <td>@Html.DisplayFor(model => model.Limitation)</td>
+                                <td>@string.Join(", ", Model.Limitation)</td>
                             </tr>
                             <tr>
                                 <th><i class="fa fa-flask"></i> @Html.DisplayNameFor(model => model.Fit_Test_Solution)</th>
@@ -73,7 +73,7 @@
                             </tr>
                             <tr>
                                 <td><i class="fa fa-calendar"></i> Date Submited </td>
-                                <td>@Html.DisplayFor(model => model.SubmittedAt)</td>
+                                <td>@Model.SubmittedAt.ToString("MMMM dd, yyyy")</td>
                             </tr>
 
                             <!-- Breathing & Movement Tests (Now After Fit Tester Info) -->
@@ -110,7 +110,9 @@
                             </tr>
                             <tr>
                                 <td> Test Results </td>
-                                <td>@Html.DisplayFor(model => model.Test_Results)</td>
+                                <td style="color: @(Model.Test_Results == "Failed" ? "red" : Model.Test_Results == "Passed" ? "green" : "black")">
+                                    @Model.Test_Results
+                                </td>
                             </tr>
                         </tbody>
                     </table>
