@@ -163,5 +163,33 @@ namespace IPCU.Controllers
             var pdfBytes = pdfService.GeneratePdf(form);
             return File(pdfBytes, "application/pdf", $"{form.HCW_Name}_FitTest.pdf");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SubmitFitTest(int id, FitTestingForm updatedForm)
+        {
+            var fitTest = _context.FitTestingForm.FirstOrDefault(f => f.Id == id);
+            if (fitTest != null)
+            {
+                // Update the breathing and movement test fields
+                fitTest.Normal_Breathing = updatedForm.Normal_Breathing;
+                fitTest.Deep_Breathing = updatedForm.Deep_Breathing;
+                fitTest.Turn_head_side_to_side = updatedForm.Turn_head_side_to_side;
+                fitTest.Move_head_up_and_down = updatedForm.Move_head_up_and_down;
+                fitTest.Reading = updatedForm.Reading;
+                fitTest.Bending_Jogging = updatedForm.Bending_Jogging;
+                fitTest.Normal_Breathing_2 = updatedForm.Normal_Breathing_2;
+
+                // Increment the submission count
+                fitTest.SubmissionCount++;
+
+                // Save changes to the database
+                _context.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

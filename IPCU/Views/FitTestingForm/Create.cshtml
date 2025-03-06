@@ -1,5 +1,4 @@
-﻿
-@model IPCU.Models.FitTestingForm
+﻿@model IPCU.Models.FitTestingForm
 
 @{
     ViewData["Title"] = "Create Fit Testing Record";
@@ -38,25 +37,38 @@
                             </div>
                         </div>
 
+                        <!-- Limitation as Dropdown -->
                         <div class="mb-3">
                             <label asp-for="Limitation" class="form-label fw-bold"></label>
-                            <input asp-for="Limitation" class="form-control" placeholder="Enter Limitations" />
+                            <select asp-for="Limitation" class="form-select">
+                                <option value="">Select Limitation</option>
+                                <option value="Medical Condition">Medical Condition</option>
+                                <option value="Equipment Issue">Equipment Issue</option>
+                                <option value="Other">Other</option>
+                            </select>
                             <span asp-validation-for="Limitation" class="text-danger"></span>
                         </div>
 
                         <div class="row">
+                            <!-- Fit Test Solution as Dropdown -->
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label asp-for="Fit_Test_Solution" class="form-label fw-bold"></label>
-                                    <input asp-for="Fit_Test_Solution" class="form-control" placeholder="Enter Fit Test Solution" />
+                                    <select asp-for="Fit_Test_Solution" class="form-select">
+                                        <option value="">Select Solution</option>
+                                        <option value="Saccharin">Saccharin</option>
+                                        <option value="Bitrex">Bitrex</option>
+                                        <option value="Isoamyl Acetate">Isoamyl Acetate</option>
+                                    </select>
                                     <span asp-validation-for="Fit_Test_Solution" class="text-danger"></span>
                                 </div>
                             </div>
 
+                            <!-- Sensitivity Test with Range -->
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label asp-for="Sensitivity_Test" class="form-label fw-bold"></label>
-                                    <input asp-for="Sensitivity_Test" class="form-control" placeholder="Enter Sensitivity Test" />
+                                    <input asp-for="Sensitivity_Test" class="form-control" type="number" min="1" max="30" placeholder="Enter Sensitivity Test (1-30)" />
                                     <span asp-validation-for="Sensitivity_Test" class="text-danger"></span>
                                 </div>
                             </div>

@@ -108,5 +108,9 @@ namespace IPCU.Models
         // Timestamp for when the form is submitted
         [Required]
         public DateTime SubmittedAt { get; set; } = DateTime.Now; // Automatically sets the current timestamp
+        public int SubmissionCount { get; set; } = 0;
+        public int MaxRetakes { get; set; } = 2;
+
+
     }
 }

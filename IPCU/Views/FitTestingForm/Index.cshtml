@@ -4,7 +4,7 @@
     ViewData["Title"] = "Fit Testing Records";
 }
 
-<!-- Bootstrap & Font Awesome for Icons -->
+<!-- Bootstrap & Font Awesome -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
@@ -16,28 +16,13 @@
 </div>
 
 <div class="table-responsive">
-    <table class="table table-bordered table-striped table-hover align-middle" id="fitTestingTable">
+    <table class="table table-bordered table-striped table-hover align-middle">
         <thead class="table-dark text-center">
             <tr>
-                <th>Name of Healthcare Worker (HCW): </th>
-                <th>@Html.DisplayNameFor(model => model.DUO)</th>
-                <th>@Html.DisplayNameFor(model => model.Limitation)</th>
-                <th>@Html.DisplayNameFor(model => model.Test_Results)</th>
-
-                @* <th>@Html.DisplayNameFor(model => model.Fit_Test_Solution)</th>
-                <th>@Html.DisplayNameFor(model => model.Sensitivity_Test)</th>
-                <th>@Html.DisplayNameFor(model => model.Respiratory_Type)</th>
-                <th>@Html.DisplayNameFor(model => model.Model)</th>
-                <th>@Html.DisplayNameFor(model => model.Size)</th>
-                <th>@Html.DisplayNameFor(model => model.Normal_Breathing)</th>
-                <th>@Html.DisplayNameFor(model => model.Deep_Breathing)</th>
-                <th>@Html.DisplayNameFor(model => model.Turn_head_side_to_side)</th>
-                <th>@Html.DisplayNameFor(model => model.Move_head_up_and_down)</th>
-                <th>@Html.DisplayNameFor(model => model.Reading)</th>
-                <th>@Html.DisplayNameFor(model => model.Bending_Jogging)</th>
-                <th>@Html.DisplayNameFor(model => model.Normal_Breathing_2)</th>
-                <th>Name of fit tester</th>
-                <th>Department/Unit/Office</th>*@
+                <th>Name of Healthcare Worker (HCW):</th>
+                <th>DUO</th>
+                <th>Limitation</th>
+                <th>Test_Results</th>
                 <th>Date</th>
                 <th>Actions</th>
             </tr>
@@ -50,51 +35,104 @@
                     <td>@Html.DisplayFor(modelItem => item.DUO)</td>
                     <td>@Html.DisplayFor(modelItem => item.Limitation)</td>
                     <td>@Html.DisplayFor(modelItem => item.Test_Results)</td>
-
-                    @**  <td>@Html.DisplayFor(modelItem => item.Fit_Test_Solution)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Sensitivity_Test)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Respiratory_Type)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Model)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Size)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Normal_Breathing)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Deep_Breathing)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Turn_head_side_to_side)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Move_head_up_and_down)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Reading)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Bending_Jogging)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Normal_Breathing_2)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Name_of_Fit_Tester)</td>
-                    <td>@Html.DisplayFor(modelItem => item.DUO_Tester)</td>*@
                     <td>@Html.DisplayFor(modelItem => item.SubmittedAt)</td>
                     <td>
-                        <div class="btn-group" role="group">
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Edit Record">
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">
                                 <i class="fa fa-edit"></i>
                             </a>
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="View Details">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
                                 <i class="fa fa-eye"></i>
                             </a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Delete">
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
                                 <i class="fa fa-trash"></i>
                             </a>
                             <a asp-action="PrintPdf" asp-route-id="@item.Id" target="_blank" class="btn btn-secondary btn-sm" data-bs-toggle="tooltip" title="Preview PDF">
                                 <i class="fa fa-print"></i>
                             </a>
+
+                            @if (item.Test_Results != "Passed")
+                            {
+                                if (item.SubmissionCount < item.MaxRetakes)
+                                {
+                                    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#submissionModal-@item.Id">
+                                        <i class="fa fa-plus"></i> Retake Test
+                                    </button>
+                                    <small class="text-muted d-block">
+                                        @((item.MaxRetakes - item.SubmissionCount) + " retakes remaining")
+                                    </small>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">No retakes remaining</span>
+                                }
+                            }
                         </div>
                     </td>
                 </tr>
+
+                <!-- Modal -->
+                <div class="modal fade" id="submissionModal-@item.Id" tabindex="-1" aria-labelledby="submissionModalLabel-@item.Id" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="submissionModalLabel-@item.Id">Submit Fit Test</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form asp-action="SubmitFitTest" method="post">
+                                    <input type="hidden" name="Id" value="@item.Id" />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="Normal_Breathing" value="true" @(item.Normal_Breathing ? "checked" : "") />
+                                                <label class="form-check-label">Normal Breathing</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="Deep_Breathing" value="true" @(item.Deep_Breathing ? "checked" : "") />
+                                                <label class="form-check-label">Deep Breathing</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="Turn_head_side_to_side" value="true" @(item.Turn_head_side_to_side ? "checked" : "") />
+                                                <label class="form-check-label">Turn Head Side to Side</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="Move_head_up_and_down" value="true" @(item.Move_head_up_and_down ? "checked" : "") />
+                                                <label class="form-check-label">Move Head Up and Down</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="Reading" value="true" @(item.Reading ? "checked" : "") />
+                                                <label class="form-check-label">Reading</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="Bending_Jogging" value="true" @(item.Bending_Jogging ? "checked" : "") />
+                                                <label class="form-check-label">Bending/Jogging</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="Normal_Breathing_2" value="true" @(item.Normal_Breathing_2 ? "checked" : "") />
+                                                <label class="form-check-label">Normal Breathing (2)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             }
         </tbody>
     </table>
 </div>
 
-<!-- JavaScript for Search Functionality -->
-<script>
-    document.getElementById("searchBox").addEventListener("keyup", function() {
-        let filter = this.value.toLowerCase();
-        let rows = document.querySelectorAll("#fitTestingTable tbody tr");
-        rows.forEach(row => {
-            row.style.display = row.textContent.toLowerCase().includes(filter) ? "" : "none";
-        });
-    });
-</script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
