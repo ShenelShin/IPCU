@@ -1,108 +1,245 @@
 ﻿@model IPCU.Models.HandHygieneForm
-
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Hand Hygiene Form Details";
 }
 
-<h1>Details</h1>
+<h1>Hand Hygiene Form Details</h1>
 
-<div>
-    <h4>HandHygieneForm</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Area)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Area)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Observer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Observer)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Time)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Time)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HCWType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HCWType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RoomType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RoomType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Isolation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Isolation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsolationPrecaution)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsolationPrecaution)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ObsvPatientCare)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ObsvPatientCare)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ObsvPatientEnvironment)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ObsvPatientEnvironment)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ObsvPatientContact)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ObsvPatientContact)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalCompliantActions)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalCompliantActions)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalObservedOpportunities)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalObservedOpportunities)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ComplianceRate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ComplianceRate)
-        </dd>
-    </dl>
+<div class="card mb-4">
+    <div class="card-header">
+        <h4>Form Information</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Area)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Area)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Observer)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Observer)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Date)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Date)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Time)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Time)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.HCWType)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.HCWType)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.RoomType)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.RoomType)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Isolation)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Isolation)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IsolationPrecaution)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.IsolationPrecaution)</dd>
+        </dl>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.HHId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h4>Observation Details</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ObsvPatientCare)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.ObsvPatientCare)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ObsvPatientEnvironment)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.ObsvPatientEnvironment)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ObsvPatientContact)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.ObsvPatientContact)</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h4>Compliance Summary</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.TotalCompliantActions)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.TotalCompliantActions)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.TotalObservedOpportunities)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.TotalObservedOpportunities)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ComplianceRate)</dt>
+            <dd class="col-sm-9">
+                @{
+                    var complianceRate = Model.ComplianceRate;
+                }
+                @if (complianceRate != 0)  // Check if rate has been calculated
+                {
+                    <span class="@(complianceRate >= 85m ? "text-success" : complianceRate >= 70m ? "text-warning" : "text-danger")">
+                        @complianceRate.ToString("0.0")%
+                    </span>
+                }
+                else
+                {
+                    <span>Not calculated</span>
+                }
+            </dd>
+        </dl>
+    </div>
+</div>
+@if (Model.Activities != null && Model.Activities.Any())
+{
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>Observed Activities</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Activity</th>
+                            <th class="text-center">Before Hand Rub</th>
+                            <th class="text-center">Before Hand Wash</th>
+                            <th class="text-center">After Hand Rub</th>
+                            <th class="text-center">After Hand Wash</th>
+                            <th class="text-center">Gloves</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var activity in Model.Activities)
+                        {
+                            <tr>
+                                <td>@activity.Activity</td>
+                                <td class="text-center">
+                                    @{
+                                        int beforeRubScore;
+                                        bool isNumeric = int.TryParse(activity.BeforeHandRub, out beforeRubScore);
+                                    }
+                                    @if (isNumeric)
+                                    {
+                                        <span class="@(beforeRubScore >= 4 ? "text-success" : beforeRubScore >= 3 ? "text-warning" : "text-danger")">
+                                            @beforeRubScore
+                                        </span>
+                                    }
+                                    else if (activity.BeforeHandRub == "Y")
+                                    {
+                                        <span class="text-success">✓</span>
+                                    }
+                                    else if (activity.BeforeHandRub == "N")
+                                    {
+                                        <span class="text-danger">✗</span>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @{
+                                        int beforeWashScore;
+                                        isNumeric = int.TryParse(activity.BeforeHandWash, out beforeWashScore);
+                                    }
+                                    @if (isNumeric)
+                                    {
+                                        <span class="@(beforeWashScore >= 4 ? "text-success" : beforeWashScore >= 3 ? "text-warning" : "text-danger")">
+                                            @beforeWashScore
+                                        </span>
+                                    }
+                                    else if (activity.BeforeHandWash == "Y")
+                                    {
+                                        <span class="text-success">✓</span>
+                                    }
+                                    else if (activity.BeforeHandWash == "N")
+                                    {
+                                        <span class="text-danger">✗</span>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @{
+                                        int afterRubScore;
+                                        isNumeric = int.TryParse(activity.AfterHandRub, out afterRubScore);
+                                    }
+                                    @if (isNumeric)
+                                    {
+                                        <span class="@(afterRubScore >= 4 ? "text-success" : afterRubScore >= 3 ? "text-warning" : "text-danger")">
+                                            @afterRubScore
+                                        </span>
+                                    }
+                                    else if (activity.AfterHandRub == "Y")
+                                    {
+                                        <span class="text-success">✓</span>
+                                    }
+                                    else if (activity.AfterHandRub == "N")
+                                    {
+                                        <span class="text-danger">✗</span>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @{
+                                        int afterWashScore;
+                                        isNumeric = int.TryParse(activity.AfterHandWash, out afterWashScore);
+                                    }
+                                    @if (isNumeric)
+                                    {
+                                        <span class="@(afterWashScore >= 4 ? "text-success" : afterWashScore >= 3 ? "text-warning" : "text-danger")">
+                                            @afterWashScore
+                                        </span>
+                                    }
+                                    else if (activity.AfterHandWash == "Y")
+                                    {
+                                        <span class="text-success">✓</span>
+                                    }
+                                    else if (activity.AfterHandWash == "N")
+                                    {
+                                        <span class="text-danger">✗</span>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    @if (activity.Gloves == "True")
+                                    {
+                                        <span class="text-success">✓</span>
+                                    }
+                                    else
+                                    {
+                                        <span>-</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle"></i> No activities have been recorded for this form.
+    </div>
+}
+
+<div class="mt-3">
+    <a asp-action="Edit" asp-route-id="@Model?.HHId" class="btn btn-primary">
+        <i class="fas fa-edit"></i> Edit
+    </a>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to List
+    </a>
 </div>
