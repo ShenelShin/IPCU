@@ -1,0 +1,103 @@
+﻿@model IPCU.Models.HHActivity
+
+@{
+    ViewData["Title"] = "Add Hand Hygiene Activities";
+}
+
+<h2>Add Activities</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="AddActivities" asp-controller="HandHygieneForms" method="post">
+            <input type="hidden" name="HHId" value="@ViewBag.HHId" />
+
+            <div class="form-group mb-3">
+                <label for="Activity" class="form-label">Activity</label>
+                <input type="text" id="Activity" name="Activity" class="form-control" required />
+                @if (ViewData.ModelState["Activity"]?.Errors.Count > 0)
+                {
+                    <span class="text-danger">@ViewData.ModelState["Activity"].Errors.First().ErrorMessage</span>
+                }
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="BeforeHandRub" class="form-label">Before Hand Rub</label>
+                <input type="text" id="BeforeHandRub" name="BeforeHandRub" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="BeforeHandWash" class="form-label">Before Hand Wash</label>
+                <input type="text" id="BeforeHandWash" name="BeforeHandWash" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="AfterHandRub" class="form-label">After Hand Rub</label>
+                <input type="text" id="AfterHandRub" name="AfterHandRub" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="AfterHandWash" class="form-label">After Hand Wash</label>
+                <input type="text" id="AfterHandWash" name="AfterHandWash" class="form-control" />
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="Gloves" name="Gloves" value="True" />
+                <label class="form-check-label" for="Gloves">Gloves Used?</label>
+            </div>
+
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">Add Activity</button>
+                <a asp-action="FinishActivities" asp-route-id="@ViewBag.HHId" class="btn btn-success">Finish</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-md-6">
+        @if (ViewBag.Activities != null && ((List<HHActivity>)ViewBag.Activities).Any())
+        {
+            <h4>Activities Added</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Activity</th>
+                        <th>Before Hand Rub</th>
+                        <th>Before Hand Wash</th>
+                        <th>After Hand Rub</th>
+                        <th>After Hand Wash</th>
+                        <th>Gloves</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in (List<HHActivity>)ViewBag.Activities)
+                    {
+                        <tr>
+                            <td>@item.Activity</td>
+                            <td>@item.BeforeHandRub</td>
+                            <td>@item.BeforeHandWash</td>
+                            <td>@item.AfterHandRub</td>
+                            <td>@item.AfterHandWash</td>
+                            <td>@(item.Gloves == "True" ? "Yes" : "No")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <h4>No activities added yet</h4>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,195 @@
+﻿@model IPCU.Models.HandHygieneForm
+@{
+    ViewData["Title"] = "Edit";
+}
+<h1>Edit Hand Hygiene Form</h1>
+<hr />
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="HHId" />
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Form Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label asp-for="Area" class="control-label"></label>
+                        <input asp-for="Area" class="form-control" />
+                        <span asp-validation-for="Area" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Observer" class="control-label"></label>
+                        <input asp-for="Observer" class="form-control" />
+                        <span asp-validation-for="Observer" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Date" class="control-label"></label>
+                        <input asp-for="Date" type="date" class="form-control" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Time" class="control-label"></label>
+                        <input asp-for="Time" type="time" class="form-control" />
+                        <span asp-validation-for="Time" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="HCWType" class="control-label"></label>
+                        <input asp-for="HCWType" class="form-control" />
+                        <span asp-validation-for="HCWType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="RoomType" class="control-label"></label>
+                        <input asp-for="RoomType" class="form-control" />
+                        <span asp-validation-for="RoomType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3 form-check">
+                        <input asp-for="Isolation" type="checkbox" class="form-check-input" />
+                        <label asp-for="Isolation" class="form-check-label">Isolation</label>
+                        <span asp-validation-for="Isolation" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="IsolationPrecaution" class="control-label"></label>
+                        <input asp-for="IsolationPrecaution" class="form-control" />
+                        <span asp-validation-for="IsolationPrecaution" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="ObsvPatientCare" class="control-label"></label>
+                        <input asp-for="ObsvPatientCare" class="form-control" />
+                        <span asp-validation-for="ObsvPatientCare" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="ObsvPatientEnvironment" class="control-label"></label>
+                        <input asp-for="ObsvPatientEnvironment" class="form-control" />
+                        <span asp-validation-for="ObsvPatientEnvironment" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="ObsvPatientContact" class="control-label"></label>
+                        <input asp-for="ObsvPatientContact" class="form-control" />
+                        <span asp-validation-for="ObsvPatientContact" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="TotalCompliantActions" class="control-label"></label>
+                        <input asp-for="TotalCompliantActions" class="form-control" />
+                        <span asp-validation-for="TotalCompliantActions" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="TotalObservedOpportunities" class="control-label"></label>
+                        <input asp-for="TotalObservedOpportunities" class="form-control" />
+                        <span asp-validation-for="TotalObservedOpportunities" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="ComplianceRate" class="control-label"></label>
+                        <input asp-for="ComplianceRate" class="form-control" />
+                        <span asp-validation-for="ComplianceRate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Activities</h5>
+                </div>
+                <div class="card-body" id="activitiesContainer">
+                    @if (Model.Activities != null && Model.Activities.Count > 0)
+                    {
+                        for (int i = 0; i < Model.Activities.Count; i++)
+                        {
+                            <div class="activity-item border-bottom pb-3 mb-3">
+                                <input type="hidden" asp-for="Activities[i].ActId" />
+                                <input type="hidden" asp-for="Activities[i].HHId" value="@Model.HHId" />
+
+                                <div class="form-group mb-3">
+                                    <label asp-for="Activities[i].Activity">Activity</label>
+                                    <input asp-for="Activities[i].Activity" class="form-control" />
+                                    <span asp-validation-for="Activities[i].Activity" class="text-danger"></span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label asp-for="Activities[i].BeforeHandRub">Before Hand Rub</label>
+                                            <input asp-for="Activities[i].BeforeHandRub" class="form-control" />
+                                            <span asp-validation-for="Activities[i].BeforeHandRub" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label asp-for="Activities[i].BeforeHandWash">Before Hand Wash</label>
+                                            <input asp-for="Activities[i].BeforeHandWash" class="form-control" />
+                                            <span asp-validation-for="Activities[i].BeforeHandWash" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label asp-for="Activities[i].AfterHandRub">After Hand Rub</label>
+                                            <input asp-for="Activities[i].AfterHandRub" class="form-control" />
+                                            <span asp-validation-for="Activities[i].AfterHandRub" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label asp-for="Activities[i].AfterHandWash">After Hand Wash</label>
+                                            <input asp-for="Activities[i].AfterHandWash" class="form-control" />
+                                            <span asp-validation-for="Activities[i].AfterHandWash" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3 form-check">
+                                    <input type="checkbox" asp-for="Activities[i].Gloves" value="True" class="form-check-input" />
+                                    <label asp-for="Activities[i].Gloves" class="form-check-label">Gloves Used?</label>
+                                    <span asp-validation-for="Activities[i].Gloves" class="text-danger"></span>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">No activities found. Please add activities after saving the form.</div>
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Additional validation and form handling
+        $(document).ready(function() {
+            $('form').on('submit', function() {
+                console.log('Form submitted');
+                return true;
+            });
+        });
+    </script>
+}
