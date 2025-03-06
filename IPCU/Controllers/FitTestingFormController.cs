@@ -10,6 +10,7 @@ using IPCU.Models;
 
 namespace IPCU.Controllers
 {
+    [Route("FitTestingForm")]
     public class FitTestingFormController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,12 +21,30 @@ namespace IPCU.Controllers
         }
 
         // GET: FitTestingForm
-        public async Task<IActionResult> Index()
+        [HttpGet("")]
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            return View(await _context.FitTestingForm.ToListAsync());
+            // Get the total number of records
+            var totalRecords = await _context.FitTestingForm.CountAsync();
+
+            // Fetch the paginated data
+            var paginatedData = await _context.FitTestingForm
+                .OrderBy(f => f.Id) // Optional: Order by a specific column
+                .Skip((page - 1) * pageSize) // Skip the records of previous pages
+                .Take(pageSize) // Take only the records for the current page
+                .ToListAsync();
+
+            // Pass pagination details to the view using ViewBag
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+
+            return View(paginatedData);
         }
 
+
         // GET: FitTestingForm/Details/5
+        [HttpGet("Details/{id}")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,6 +63,7 @@ namespace IPCU.Controllers
         }
 
         // GET: FitTestingForm/Create
+        [HttpGet("Create")]
         public IActionResult Create()
         {
             return View();
