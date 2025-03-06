@@ -1,5 +1,4 @@
-﻿
-@model IPCU.Models.FitTestingForm
+﻿@model IPCU.Models.FitTestingForm
 
 @{
     ViewData["Title"] = "Create Fit Testing Record";
@@ -23,40 +22,91 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label asp-for="HCW_Name" class="form-label fw-bold"></label>
-                                    <input asp-for="HCW_Name" class="form-control" placeholder="Enter HCW Name" />
+                                    <label asp-for="HCW_Name" class="form-label fw-bold">Healthcare Worker</label>
+                                    <input asp-for="HCW_Name" class="form-control" placeholder="Enter Healthcare Worker Name" />
                                     <span asp-validation-for="HCW_Name" class="text-danger"></span>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label asp-for="DUO" class="form-label fw-bold"></label>
-                                    <input asp-for="DUO" class="form-control" placeholder="Enter DUO" />
+                                    <label asp-for="DUO" class="form-label fw-bold">Department/Unit/Office</label>
+                                    <input asp-for="DUO" class="form-control" placeholder="Enter Department/Unit/Office:" />
                                     <span asp-validation-for="DUO" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Limitation as Dropdown -->
                         <div class="mb-3">
-                            <label asp-for="Limitation" class="form-label fw-bold"></label>
-                            <input asp-for="Limitation" class="form-control" placeholder="Enter Limitations" />
+                            <label class="form-label fw-bold">Limitation</label>
+
+                            <div>
+                                <input type="checkbox" name="Limitation" value="Glasses" />
+                                <label>Glasses</label>
+                            </div>
+
+                            <div>
+                                <input type="checkbox" name="Limitation" value="Beard Growth" />
+                                <label>Beard Growth</label>
+                            </div>
+
+                            <div>
+                                <input type="checkbox" name="Limitation" value="Dentures" />
+                                <label>Dentures</label>
+                            </div>
+
+                            <div>
+                                <input type="checkbox" name="Limitation" value="Cosmetic surgery" />
+                                <label>Cosmetic surgery</label>
+                            </div>
+
+                            <div>
+                                <input type="checkbox" name="Limitation" value="Facial scarring" />
+                                <label>Facial scarring</label>
+                            </div>
+
+                            <div>
+                                <input type="checkbox" id="otherCheckbox" name="Limitation" value="Other" />
+                                <label>Other</label>
+                            </div>
+
+                            <!-- Hidden Text Field (Initially Hidden) -->
+                            <div id="otherTextContainer" style="display: none; margin-top: 10px;">
+                                <input type="text" id="otherText" name="OtherLimitation" class="form-control" placeholder="Specify other limitation" />
+                            </div>
+
                             <span asp-validation-for="Limitation" class="text-danger"></span>
                         </div>
 
+                        <script>
+                            document.getElementById("otherCheckbox").addEventListener("change", function () {
+                                var textField = document.getElementById("otherTextContainer");
+                                textField.style.display = this.checked ? "block" : "none";
+                            });
+                        </script>
+
+
                         <div class="row">
+                            <!-- Fit Test Solution as Dropdown -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label asp-for="Fit_Test_Solution" class="form-label fw-bold"></label>
-                                    <input asp-for="Fit_Test_Solution" class="form-control" placeholder="Enter Fit Test Solution" />
+                                    <label asp-for="Fit_Test_Solution" class="form-label fw-bold">Fit Test Solution</label>
+                                    <select asp-for="Fit_Test_Solution" class="form-select">
+                                        <option value="">Select Solution</option>
+                                        <option value="Saccharin">Saccharin</option>
+                                        <option value="Bitrex">Bitrex</option>
+                                        <option value="Isoamyl Acetate">Isoamyl Acetate</option>
+                                    </select>
                                     <span asp-validation-for="Fit_Test_Solution" class="text-danger"></span>
                                 </div>
                             </div>
 
+                            <!-- Sensitivity Test with Range -->
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label asp-for="Sensitivity_Test" class="form-label fw-bold"></label>
-                                    <input asp-for="Sensitivity_Test" class="form-control" placeholder="Enter Sensitivity Test" />
+                                    <label asp-for="Sensitivity_Test" class="form-label fw-bold">Sensitivity Test</label>
+                                    <input asp-for="Sensitivity_Test" class="form-control" type="number" min="1" max="30" placeholder="Enter Sensitivity Test (1-30)" />
                                     <span asp-validation-for="Sensitivity_Test" class="text-danger"></span>
                                 </div>
                             </div>
@@ -66,7 +116,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label asp-for="Respiratory_Type" class="form-label fw-bold"></label>
+                                    <label asp-for="Respiratory_Type" class="form-label fw-bold">Respiratory Type</label>
                                     <input asp-for="Respiratory_Type" class="form-control" placeholder="Enter Respiratory Type" />
                                     <span asp-validation-for="Respiratory_Type" class="text-danger"></span>
                                 </div>
@@ -92,22 +142,22 @@
                             <div class="col-md-4">
                                 <div class="form-check">
                                     <input class="form-check-input" asp-for="Normal_Breathing" />
-                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Normal_Breathing)</label>
+                                    <label class="form-check-label">Normal Breathing</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" asp-for="Deep_Breathing" />
-                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Deep_Breathing)</label>
+                                    <label class="form-check-label">Deep Breathing</label>
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <div class="form-check">
                                     <input class="form-check-input" asp-for="Turn_head_side_to_side" />
-                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Turn_head_side_to_side)</label>
+                                    <label class="form-check-label">Turn Head side to side</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" asp-for="Move_head_up_and_down" />
-                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Move_head_up_and_down)</label>
+                                    <label class="form-check-label">Move Head up and down</label>
                                 </div>
                             </div>
 
@@ -118,26 +168,28 @@
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" asp-for="Bending_Jogging" />
-                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Bending_Jogging)</label>
+                                    <label class="form-check-label">Bending Jogging</label>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-check">
                                     <input class="form-check-input" asp-for="Normal_Breathing_2" />
-                                    <label class="form-check-label">@Html.DisplayNameFor(model => model.Normal_Breathing_2)</label>
+                                    <label class="form-check-label">2nd Normal Breathing</label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="mb-3 mt-3">
-                            <label asp-for="Name_of_Fit_Tester" class="form-label fw-bold"></label>
+                            <label asp-for="Name_of_Fit_Tester" class="form-label fw-bold">Name of Fit Tester</label>
                             <input asp-for="Name_of_Fit_Tester" class="form-control" placeholder="Enter Fit Tester Name" />
                             <span asp-validation-for="Name_of_Fit_Tester" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="DUO_Tester" class="form-label fw-bold"></label>
-                            <input asp-for="DUO_Tester" class="form-control" placeholder="Enter DUO Tester" />
+                            <label asp-for="DUO_Tester" class="form-label fw-bold">
+                                Department/Unit/Office:
+                            </label>
+                            <input asp-for="DUO_Tester" class="form-control" placeholder="Enter Department/Unit/Office" />
                             <span asp-validation-for="DUO_Tester" class="text-danger"></span>
                         </div>
 

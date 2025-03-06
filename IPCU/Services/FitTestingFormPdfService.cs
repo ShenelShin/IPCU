@@ -66,7 +66,7 @@ public class FitTestingFormPdfService
 
                             AddTableRow(table, "HCW Name:", fitTestingForm.HCW_Name);
                             AddTableRow(table, "Department/Unit/Office:", fitTestingForm.DUO);
-                            AddTableRow(table, "Limitations:", fitTestingForm.Limitation);
+                            AddTableRow(table, "Limitations:", string.Join(", ", fitTestingForm.Limitation));
                         });
                     });
 
