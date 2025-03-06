@@ -41,50 +41,53 @@
                         <div class="mb-3">
                             <label class="form-label fw-bold">Limitation</label>
 
-                            <div>
-                                <input type="checkbox" name="Limitation" value="Glasses" />
-                                <label>Glasses</label>
-                            </div>
+                            <div class="row">
+                                <!-- Left Column (First 3 Checkboxes) -->
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="Limitation" value="Glasses" id="glasses" />
+                                        <label class="form-check-label" for="glasses">Glasses</label>
+                                    </div>
 
-                            <div>
-                                <input type="checkbox" name="Limitation" value="Beard Growth" />
-                                <label>Beard Growth</label>
-                            </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="Limitation" value="Beard Growth" id="beardGrowth" />
+                                        <label class="form-check-label" for="beardGrowth">Beard Growth</label>
+                                    </div>
 
-                            <div>
-                                <input type="checkbox" name="Limitation" value="Dentures" />
-                                <label>Dentures</label>
-                            </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="Limitation" value="Dentures" id="dentures" />
+                                        <label class="form-check-label" for="dentures">Dentures</label>
+                                    </div>
+                                </div>
 
-                            <div>
-                                <input type="checkbox" name="Limitation" value="Cosmetic surgery" />
-                                <label>Cosmetic surgery</label>
-                            </div>
+                                <!-- Right Column (Next 3 Checkboxes) -->
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="Limitation" value="Cosmetic surgery" id="cosmeticSurgery" />
+                                        <label class="form-check-label" for="cosmeticSurgery">Cosmetic surgery</label>
+                                    </div>
 
-                            <div>
-                                <input type="checkbox" name="Limitation" value="Facial scarring" />
-                                <label>Facial scarring</label>
-                            </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="Limitation" value="Facial scarring" id="facialScarring" />
+                                        <label class="form-check-label" for="facialScarring">Facial scarring</label>
+                                    </div>
 
-                            <div>
-                                <input type="checkbox" id="otherCheckbox" name="Limitation" value="Other" />
-                                <label>Other</label>
-                            </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="otherCheckbox" name="Limitation" value="Other" />
+                                        <label class="form-check-label" for="otherCheckbox">Other</label>
+                                    </div>
 
-                            <!-- Hidden Text Field (Initially Hidden) -->
-                            <div id="otherTextContainer" style="display: none; margin-top: 10px;">
-                                <input type="text" id="otherText" name="OtherLimitation" class="form-control" placeholder="Specify other limitation" />
+                                    <!-- Hidden Text Field (Initially Hidden) -->
+                                    <div id="otherTextContainer" class="d-none mt-2">
+                                        <input type="text" id="otherText" name="OtherLimitation" class="form-control" placeholder="Specify other limitation" />
+                                    </div>
+                                </div>
                             </div>
 
                             <span asp-validation-for="Limitation" class="text-danger"></span>
                         </div>
 
-                        <script>
-                            document.getElementById("otherCheckbox").addEventListener("change", function () {
-                                var textField = document.getElementById("otherTextContainer");
-                                textField.style.display = this.checked ? "block" : "none";
-                            });
-                        </script>
+
 
 
                         <div class="row">
@@ -208,4 +211,19 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let otherCheckbox = document.getElementById("otherCheckbox");
+            let otherTextContainer = document.getElementById("otherTextContainer");
+
+            otherCheckbox.addEventListener("change", function () {
+                if (this.checked) {
+                    otherTextContainer.classList.remove("d-none");
+                } else {
+                    otherTextContainer.classList.add("d-none");
+                }
+            });
+        });
+    </script>
 }
