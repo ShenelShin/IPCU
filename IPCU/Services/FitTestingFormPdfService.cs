@@ -157,6 +157,8 @@ public class FitTestingFormPdfService
 
                             AddTableRow(table, "Fit Tester:", fitTestingForm.Name_of_Fit_Tester);
                             AddTableRow(table, "Date:", fitTestingForm.SubmittedAt.ToString("MMM dd, yyyy"));
+                            AddTableRow(table, "Date:", fitTestingForm.ExpiringAt.ToString("MMM dd, yyyy"));
+
                         });
                     });
 

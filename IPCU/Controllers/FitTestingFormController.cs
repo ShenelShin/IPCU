@@ -101,6 +101,8 @@ namespace IPCU.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    fitTestingForm.SubmittedAt = DateTime.Now;
+                    fitTestingForm.ExpiringAt = fitTestingForm.SubmittedAt.AddYears(1); // Set ExpiringAt
                     _context.Add(fitTestingForm);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));

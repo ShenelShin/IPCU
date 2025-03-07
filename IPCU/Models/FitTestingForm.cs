@@ -84,8 +84,8 @@ namespace IPCU.Models
         [Required]
         public DateTime SubmittedAt { get; set; } = DateTime.Now;
 
-        [NotMapped]
-        public DateTime ExpiringAt => SubmittedAt.AddDays(30);
+        public DateTime ExpiringAt { get; set; }
+
 
         public int SubmissionCount { get; set; } = 0;
         public int MaxRetakes { get; set; } = 2;
