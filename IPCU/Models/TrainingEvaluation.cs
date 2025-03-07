@@ -35,33 +35,33 @@ namespace IPCU.Models
         [Required]
         public double FinalRating { get; set; }
         // Program Facilitation Rating
-        public int FlowFollowed { get; set; }
-        public int RulesEstablished { get; set; }
-        public int InitiateDiscussion { get; set; }
-        public int TechnicalCapability { get; set; }
+        public double FlowFollowed { get; set; }
+        public double RulesEstablished { get; set; }
+        public double InitiateDiscussion { get; set; }
+        public double TechnicalCapability { get; set; }
 
         // Subject Matter Expert Evaluation
-        public int ContentOrganization { get; set; }
-        public int ObjectiveStated { get; set; }
-        public int ContentQuality { get; set; }
-        public int FlowOfTopic { get; set; }
-        public int RelevanceOfTopic { get; set; }
-        public int PracticeApplication { get; set; }
-        public int LearningActivities { get; set; }
-        public int VisualAids { get; set; }
+        public double ContentOrganization { get; set; }
+        public double ObjectiveStated { get; set; }
+        public double ContentQuality { get; set; }
+        public double FlowOfTopic { get; set; }
+        public double RelevanceOfTopic { get; set; }
+        public double PracticeApplication { get; set; }
+        public double LearningActivities { get; set; }
+        public double VisualAids { get; set; }
 
         // Speaker Evaluation
-        public int PresentKnowledge { get; set; }
-        public int BalancePrinciples { get; set; }
-        public int AddressClarifications { get; set; }
+        public double PresentKnowledge { get; set; }
+        public double BalancePrinciples { get; set; }
+        public double AddressClarifications { get; set; }
 
         // Trainer Characteristics
-        public int Preparedness { get; set; }
-        public int TeachingPersonality { get; set; }
-        public int EstablishRapport { get; set; }
-        public int RespectForParticipants { get; set; }
-        public int VoicePersonality { get; set; }
-        public int TimeManagement { get; set; }
+        public double Preparedness { get; set; }
+        public double TeachingPersonality { get; set; }
+        public double EstablishRapport { get; set; }
+        public double RespectForParticipants { get; set; }
+        public double VoicePersonality { get; set; }
+        public double TimeManagement { get; set; }
 
         public string SuggestionsForImprovement { get; set; }
     }

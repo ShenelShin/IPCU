@@ -8,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using IPCU.Data;
 using IPCU.Models;
 using IPCU.Services;
+using X.PagedList;
+using X.PagedList.Mvc.Core;
+using X.PagedList.Extensions;
+
 
 namespace IPCU.Controllers
 {
@@ -20,11 +24,23 @@ namespace IPCU.Controllers
             _context = context;
         }
 
-        // GET: TrainingSummary
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
-            return View(await _context.TrainingEvaluation.ToListAsync());
+            int pageSize = 10; // Rows per page
+            int pageNumber = page ?? 1; // Default to page 1
+
+            // Fetch the data first
+            var trainingList = await _context.TrainingEvaluation
+                                             .OrderBy(t => t.DateOfTraining)
+                                             .AsNoTracking()
+                                             .ToListAsync();
+
+            // Apply pagination AFTER retrieving data
+            var paginatedList = trainingList.ToPagedList(pageNumber, pageSize);
+
+            return View(paginatedList);
         }
+
 
         // GET: TrainingSummary/Details/5
         public async Task<IActionResult> Details(int? id)
