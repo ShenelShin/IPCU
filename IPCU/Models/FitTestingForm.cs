@@ -115,6 +115,10 @@ namespace IPCU.Models
         // Timestamp for when the form is submitted
         [Required]
         public DateTime SubmittedAt { get; set; } = DateTime.Now; // Automatically sets the current timestamp
+
+        [NotMapped] // This ensures it's NOT stored in the database
+        public DateTime ExpiringAt => SubmittedAt.AddDays(30); // Automatically calculated expiry date
+
         public int SubmissionCount { get; set; } = 0;
         public int MaxRetakes { get; set; } = 2;
 
