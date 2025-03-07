@@ -1,24 +1,31 @@
-﻿@model IEnumerable<IPCU.Models.TrainingEvaluation>
+﻿@using X.PagedList.Mvc.Core
+@model IPagedList<IPCU.Models.TrainingEvaluation>
+
+
+@using X.PagedList.Mvc.Core
 
 @{
     ViewData["Title"] = "Training Summary";
 }
 
-<!-- Bootstrap & Font Awesome for Icons -->
+<!-- Bootstrap, Font Awesome, Animate.css & AOS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center">
-        <h2 class="text-primary"><i class="fas fa-clipboard-list"></i> Training Summary Form</h2>
-        <a asp-action="Create" class="btn btn-success">
+    <div class="d-flex justify-content-between align-items-center animate__animated animate__fadeInDown">
+        <h2 class="text-primary"><i class="fas fa-clipboard-list"></i> Training Summary</h2>
+        <a asp-action="Create" class="btn btn-success animate__animated animate__pulse animate__infinite">
             <i class="fas fa-plus"></i> Create New
         </a>
     </div>
-    <p class="text-muted">A summary of all training sessions conducted.</p>
+
+    <p class="text-muted animate__animated animate__fadeInUp">A summary of all training sessions conducted.</p>
 
     <div class="table-responsive">
-        <table class="table table-bordered table-striped table-hover shadow-sm">
+        <table class="table table-bordered table-striped table-hover shadow-sm" data-aos="fade-up">
             <thead class="table-dark">
                 <tr class="text-center">
                     <th>Title</th>
@@ -35,7 +42,7 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
+                    <tr data-aos="fade-up">
                         <td>@item.Title</td>
                         <td>@item.Venue</td>
                         <td>@item.DateOfTraining.ToString("yyyy-MM-dd")</td>
@@ -46,35 +53,60 @@
                         <td class="text-center">@item.PostTestEvaluationGrade</td>
                         <td class="text-center">
                             <div class="d-flex justify-content-center gap-2">
-                                <!-- Edit Button -->
-                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" title="Edit Training">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm animate__animated animate__zoomIn">
                                     <i class="fas fa-edit"></i>
                                 </a>
-
-                                <!-- Details Button -->
-                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm" data-bs-toggle="tooltip" title="View Details">
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm animate__animated animate__zoomIn">
                                     <i class="fas fa-eye"></i>
                                 </a>
-
-                                <!-- Delete Button -->
-                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" data-bs-toggle="tooltip" title="Delete Training">
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm animate__animated animate__zoomIn">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
-
-                                <!-- Preview PDF Button -->
-                                <a asp-action="GeneratePdf" asp-route-id="@item.Id" class="btn btn-primary btn-sm" target="_blank" data-bs-toggle="tooltip" title="Preview as PDF">
+                                <a asp-action="GeneratePdf" asp-route-id="@item.Id" class="btn btn-primary btn-sm animate__animated animate__zoomIn" target="_blank">
                                     <i class="fas fa-file-pdf"></i>
                                 </a>
                             </div>
                         </td>
-
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <!-- Pagination Controls -->
+    @if (Model.PageCount > 1)
+    {
+        <nav aria-label="Training Summary Pagination" data-aos="fade-up">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber - 1)" aria-label="Previous">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </a>
+                </li>
+                @for (int i = 1; i <= Model.PageCount; i++)
+                {
+                    <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                    </li>
+                }
+                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@(Model.PageNumber + 1)" aria-label="Next">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    }
 </div>
 
+<!-- Include AOS and Init Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800, // Animation duration
+        once: true // Only animate once
+    });
+</script>
 
 
 

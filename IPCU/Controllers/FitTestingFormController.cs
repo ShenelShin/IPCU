@@ -22,13 +22,36 @@ namespace IPCU.Controllers
 
         // GET: FitTestingForm
         [HttpGet("")]
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10, string expiryFilter = "")
         {
             // Get the total number of records
-            var totalRecords = await _context.FitTestingForm.CountAsync();
+            var fitTests = _context.FitTestingForm.AsQueryable();
+            DateTime today = DateTime.Today;
 
-            // Fetch the paginated data
-            var paginatedData = await _context.FitTestingForm
+            if (!string.IsNullOrEmpty(expiryFilter))
+            {
+                switch (expiryFilter)
+                {
+                    case "1day":
+                        fitTests = fitTests.Where(f => f.SubmittedAt.AddDays(30) >= today && f.SubmittedAt.AddDays(30) <= today.AddDays(1));
+                        break;
+                    case "1week":
+                        fitTests = fitTests.Where(f => f.SubmittedAt.AddDays(30) >= today && f.SubmittedAt.AddDays(30) <= today.AddDays(7));
+                        break;
+                    case "2weeks":
+                        fitTests = fitTests.Where(f => f.SubmittedAt.AddDays(30) >= today && f.SubmittedAt.AddDays(30) <= today.AddDays(14));
+                        break;
+                    default:
+                        break; // No filtering applied
+                }
+
+
+            }
+
+
+            var totalRecords = await fitTests.CountAsync();
+
+            var paginatedData = await fitTests
                 .OrderBy(f => f.Id) // Optional: Order by a specific column
                 .Skip((page - 1) * pageSize) // Skip the records of previous pages
                 .Take(pageSize) // Take only the records for the current page
@@ -38,9 +61,11 @@ namespace IPCU.Controllers
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+            ViewBag.ExpiryFilter = expiryFilter;
 
             return View(paginatedData);
         }
+
 
 
         // GET: FitTestingForm/Details/5
@@ -181,15 +206,18 @@ namespace IPCU.Controllers
             return _context.FitTestingForm.Any(e => e.Id == id);
         }
 
-        public IActionResult PrintPdf(int id)
+        [HttpGet("GeneratePdf/{id}")]
+        public IActionResult GeneratePdf(int id)
         {
             var form = _context.FitTestingForm.FirstOrDefault(f => f.Id == id);
             if (form == null) return NotFound();
 
             var pdfService = new FitTestingFormPdfService();
             var pdfBytes = pdfService.GeneratePdf(form);
-            return File(pdfBytes, "application/pdf", $"{form.HCW_Name}_FitTest.pdf");
+
+            return File(pdfBytes, "application/pdf"); // This ensures the browser previews it properly
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -217,6 +245,11 @@ namespace IPCU.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet("Test")]
+        public IActionResult Test()
+        {
+            return Content("Test page is working!");
+        }
 
     }
 }

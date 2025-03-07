@@ -12,6 +12,13 @@
 
 <div class="d-flex justify-content-between mb-3">
     <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New</a>
+    <select id="expiryFilter" class="form-select w-25">
+        <option value="" selected="@(ViewBag.ExpiryFilter == "" ? "selected" : null)">All</option>
+        <option value="1day" selected="@(ViewBag.ExpiryFilter == "1day" ? "selected" : null)">Expiring in 1 day</option>
+        <option value="1week" selected="@(ViewBag.ExpiryFilter == "1week" ? "selected" : null)">Expiring in 1 week</option>
+        <option value="2weeks" selected="@(ViewBag.ExpiryFilter == "2weeks" ? "selected" : null)">Expiring in 2 weeks</option>
+    </select>
+
     <input type="text" id="searchBox" class="form-control w-25" placeholder="Search...">
 </div>
 
@@ -24,6 +31,7 @@
                 @*<th>Limitation</th>*@
                 <th>Test Results</th>
                 <th>Date</th>
+                <th>Expires On</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -38,6 +46,7 @@
                         @item.Test_Results
                     </td>
                     <td>@item.SubmittedAt.ToString("MMMM dd, yyyy")</td> <!-- Example: March 06, 2025 -->
+                    <td>@item.ExpiringAt.ToString("MMMM dd, yyyy")</td> <!-- Expiry Date Calculated -->
                     <td>
                         <div class="btn-group">
                             <!-- <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm me-2">
@@ -49,9 +58,10 @@
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm me-2">
                                 <i class="fa fa-trash"></i>
                             </a>
-                            <a asp-action="PrintPdf" asp-route-id="@item.Id" target="_blank" class="btn btn-secondary btn-sm me-3" data-bs-toggle="tooltip" title="Preview PDF">
+                            <a asp-action="GeneratePdf" asp-route-id="@item.Id" target="_blank" class="btn btn-secondary btn-sm me-3">
                                 <i class="fa fa-print"></i>
                             </a>
+
 
 
                             @if (item.Test_Results != "Passed")
@@ -165,6 +175,11 @@
         </ul>
     </nav>
 }
-
+<script>
+    document.getElementById("expiryFilter").addEventListener("change", function() {
+        var selectedValue = this.value;
+        window.location.href = '@Url.Action("Index")' + '?expiryFilter=' + selectedValue;
+    });
+</script>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
