@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IPCU.Data;
 using IPCU.Models;
+using System.Diagnostics;
+using IPCU.Services;
 
 namespace IPCU.Controllers
 {
@@ -49,20 +51,48 @@ namespace IPCU.Controllers
         }
 
         // POST: HandHygieneForms/Create
+        // POST: HandHygieneForms/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(HandHygieneForm handHygieneForm)
         {
+            // Debug: Check what's coming in from the form
+            Debug.WriteLine($"Received form data: Area={handHygieneForm.Area}, Observer={handHygieneForm.Observer}");
+
             // Ensure HHId is NOT set manually
-            ModelState.Remove("HHId");  // <---- This line prevents validation on HHId
+            ModelState.Remove("HHId");  // This line prevents validation on HHId
+
+            // Debug: Check ModelState before validation
+            if (!ModelState.IsValid)
+            {
+                Debug.WriteLine("ModelState is invalid. Validation errors:");
+                foreach (var state in ModelState)
+                {
+                    foreach (var error in state.Value.Errors)
+                    {
+                        Debug.WriteLine($"- {state.Key}: {error.ErrorMessage}");
+                    }
+                }
+            }
 
             if (ModelState.IsValid)
             {
-                _context.HandHygieneForms.Add(handHygieneForm);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("AddActivities", new { id = handHygieneForm.HHId });
+                try
+                {
+                    _context.HandHygieneForms.Add(handHygieneForm);
+                    await _context.SaveChangesAsync();
+                    Debug.WriteLine($"Form saved successfully with ID: {handHygieneForm.HHId}");
+                    return RedirectToAction("AddActivities", new { id = handHygieneForm.HHId });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Error saving form: {ex.Message}");
+                    ModelState.AddModelError("", $"Database error: {ex.Message}");
+                    return View(handHygieneForm);
+                }
             }
 
+            // If we got here, something failed, redisplay form
             return View(handHygieneForm);
         }
 
@@ -332,6 +362,32 @@ namespace IPCU.Controllers
         private bool HandHygieneFormExists(int id)
         {
             return _context.HandHygieneForms.Any(e => e.HHId == id);
+        }
+
+        // GET: HandHygieneForms/GeneratePdf/5
+        public async Task<IActionResult> GeneratePdf(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var handHygieneForm = await _context.HandHygieneForms
+                .Include(f => f.Activities)  // Load related HHActivity records
+                .FirstOrDefaultAsync(m => m.HHId == id);
+
+            if (handHygieneForm == null) return NotFound();
+
+            // Create the PDF service
+            var pdfService = new HandHygienePdfService();
+
+            // Generate the PDF
+            var pdfBytes = pdfService.GeneratePdf(handHygieneForm);
+
+            // Return the PDF for inline viewing in the browser instead of downloading
+            return File(
+                pdfBytes,
+                "application/pdf",
+                $"HandHygieneForm_{id}.pdf",
+                false  // false means "inline" (preview) instead of "attachment" (download)
+            );
         }
     }
 }

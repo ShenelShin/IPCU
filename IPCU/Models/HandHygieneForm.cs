@@ -42,6 +42,9 @@ namespace IPCU.Models
         [Required, StringLength(100)]
         public string ObsvPatientEnvironment { get; set; }
 
+        [StringLength(100)]
+        public string? EnvironmentResource { get; set; }
+
         [Required, StringLength(255)]
         public string ObsvPatientContact { get; set; }
 
