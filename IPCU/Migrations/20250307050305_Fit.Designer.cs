@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250306053038_UpdateLimitationField")]
-    partial class UpdateLimitationField
+    [Migration("20250307050305_Fit")]
+    partial class Fit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,7 +171,7 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LimitationString")
+                    b.Property<string>("Limitation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -225,6 +225,127 @@ namespace IPCU.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FitTestingForm");
+                });
+
+            modelBuilder.Entity("IPCU.Models.HHActivity", b =>
+                {
+                    b.Property<int>("ActId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ActId"));
+
+                    b.Property<string>("Activity")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("AfterHandRub")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("AfterHandWash")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("BeforeHandRub")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("BeforeHandWash")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Gloves")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("HHId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ActId");
+
+                    b.HasIndex("HHId");
+
+                    b.ToTable("HHActivities");
+                });
+
+            modelBuilder.Entity("IPCU.Models.HandHygieneForm", b =>
+                {
+                    b.Property<int>("HHId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("HHId"));
+
+                    b.Property<string>("Area")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("ComplianceRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EnvironmentResource")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("HCWType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("Isolation")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("IsolationPrecaution")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Observer")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ObsvPatientCare")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ObsvPatientContact")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ObsvPatientEnvironment")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RoomType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<TimeSpan>("Time")
+                        .HasColumnType("time");
+
+                    b.Property<int>("TotalCompliantActions")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalObservedOpportunities")
+                        .HasColumnType("int");
+
+                    b.HasKey("HHId");
+
+                    b.ToTable("HandHygieneForms");
                 });
 
             modelBuilder.Entity("IPCU.Models.PatientForm", b =>
@@ -297,76 +418,79 @@ namespace IPCU.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AddressClarifications")
-                        .HasColumnType("int");
+                    b.Property<double>("AddressClarifications")
+                        .HasColumnType("float");
 
-                    b.Property<int>("BalancePrinciples")
-                        .HasColumnType("int");
+                    b.Property<double>("BalancePrinciples")
+                        .HasColumnType("float");
 
-                    b.Property<int>("ContentOrganization")
-                        .HasColumnType("int");
+                    b.Property<double>("ContentOrganization")
+                        .HasColumnType("float");
 
-                    b.Property<int>("ContentQuality")
-                        .HasColumnType("int");
+                    b.Property<double>("ContentQuality")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("DateOfTraining")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EstablishRapport")
-                        .HasColumnType("int");
+                    b.Property<double>("EstablishRapport")
+                        .HasColumnType("float");
 
-                    b.Property<int>("FlowFollowed")
-                        .HasColumnType("int");
+                    b.Property<double>("FinalRating")
+                        .HasColumnType("float");
 
-                    b.Property<int>("FlowOfTopic")
-                        .HasColumnType("int");
+                    b.Property<double>("FlowFollowed")
+                        .HasColumnType("float");
 
-                    b.Property<int>("InitiateDiscussion")
-                        .HasColumnType("int");
+                    b.Property<double>("FlowOfTopic")
+                        .HasColumnType("float");
 
-                    b.Property<int>("LearningActivities")
-                        .HasColumnType("int");
+                    b.Property<double>("InitiateDiscussion")
+                        .HasColumnType("float");
 
-                    b.Property<int>("ObjectiveStated")
-                        .HasColumnType("int");
+                    b.Property<double>("LearningActivities")
+                        .HasColumnType("float");
+
+                    b.Property<double>("ObjectiveStated")
+                        .HasColumnType("float");
 
                     b.Property<double>("PostTestEvaluationGrade")
                         .HasColumnType("float");
 
-                    b.Property<int>("PracticeApplication")
-                        .HasColumnType("int");
+                    b.Property<double>("PracticeApplication")
+                        .HasColumnType("float");
 
-                    b.Property<int>("Preparedness")
-                        .HasColumnType("int");
+                    b.Property<double>("Preparedness")
+                        .HasColumnType("float");
 
-                    b.Property<int>("PresentKnowledge")
-                        .HasColumnType("int");
+                    b.Property<double>("PresentKnowledge")
+                        .HasColumnType("float");
 
                     b.Property<string>("ProfessionalCategory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RelevanceOfTopic")
-                        .HasColumnType("int");
+                    b.Property<double>("RelevanceOfTopic")
+                        .HasColumnType("float");
 
-                    b.Property<int>("RespectForParticipants")
-                        .HasColumnType("int");
+                    b.Property<double>("RespectForParticipants")
+                        .HasColumnType("float");
 
-                    b.Property<int>("RulesEstablished")
-                        .HasColumnType("int");
+                    b.Property<double>("RulesEstablished")
+                        .HasColumnType("float");
 
                     b.Property<string>("SuggestionsForImprovement")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TeachingPersonality")
-                        .HasColumnType("int");
+                    b.Property<double>("TeachingPersonality")
+                        .HasColumnType("float");
 
-                    b.Property<int>("TechnicalCapability")
-                        .HasColumnType("int");
+                    b.Property<double>("TechnicalCapability")
+                        .HasColumnType("float");
 
-                    b.Property<int>("TimeManagement")
-                        .HasColumnType("int");
+                    b.Property<double>("TimeManagement")
+                        .HasColumnType("float");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -386,11 +510,11 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("VisualAids")
-                        .HasColumnType("int");
+                    b.Property<double>("VisualAids")
+                        .HasColumnType("float");
 
-                    b.Property<int>("VoicePersonality")
-                        .HasColumnType("int");
+                    b.Property<double>("VoicePersonality")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -530,6 +654,17 @@ namespace IPCU.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("IPCU.Models.HHActivity", b =>
+                {
+                    b.HasOne("IPCU.Models.HandHygieneForm", "HandHygieneForm")
+                        .WithMany("Activities")
+                        .HasForeignKey("HHId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HandHygieneForm");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -579,6 +714,11 @@ namespace IPCU.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("IPCU.Models.HandHygieneForm", b =>
+                {
+                    b.Navigation("Activities");
                 });
 #pragma warning restore 612, 618
         }

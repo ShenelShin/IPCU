@@ -5,24 +5,24 @@
 namespace IPCU.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateLimitationField : Migration
+    public partial class Fit : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "Limitation",
+                name: "LimitationString",
                 table: "FitTestingForm",
-                newName: "LimitationString");
+                newName: "Limitation");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "LimitationString",
+                name: "Limitation",
                 table: "FitTestingForm",
-                newName: "Limitation");
+                newName: "LimitationString");
         }
     }
 }
