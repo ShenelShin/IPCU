@@ -5,6 +5,7 @@ using IPCU.Models;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Elfie.Serialization;
 
 namespace IPCU.Services
 {
@@ -74,7 +75,6 @@ namespace IPCU.Services
                 });
             }).GeneratePdf();
         }
-
         private void ComposeHeader(IContainer container)
         {
             container.Column(header =>
@@ -82,29 +82,31 @@ namespace IPCU.Services
                 // Logo and title - more compact
                 header.Item().Row(row =>
                 {
+                    // Add image on the left side
+                    row.ConstantItem(50).Image(@"C:\Users\wacky\Source\Repos\NKTI_IPCU\IPCU\wwwroot\images\nktilogo.png").FitWidth();
+
+                    // Center text content
                     row.RelativeItem().Column(col =>
                     {
                         col.Item().AlignCenter().Text("NATIONAL KIDNEY AND TRANSPLANT INSTITUTE")
-                            .FontColor(DarkColor).Bold().FontSize(12);  // Reduced from 14
-
+                            .FontColor(DarkColor).Bold().FontSize(12);
                         col.Item().AlignCenter().Text("East Avenue, Quezon City")
-                            .FontColor(DarkColor).FontSize(9);          // Reduced from 10
-
+                            .FontColor(DarkColor).FontSize(9);
                         col.Item().AlignCenter().Text("INFECTION PREVENTION AND CONTROL UNIT")
-                            .FontColor(DarkColor).Bold().FontSize(10);  // Reduced from 11
+                            .FontColor(DarkColor).Bold().FontSize(10);
                     });
                 });
 
-                // Form title
-                header.Item().Background(HeaderBgColor).Padding(3).AlignCenter()  // Reduced padding from 5 to 3
+                // The rest remains unchanged
+                header.Item().Background(HeaderBgColor).Padding(3).AlignCenter()
                     .Text("HAND HYGIENE (HH) DETAILED OBSERVATION AND MONITORING FORM")
-                    .FontColor(Colors.White).Bold().FontSize(11);               // Reduced from 12
+                    .FontColor(Colors.White).Bold().FontSize(11);
 
-                header.Item().PaddingTop(2).Row(row =>                       // Reduced padding
+                header.Item().PaddingTop(2).Row(row =>
                 {
                     row.RelativeItem();
                     row.ConstantItem(100).Text("IPC-WIF-005_ver1")
-                        .FontColor(DarkColor).FontSize(7);                   // Reduced from 8
+                        .FontColor(DarkColor).FontSize(7);
                 });
 
                 header.Item().BorderBottom(1).BorderColor(BorderColor);
