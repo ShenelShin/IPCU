@@ -96,6 +96,14 @@
                             <div class="modal-body">
                                 <form asp-action="SubmitFitTest" method="post">
                                     <input type="hidden" name="Id" value="@item.Id" />
+                                    <div class="mb-3">
+                                        <label for="fitTestType" class="form-label">Select Fit_Test_Solution</label>
+                                        <select class="form-select" id="fitTestSolution" name="Fit_Test_Solution">
+                                            <option value="Test1">Test 1</option>
+                                            <option value="Test2">Test 2</option>
+                                            <option value="Test3">Test 3</option>
+                                        </select>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-check">

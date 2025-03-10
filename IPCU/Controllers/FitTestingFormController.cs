@@ -226,6 +226,7 @@ namespace IPCU.Controllers
             if (fitTest != null)
             {
                 // Update the breathing and movement test fields
+                fitTest.Fit_Test_Solution = updatedForm.Fit_Test_Solution;
                 fitTest.Normal_Breathing = updatedForm.Normal_Breathing;
                 fitTest.Deep_Breathing = updatedForm.Deep_Breathing;
                 fitTest.Turn_head_side_to_side = updatedForm.Turn_head_side_to_side;
