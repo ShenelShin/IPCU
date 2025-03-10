@@ -1,5 +1,4 @@
-﻿
-@model IPCU.Models.FitTestingForm
+﻿@model IPCU.Models.FitTestingForm
 
 @{
     ViewData["Title"] = "Fit Testing Details";
@@ -36,7 +35,8 @@
                             </tr>
                             <tr>
                                 <th><i class="fa fa-exclamation-circle"></i> Limitations </th>
-                                <td>@string.Join(", ", Model.Limitation)</td>
+                                <td>@Html.DisplayFor(model => model.Limitation)</td>
+
                             </tr>
                             <tr>
                                 <th><i class="fa fa-flask"></i> @Html.DisplayNameFor(model => model.Fit_Test_Solution)</th>

@@ -168,7 +168,7 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LimitationString")
+                    b.Property<string>("Limitation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -286,6 +286,10 @@ namespace IPCU.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("EnvironmentResource")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("HCWType")
                         .IsRequired()

@@ -40,55 +40,40 @@
                         <!-- Limitation as Dropdown -->
                         <div class="mb-3">
                             <label class="form-label fw-bold">Limitation</label>
-
                             <div class="row">
-                                <!-- Left Column (First 3 Checkboxes) -->
                                 <div class="col-md-6">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="Limitation" value="Glasses" id="glasses" />
                                         <label class="form-check-label" for="glasses">Glasses</label>
                                     </div>
-
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="Limitation" value="Beard Growth" id="beardGrowth" />
                                         <label class="form-check-label" for="beardGrowth">Beard Growth</label>
                                     </div>
-
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="Limitation" value="Dentures" id="dentures" />
                                         <label class="form-check-label" for="dentures">Dentures</label>
                                     </div>
                                 </div>
-
-                                <!-- Right Column (Next 3 Checkboxes) -->
                                 <div class="col-md-6">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="Limitation" value="Cosmetic surgery" id="cosmeticSurgery" />
                                         <label class="form-check-label" for="cosmeticSurgery">Cosmetic surgery</label>
                                     </div>
-
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" name="Limitation" value="Facial scarring" id="facialScarring" />
                                         <label class="form-check-label" for="facialScarring">Facial scarring</label>
                                     </div>
-
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="otherCheckbox" name="Limitation" value="Other" />
                                         <label class="form-check-label" for="otherCheckbox">Other</label>
                                     </div>
-
-                                    <!-- Hidden Text Field (Initially Hidden) -->
                                     <div id="otherTextContainer" class="d-none mt-2">
                                         <input type="text" id="otherText" name="OtherLimitation" class="form-control" placeholder="Specify other limitation" />
                                     </div>
                                 </div>
                             </div>
-
-                            <span asp-validation-for="Limitation" class="text-danger"></span>
                         </div>
-
-
-
 
                         <div class="row">
                             <!-- Fit Test Solution as Dropdown -->
@@ -206,24 +191,47 @@
         </div>
     </div>
 </div>
+<div asp-validation-summary="All" class="text-danger"></div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
-    <script>
+<script>
         document.addEventListener("DOMContentLoaded", function () {
-            let otherCheckbox = document.getElementById("otherCheckbox");
-            let otherTextContainer = document.getElementById("otherTextContainer");
+        let otherCheckbox = document.getElementById("otherCheckbox");
+        let otherTextContainer = document.getElementById("otherTextContainer");
 
-            otherCheckbox.addEventListener("change", function () {
-                if (this.checked) {
-                    otherTextContainer.classList.remove("d-none");
-                } else {
-                    otherTextContainer.classList.add("d-none");
-                }
-            });
+        otherCheckbox.addEventListener("change", function () {
+            if (this.checked) {
+                otherTextContainer.classList.remove("d-none");
+            } else {
+                otherTextContainer.classList.add("d-none");
+            }
         });
-    </script>
-}
+    });
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let otherCheckbox = document.getElementById("otherCheckbox");
+        let otherTextContainer = document.getElementById("otherTextContainer");
+        let otherText = document.getElementById("otherText");
+
+        otherCheckbox.addEventListener("change", function () {
+            if (this.checked) {
+                otherTextContainer.classList.remove("d-none");
+                otherText.required = true;
+            } else {
+                otherTextContainer.classList.add("d-none");
+                otherText.required = false;
+                otherText.value = '';
+            }
+        });
+
+        // Optional: Add validation before form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (otherCheckbox.checked && !otherText.value.trim()) {
+                e.preventDefault();
+                alert('Please specify the other limitation');
+            }
+        });
+    });
+</script>
