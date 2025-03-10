@@ -39,6 +39,12 @@
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
                         <th>
+                            Observed Opportunities)
+                        </th>
+                        <th>
+                            Compliant Actions)
+                        </th>
+                        <th>
                             @Html.DisplayNameFor(model => model.ComplianceRate)
                         </th>
                         <th>Activities</th>
@@ -65,7 +71,13 @@
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td>
-                                @item.ComplianceRate.ToString("P1")
+                                @Html.DisplayFor(modelItem => item.TotalObservedOpportunities)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TotalCompliantActions)
+                            </td>
+                            <td>
+                                @item.ComplianceRate.ToString("P2")
                             </td>
                             <td>
                                 <button class="btn btn-sm btn-outline-info" type="button"
@@ -88,7 +100,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="8" class="p-0">
+                            <td colspan="10" class="p-0">
                                 <div class="collapse" id="activities-@item.HHId">
                                     <div class="card card-body m-2">
                                         @if (item.Activities != null && item.Activities.Any())

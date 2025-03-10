@@ -90,7 +90,7 @@
         </dl>
     </div>
 </div>
-@if (Model.Activities != null && Model.Activities.Any())
+@if (Model.Activities != null && Model.Activities.Count > 0)
 {
     <div class="card mb-4">
         <div class="card-header">
@@ -115,23 +115,9 @@
                             <tr>
                                 <td>@activity.Activity</td>
                                 <td class="text-center">
-                                    @{
-                                        int beforeRubScore;
-                                        bool isNumeric = int.TryParse(activity.BeforeHandRub, out beforeRubScore);
-                                    }
-                                    @if (isNumeric)
+                                    @if (!string.IsNullOrEmpty(activity.BeforeHandRub))
                                     {
-                                        <span class="@(beforeRubScore >= 4 ? "text-success" : beforeRubScore >= 3 ? "text-warning" : "text-danger")">
-                                            @beforeRubScore
-                                        </span>
-                                    }
-                                    else if (activity.BeforeHandRub == "Y")
-                                    {
-                                        <span class="text-success">✓</span>
-                                    }
-                                    else if (activity.BeforeHandRub == "N")
-                                    {
-                                        <span class="text-danger">✗</span>
+                                        @Html.Raw(activity.BeforeHandRub)
                                     }
                                     else
                                     {
@@ -139,23 +125,9 @@
                                     }
                                 </td>
                                 <td class="text-center">
-                                    @{
-                                        int beforeWashScore;
-                                        isNumeric = int.TryParse(activity.BeforeHandWash, out beforeWashScore);
-                                    }
-                                    @if (isNumeric)
+                                    @if (!string.IsNullOrEmpty(activity.BeforeHandWash))
                                     {
-                                        <span class="@(beforeWashScore >= 4 ? "text-success" : beforeWashScore >= 3 ? "text-warning" : "text-danger")">
-                                            @beforeWashScore
-                                        </span>
-                                    }
-                                    else if (activity.BeforeHandWash == "Y")
-                                    {
-                                        <span class="text-success">✓</span>
-                                    }
-                                    else if (activity.BeforeHandWash == "N")
-                                    {
-                                        <span class="text-danger">✗</span>
+                                        @Html.Raw(activity.BeforeHandWash)
                                     }
                                     else
                                     {
@@ -163,23 +135,9 @@
                                     }
                                 </td>
                                 <td class="text-center">
-                                    @{
-                                        int afterRubScore;
-                                        isNumeric = int.TryParse(activity.AfterHandRub, out afterRubScore);
-                                    }
-                                    @if (isNumeric)
+                                    @if (!string.IsNullOrEmpty(activity.AfterHandRub))
                                     {
-                                        <span class="@(afterRubScore >= 4 ? "text-success" : afterRubScore >= 3 ? "text-warning" : "text-danger")">
-                                            @afterRubScore
-                                        </span>
-                                    }
-                                    else if (activity.AfterHandRub == "Y")
-                                    {
-                                        <span class="text-success">✓</span>
-                                    }
-                                    else if (activity.AfterHandRub == "N")
-                                    {
-                                        <span class="text-danger">✗</span>
+                                        @Html.Raw(activity.AfterHandRub)
                                     }
                                     else
                                     {
@@ -187,23 +145,9 @@
                                     }
                                 </td>
                                 <td class="text-center">
-                                    @{
-                                        int afterWashScore;
-                                        isNumeric = int.TryParse(activity.AfterHandWash, out afterWashScore);
-                                    }
-                                    @if (isNumeric)
+                                    @if (!string.IsNullOrEmpty(activity.AfterHandWash))
                                     {
-                                        <span class="@(afterWashScore >= 4 ? "text-success" : afterWashScore >= 3 ? "text-warning" : "text-danger")">
-                                            @afterWashScore
-                                        </span>
-                                    }
-                                    else if (activity.AfterHandWash == "Y")
-                                    {
-                                        <span class="text-success">✓</span>
-                                    }
-                                    else if (activity.AfterHandWash == "N")
-                                    {
-                                        <span class="text-danger">✗</span>
+                                        @Html.Raw(activity.AfterHandWash)
                                     }
                                     else
                                     {
@@ -217,7 +161,7 @@
                                     }
                                     else
                                     {
-                                        <span>-</span>
+                                        <span class="text-danger">✗</span>
                                     }
                                 </td>
                             </tr>
@@ -226,12 +170,6 @@
                 </table>
             </div>
         </div>
-    </div>
-}
-else
-{
-    <div class="alert alert-warning">
-        <i class="fas fa-exclamation-triangle"></i> No activities have been recorded for this form.
     </div>
 }
 

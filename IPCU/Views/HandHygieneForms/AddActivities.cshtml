@@ -1,23 +1,18 @@
 ﻿@model IPCU.Models.HHActivity
-
 @{
     ViewData["Title"] = "Add Hand Hygiene Activities";
 }
-
 <h2>Add Activities</h2>
-
 @if (TempData["SuccessMessage"] != null)
 {
     <div class="alert alert-success">
         @TempData["SuccessMessage"]
     </div>
 }
-
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
         <form asp-action="AddActivities" asp-controller="HandHygieneForms" method="post">
             <input type="hidden" name="HHId" value="@ViewBag.HHId" />
-
             <div class="form-group mb-3">
                 <label for="Activity" class="form-label">Activity</label>
                 <input type="text" id="Activity" name="Activity" class="form-control" required />
@@ -27,29 +22,128 @@
                 }
             </div>
 
-            <div class="form-group mb-3">
-                <label for="BeforeHandRub" class="form-label">Before Hand Rub</label>
-                <input type="text" id="BeforeHandRub" name="BeforeHandRub" class="form-control" />
-            </div>
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Hand Hygiene Activities</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Before Activity Section -->
+                        <div class="col-md-6">
+                            <h6 class="mb-3 border-bottom pb-2">Before Activity</h6>
 
-            <div class="form-group mb-3">
-                <label for="BeforeHandWash" class="form-label">Before Hand Wash</label>
-                <input type="text" id="BeforeHandWash" name="BeforeHandWash" class="form-control" />
-            </div>
+                            <!-- Before Hand Rub -->
+                            <div class="mb-3">
+                                <label class="form-label">Before Hand Rub</label>
 
-            <div class="form-group mb-3">
-                <label for="AfterHandRub" class="form-label">After Hand Rub</label>
-                <input type="text" id="AfterHandRub" name="AfterHandRub" class="form-control" />
-            </div>
+                                <div class="d-flex flex-wrap gap-3 mt-2">
+                                    @for (int i = 1; i <= 2; i++)
+                                    {
+                                        <div class="border p-2 rounded">
+                                            <div class="fw-bold mb-1">Number @i</div>
+                                            <div class="btn-group" role="group">
+                                                <input type="radio" class="btn-check" name="BeforeHandRub@(i)Symbol" id="BeforeHandRub@(i)Check" value="✓">
+                                                <label class="btn btn-outline-success" for="BeforeHandRub@(i)Check">✓</label>
 
-            <div class="form-group mb-3">
-                <label for="AfterHandWash" class="form-label">After Hand Wash</label>
-                <input type="text" id="AfterHandWash" name="AfterHandWash" class="form-control" />
-            </div>
+                                                <input type="radio" class="btn-check" name="BeforeHandRub@(i)Symbol" id="BeforeHandRub@(i)Cross" value="X">
+                                                <label class="btn btn-outline-danger" for="BeforeHandRub@(i)Cross">X</label>
 
-            <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="Gloves" name="Gloves" value="True" />
-                <label class="form-check-label" for="Gloves">Gloves Used?</label>
+                                                <input type="radio" class="btn-check" name="BeforeHandRub@(i)Symbol" id="BeforeHandRub@(i)None" value="" checked>
+                                                <label class="btn btn-outline-secondary" for="BeforeHandRub@(i)None">None</label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <input type="hidden" id="BeforeHandRub" name="BeforeHandRub" />
+                            </div>
+
+                            <!-- Before Hand Wash -->
+                            <div class="mb-3">
+                                <label class="form-label">Before Hand Wash</label>
+
+                                <div class="d-flex flex-wrap gap-3 mt-2">
+                                    @for (int i = 1; i <= 2; i++)
+                                    {
+                                        <div class="border p-2 rounded">
+                                            <div class="fw-bold mb-1">Number @i</div>
+                                            <div class="btn-group" role="group">
+                                                <input type="radio" class="btn-check" name="BeforeHandWash@(i)Symbol" id="BeforeHandWash@(i)Check" value="✓">
+                                                <label class="btn btn-outline-success" for="BeforeHandWash@(i)Check">✓</label>
+
+                                                <input type="radio" class="btn-check" name="BeforeHandWash@(i)Symbol" id="BeforeHandWash@(i)Cross" value="X">
+                                                <label class="btn btn-outline-danger" for="BeforeHandWash@(i)Cross">X</label>
+
+                                                <input type="radio" class="btn-check" name="BeforeHandWash@(i)Symbol" id="BeforeHandWash@(i)None" value="" checked>
+                                                <label class="btn btn-outline-secondary" for="BeforeHandWash@(i)None">None</label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <input type="hidden" id="BeforeHandWash" name="BeforeHandWash" />
+                            </div>
+                        </div>
+
+                        <!-- After Activity Section -->
+                        <div class="col-md-6">
+                            <h6 class="mb-3 border-bottom pb-2">After Activity</h6>
+
+                            <!-- After Hand Rub -->
+                            <div class="mb-3">
+                                <label class="form-label">After Hand Rub</label>
+
+                                <div class="d-flex flex-wrap gap-3 mt-2">
+                                    @for (int i = 3; i <= 5; i++)
+                                    {
+                                        <div class="border p-2 rounded">
+                                            <div class="fw-bold mb-1">Number @i</div>
+                                            <div class="btn-group" role="group">
+                                                <input type="radio" class="btn-check" name="AfterHandRub@(i)Symbol" id="AfterHandRub@(i)Check" value="✓">
+                                                <label class="btn btn-outline-success" for="AfterHandRub@(i)Check">✓</label>
+
+                                                <input type="radio" class="btn-check" name="AfterHandRub@(i)Symbol" id="AfterHandRub@(i)Cross" value="X">
+                                                <label class="btn btn-outline-danger" for="AfterHandRub@(i)Cross">X</label>
+
+                                                <input type="radio" class="btn-check" name="AfterHandRub@(i)Symbol" id="AfterHandRub@(i)None" value="" checked>
+                                                <label class="btn btn-outline-secondary" for="AfterHandRub@(i)None">None</label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <input type="hidden" id="AfterHandRub" name="AfterHandRub" />
+                            </div>
+
+                            <!-- After Hand Wash -->
+                            <div class="mb-3">
+                                <label class="form-label">After Hand Wash</label>
+
+                                <div class="d-flex flex-wrap gap-3 mt-2">
+                                    @for (int i = 3; i <= 5; i++)
+                                    {
+                                        <div class="border p-2 rounded">
+                                            <div class="fw-bold mb-1">Number @i</div>
+                                            <div class="btn-group" role="group">
+                                                <input type="radio" class="btn-check" name="AfterHandWash@(i)Symbol" id="AfterHandWash@(i)Check" value="✓">
+                                                <label class="btn btn-outline-success" for="AfterHandWash@(i)Check">✓</label>
+
+                                                <input type="radio" class="btn-check" name="AfterHandWash@(i)Symbol" id="AfterHandWash@(i)Cross" value="X">
+                                                <label class="btn btn-outline-danger" for="AfterHandWash@(i)Cross">X</label>
+
+                                                <input type="radio" class="btn-check" name="AfterHandWash@(i)Symbol" id="AfterHandWash@(i)None" value="" checked>
+                                                <label class="btn btn-outline-secondary" for="AfterHandWash@(i)None">None</label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <input type="hidden" id="AfterHandWash" name="AfterHandWash" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-3 mt-3">
+                        <input class="form-check-input" type="checkbox" id="Gloves" name="Gloves" value="True" />
+                        <label class="form-check-label" for="Gloves">Gloves Used?</label>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group mt-3">
@@ -58,40 +152,50 @@
             </div>
         </form>
     </div>
-
-    <div class="col-md-6">
+    <div class="col-md-4">
         @if (ViewBag.Activities != null && ((List<HHActivity>)ViewBag.Activities).Any())
         {
-            <h4>Activities Added</h4>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Activity</th>
-                        <th>Before Hand Rub</th>
-                        <th>Before Hand Wash</th>
-                        <th>After Hand Rub</th>
-                        <th>After Hand Wash</th>
-                        <th>Gloves</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in (List<HHActivity>)ViewBag.Activities)
-                    {
-                        <tr>
-                            <td>@item.Activity</td>
-                            <td>@item.BeforeHandRub</td>
-                            <td>@item.BeforeHandWash</td>
-                            <td>@item.AfterHandRub</td>
-                            <td>@item.AfterHandWash</td>
-                            <td>@(item.Gloves == "True" ? "Yes" : "No")</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Activities Added</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Activity</th>
+                                    <th>Before HR</th>
+                                    <th>Before HW</th>
+                                    <th>After HR</th>
+                                    <th>After HW</th>
+                                    <th>Gloves</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in (List<HHActivity>)ViewBag.Activities)
+                                {
+                                    <tr>
+                                        <td>@item.Activity</td>
+                                        <td>@Html.Raw(item.BeforeHandRub)</td>
+                                        <td>@Html.Raw(item.BeforeHandWash)</td>
+                                        <td>@Html.Raw(item.AfterHandRub)</td>
+                                        <td>@Html.Raw(item.AfterHandWash)</td>
+                                        <td>@(item.Gloves == "True" ? "Yes" : "No")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         }
         else
         {
-            <h4>No activities added yet</h4>
+            <div class="alert alert-info">
+                <h5>No activities added yet</h5>
+                <p>Use the form to add hand hygiene activities.</p>
+            </div>
         }
     </div>
 </div>
@@ -100,4 +204,72 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        $(document).ready(function() {
+            // Function to update hidden input from symbol selections
+            function updateHiddenInputs() {
+                // For BeforeHandRub
+                const beforeRubValues = [];
+                for (let i = 1; i <= 2; i++) {
+                    const symbol = $(`input[name="BeforeHandRub${i}Symbol"]:checked`).val();
+                    if (symbol) {
+                        beforeRubValues.push(`${i},${symbol}`);
+                    }
+                }
+                $('#BeforeHandRub').val(beforeRubValues.join(';'));
+
+                // For BeforeHandWash
+                const beforeWashValues = [];
+                for (let i = 1; i <= 2; i++) {
+                    const symbol = $(`input[name="BeforeHandWash${i}Symbol"]:checked`).val();
+                    if (symbol) {
+                        beforeWashValues.push(`${i},${symbol}`);
+                    }
+                }
+                $('#BeforeHandWash').val(beforeWashValues.join(';'));
+
+                // For AfterHandRub
+                const afterRubValues = [];
+                for (let i = 3; i <= 5; i++) {
+                    const symbol = $(`input[name="AfterHandRub${i}Symbol"]:checked`).val();
+                    if (symbol) {
+                        afterRubValues.push(`${i},${symbol}`);
+                    }
+                }
+                $('#AfterHandRub').val(afterRubValues.join(';'));
+
+                // For AfterHandWash
+                const afterWashValues = [];
+                for (let i = 3; i <= 5; i++) {
+                    const symbol = $(`input[name="AfterHandWash${i}Symbol"]:checked`).val();
+                    if (symbol) {
+                        afterWashValues.push(`${i},${symbol}`);
+                    }
+                }
+                $('#AfterHandWash').val(afterWashValues.join(';'));
+            }
+
+            // Add event listeners for all radio buttons
+            $('input[type="radio"]').change(updateHiddenInputs);
+
+            // Initial update
+            updateHiddenInputs();
+
+            // Form submission validation
+            $('form').submit(function(e) {
+                // At least one symbol from any section should be selected
+                const hasSymbol = [
+                    $('#BeforeHandRub').val(),
+                    $('#BeforeHandWash').val(),
+                    $('#AfterHandRub').val(),
+                    $('#AfterHandWash').val()
+                ].some(val => val && val.length > 0);
+
+                if (!hasSymbol) {
+                    alert('Please select at least one symbol (✓ or X) for any number.');
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 }
