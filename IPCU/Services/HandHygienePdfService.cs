@@ -83,7 +83,7 @@ namespace IPCU.Services
                 header.Item().Row(row =>
                 {
                     // Add image on the left side
-                    row.ConstantItem(50).Image(@"C:\Users\wacky\Source\Repos\NKTI_IPCU\IPCU\wwwroot\images\nktilogo.png").FitWidth();
+                    row.ConstantItem(50).Image(@"wwwroot\images\nktilogo.png").FitWidth();
 
                     // Center text content
                     row.RelativeItem().Column(col =>
