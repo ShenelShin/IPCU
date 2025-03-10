@@ -9,6 +9,11 @@ public class FitTestingFormPdfService
     private static readonly string AccentColor = Colors.Indigo.Darken4;
     private static readonly float HeaderSize = 12;  // Reduced from 14
     private static readonly float BodySize = 10;    // Reduced from 12
+    private byte[] LoadLogo()
+    {
+        // Replace "path/to/your/logo.png" with the actual path to your logo file
+        return File.ReadAllBytes("wwwroot/images/NKTI.png");
+    }
 
     public byte[] GeneratePdf(FitTestingForm fitTestingForm)
     {
@@ -22,32 +27,43 @@ public class FitTestingFormPdfService
                 page.Margin(15);  // Reduced from 25
 
                 // Header Section with tighter spacing
-                page.Header().Column(header =>
+                // Header Section with logo and text
+                page.Header().Row(header =>
                 {
-                    header.Spacing(5);  // Reduced from default
-                    header.Item().AlignCenter().Text("NATIONAL KIDNEY AND TRANSPLANT INSTITUTE")
-                        .FontSize(14)  // Reduced from 16
-                        .Bold()
-                        .FontColor(AccentColor);
+                    // Logo column (left side)
+                    header.ConstantColumn(50).Image(LoadLogo())
+                        .FitArea();
+                        //.MarginRight(10);
 
-                    header.Item().AlignCenter().Text("East Avenue, Quezon City")
-                        .FontSize(9)  // Reduced from 10
-                        .Bold()
-                        .FontColor(DarkColor);
+                    // Text column (center)
+                    header.RelativeColumn().Column(col =>
+                    {
+                        col.Spacing(5);
+                        col.Item().AlignCenter().Text("NATIONAL KIDNEY AND TRANSPLANT INSTITUTE")
+                            .FontSize(14)
+                            .Bold()
+                            .FontColor(AccentColor);
 
-                    header.Item().PaddingVertical(5)  // Reduced from 10
-                        .LineHorizontal(1).LineColor(Colors.Grey.Darken3);
+                        col.Item().AlignCenter().Text("East Avenue, Quezon City")
+                            .FontSize(9)
+                            .Bold()
+                            .FontColor(DarkColor);
 
-                    header.Item().AlignCenter().Text("INFECTION PREVENTION AND CONTROL UNIT")
-                        .FontSize(9)  // Reduced from 10
-                        .Bold()
-                        .FontColor(DarkColor);
+                        col.Item().PaddingVertical(5)
+                            .LineHorizontal(1).LineColor(Colors.Grey.Darken3);
 
-                    header.Item().AlignCenter().Text("QUALITATIVE RESPIRATOR FIT TESTING FORM")
-                        .FontSize(9)  // Reduced from 10
-                        .Bold()
-                        .FontColor(DarkColor);
+                        col.Item().AlignCenter().Text("INFECTION PREVENTION AND CONTROL UNIT")
+                            .FontSize(9)
+                            .Bold()
+                            .FontColor(DarkColor);
+
+                        col.Item().AlignCenter().Text("QUALITATIVE RESPIRATOR FIT TESTING FORM")
+                            .FontSize(9)
+                            .Bold()
+                            .FontColor(DarkColor);
+                    });
                 });
+
 
                 page.Content().Column(content =>
                 {
@@ -173,7 +189,14 @@ public class FitTestingFormPdfService
 
                         col.Item().Padding(5).Text(text =>  // Reduced padding
                         {
-                            text.Span("These procedures follow accepted fit testing standards. Results reflect device performance under controlled conditions. Proper use and maintenance are essential for effective protection.")
+                            text.Span("These procedures are in accordance with accepted standards " +
+                                "of fit testing. The above respirator fit test was performed " +
+                                "on\r\nthe HCW named, by the test administrator named. " +
+                                "The results indicate the performance of the listed respiratory\r\nprotective " +
+                                "device under controlled conditions. The fit test measured the ability of the " +
+                                "respiratory protective device to\r\nprovide protection to the individual tested. " +
+                                "Improper use, maintenance, or application of this or any other respiratory\r\nprotective " +
+                                "device will reduce or eliminate respiratory protection.")
                                 .FontSize(BodySize - 1)  // Smaller than body text
                                 .FontColor(Colors.Grey.Darken2)
                                 .LineHeight(1);  // Tighter line spacing

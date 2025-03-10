@@ -105,9 +105,15 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label asp-for="Respiratory_Type" class="form-label fw-bold">Respiratory Type</label>
-                                    <input asp-for="Respiratory_Type" class="form-control" placeholder="Enter Respiratory Type" />
+                                    <select asp-for="Respiratory_Type" class="form-control">
+                                        <option value="">Select Respiratory Type</option>
+                                        <option value="BTL">BTL</option>
+                                        <option value="Flat Type">Flat Type</option>
+                                        <option value="3M Aura">3M Aura</option>
+                                    </select>
                                     <span asp-validation-for="Respiratory_Type" class="text-danger"></span>
                                 </div>
+
                             </div>
 
                             <div class="col-md-6">
@@ -120,8 +126,8 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Size" class="form-label fw-bold"></label>
-                            <input asp-for="Size" class="form-control" placeholder="Enter Size" />
+                            <label asp-for="Size" class="form-label fw-bold">Size</label>
+                            <input asp-for="Size" type="text" class="form-control" placeholder="Enter Size" />
                             <span asp-validation-for="Size" class="text-danger"></span>
                         </div>
 

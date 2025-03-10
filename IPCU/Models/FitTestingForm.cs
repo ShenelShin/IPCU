@@ -31,7 +31,7 @@ namespace IPCU.Models
         public string Model { get; set; }
 
         [Required]
-        public int Size { get; set; }
+        public string Size { get; set; }
 
         [Required]
         public bool Normal_Breathing { get; set; }
