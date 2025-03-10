@@ -9,8 +9,16 @@
 
     public class TrainingEvaluationPdfService
     {
-        public static byte[] GeneratePdf(TrainingEvaluation training)
+        private static byte[] LoadLogo()
         {
+            return File.ReadAllBytes("wwwroot/images/nktilogo.png");
+        }
+
+        public static byte[] GeneratePdf(TrainingEvaluation training)
+
+
+        {
+
             return Document.Create(container =>
             {
                 container.Page(page =>
@@ -19,51 +27,68 @@
                     page.Size(PageSizes.A4);
 
                     // ===== Header Section =====
-                        page.Header().Element(header =>
-                        {
-                            header.Border(1) // Add border to create a box
-                                  .Padding(10) // Add padding inside the box
-                                  .Background(White) // Light background for better visibility
-                                  .Column(col =>
+                    // ===== Header Section =====
+                    // ===== Header Section =====
+                    page.Header().Element(header =>
+                    {
+                        header.Border(1) // Adds border
+                              .Padding(10) // Padding inside the box
+                              .Background(White) // Light background for better visibility
+                              .Row(row =>
+                              {
+                                  // Load and add the logo
+                                  byte[] logoBytes = LoadLogo();
+                                  if (logoBytes != null && logoBytes.Length > 0)
+                                  {
+                                      row.ConstantItem(70).Element(container =>
+                                      {
+                                          container.Image(logoBytes)
+                                                  .FitWidth(); // ✅ Ensures it scales properly within the width
+                                      });
+                                  }
+
+                                  // Organization Details
+                                  row.RelativeItem().Column(col =>
                                   {
                                       col.Spacing(0);
 
-                                      // Adding National Kidney and Transplant Institute Details
                                       col.Item()
-         .AlignCenter()
-         .Text("NATIONAL KIDNEY AND TRANSPLANT INSTITUTE")
-         .Bold()
-         .FontSize(12)
-         .FontColor(Colors.Blue.Darken4); // Sets text color to dark blue
+                                         .AlignCenter()
+                                         .Text("NATIONAL KIDNEY AND TRANSPLANT INSTITUTE")
+                                         .Bold()
+                                         .FontSize(12)
+                                         .FontColor(Colors.Blue.Darken4);
 
                                       col.Item().AlignCenter().Text("East Avenue, Quezon City").FontSize(10);
 
-                                      // Adding Infection Prevention and Control Unit Section Title with top margin
                                       col.Item()
-          .PaddingTop(10)
-          .AlignCenter()
-          .Text("INFECTION PREVENTION AND CONTROL UNIT")
-          .Bold()
-          .FontSize(12)
-          .FontColor(Colors.Blue.Darken4); // Dark blue color
+                                         .PaddingTop(10)
+                                         .AlignCenter()
+                                         .Text("INFECTION PREVENTION AND CONTROL UNIT")
+                                         .Bold()
+                                         .FontSize(12)
+                                         .FontColor(Colors.Blue.Darken4);
 
-                                      // Horizontal Line Separator between sections
                                       col.Item().Element(container =>
                                           container.PaddingVertical(2)
-                                                   .AlignCenter() // Centers the element
-                                                   .Width(400) // Limits width
+                                                   .AlignCenter()
+                                                   .Width(400)
                                       ).LineHorizontal(0.5f);
 
-                                      // Training Evaluation Summary (NO UNDERLINE BELOW THIS)
                                       col.Item()
                                           .AlignCenter()
                                           .Text("TRAINING EVALUATION SUMMARY")
                                           .Bold()
                                           .FontSize(12)
-                                          .FontColor(Colors.Blue.Darken4); // Dark blue color
+                                          .FontColor(Colors.Blue.Darken4);
+                                  
+                    
 
-                                  });
-                        });
+                                                      });
+                              });
+                    });
+
+
 
 
 
@@ -231,7 +256,7 @@
 
 
                         // ===== Suggestions for Improvement =====
-                        col.Item().Text("SUGGESTIONS FOR IMPROVEMENT").Bold().FontSize(10);
+                        col.Item().Text("What is the best thing you can say about the speaker?").Bold().FontSize(10);
                         col.Item().Border(1).Padding(3).Text(training.SuggestionsForImprovement ?? "N/A");
                     });
 

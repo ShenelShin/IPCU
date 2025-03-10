@@ -24,22 +24,33 @@ namespace IPCU.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(string searchTitle, string searchVenue, string searchCategory, DateTime? searchDate, int? page)
         {
-            int pageSize = 10; // Rows per page
-            int pageNumber = page ?? 1; // Default to page 1
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
 
-            // Fetch the data first
-            var trainingList = await _context.TrainingEvaluation
-                                             .OrderBy(t => t.DateOfTraining)
-                                             .AsNoTracking()
-                                             .ToListAsync();
+            var query = _context.TrainingEvaluation.AsQueryable();
 
-            // Apply pagination AFTER retrieving data
+            // Apply filtering
+            if (!string.IsNullOrEmpty(searchTitle))
+                query = query.Where(t => t.Title.Contains(searchTitle));
+            if (!string.IsNullOrEmpty(searchVenue))
+                query = query.Where(t => t.Venue.Contains(searchVenue));
+            if (!string.IsNullOrEmpty(searchCategory))
+                query = query.Where(t => t.ProfessionalCategory.Contains(searchCategory));
+            if (searchDate.HasValue)
+                query = query.Where(t => t.DateOfTraining.Date == searchDate.Value.Date);
+
+            // Fetch list first (async) and apply pagination later
+            var trainingList = await query.OrderBy(t => t.DateOfTraining)
+                                          .AsNoTracking()
+                                          .ToListAsync();
+
             var paginatedList = trainingList.ToPagedList(pageNumber, pageSize);
 
             return View(paginatedList);
         }
+
 
 
         // GET: TrainingSummary/Details/5

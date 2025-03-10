@@ -17,7 +17,8 @@ namespace IPCU.Models
         public string Observer { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }  // DATE type
+        public DateTime Date { get; set; }  // DATE
+              
 
         [Required]
         public TimeSpan Time { get; set; }  // TIME type
