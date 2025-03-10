@@ -36,7 +36,7 @@ namespace IPCU.Controllers
             if (id == null) return NotFound();
 
             var handHygieneForm = await _context.HandHygieneForms
-                .Include(f => f.Activities)  // Load related HHActivity records
+                .Include(h => h.Activities)  // Load related HHActivity records
                 .FirstOrDefaultAsync(m => m.HHId == id);
 
             if (handHygieneForm == null) return NotFound();
@@ -173,9 +173,95 @@ namespace IPCU.Controllers
         }
 
         // Add a new action method to finish adding activities
-        public IActionResult FinishActivities(int id)
+        public async Task<IActionResult> FinishActivities(int id)
         {
+            var handHygieneForm = await _context.HandHygieneForms
+                .Include(f => f.Activities)
+                .FirstOrDefaultAsync(f => f.HHId == id);
+
+            if (handHygieneForm == null) return NotFound();
+
+            // Calculate and update compliance data
+            UpdateComplianceData(handHygieneForm);
+
+            // Save changes to database
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Details", new { id = id });
+        }
+
+        // Helper method to update compliance data
+        private void UpdateComplianceData(HandHygieneForm form)
+        {
+            // Calculate total opportunities and compliant actions
+            form.TotalObservedOpportunities = CalculateTotalOpportunities(form);
+            form.TotalCompliantActions = CalculateCompliantActions(form);
+
+            // Calculate compliance rate (handle division by zero)
+            if (form.TotalObservedOpportunities > 0)
+            {
+                // Store as a decimal (not multiplied by 100)
+                // This will be displayed as percentage with ToString("P2") in the view
+                form.ComplianceRate = (decimal)form.TotalCompliantActions / form.TotalObservedOpportunities;
+            }
+            else
+            {
+                form.ComplianceRate = 0;
+            }
+        }
+
+
+
+        // Helper methods for compliance calculation
+        private int CalculateTotalOpportunities(HandHygieneForm form)
+        {
+            int count = 0;
+            foreach (var activity in form.Activities)
+            {
+                // Count all non-empty entries as opportunities
+                if (!string.IsNullOrEmpty(activity.BeforeHandRub)) count += CountEntries(activity.BeforeHandRub);
+                if (!string.IsNullOrEmpty(activity.BeforeHandWash)) count += CountEntries(activity.BeforeHandWash);
+                if (!string.IsNullOrEmpty(activity.AfterHandRub)) count += CountEntries(activity.AfterHandRub);
+                if (!string.IsNullOrEmpty(activity.AfterHandWash)) count += CountEntries(activity.AfterHandWash);
+            }
+            return count;
+        }
+
+        private int CalculateCompliantActions(HandHygieneForm form)
+        {
+            int count = 0;
+            foreach (var activity in form.Activities)
+            {
+                // Count entries marked with ✓ as compliant
+                count += CountCompliantEntries(activity.BeforeHandRub);
+                count += CountCompliantEntries(activity.BeforeHandWash);
+                count += CountCompliantEntries(activity.AfterHandRub);
+                count += CountCompliantEntries(activity.AfterHandWash);
+            }
+            return count;
+        }
+
+        private int CountEntries(string data)
+        {
+            if (string.IsNullOrEmpty(data)) return 0;
+            return data.Split(';').Length;
+        }
+
+        private int CountCompliantEntries(string data)
+        {
+            if (string.IsNullOrEmpty(data)) return 0;
+            int compliantCount = 0;
+            var entries = data.Split(';');
+            foreach (var entry in entries)
+            {
+                if (string.IsNullOrEmpty(entry)) continue;
+                var parts = entry.Split(',');
+                if (parts.Length == 2 && parts[1] == "✓")
+                {
+                    compliantCount++;
+                }
+            }
+            return compliantCount;
         }
 
 
@@ -196,7 +282,6 @@ namespace IPCU.Controllers
         }
 
 
-        // POST: HandHygieneForms/Edit/5
         // POST: HandHygieneForms/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -240,9 +325,7 @@ namespace IPCU.Controllers
                     existingForm.ObsvPatientCare = handHygieneForm.ObsvPatientCare;
                     existingForm.ObsvPatientEnvironment = handHygieneForm.ObsvPatientEnvironment;
                     existingForm.ObsvPatientContact = handHygieneForm.ObsvPatientContact;
-                    existingForm.TotalCompliantActions = handHygieneForm.TotalCompliantActions;
-                    existingForm.TotalObservedOpportunities = handHygieneForm.TotalObservedOpportunities;
-                    existingForm.ComplianceRate = handHygieneForm.ComplianceRate;
+                    existingForm.EnvironmentResource = handHygieneForm.EnvironmentResource;
 
                     // Handle the activities update
                     if (handHygieneForm.Activities != null && handHygieneForm.Activities.Count > 0)
@@ -294,6 +377,9 @@ namespace IPCU.Controllers
                         }
                     }
 
+                    // Calculate and update compliance data
+                    UpdateComplianceData(existingForm);
+
                     // Save all changes
                     await _context.SaveChangesAsync();
 
@@ -329,6 +415,7 @@ namespace IPCU.Controllers
             // If we got this far, something failed, redisplay form
             return View(handHygieneForm);
         }
+
 
 
         // GET: HandHygieneForms/Delete/5

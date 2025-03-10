@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250307004057_AddEnvironmentResourceToHandHygieneForm")]
-    partial class AddEnvironmentResourceToHandHygieneForm
+    [Migration("20250310063911_sizeUpdate")]
+    partial class sizeUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -163,6 +163,9 @@ namespace IPCU.Migrations
                     b.Property<bool>("Deep_Breathing")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("ExpiringAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Fit_Test_Solution")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -171,7 +174,7 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LimitationString")
+                    b.Property<string>("Limitation")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -206,8 +209,9 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SubmissionCount")
                         .HasColumnType("int");
@@ -289,6 +293,10 @@ namespace IPCU.Migrations
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("EnvironmentResource")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("HCWType")
                         .IsRequired()
@@ -414,79 +422,79 @@ namespace IPCU.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AddressClarifications")
-                        .HasColumnType("int");
+                    b.Property<double>("AddressClarifications")
+                        .HasColumnType("float");
 
-                    b.Property<int>("BalancePrinciples")
-                        .HasColumnType("int");
+                    b.Property<double>("BalancePrinciples")
+                        .HasColumnType("float");
 
-                    b.Property<int>("ContentOrganization")
-                        .HasColumnType("int");
+                    b.Property<double>("ContentOrganization")
+                        .HasColumnType("float");
 
-                    b.Property<int>("ContentQuality")
-                        .HasColumnType("int");
+                    b.Property<double>("ContentQuality")
+                        .HasColumnType("float");
 
                     b.Property<DateTime>("DateOfTraining")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EstablishRapport")
-                        .HasColumnType("int");
+                    b.Property<double>("EstablishRapport")
+                        .HasColumnType("float");
 
                     b.Property<double>("FinalRating")
                         .HasColumnType("float");
 
-                    b.Property<int>("FlowFollowed")
-                        .HasColumnType("int");
+                    b.Property<double>("FlowFollowed")
+                        .HasColumnType("float");
 
-                    b.Property<int>("FlowOfTopic")
-                        .HasColumnType("int");
+                    b.Property<double>("FlowOfTopic")
+                        .HasColumnType("float");
 
-                    b.Property<int>("InitiateDiscussion")
-                        .HasColumnType("int");
+                    b.Property<double>("InitiateDiscussion")
+                        .HasColumnType("float");
 
-                    b.Property<int>("LearningActivities")
-                        .HasColumnType("int");
+                    b.Property<double>("LearningActivities")
+                        .HasColumnType("float");
 
-                    b.Property<int>("ObjectiveStated")
-                        .HasColumnType("int");
+                    b.Property<double>("ObjectiveStated")
+                        .HasColumnType("float");
 
                     b.Property<double>("PostTestEvaluationGrade")
                         .HasColumnType("float");
 
-                    b.Property<int>("PracticeApplication")
-                        .HasColumnType("int");
+                    b.Property<double>("PracticeApplication")
+                        .HasColumnType("float");
 
-                    b.Property<int>("Preparedness")
-                        .HasColumnType("int");
+                    b.Property<double>("Preparedness")
+                        .HasColumnType("float");
 
-                    b.Property<int>("PresentKnowledge")
-                        .HasColumnType("int");
+                    b.Property<double>("PresentKnowledge")
+                        .HasColumnType("float");
 
                     b.Property<string>("ProfessionalCategory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RelevanceOfTopic")
-                        .HasColumnType("int");
+                    b.Property<double>("RelevanceOfTopic")
+                        .HasColumnType("float");
 
-                    b.Property<int>("RespectForParticipants")
-                        .HasColumnType("int");
+                    b.Property<double>("RespectForParticipants")
+                        .HasColumnType("float");
 
-                    b.Property<int>("RulesEstablished")
-                        .HasColumnType("int");
+                    b.Property<double>("RulesEstablished")
+                        .HasColumnType("float");
 
                     b.Property<string>("SuggestionsForImprovement")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TeachingPersonality")
-                        .HasColumnType("int");
+                    b.Property<double>("TeachingPersonality")
+                        .HasColumnType("float");
 
-                    b.Property<int>("TechnicalCapability")
-                        .HasColumnType("int");
+                    b.Property<double>("TechnicalCapability")
+                        .HasColumnType("float");
 
-                    b.Property<int>("TimeManagement")
-                        .HasColumnType("int");
+                    b.Property<double>("TimeManagement")
+                        .HasColumnType("float");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -506,11 +514,11 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("VisualAids")
-                        .HasColumnType("int");
+                    b.Property<double>("VisualAids")
+                        .HasColumnType("float");
 
-                    b.Property<int>("VoicePersonality")
-                        .HasColumnType("int");
+                    b.Property<double>("VoicePersonality")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IPCU.Data;
 using IPCU.Models;
+using X.PagedList;
+using X.PagedList.Mvc.Core;
+using X.PagedList.Extensions;
 
 namespace IPCU.Controllers
 {
-    [Route("FitTestingForm")]
     public class FitTestingFormController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -21,55 +23,41 @@ namespace IPCU.Controllers
         }
 
         // GET: FitTestingForm
-        [HttpGet("")]
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 10, string expiryFilter = "")
+
+        [HttpGet]
+        [Route("FitTestingForm")]
+        public async Task<IActionResult> Index(int? page, bool? filterExpiring, string testResult)
         {
-            // Get the total number of records
-            var fitTests = _context.FitTestingForm.AsQueryable();
-            DateTime today = DateTime.Today;
+            int pageSize = 20;
+            int pageNumber = page ?? 1;
+            var fitTestingForm = _context.FitTestingForm.AsQueryable();
 
-            if (!string.IsNullOrEmpty(expiryFilter))
+            // Check if filterExpiring is true
+            if (filterExpiring == true)
             {
-                switch (expiryFilter)
-                {
-                    case "1day":
-                        fitTests = fitTests.Where(f => f.SubmittedAt.AddDays(30) >= today && f.SubmittedAt.AddDays(30) <= today.AddDays(1));
-                        break;
-                    case "1week":
-                        fitTests = fitTests.Where(f => f.SubmittedAt.AddDays(30) >= today && f.SubmittedAt.AddDays(30) <= today.AddDays(7));
-                        break;
-                    case "2weeks":
-                        fitTests = fitTests.Where(f => f.SubmittedAt.AddDays(30) >= today && f.SubmittedAt.AddDays(30) <= today.AddDays(14));
-                        break;
-                    default:
-                        break; // No filtering applied
-                }
-
-
+                DateTime today = DateTime.Today;
+                DateTime thresholdDate = today.AddDays(30);
+                fitTestingForm = fitTestingForm
+                    .Where(f => f.ExpiringAt >= today && f.ExpiringAt <= thresholdDate);
             }
 
+            if (!string.IsNullOrEmpty(testResult))
+            {
+                fitTestingForm = fitTestingForm.Where(f => f.Test_Results == testResult);
+            }
 
-            var totalRecords = await fitTests.CountAsync();
+            var pagedList = fitTestingForm.ToPagedList(pageNumber, pageSize);
 
-            var paginatedData = await fitTests
-                .OrderBy(f => f.Id) // Optional: Order by a specific column
-                .Skip((page - 1) * pageSize) // Skip the records of previous pages
-                .Take(pageSize) // Take only the records for the current page
-                .ToListAsync();
+            // Store selected filters
+            ViewData["FilterExpiring"] = filterExpiring;
+            ViewData["SelectedTestResult"] = testResult;
 
-            // Pass pagination details to the view using ViewBag
-            ViewBag.CurrentPage = page;
-            ViewBag.PageSize = pageSize;
-            ViewBag.TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
-            ViewBag.ExpiryFilter = expiryFilter;
-
-            return View(paginatedData);
+            return View(pagedList);
         }
 
 
 
         // GET: FitTestingForm/Details/5
-        [HttpGet("Details/{id}")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -88,7 +76,6 @@ namespace IPCU.Controllers
         }
 
         // GET: FitTestingForm/Create
-        [HttpGet("Create")]
         public IActionResult Create()
         {
             return View();
@@ -99,23 +86,54 @@ namespace IPCU.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(FitTestingForm fitTestingForm, string OtherLimitation)
+        public async Task<IActionResult> Create(FitTestingForm fitTestingForm, string? OtherLimitation)
         {
-            if (ModelState.IsValid)
+            // Remove OtherLimitation from ModelState since it's not in our model
+            ModelState.Remove("OtherLimitation");
+
+            try
             {
-                // If "Other" is checked and has a value, add it to Limitation list
-                if (!string.IsNullOrWhiteSpace(OtherLimitation) && fitTestingForm.Limitation.Contains("Other"))
+                var limitations = Request.Form["Limitation"].ToList();
+
+                if (limitations != null && limitations.Any())
                 {
-                    fitTestingForm.Limitation.Remove("Other"); // Remove "Other" text
-                    fitTestingForm.Limitation.Add(OtherLimitation); // Add the custom input
+                    // If "Other" is selected and has a value
+                    if (limitations.Contains("Other"))
+                    {
+                        if (string.IsNullOrWhiteSpace(OtherLimitation))
+                        {
+                            ModelState.AddModelError("Limitation", "Please specify the other limitation");
+                            return View(fitTestingForm);
+                        }
+                        limitations.Remove("Other");
+                        limitations.Add(OtherLimitation.Trim());
+                    }
+
+                    // Concatenate the limitations into a single string
+                    fitTestingForm.Limitation = string.Join(", ", limitations.Where(x => !string.IsNullOrWhiteSpace(x)));
+                }
+                else
+                {
+                    fitTestingForm.Limitation = "None";
                 }
 
-                _context.Add(fitTestingForm);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    fitTestingForm.SubmittedAt = DateTime.Now;
+                    fitTestingForm.ExpiringAt = fitTestingForm.SubmittedAt.AddYears(1); // Set ExpiringAt
+                    _context.Add(fitTestingForm);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error processing limitations: " + ex.Message);
+            }
+
             return View(fitTestingForm);
         }
+
 
         // GET: FitTestingForm/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -218,7 +236,6 @@ namespace IPCU.Controllers
             return File(pdfBytes, "application/pdf"); // This ensures the browser previews it properly
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SubmitFitTest(int id, FitTestingForm updatedForm)
@@ -227,6 +244,7 @@ namespace IPCU.Controllers
             if (fitTest != null)
             {
                 // Update the breathing and movement test fields
+                fitTest.Fit_Test_Solution = updatedForm.Fit_Test_Solution;
                 fitTest.Normal_Breathing = updatedForm.Normal_Breathing;
                 fitTest.Deep_Breathing = updatedForm.Deep_Breathing;
                 fitTest.Turn_head_side_to_side = updatedForm.Turn_head_side_to_side;
@@ -245,11 +263,6 @@ namespace IPCU.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet("Test")]
-        public IActionResult Test()
-        {
-            return Content("Test page is working!");
-        }
 
     }
 }
