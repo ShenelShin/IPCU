@@ -13,12 +13,25 @@
 
 <div class="d-flex justify-content-between mb-3">
     <a asp-action="Create" class="btn btn-primary"><i class="fa fa-plus"></i> Create New</a>
-    <select id="expiryFilter" class="form-select w-25">
-        <option value="" selected="@(ViewBag.ExpiryFilter == "" ? "selected" : null)">All</option>
-        <option value="1day" selected="@(ViewBag.ExpiryFilter == "1day" ? "selected" : null)">Expiring in 1 day</option>
-        <option value="1week" selected="@(ViewBag.ExpiryFilter == "1week" ? "selected" : null)">Expiring in 1 week</option>
-        <option value="2weeks" selected="@(ViewBag.ExpiryFilter == "2weeks" ? "selected" : null)">Expiring in 2 weeks</option>
-    </select>
+    <form method="get" action="@Url.Action("Index")">
+        <label for="filterExpiring">Filter Expiring:</label>
+        <select name="filterExpiring" id="filterExpiring">
+            <option value="">All</option>
+            <option value="true" selected="@(ViewData["FilterExpiring"] as bool? == true ? "selected" : null)">Expiring in 30 days</option>
+        </select>
+
+        <label>
+            Test Result:
+            <select name="testResult">
+                <option value="" selected="@(string.IsNullOrEmpty(ViewData["SelectedTestResult"] as string) ? "selected" : null)">All</option>
+                <option value="Passed" selected="@(ViewData["SelectedTestResult"] as string == "Passed" ? "selected" : null)">Passed</option>
+                <option value="Failed" selected="@(ViewData["SelectedTestResult"] as string == "Failed" ? "selected" : null)">Failed</option>
+            </select>
+        </label>
+
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+    </form>
+
 
     <input type="text" id="searchBox" class="form-control w-25" placeholder="Search...">
 </div>
@@ -97,11 +110,12 @@
                                 <form asp-action="SubmitFitTest" method="post">
                                     <input type="hidden" name="Id" value="@item.Id" />
                                     <div class="mb-3">
-                                        <label for="fitTestType" class="form-label">Select Fit_Test_Solution</label>
+                                        <label for="fitTestType" class="form-label">Select Fit Test Solution</label>
                                         <select class="form-select" id="fitTestSolution" name="Fit_Test_Solution">
-                                            <option value="Test1">Test 1</option>
-                                            <option value="Test2">Test 2</option>
-                                            <option value="Test3">Test 3</option>
+                                            <option value="">Select Solution</option>
+                                            <option value="Bitter Amer (FT-32)">Bitter Amer (FT-32)</option>
+                                            <option value="Saccharin (FT-10)">Saccharin (FT-10)</option>
+                                            <option value="3M Aura">3M Aura</option>
                                         </select>
                                     </div>
                                     <div class="row">

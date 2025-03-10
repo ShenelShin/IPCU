@@ -24,23 +24,41 @@ namespace IPCU.Controllers
 
         // GET: FitTestingForm
 
-    public async Task<IActionResult> Index(int? page)
+        [HttpGet]
+        [Route("FitTestingForm")]
+        public async Task<IActionResult> Index(int? page, bool? filterExpiring, string testResult)
         {
-            int pageSize = 20; // Number of records per page
-            int pageNumber = page ?? 1; // If no page number is specified, default to 1
+            int pageSize = 20;
+            int pageNumber = page ?? 1;
+            var fitTestingForm = _context.FitTestingForm.AsQueryable();
 
-            var fitTestingForms = await _context.FitTestingForm.ToListAsync();
-            var pagedList = fitTestingForms.ToPagedList(pageNumber, pageSize);
+            // Check if filterExpiring is true
+            if (filterExpiring == true)
+            {
+                DateTime today = DateTime.Today;
+                DateTime thresholdDate = today.AddDays(30);
+                fitTestingForm = fitTestingForm
+                    .Where(f => f.ExpiringAt >= today && f.ExpiringAt <= thresholdDate);
+            }
 
-            ViewBag.CurrentPage = pageNumber;
-            ViewBag.TotalPages = pagedList.PageCount;
+            if (!string.IsNullOrEmpty(testResult))
+            {
+                fitTestingForm = fitTestingForm.Where(f => f.Test_Results == testResult);
+            }
+
+            var pagedList = fitTestingForm.ToPagedList(pageNumber, pageSize);
+
+            // Store selected filters
+            ViewData["FilterExpiring"] = filterExpiring;
+            ViewData["SelectedTestResult"] = testResult;
 
             return View(pagedList);
         }
 
 
-    // GET: FitTestingForm/Details/5
-    public async Task<IActionResult> Details(int? id)
+
+        // GET: FitTestingForm/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
