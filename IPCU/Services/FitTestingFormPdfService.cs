@@ -1,9 +1,9 @@
-﻿using QuestPDF.Fluent;
+﻿using IPCU.Data;
+using IPCU.Models;
+using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
-using IPCU.Models;
 using Microsoft.EntityFrameworkCore;
-using IPCU.Data;
 
 public class FitTestingFormPdfService
 {
@@ -96,6 +96,7 @@ public class FitTestingFormPdfService
                             AddTableRow(table, "Model/Size:", "12 - REGULAR");
                         });
                     });
+
                     // Fit Test Activities Table with History
                     content.Item().Border(1).BorderColor(Colors.Grey.Darken2).Column(col =>
                     {
@@ -117,79 +118,79 @@ public class FitTestingFormPdfService
                             table.Header(header =>
                             {
                                 header.Cell().BorderBottom(1).PaddingVertical(3)
-                                    .Text("Activity").Bold().FontColor(AccentColor).AlignCenter();
+                                    .Text("Activity").Bold().FontColor(AccentColor);
                                 header.Cell().BorderBottom(1).PaddingVertical(3)
-                                    .Text("First Attempt").Bold().FontColor(AccentColor).AlignCenter();
+                                    .Text("First Attempt").Bold().FontColor(AccentColor);
                                 header.Cell().BorderBottom(1).PaddingVertical(3)
-                                    .Text("Second Attempt").Bold().FontColor(AccentColor).AlignCenter();
+                                    .Text("Second Attempt").Bold().FontColor(AccentColor);
                                 header.Cell().BorderBottom(1).PaddingVertical(3)
-                                    .Text("Third Attempt").Bold().FontColor(AccentColor).AlignCenter();
+                                    .Text("Third Attempt").Bold().FontColor(AccentColor);
                             });
 
                             // Helper function to display checkmarks and Xs
                             string DisplayBoolean(bool? value) => value.HasValue ? (value.Value ? "✔" : "✘") : "";
 
                             // Fit Test Details (Solution, Sensitivity Test, Respiratory Type, Model, Size)
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text("Fit Test Solution:").FontSize(BodySize).FontColor(DarkColor);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(0)?.Fit_Test_Solution ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(1)?.Fit_Test_Solution ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(2)?.Fit_Test_Solution ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
 
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text("Sensitivity Test:").FontSize(BodySize).FontColor(DarkColor);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(0)?.Sensitivity_Test ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(1)?.Sensitivity_Test ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(2)?.Sensitivity_Test ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
 
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text("Respiratory Type:").FontSize(BodySize).FontColor(DarkColor);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(0)?.Respiratory_Type ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(1)?.Respiratory_Type ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(2)?.Respiratory_Type ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
 
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text("Model:").FontSize(BodySize).FontColor(DarkColor);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(0)?.Model ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(1)?.Model ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(2)?.Model ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
 
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text("Size:").FontSize(BodySize).FontColor(DarkColor);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(0)?.Size ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(1)?.Size ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text(history.ElementAtOrDefault(2)?.Size ?? "").FontSize(BodySize).FontColor(Colors.Grey.Darken2);
 
                             // Activity Rows
-                            AddActivityRow(table, "Normal Breathing", history, h => h.Normal_Breathing, DisplayBoolean, true);
-                            AddActivityRow(table, "Deep Breathing", history, h => h.Deep_Breathing, DisplayBoolean, true);
-                            AddActivityRow(table, "Turn Head Side to Side", history, h => h.Turn_head_side_to_side, DisplayBoolean, true);
-                            AddActivityRow(table, "Move Head Up and Down", history, h => h.Move_head_up_and_down, DisplayBoolean, true);
-                            AddActivityRow(table, "Reading", history, h => h.Reading, DisplayBoolean, true);
-                            AddActivityRow(table, "Bending/Jogging", history, h => h.Bending_Jogging, DisplayBoolean, true);
-                            AddActivityRow(table, "Normal Breathing (2)", history, h => h.Normal_Breathing_2, DisplayBoolean, true);
+                            AddActivityRow(table, "Normal Breathing", history, h => h.Normal_Breathing, DisplayBoolean);
+                            AddActivityRow(table, "Deep Breathing", history, h => h.Deep_Breathing, DisplayBoolean);
+                            AddActivityRow(table, "Turn Head Side to Side", history, h => h.Turn_head_side_to_side, DisplayBoolean);
+                            AddActivityRow(table, "Move Head Up and Down", history, h => h.Move_head_up_and_down, DisplayBoolean);
+                            AddActivityRow(table, "Reading", history, h => h.Reading, DisplayBoolean);
+                            AddActivityRow(table, "Bending/Jogging", history, h => h.Bending_Jogging, DisplayBoolean);
+                            AddActivityRow(table, "Normal Breathing (2)", history, h => h.Normal_Breathing_2, DisplayBoolean);
 
                             // Test Results
-                            table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                            table.Cell().BorderBottom(1).PaddingVertical(3)
                                 .Text("Result").FontSize(BodySize).Bold().FontColor(DarkColor);
                             for (int i = 0; i < 3; i++)
                             {
-                                table.Cell().BorderBottom(1).PaddingVertical(3).AlignCenter()
+                                table.Cell().BorderBottom(1).PaddingVertical(3)
                                     .Text(history.ElementAtOrDefault(i)?.Test_Results)
                                     .FontSize(BodySize)
                                     .FontColor(history.ElementAtOrDefault(i)?.Test_Results == "Failed" ? Colors.Red.Darken3 : Colors.Green.Darken3);
