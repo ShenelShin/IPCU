@@ -267,7 +267,7 @@ namespace IPCU.Controllers
             var form = _context.FitTestingForm.FirstOrDefault(f => f.Id == id);
             if (form == null) return NotFound();
 
-            var pdfService = new FitTestingFormPdfService();
+            var pdfService = new FitTestingFormPdfService(_context);
             var pdfBytes = pdfService.GeneratePdf(form);
 
             return File(pdfBytes, "application/pdf"); // This ensures the browser previews it properly
@@ -278,31 +278,9 @@ namespace IPCU.Controllers
         public IActionResult SubmitFitTest(int id, FitTestingForm updatedForm)
         {
             var fitTest = _context.FitTestingForm.FirstOrDefault(f => f.Id == id);
-            if (fitTest != null)
+            if (fitTest != null && fitTest.SubmissionCount < fitTest.MaxRetakes)
             {
-                // Save the current state to FitTestingFormHistory
-                var history = new FitTestingFormHistory
-                {
-                    FitTestingFormId = fitTest.Id,
-                    Fit_Test_Solution = fitTest.Fit_Test_Solution,
-                    Sensitivity_Test = fitTest.Sensitivity_Test,
-                    Respiratory_Type = fitTest.Respiratory_Type,
-                    Model = fitTest.Model,
-                    Size = fitTest.Size,
-                    Normal_Breathing = fitTest.Normal_Breathing,
-                    Deep_Breathing = fitTest.Deep_Breathing,
-                    Turn_head_side_to_side = fitTest.Turn_head_side_to_side,
-                    Move_head_up_and_down = fitTest.Move_head_up_and_down,
-                    Reading = fitTest.Reading,
-                    Bending_Jogging = fitTest.Bending_Jogging,
-                    Normal_Breathing_2 = fitTest.Normal_Breathing_2,
-                    Test_Results = fitTest.Test_Results,
-                    SubmittedAt = fitTest.SubmittedAt
-                };
-
-                _context.FitTestingFormHistory.Add(history);
-
-                // Update the main form with the new data
+                // Update the main form with the new data FIRST
                 fitTest.Fit_Test_Solution = updatedForm.Fit_Test_Solution;
                 fitTest.Sensitivity_Test = updatedForm.Sensitivity_Test;
                 fitTest.Respiratory_Type = updatedForm.Respiratory_Type;
@@ -316,15 +294,41 @@ namespace IPCU.Controllers
                 fitTest.Bending_Jogging = updatedForm.Bending_Jogging;
                 fitTest.Normal_Breathing_2 = updatedForm.Normal_Breathing_2;
 
-                // Increment the submission count
+                // Update the submission count and submission date
                 fitTest.SubmissionCount++;
+                fitTest.SubmittedAt = DateTime.Now; // Update the submission date for the main form
 
-                // Save changes to the database
-                _context.SaveChanges();
+                // Save the updated FitTestingForm to the database
+                _context.SaveChanges(); // Save the updated main form
+
+                // NOW, save the current state to FitTestingFormHistory
+                var history = new FitTestingFormHistory
+                {
+                    FitTestingFormId = fitTest.Id,
+                    Fit_Test_Solution = fitTest.Fit_Test_Solution, // Use the updated data
+                    Sensitivity_Test = fitTest.Sensitivity_Test,
+                    Respiratory_Type = fitTest.Respiratory_Type,
+                    Model = fitTest.Model,
+                    Size = fitTest.Size,
+                    Normal_Breathing = fitTest.Normal_Breathing,
+                    Deep_Breathing = fitTest.Deep_Breathing,
+                    Turn_head_side_to_side = fitTest.Turn_head_side_to_side,
+                    Move_head_up_and_down = fitTest.Move_head_up_and_down,
+                    Reading = fitTest.Reading,
+                    Bending_Jogging = fitTest.Bending_Jogging,
+                    Normal_Breathing_2 = fitTest.Normal_Breathing_2,
+                    Test_Results = fitTest.Test_Results,
+                    SubmittedAt = fitTest.SubmittedAt // Use the updated submission date
+                };
+
+                // Add the history entry to the database
+                _context.FitTestingFormHistory.Add(history);
+                _context.SaveChanges(); // Save history entry
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", new { id });
         }
+
 
     }
 }
