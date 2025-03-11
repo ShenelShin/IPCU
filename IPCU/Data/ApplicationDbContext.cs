@@ -15,5 +15,7 @@ namespace IPCU.Data
         public DbSet<IPCU.Models.FitTestingForm> FitTestingForm { get; set; } = default!;
         public DbSet<HandHygieneForm> HandHygieneForms { get; set; }
         public DbSet<HHActivity> HHActivities { get; set; }
+        public DbSet<FitTestingFormHistory> FitTestingFormHistory { get; set; }
+
     }
 }

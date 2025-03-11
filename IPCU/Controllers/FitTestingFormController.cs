@@ -24,8 +24,6 @@ namespace IPCU.Controllers
 
         // GET: FitTestingForm
 
-        [HttpGet]
-        [Route("FitTestingForm")]
         public async Task<IActionResult> Index(int? page, bool? filterExpiring, string testResult)
         {
             int pageSize = 20;
@@ -46,6 +44,9 @@ namespace IPCU.Controllers
                 fitTestingForm = fitTestingForm.Where(f => f.Test_Results == testResult);
             }
 
+            // Order the data in descending order (e.g., by ExpiringAt)
+            fitTestingForm = fitTestingForm.OrderByDescending(f => f.ExpiringAt);
+
             var pagedList = fitTestingForm.ToPagedList(pageNumber, pageSize);
 
             // Store selected filters
@@ -57,23 +58,31 @@ namespace IPCU.Controllers
 
 
 
-        // GET: FitTestingForm/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var fitTestingForm = await _context.FitTestingForm
-                .FirstOrDefaultAsync(m => m.Id == id);
+        // GET: FitTestingForm/Details/5
+        public IActionResult Details(int id)
+        {
+            // Fetch the main FitTestingForm record
+            var fitTestingForm = _context.FitTestingForm.FirstOrDefault(f => f.Id == id);
             if (fitTestingForm == null)
             {
                 return NotFound();
             }
 
+            // Fetch the history of attempts for the given form
+            var history = _context.FitTestingFormHistory
+                .Where(h => h.FitTestingFormId == id)
+                .OrderBy(h => h.SubmittedAt) // Ensure chronological order
+                .ToList();
+
+            // Assign attempts based on their position in the history
+            ViewData["FirstAttempt"] = history.ElementAtOrDefault(0);
+            ViewData["SecondAttempt"] = history.ElementAtOrDefault(1);
+            ViewData["LastAttempt"] = history.Count > 2 ? history.LastOrDefault() : null;
+
             return View(fitTestingForm);
         }
+
 
         // GET: FitTestingForm/Create
         public IActionResult Create()
@@ -119,10 +128,37 @@ namespace IPCU.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    // Set the SubmittedAt and ExpiringAt fields
                     fitTestingForm.SubmittedAt = DateTime.Now;
                     fitTestingForm.ExpiringAt = fitTestingForm.SubmittedAt.AddYears(1); // Set ExpiringAt
+
+                    // Add the new FitTestingForm record
                     _context.Add(fitTestingForm);
                     await _context.SaveChangesAsync();
+
+                    // Save the initial state to FitTestingFormHistory
+                    var history = new FitTestingFormHistory
+                    {
+                        FitTestingFormId = fitTestingForm.Id,
+                        Fit_Test_Solution = fitTestingForm.Fit_Test_Solution,
+                        Sensitivity_Test = fitTestingForm.Sensitivity_Test,
+                        Respiratory_Type = fitTestingForm.Respiratory_Type,
+                        Model = fitTestingForm.Model,
+                        Size = fitTestingForm.Size,
+                        Normal_Breathing = fitTestingForm.Normal_Breathing,
+                        Deep_Breathing = fitTestingForm.Deep_Breathing,
+                        Turn_head_side_to_side = fitTestingForm.Turn_head_side_to_side,
+                        Move_head_up_and_down = fitTestingForm.Move_head_up_and_down,
+                        Reading = fitTestingForm.Reading,
+                        Bending_Jogging = fitTestingForm.Bending_Jogging,
+                        Normal_Breathing_2 = fitTestingForm.Normal_Breathing_2,
+                        Test_Results = fitTestingForm.Test_Results,
+                        SubmittedAt = fitTestingForm.SubmittedAt
+                    };
+
+                    _context.FitTestingFormHistory.Add(history);
+                    await _context.SaveChangesAsync();
+
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -133,6 +169,7 @@ namespace IPCU.Controllers
 
             return View(fitTestingForm);
         }
+
 
 
         // GET: FitTestingForm/Edit/5
@@ -230,7 +267,7 @@ namespace IPCU.Controllers
             var form = _context.FitTestingForm.FirstOrDefault(f => f.Id == id);
             if (form == null) return NotFound();
 
-            var pdfService = new FitTestingFormPdfService();
+            var pdfService = new FitTestingFormPdfService(_context);
             var pdfBytes = pdfService.GeneratePdf(form);
 
             return File(pdfBytes, "application/pdf"); // This ensures the browser previews it properly
@@ -241,10 +278,14 @@ namespace IPCU.Controllers
         public IActionResult SubmitFitTest(int id, FitTestingForm updatedForm)
         {
             var fitTest = _context.FitTestingForm.FirstOrDefault(f => f.Id == id);
-            if (fitTest != null)
+            if (fitTest != null && fitTest.SubmissionCount < fitTest.MaxRetakes)
             {
-                // Update the breathing and movement test fields
+                // Update the main form with the new data FIRST
                 fitTest.Fit_Test_Solution = updatedForm.Fit_Test_Solution;
+                fitTest.Sensitivity_Test = updatedForm.Sensitivity_Test;
+                fitTest.Respiratory_Type = updatedForm.Respiratory_Type;
+                fitTest.Model = updatedForm.Model;
+                fitTest.Size = updatedForm.Size;
                 fitTest.Normal_Breathing = updatedForm.Normal_Breathing;
                 fitTest.Deep_Breathing = updatedForm.Deep_Breathing;
                 fitTest.Turn_head_side_to_side = updatedForm.Turn_head_side_to_side;
@@ -253,14 +294,39 @@ namespace IPCU.Controllers
                 fitTest.Bending_Jogging = updatedForm.Bending_Jogging;
                 fitTest.Normal_Breathing_2 = updatedForm.Normal_Breathing_2;
 
-                // Increment the submission count
+                // Update the submission count and submission date
                 fitTest.SubmissionCount++;
+                fitTest.SubmittedAt = DateTime.Now; // Update the submission date for the main form
 
-                // Save changes to the database
-                _context.SaveChanges();
+                // Save the updated FitTestingForm to the database
+                _context.SaveChanges(); // Save the updated main form
+
+                // NOW, save the current state to FitTestingFormHistory
+                var history = new FitTestingFormHistory
+                {
+                    FitTestingFormId = fitTest.Id,
+                    Fit_Test_Solution = fitTest.Fit_Test_Solution, // Use the updated data
+                    Sensitivity_Test = fitTest.Sensitivity_Test,
+                    Respiratory_Type = fitTest.Respiratory_Type,
+                    Model = fitTest.Model,
+                    Size = fitTest.Size,
+                    Normal_Breathing = fitTest.Normal_Breathing,
+                    Deep_Breathing = fitTest.Deep_Breathing,
+                    Turn_head_side_to_side = fitTest.Turn_head_side_to_side,
+                    Move_head_up_and_down = fitTest.Move_head_up_and_down,
+                    Reading = fitTest.Reading,
+                    Bending_Jogging = fitTest.Bending_Jogging,
+                    Normal_Breathing_2 = fitTest.Normal_Breathing_2,
+                    Test_Results = fitTest.Test_Results,
+                    SubmittedAt = fitTest.SubmittedAt // Use the updated submission date
+                };
+
+                // Add the history entry to the database
+                _context.FitTestingFormHistory.Add(history);
+                _context.SaveChanges(); // Save history entry
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", new { id });
         }
 
 
