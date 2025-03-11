@@ -25,15 +25,12 @@
                 {
                     page.Margin(30);
                     page.Size(PageSizes.A4);
-
-                    // ===== Header Section =====
-                    // ===== Header Section =====
-                    // ===== Header Section =====
+                  
                     page.Header().Element(header =>
                     {
                         header.Border(1) // Adds border
                               .Padding(10) // Padding inside the box
-                              .Background(White) // Light background for better visibility
+                              .Background(White) 
                               .Row(row =>
                               {
                                   // Load and add the logo
@@ -134,7 +131,8 @@
                                     AddRow("Title:", training.Title);
                                     AddRow("Date:", training.DateOfTraining.ToString("dd MMM yyyy"));
                                     AddRow("Venue:", training.Venue);
-                                    AddRow("Methodology:", training.TrainingMethodology, false); // No underline for the last row
+                                    AddRow("Methodology:", training.TrainingMethodology); // No underline for the last row
+                                    AddRow("SME/Lecturer:", training.SMELecturer, false); // NEWLY ADDED LINE
                                 });
                             });
 
@@ -254,7 +252,8 @@
 
 
 
-
+                        col.Item().PaddingTop(10).Text("Please suggest ways in which the speaker can improve and be more effective in the delivery of the topics:").Bold().FontSize(10); // NEWLY ADDED LINE
+                        col.Item().Border(1).Padding(3).Text(training.SayToSpeaker ?? "N/A"); // NEWLY ADDED LINE
                         // ===== Suggestions for Improvement =====
                         col.Item().Text("What is the best thing you can say about the speaker?").Bold().FontSize(10);
                         col.Item().Border(1).Padding(3).Text(training.SuggestionsForImprovement ?? "N/A");
