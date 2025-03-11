@@ -44,6 +44,42 @@ namespace IPCU.Controllers
             return View(handHygieneForm);
         }
 
+        // View Models for Monthly Summary
+        public class ComplianceSummary
+        {
+            public int TotalCompliantActions { get; set; }
+            public int TotalObservedOpportunities { get; set; }
+            public decimal ComplianceRate { get; set; } = 0;
+
+            // Format compliance rate as percentage
+            public string ComplianceRateFormatted => ComplianceRate.ToString("P2");
+        }
+
+        public class AreaComplianceSummary : ComplianceSummary
+        {
+            public string Area { get; set; }
+        }
+
+        public class ProfessionComplianceSummary : ComplianceSummary
+        {
+            public string Profession { get; set; }
+        }
+
+        public class ObserverComplianceSummary : ComplianceSummary
+        {
+            public string Observer { get; set; }
+        }
+
+        public class HHMonthlySummaryViewModel
+        {
+            public string Month { get; set; }
+            public ComplianceSummary OverallSummary { get; set; }
+            public List<AreaComplianceSummary> AreaSummaries { get; set; }
+            public List<AreaComplianceSummary> NurseAreaSummaries { get; set; }
+            public List<ProfessionComplianceSummary> ProfessionSummaries { get; set; }
+            public List<ObserverComplianceSummary> ObserverSummaries { get; set; }
+        }
+
         // GET: HandHygieneForms/Create
         public IActionResult Create()
         {
@@ -437,5 +473,167 @@ namespace IPCU.Controllers
                 false  // false means "inline" (preview) instead of "attachment" (download)
             );
         }
+
+        public async Task<IActionResult> MonthlySummary(DateTime? date)
+        {
+            // Default to current month if no date provided
+            var targetDate = date ?? DateTime.Now;
+            var firstDayOfMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
+            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+            // Get all forms for the selected month
+            var formsForMonth = await _context.HandHygieneForms
+                .Include(f => f.Activities)
+                .Where(f => f.Date >= firstDayOfMonth && f.Date <= lastDayOfMonth)
+                .ToListAsync();
+
+            if (!formsForMonth.Any())
+            {
+                ViewBag.NoData = $"No data available for {targetDate.ToString("MMMM yyyy")}";
+                return View(new HHMonthlySummaryViewModel
+                {
+                    Month = targetDate.ToString("MMMM yyyy"),
+                    OverallSummary = new ComplianceSummary(),
+                    AreaSummaries = new List<AreaComplianceSummary>(),
+                    ProfessionSummaries = new List<ProfessionComplianceSummary>(),
+                    ObserverSummaries = new List<ObserverComplianceSummary>()
+                });
+            }
+
+            // 1. Overall compliance per area
+            var areaSummaries = CalculateAreaSummaries(formsForMonth);
+
+            // 2. Nurse compliance per area
+            var nurseAreaSummaries = CalculateNurseAreaSummaries(formsForMonth);
+
+            // 3. Compliance per profession
+            var professionSummaries = CalculateProfessionSummaries(formsForMonth);
+
+            // 4. Compliance per observer (ICN)
+            var observerSummaries = CalculateObserverSummaries(formsForMonth);
+
+            // Calculate overall compliance across all forms
+            var overallSummary = new ComplianceSummary
+            {
+                TotalCompliantActions = formsForMonth.Sum(f => f.TotalCompliantActions),
+                TotalObservedOpportunities = formsForMonth.Sum(f => f.TotalObservedOpportunities)
+            };
+
+            // Calculate compliance rate if there are opportunities
+            if (overallSummary.TotalObservedOpportunities > 0)
+            {
+                overallSummary.ComplianceRate = (decimal)overallSummary.TotalCompliantActions / overallSummary.TotalObservedOpportunities;
+            }
+
+            // Create view model
+            var viewModel = new HHMonthlySummaryViewModel
+            {
+                Month = targetDate.ToString("MMMM yyyy"),
+                OverallSummary = overallSummary,
+                AreaSummaries = areaSummaries,
+                NurseAreaSummaries = nurseAreaSummaries,
+                ProfessionSummaries = professionSummaries,
+                ObserverSummaries = observerSummaries
+            };
+
+            return View(viewModel);
+        }
+
+        // Helper method to calculate compliance summaries per area
+        private List<AreaComplianceSummary> CalculateAreaSummaries(List<HandHygieneForm> forms)
+        {
+            var areaSummaries = new List<AreaComplianceSummary>();
+
+            // Group forms by area
+            var areaGroups = forms.GroupBy(f => f.Area);
+
+            foreach (var areaGroup in areaGroups)
+            {
+                var summary = new AreaComplianceSummary
+                {
+                    Area = areaGroup.Key,
+                    TotalCompliantActions = areaGroup.Sum(f => f.TotalCompliantActions),
+                    TotalObservedOpportunities = areaGroup.Sum(f => f.TotalObservedOpportunities)
+                };
+
+                // Calculate compliance rate
+                if (summary.TotalObservedOpportunities > 0)
+                {
+                    summary.ComplianceRate = (decimal)summary.TotalCompliantActions / summary.TotalObservedOpportunities;
+                }
+
+                areaSummaries.Add(summary);
+            }
+
+            return areaSummaries.OrderBy(a => a.Area).ToList();
+        }
+
+        // Helper method to calculate nurse compliance summaries per area
+        private List<AreaComplianceSummary> CalculateNurseAreaSummaries(List<HandHygieneForm> forms)
+        {
+            // Filter for nurse forms only
+            var nurseForms = forms.Where(f => f.HCWType.Contains("Nurse", StringComparison.OrdinalIgnoreCase)).ToList();
+
+            return CalculateAreaSummaries(nurseForms);
+        }
+
+        // Helper method to calculate compliance summaries per profession (HCWType)
+        private List<ProfessionComplianceSummary> CalculateProfessionSummaries(List<HandHygieneForm> forms)
+        {
+            var professionSummaries = new List<ProfessionComplianceSummary>();
+
+            // Group forms by HCWType (profession)
+            var professionGroups = forms.GroupBy(f => f.HCWType);
+
+            foreach (var professionGroup in professionGroups)
+            {
+                var summary = new ProfessionComplianceSummary
+                {
+                    Profession = professionGroup.Key,
+                    TotalCompliantActions = professionGroup.Sum(f => f.TotalCompliantActions),
+                    TotalObservedOpportunities = professionGroup.Sum(f => f.TotalObservedOpportunities)
+                };
+
+                // Calculate compliance rate
+                if (summary.TotalObservedOpportunities > 0)
+                {
+                    summary.ComplianceRate = (decimal)summary.TotalCompliantActions / summary.TotalObservedOpportunities;
+                }
+
+                professionSummaries.Add(summary);
+            }
+
+            return professionSummaries.OrderBy(p => p.Profession).ToList();
+        }
+
+        // Helper method to calculate compliance summaries per observer (ICN)
+        private List<ObserverComplianceSummary> CalculateObserverSummaries(List<HandHygieneForm> forms)
+        {
+            var observerSummaries = new List<ObserverComplianceSummary>();
+
+            // Group forms by Observer
+            var observerGroups = forms.GroupBy(f => f.Observer);
+
+            foreach (var observerGroup in observerGroups)
+            {
+                var summary = new ObserverComplianceSummary
+                {
+                    Observer = observerGroup.Key,
+                    TotalCompliantActions = observerGroup.Sum(f => f.TotalCompliantActions),
+                    TotalObservedOpportunities = observerGroup.Sum(f => f.TotalObservedOpportunities)
+                };
+
+                // Calculate compliance rate
+                if (summary.TotalObservedOpportunities > 0)
+                {
+                    summary.ComplianceRate = (decimal)summary.TotalCompliantActions / summary.TotalObservedOpportunities;
+                }
+
+                observerSummaries.Add(summary);
+            }
+
+            return observerSummaries.OrderBy(o => o.Observer).ToList();
+        }
+
     }
 }

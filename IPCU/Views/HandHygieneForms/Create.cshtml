@@ -22,12 +22,57 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label asp-for="Area" class="form-label">Area</label>
-                    <input asp-for="Area" class="form-control" required />
+                    <select asp-for="Area" class="form-select" required>
+                        <option value="">-- Select Area --</option>
+                        <option value="Unit 2A">Unit 2A</option>
+                        <option value="Unit 2B">Unit 2B</option>
+                        <option value="Unit 2C">Unit 2C</option>
+                        <option value="Unit 2D">Unit 2D</option>
+                        <option value="Unit 2E">Unit 2E</option>
+                        <option value="Unit 2F">Unit 2F</option>
+                        <option value="Unit 2G">Unit 2G</option>
+                        <option value="Unit 2H">Unit 2H</option>
+                        <option value="2B Extension">2B Extension</option>
+                        <option value="2D Extension">2D Extension</option>
+                        <option value="2E Extension">2E Extension</option>
+                        <option value="Unit 3A">Unit 3A</option>
+                        <option value="Unit 3B">Unit 3B</option>
+                        <option value="Unit 3C">Unit 3C</option>
+                        <option value="Unit 3D">Unit 3D</option>
+                        <option value="Unit 3E">Unit 3E</option>
+                        <option value="Unit 3F">Unit 3F</option>
+                        <option value="CTU">CTU</option>
+                        <option value="PDU">PDU</option>
+                        <option value="CCRU">CCRU</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Laboratory">Laboratory</option>
+                        <option value="Radiology">Radiology</option>
+                        <option value="Rehab">Rehab</option>
+                        <option value="OR-RR">OR-RR</option>
+                        <option value="OPS">OPS</option>
+                        <option value="AITU">AITU</option>
+                        <option value="IVASC">IVASC</option>
+                        <option value="AUEC">AUEC</option>
+                        <option value="ICU/IMCU">ICU/IMCU</option>
+                        <option value="ER">ER</option>
+                        <option value="PULMO">PULMO</option>
+                        <option value="HD Annex">HD Annex</option>
+                        <option value="HD Main">HD Main</option>
+                        <option value="ICN/OBSERVER">ICN/OBSERVER</option>
+                        <option value="MVML">MVML</option>
+                        <option value="VVR">VVR</option>
+                        <option value="ABV">ABV</option>
+                    </select>
                     <span asp-validation-for="Area" class="text-danger"></span>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label asp-for="Observer" class="form-label">Observer</label>
-                    <input asp-for="Observer" class="form-control" required />
+                    <select asp-for="Observer" class="form-select" required>
+                        <option value="">-- Select ICN/Observer --</option>
+                        <option value="MVML">MVML</option>
+                        <option value="VVR">VVR</option>
+                        <option value="ABV">ABV</option>
+                    </select>
                     <span asp-validation-for="Observer" class="text-danger"></span>
                 </div>
             </div>
@@ -130,8 +175,8 @@
                         <div class="row">
                             <div class="col-md-4 mb-2">
                                 <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="RoomType" id="ice-imcu" value="ICE/IMCU" required>
-                                    <label class="form-check-label" for="ice-imcu">ICE/IMCU</label>
+                                    <input type="radio" class="form-check-input" name="RoomType" id="icu-imcu" value="ICU/IMCU" required>
+                                    <label class="form-check-label" for="icu-imcu">ICU/IMCU</label>
                                 </div>
                             </div>
                             <div class="col-md-4 mb-2">
@@ -290,7 +335,7 @@
             <i class="fas fa-arrow-left me-1"></i> Back to List
         </a>
         <button type="submit" class="btn btn-primary">
-            <i class="fas fa-save me-1"></i> Submit Form
+            <i class="fas fa-save me-1"></i> Next Form
         </button>
     </div>
 </form>
