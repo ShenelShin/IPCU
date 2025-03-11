@@ -292,127 +292,88 @@ namespace IPCU.Controllers
             // Log received data for debugging
             System.Diagnostics.Debug.WriteLine($"Received form edit for HHId: {id} with {handHygieneForm.Activities?.Count ?? 0} activities");
 
-            // Manually validate the model without the Activities collection
-            foreach (var key in ModelState.Keys.ToList())
+            try
             {
-                if (key.StartsWith("Activities"))
+                // First retrieve the existing form without activities
+                var existingForm = await _context.HandHygieneForms
+                    .FirstOrDefaultAsync(f => f.HHId == id);
+
+                if (existingForm == null) return NotFound();
+
+                // Update basic form properties
+                _context.Entry(existingForm).CurrentValues.SetValues(handHygieneForm);
+
+                // Handle activities separately
+                // First, get existing activities
+                var existingActivities = await _context.HHActivities
+                    .Where(a => a.HHId == id)
+                    .ToListAsync();
+
+                // Process activities from the form
+                if (handHygieneForm.Activities != null)
                 {
-                    ModelState.Remove(key);
-                }
-            }
+                    var activityIdsToKeep = new List<int>();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    // First retrieve the existing form with its activities
-                    var existingForm = await _context.HandHygieneForms
-                        .Include(f => f.Activities)
-                        .FirstOrDefaultAsync(f => f.HHId == id);
-
-                    if (existingForm == null) return NotFound();
-
-                    // Update basic form properties (excluding Activities)
-                    existingForm.Area = handHygieneForm.Area;
-                    existingForm.Observer = handHygieneForm.Observer;
-                    existingForm.Date = handHygieneForm.Date;
-                    existingForm.Time = handHygieneForm.Time;
-                    existingForm.Name = handHygieneForm.Name;
-                    existingForm.HCWType = handHygieneForm.HCWType;
-                    existingForm.RoomType = handHygieneForm.RoomType;
-                    existingForm.Isolation = handHygieneForm.Isolation;
-                    existingForm.IsolationPrecaution = handHygieneForm.IsolationPrecaution;
-                    existingForm.ObsvPatientCare = handHygieneForm.ObsvPatientCare;
-                    existingForm.ObsvPatientEnvironment = handHygieneForm.ObsvPatientEnvironment;
-                    existingForm.ObsvPatientContact = handHygieneForm.ObsvPatientContact;
-                    existingForm.EnvironmentResource = handHygieneForm.EnvironmentResource;
-
-                    // Handle the activities update
-                    if (handHygieneForm.Activities != null && handHygieneForm.Activities.Count > 0)
+                    foreach (var activity in handHygieneForm.Activities)
                     {
-                        // Create a list to track which activities should be kept
-                        var activityIdsToKeep = new List<int>();
-
-                        foreach (var updatedActivity in handHygieneForm.Activities)
+                        if (activity.ActId > 0) // Existing activity
                         {
-                            if (updatedActivity.ActId > 0) // This is an existing activity
+                            var existingActivity = existingActivities.FirstOrDefault(a => a.ActId == activity.ActId);
+                            if (existingActivity != null)
                             {
-                                // Find the corresponding existing activity
-                                var existingActivity = existingForm.Activities
-                                    .FirstOrDefault(a => a.ActId == updatedActivity.ActId);
-
-                                if (existingActivity != null)
-                                {
-                                    // Update existing activity
-                                    existingActivity.Activity = updatedActivity.Activity;
-                                    existingActivity.BeforeHandRub = updatedActivity.BeforeHandRub;
-                                    existingActivity.BeforeHandWash = updatedActivity.BeforeHandWash;
-                                    existingActivity.AfterHandRub = updatedActivity.AfterHandRub;
-                                    existingActivity.AfterHandWash = updatedActivity.AfterHandWash;
-                                    existingActivity.Gloves = updatedActivity.Gloves ?? "False";
-
-                                    activityIdsToKeep.Add(existingActivity.ActId);
-                                    _context.Entry(existingActivity).State = EntityState.Modified;
-                                }
-                            }
-                            else // This is a new activity
-                            {
-                                // Ensure the activity is properly associated with this form
-                                updatedActivity.HHId = existingForm.HHId;
-                                updatedActivity.Gloves = updatedActivity.Gloves ?? "False";
-
-                                // Add new activity
-                                _context.HHActivities.Add(updatedActivity);
+                                // Update existing activity
+                                _context.Entry(existingActivity).CurrentValues.SetValues(activity);
+                                activityIdsToKeep.Add(activity.ActId);
                             }
                         }
-
-                        // Remove activities that weren't in the updated list
-                        var activitiesToRemove = existingForm.Activities
-                            .Where(a => !activityIdsToKeep.Contains(a.ActId))
-                            .ToList();
-
-                        foreach (var activityToRemove in activitiesToRemove)
+                        else // New activity
                         {
-                            _context.HHActivities.Remove(activityToRemove);
+                            activity.HHId = id;
+                            activity.Gloves = activity.Gloves ?? "False";
+                            _context.HHActivities.Add(activity);
                         }
                     }
 
-                    // Calculate and update compliance data
-                    UpdateComplianceData(existingForm);
-
-                    // Save all changes
-                    await _context.SaveChangesAsync();
-
-                    // Debug success
-                    System.Diagnostics.Debug.WriteLine($"Successfully saved form with ID: {id}");
-
-                    return RedirectToAction(nameof(Index));
-                }
-                catch (Exception ex)
-                {
-                    // Log the exception for debugging
-                    System.Diagnostics.Debug.WriteLine($"Error saving form: {ex.Message}");
-                    System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-
-                    if (ex.InnerException != null)
+                    // Remove activities not in the updated list
+                    foreach (var activity in existingActivities)
                     {
-                        System.Diagnostics.Debug.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                        if (!activityIdsToKeep.Contains(activity.ActId))
+                        {
+                            _context.HHActivities.Remove(activity);
+                        }
                     }
-
-                    // Add error to ModelState
-                    ModelState.AddModelError("", $"Error saving form: {ex.Message}");
                 }
-            }
-            else
-            {
-                // Log validation errors for debugging
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                else
                 {
-                    System.Diagnostics.Debug.WriteLine($"Validation error: {error.ErrorMessage}");
+                    // If no activities were submitted, keep existing ones
+                    handHygieneForm.Activities = existingActivities;
                 }
+
+                // Reload all activities to recalculate compliance
+                var updatedForm = await _context.HandHygieneForms
+                    .Include(f => f.Activities)
+                    .FirstOrDefaultAsync(f => f.HHId == id);
+
+                // Calculate and update compliance data
+                UpdateComplianceData(updatedForm);
+
+                // Save all changes
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                System.Diagnostics.Debug.WriteLine($"Error saving form: {ex.Message}");
+                ModelState.AddModelError("", $"Error saving form: {ex.Message}");
             }
 
-            // If we got this far, something failed, redisplay form
+            // If we got this far, something failed - reload activities and redisplay
+            handHygieneForm.Activities = await _context.HHActivities
+                .Where(a => a.HHId == id)
+                .ToListAsync();
+
             return View(handHygieneForm);
         }
 
