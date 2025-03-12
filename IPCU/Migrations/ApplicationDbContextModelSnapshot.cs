@@ -393,7 +393,6 @@ namespace IPCU.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("ObsvPatientEnvironment")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 

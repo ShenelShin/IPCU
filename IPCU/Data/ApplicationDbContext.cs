@@ -16,6 +16,8 @@ namespace IPCU.Data
         public DbSet<HandHygieneForm> HandHygieneForms { get; set; }
         public DbSet<HHActivity> HHActivities { get; set; }
         public DbSet<FitTestingFormHistory> FitTestingFormHistory { get; set; }
+        public DbSet<HandHygieneComplianceSummary> HandHygieneComplianceSummary { get; set; }
+
 
     }
 }
