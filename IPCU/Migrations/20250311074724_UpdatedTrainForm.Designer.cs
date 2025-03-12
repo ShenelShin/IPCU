@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311074724_UpdatedTrainForm")]
+    partial class UpdatedTrainForm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,72 +231,6 @@ namespace IPCU.Migrations
                     b.ToTable("FitTestingForm");
                 });
 
-            modelBuilder.Entity("IPCU.Models.FitTestingFormHistory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Bending_Jogging")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Deep_Breathing")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("FitTestingFormId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Fit_Test_Solution")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Move_head_up_and_down")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Normal_Breathing")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Normal_Breathing_2")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Reading")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Respiratory_Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Sensitivity_Test")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Size")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("SubmittedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Test_Results")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Turn_head_side_to_side")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FitTestingFormId");
-
-                    b.ToTable("FitTestingFormHistory");
-                });
-
             modelBuilder.Entity("IPCU.Models.HHActivity", b =>
                 {
                     b.Property<int>("ActId")
@@ -393,6 +330,7 @@ namespace IPCU.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("ObsvPatientEnvironment")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -474,64 +412,6 @@ namespace IPCU.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PatientForms");
-                });
-
-            modelBuilder.Entity("IPCU.Models.Trainee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BasicInfection")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GloveRemoval")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IDPrinting")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("N95")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PostTestScore")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PreTestScore")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProperHand")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Rate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Sex")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TrainingReport")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Trainees");
                 });
 
             modelBuilder.Entity("IPCU.Models.TrainingEvaluation", b =>
@@ -784,17 +664,6 @@ namespace IPCU.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("IPCU.Models.FitTestingFormHistory", b =>
-                {
-                    b.HasOne("IPCU.Models.FitTestingForm", "FitTestingForm")
-                        .WithMany()
-                        .HasForeignKey("FitTestingFormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FitTestingForm");
                 });
 
             modelBuilder.Entity("IPCU.Models.HHActivity", b =>

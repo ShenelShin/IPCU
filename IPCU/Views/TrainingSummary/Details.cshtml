@@ -111,6 +111,26 @@
     </div>
 </div>
 
+
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-light text-white">
+        <h5 class="text-dark">Subject Matter Expert (SME)</h5>
+        <ul class="list-group">
+        <li class="list-group-item"><strong>Time Management:</strong> @Html.DisplayFor(model => model.SMELecturer)</li>
+        </ul>
+    </div>
+    </div>  
+<!-- Suggestions for Improvement -->
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-warning text-dark">
+        <h5>Please suggest ways in which the speaker can improve and can be more effective in the delivery of the topics.</h5>
+    </div>
+    <div class="card-body">
+        <p>@Html.DisplayFor(model => model.SayToSpeaker)</p>
+    </div>
+</div>
+
+
 <!-- Suggestions for Improvement -->
 <div class="card shadow-sm mb-4">
     <div class="card-header bg-warning text-dark">
@@ -120,6 +140,7 @@
         <p>@Html.DisplayFor(model => model.SuggestionsForImprovement)</p>
     </div>
 </div>
+
 
 <!-- Action Buttons -->
 <div class="mt-4">

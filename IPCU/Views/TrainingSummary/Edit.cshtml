@@ -252,12 +252,26 @@
                         </div>
                     </div>
                 </div>
+                <hr>
+                <div class="form-group">
+                    <label asp-for="SMELecturer" class="control-label"></label>
+                    <input asp-for="SMELecturer" class="form-control" />
+                    <span asp-validation-for="SMELecturer" class="text-danger"></span>
+                </div>
+                <hr>
+
+                <h5 class="text-primary">Please suggest ways in which the speaker can improve and can be more effective in the delivery of the topics.</h5>
+                <div class="form-group">
+                    
+                    <textarea asp-for="SayToSpeaker" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="SayToSpeaker" class="text-danger"></span>
+                </div>
+             
 
                 <hr>
 
-                <h5 class="text-primary">Suggestions & Feedback</h5>
-                <div class="form-group">
-                    <label asp-for="SuggestionsForImprovement" class="control-label"></label>
+                <h5 class="text-primary">What is the best thing you can say about the speaker?</h5>
+                <div class="form-group">                  
                     <textarea asp-for="SuggestionsForImprovement" class="form-control" rows="3"></textarea>
                     <span asp-validation-for="SuggestionsForImprovement" class="text-danger"></span>
                 </div>

@@ -63,6 +63,11 @@ namespace IPCU.Models
         public double VoicePersonality { get; set; }
         public double TimeManagement { get; set; }
 
+        [Required]
+        public string SMELecturer { get; set; }
+
         public string SuggestionsForImprovement { get; set; }
+
+        public string SayToSpeaker { get; set; }
     }
 }
