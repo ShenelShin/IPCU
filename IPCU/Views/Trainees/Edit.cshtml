@@ -1,0 +1,145 @@
+﻿@model IPCU.Models.Trainee
+
+@{
+    ViewData["Title"] = "Edit Trainee";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg rounded-3 border-primary">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0"><i class="fas fa-edit"></i> Edit Trainee</h2>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="FullName" class="fw-bold"></label>
+                            <input asp-for="FullName" class="form-control shadow-sm" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Sex" class="fw-bold"></label>
+                            <select asp-for="Sex" class="form-control shadow-sm">
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <span asp-validation-for="Sex" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Department" class="fw-bold"></label>
+                            <select asp-for="Department" class="form-control shadow-sm">
+                                <option value="IT">IT</option>
+                                <option value="HR">HR</option>
+                                <option value="Finance">Finance</option>
+                                <option value="Marketing">Marketing</option>
+                            </select>
+                            <span asp-validation-for="Department" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="N95" class="fw-bold"></label>
+                            <select asp-for="N95" class="form-control shadow-sm">
+                                <option value="Passed">Passed</option>
+                                <option value="Failed">Failed</option>
+                            </select>
+                            <span asp-validation-for="N95" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="IDPrinting" class="fw-bold"></label>
+                            <select asp-for="IDPrinting" class="form-control shadow-sm">
+                                <option value="">Select Option</option> <!-- Default empty option -->
+                                <option value="Done">Done</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Certificate">Certificate</option> <!-- Added this -->
+                            </select>
+                            <span asp-validation-for="IDPrinting" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label asp-for="BasicInfection" class="fw-bold"></label>
+                            <select asp-for="BasicInfection" class="form-control shadow-sm">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                            <span asp-validation-for="BasicInfection" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="ProperHand" class="fw-bold"></label>
+                            <select asp-for="ProperHand" class="form-control shadow-sm">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                            <span asp-validation-for="ProperHand" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="GloveRemoval" class="fw-bold"></label>
+                            <select asp-for="GloveRemoval" class="form-control shadow-sm">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                            <span asp-validation-for="GloveRemoval" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="PreTestScore" class="fw-bold"></label>
+                            <input asp-for="PreTestScore" type="number" class="form-control shadow-sm" />
+                            <span asp-validation-for="PreTestScore" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="PostTestScore" class="fw-bold"></label>
+                            <input asp-for="PostTestScore" type="number" class="form-control shadow-sm" />
+                            <span asp-validation-for="PostTestScore" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="Rate" class="fw-bold"></label>
+                            <select asp-for="Rate" class="form-control shadow-sm">
+                                <option value="Excellent">Excellent</option>
+                                <option value="Good">Good</option>
+                                <option value="Average">Average</option>
+                                <option value="Poor">Poor</option>
+                            </select>
+                            <span asp-validation-for="Rate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="TrainingReport" class="fw-bold"></label>
+                            <textarea asp-for="TrainingReport" class="form-control shadow-sm" rows="3"></textarea>
+                            <span asp-validation-for="TrainingReport" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Buttons Section -->
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <a asp-action="Index" class="btn btn-secondary px-4 py-2 shadow-sm">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+
+                    <button type="submit" class="btn btn-success px-4 py-2 shadow-sm">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

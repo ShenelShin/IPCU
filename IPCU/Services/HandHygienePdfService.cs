@@ -27,7 +27,7 @@ namespace IPCU.Services
                 container.Page(page =>
                 {
                     page.Size(PageSizes.A4);
-                    page.Margin(15);                       
+                    page.Margin(15);
                     page.PageColor(Colors.White);
 
                     // Header 
@@ -135,7 +135,7 @@ namespace IPCU.Services
 
                     // Values Row 1
                     table.Cell().Border(1).BorderColor(BorderColor)
-                        .Padding(3).Text(form.Area ?? "").FontSize(SmallSize); 
+                        .Padding(3).Text(form.Area ?? "").FontSize(SmallSize);
 
                     table.Cell().Border(1).BorderColor(BorderColor)
                         .Padding(3).Text(form.Date.ToString("MM/dd/yyyy")).FontSize(SmallSize);
@@ -606,7 +606,7 @@ namespace IPCU.Services
                         row.RelativeItem(3).Column(momentCol =>
                         {
                             momentCol.Item().BorderBottom(0).Border(1).BorderColor(BorderColor).Background(AccentColor)
-                                .Padding(5).Text("RUBRICS OF HAND HYGIENE")
+                                .Padding(5).Text("MOMENTS OF HAND HYGIENE")
                                 .FontColor(Colors.White).FontSize(HeaderSize).Bold();
 
                             momentCol.Item().Element(container =>
@@ -615,7 +615,7 @@ namespace IPCU.Services
                                 {
                                     table.ColumnsDefinition(columns =>
                                     {
-                                        columns.ConstantColumn(30);      // Moment number
+                                        columns.ConstantColumn(10);      // Moment number
                                         columns.RelativeColumn();        // Moment description
                                     });
 

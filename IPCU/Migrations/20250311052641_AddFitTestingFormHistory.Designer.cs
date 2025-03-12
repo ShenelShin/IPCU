@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311052641_AddFitTestingFormHistory")]
+    partial class AddFitTestingFormHistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -393,6 +396,7 @@ namespace IPCU.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("ObsvPatientEnvironment")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -476,64 +480,6 @@ namespace IPCU.Migrations
                     b.ToTable("PatientForms");
                 });
 
-            modelBuilder.Entity("IPCU.Models.Trainee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BasicInfection")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GloveRemoval")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IDPrinting")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("N95")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PostTestScore")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PreTestScore")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProperHand")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Rate")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Sex")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TrainingReport")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Trainees");
-                });
-
             modelBuilder.Entity("IPCU.Models.TrainingEvaluation", b =>
                 {
                     b.Property<int>("Id")
@@ -602,14 +548,6 @@ namespace IPCU.Migrations
 
                     b.Property<double>("RulesEstablished")
                         .HasColumnType("float");
-
-                    b.Property<string>("SMELecturer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SayToSpeaker")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SuggestionsForImprovement")
                         .IsRequired()

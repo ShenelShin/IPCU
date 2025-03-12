@@ -105,16 +105,22 @@
                 </div>
             </div>
 
+            <!-- Add this button above the activities container -->
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5>Activities</h5>
+                <button type="button" id="addActivityBtn" class="btn btn-sm btn-primary">Add Activity</button>
+            </div>
+
             <div class="card mb-4">
                 <div class="card-header">
-                    <h5>Activities</h5>
+                    <h5>Existing Activities</h5>
                 </div>
                 <div class="card-body" id="activitiesContainer">
                     @if (Model.Activities != null && Model.Activities.Count > 0)
                     {
                         for (int i = 0; i < Model.Activities.Count; i++)
                         {
-                            <div class="activity-item border-bottom pb-3 mb-3">
+                            <div class="activity-item border-bottom pb-3 mb-4">
                                 <input type="hidden" asp-for="Activities[i].ActId" />
                                 <input type="hidden" asp-for="Activities[i].HHId" value="@Model.HHId" />
 
@@ -123,50 +129,339 @@
                                     <input asp-for="Activities[i].Activity" class="form-control" />
                                     <span asp-validation-for="Activities[i].Activity" class="text-danger"></span>
                                 </div>
+                                
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label asp-for="Activities[i].BeforeHandRub">Before Hand Rub</label>
-                                            <input asp-for="Activities[i].BeforeHandRub" class="form-control" />
-                                            <span asp-validation-for="Activities[i].BeforeHandRub" class="text-danger"></span>
+                                            <label>Before Hand Rub</label>
+                                            <div class="d-flex flex-wrap gap-3 mt-2 edit-before-hand-rub" data-index="@i">
+                                                @for (int j = 1; j <= 2; j++)
+                                                {
+                                                    <div class="border p-2 rounded">
+                                                        <div class="fw-bold mb-1">Number @j</div>
+                                                        <div class="btn-group" role="group">
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].BeforeHandRub@(j)Symbol" 
+                                                                   id="Activities[@i].BeforeHandRub@(j)Check" 
+                                                                   value="✓" 
+                                                                   @(Model.Activities[i].BeforeHandRub != null && Model.Activities[i].BeforeHandRub.Contains($"{j},✓") ? "checked" : "")>
+                                                            <label class="btn btn-outline-success" for="Activities[@i].BeforeHandRub@(j)Check">✓</label>
+
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].BeforeHandRub@(j)Symbol" 
+                                                                   id="Activities[@i].BeforeHandRub@(j)Cross" 
+                                                                   value="X" 
+                                                                   @(Model.Activities[i].BeforeHandRub != null && Model.Activities[i].BeforeHandRub.Contains($"{j},X") ? "checked" : "")>
+                                                            <label class="btn btn-outline-danger" for="Activities[@i].BeforeHandRub@(j)Cross">X</label>
+
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].BeforeHandRub@(j)Symbol" 
+                                                                   id="Activities[@i].BeforeHandRub@(j)None" 
+                                                                   value="" 
+                                                                   @(Model.Activities[i].BeforeHandRub == null || !Model.Activities[i].BeforeHandRub.Contains($"{j},") ? "checked" : "")>
+                                                            <label class="btn btn-outline-secondary" for="Activities[@i].BeforeHandRub@(j)None">None</label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <input type="hidden" asp-for="Activities[i].BeforeHandRub" class="hand-rub-input" />
                                         </div>
                                     </div>
+                                    
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label asp-for="Activities[i].BeforeHandWash">Before Hand Wash</label>
-                                            <input asp-for="Activities[i].BeforeHandWash" class="form-control" />
-                                            <span asp-validation-for="Activities[i].BeforeHandWash" class="text-danger"></span>
+                                            <label>Before Hand Wash</label>
+                                            <div class="d-flex flex-wrap gap-3 mt-2 edit-before-hand-wash" data-index="@i">
+                                                @for (int j = 1; j <= 2; j++)
+                                                {
+                                                    <div class="border p-2 rounded">
+                                                        <div class="fw-bold mb-1">Number @j</div>
+                                                        <div class="btn-group" role="group">
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].BeforeHandWash@(j)Symbol" 
+                                                                   id="Activities[@i].BeforeHandWash@(j)Check" 
+                                                                   value="✓" 
+                                                                   @(Model.Activities[i].BeforeHandWash != null && Model.Activities[i].BeforeHandWash.Contains($"{j},✓") ? "checked" : "")>
+                                                            <label class="btn btn-outline-success" for="Activities[@i].BeforeHandWash@(j)Check">✓</label>
+
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].BeforeHandWash@(j)Symbol" 
+                                                                   id="Activities[@i].BeforeHandWash@(j)Cross" 
+                                                                   value="X" 
+                                                                   @(Model.Activities[i].BeforeHandWash != null && Model.Activities[i].BeforeHandWash.Contains($"{j},X") ? "checked" : "")>
+                                                            <label class="btn btn-outline-danger" for="Activities[@i].BeforeHandWash@(j)Cross">X</label>
+
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].BeforeHandWash@(j)Symbol" 
+                                                                   id="Activities[@i].BeforeHandWash@(j)None" 
+                                                                   value="" 
+                                                                   @(Model.Activities[i].BeforeHandWash == null || !Model.Activities[i].BeforeHandWash.Contains($"{j},") ? "checked" : "")>
+                                                            <label class="btn btn-outline-secondary" for="Activities[@i].BeforeHandWash@(j)None">None</label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <input type="hidden" asp-for="Activities[i].BeforeHandWash" class="hand-wash-input" />
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label asp-for="Activities[i].AfterHandRub">After Hand Rub</label>
-                                            <input asp-for="Activities[i].AfterHandRub" class="form-control" />
-                                            <span asp-validation-for="Activities[i].AfterHandRub" class="text-danger"></span>
+                                            <label>After Hand Rub</label>
+                                            <div class="d-flex flex-wrap gap-3 mt-2 edit-after-hand-rub" data-index="@i">
+                                                @for (int j = 3; j <= 5; j++)
+                                                {
+                                                    <div class="border p-2 rounded">
+                                                        <div class="fw-bold mb-1">Number @j</div>
+                                                        <div class="btn-group" role="group">
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].AfterHandRub@(j)Symbol" 
+                                                                   id="Activities[@i].AfterHandRub@(j)Check" 
+                                                                   value="✓" 
+                                                                   @(Model.Activities[i].AfterHandRub != null && Model.Activities[i].AfterHandRub.Contains($"{j},✓") ? "checked" : "")>
+                                                            <label class="btn btn-outline-success" for="Activities[@i].AfterHandRub@(j)Check">✓</label>
+
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].AfterHandRub@(j)Symbol" 
+                                                                   id="Activities[@i].AfterHandRub@(j)Cross" 
+                                                                   value="X" 
+                                                                   @(Model.Activities[i].AfterHandRub != null && Model.Activities[i].AfterHandRub.Contains($"{j},X") ? "checked" : "")>
+                                                            <label class="btn btn-outline-danger" for="Activities[@i].AfterHandRub@(j)Cross">X</label>
+
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].AfterHandRub@(j)Symbol" 
+                                                                   id="Activities[@i].AfterHandRub@(j)None" 
+                                                                   value="" 
+                                                                   @(Model.Activities[i].AfterHandRub == null || !Model.Activities[i].AfterHandRub.Contains($"{j},") ? "checked" : "")>
+                                                            <label class="btn btn-outline-secondary" for="Activities[@i].AfterHandRub@(j)None">None</label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <input type="hidden" asp-for="Activities[i].AfterHandRub" class="hand-rub-input" />
                                         </div>
                                     </div>
+                                    
                                     <div class="col-md-6">
                                         <div class="form-group mb-3">
-                                            <label asp-for="Activities[i].AfterHandWash">After Hand Wash</label>
-                                            <input asp-for="Activities[i].AfterHandWash" class="form-control" />
-                                            <span asp-validation-for="Activities[i].AfterHandWash" class="text-danger"></span>
+                                            <label>After Hand Wash</label>
+                                            <div class="d-flex flex-wrap gap-3 mt-2 edit-after-hand-wash" data-index="@i">
+                                                @for (int j = 3; j <= 5; j++)
+                                                {
+                                                    <div class="border p-2 rounded">
+                                                        <div class="fw-bold mb-1">Number @j</div>
+                                                        <div class="btn-group" role="group">
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].AfterHandWash@(j)Symbol" 
+                                                                   id="Activities[@i].AfterHandWash@(j)Check" 
+                                                                   value="✓" 
+                                                                   @(Model.Activities[i].AfterHandWash != null && Model.Activities[i].AfterHandWash.Contains($"{j},✓") ? "checked" : "")>
+                                                            <label class="btn btn-outline-success" for="Activities[@i].AfterHandWash@(j)Check">✓</label>
+
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].AfterHandWash@(j)Symbol" 
+                                                                   id="Activities[@i].AfterHandWash@(j)Cross" 
+                                                                   value="X" 
+                                                                   @(Model.Activities[i].AfterHandWash != null && Model.Activities[i].AfterHandWash.Contains($"{j},X") ? "checked" : "")>
+                                                            <label class="btn btn-outline-danger" for="Activities[@i].AfterHandWash@(j)Cross">X</label>
+
+                                                            <input type="radio" class="btn-check" 
+                                                                   name="Activities[@i].AfterHandWash@(j)Symbol" 
+                                                                   id="Activities[@i].AfterHandWash@(j)None" 
+                                                                   value="" 
+                                                                   @(Model.Activities[i].AfterHandWash == null || !Model.Activities[i].AfterHandWash.Contains($"{j},") ? "checked" : "")>
+                                                            <label class="btn btn-outline-secondary" for="Activities[@i].AfterHandWash@(j)None">None</label>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            </div>
+                                            <input type="hidden" asp-for="Activities[i].AfterHandWash" class="hand-wash-input" />
                                         </div>
                                     </div>
                                 </div>
+                                
                                 <div class="form-group mb-3 form-check">
-                                    <input type="checkbox" asp-for="Activities[i].Gloves" value="True" class="form-check-input" />
-                                    <label asp-for="Activities[i].Gloves" class="form-check-label">Gloves Used?</label>
-                                    <span asp-validation-for="Activities[i].Gloves" class="text-danger"></span>
+                                    <input type="checkbox" asp-for="Activities[i].Gloves" class="form-check-input" />
+                                    <label class="form-check-label">Gloves Used?</label>
                                 </div>
+                                
+                                <button type="button" class="btn btn-sm btn-danger remove-activity">Remove Activity</button>
                             </div>
                         }
                     }
                     else
                     {
-                        <div class="alert alert-info">No activities found. Please add activities after saving the form.</div>
+                        <div class="alert alert-info">No activities found. Please add activities using the form below.</div>
                     }
+                </div>
+            </div>
+
+            <!-- New Activity Form -->
+            <div class="card mb-4" id="newActivityForm" style="display: none;">
+                <div class="card-header">
+                    <h5>Add New Activity</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label for="newActivity">Activity</label>
+                        <input type="text" id="newActivity" class="form-control" />
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Before Hand Rub</label>
+                                <div class="d-flex flex-wrap gap-3 mt-2 new-before-hand-rub">
+                                    @for (int j = 1; j <= 2; j++)
+                                    {
+                                        <div class="border p-2 rounded">
+                                            <div class="fw-bold mb-1">Number @j</div>
+                                            <div class="btn-group" role="group">
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewBeforeHandRub@(j)Symbol" 
+                                                       id="NewBeforeHandRub@(j)Check" 
+                                                       value="✓">
+                                                <label class="btn btn-outline-success" for="NewBeforeHandRub@(j)Check">✓</label>
+
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewBeforeHandRub@(j)Symbol" 
+                                                       id="NewBeforeHandRub@(j)Cross" 
+                                                       value="X">
+                                                <label class="btn btn-outline-danger" for="NewBeforeHandRub@(j)Cross">X</label>
+
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewBeforeHandRub@(j)Symbol" 
+                                                       id="NewBeforeHandRub@(j)None" 
+                                                       value="" 
+                                                       checked>
+                                                <label class="btn btn-outline-secondary" for="NewBeforeHandRub@(j)None">None</label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <input type="hidden" id="newBeforeHandRub" />
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>Before Hand Wash</label>
+                                <div class="d-flex flex-wrap gap-3 mt-2 new-before-hand-wash">
+                                    @for (int j = 1; j <= 2; j++)
+                                    {
+                                        <div class="border p-2 rounded">
+                                            <div class="fw-bold mb-1">Number @j</div>
+                                            <div class="btn-group" role="group">
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewBeforeHandWash@(j)Symbol" 
+                                                       id="NewBeforeHandWash@(j)Check" 
+                                                       value="✓">
+                                                <label class="btn btn-outline-success" for="NewBeforeHandWash@(j)Check">✓</label>
+
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewBeforeHandWash@(j)Symbol" 
+                                                       id="NewBeforeHandWash@(j)Cross" 
+                                                       value="X">
+                                                <label class="btn btn-outline-danger" for="NewBeforeHandWash@(j)Cross">X</label>
+
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewBeforeHandWash@(j)Symbol" 
+                                                       id="NewBeforeHandWash@(j)None" 
+                                                       value="" 
+                                                       checked>
+                                                <label class="btn btn-outline-secondary" for="NewBeforeHandWash@(j)None">None</label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <input type="hidden" id="newBeforeHandWash" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>After Hand Rub</label>
+                                <div class="d-flex flex-wrap gap-3 mt-2 new-after-hand-rub">
+                                    @for (int j = 3; j <= 5; j++)
+                                    {
+                                        <div class="border p-2 rounded">
+                                            <div class="fw-bold mb-1">Number @j</div>
+                                            <div class="btn-group" role="group">
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewAfterHandRub@(j)Symbol" 
+                                                       id="NewAfterHandRub@(j)Check" 
+                                                       value="✓">
+                                                <label class="btn btn-outline-success" for="NewAfterHandRub@(j)Check">✓</label>
+
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewAfterHandRub@(j)Symbol" 
+                                                       id="NewAfterHandRub@(j)Cross" 
+                                                       value="X">
+                                                <label class="btn btn-outline-danger" for="NewAfterHandRub@(j)Cross">X</label>
+
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewAfterHandRub@(j)Symbol" 
+                                                       id="NewAfterHandRub@(j)None" 
+                                                       value="" 
+                                                       checked>
+                                                <label class="btn btn-outline-secondary" for="NewAfterHandRub@(j)None">None</label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <input type="hidden" id="newAfterHandRub" />
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label>After Hand Wash</label>
+                                <div class="d-flex flex-wrap gap-3 mt-2 new-after-hand-wash">
+                                    @for (int j = 3; j <= 5; j++)
+                                    {
+                                        <div class="border p-2 rounded">
+                                            <div class="fw-bold mb-1">Number @j</div>
+                                            <div class="btn-group" role="group">
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewAfterHandWash@(j)Symbol" 
+                                                       id="NewAfterHandWash@(j)Check" 
+                                                       value="✓">
+                                                <label class="btn btn-outline-success" for="NewAfterHandWash@(j)Check">✓</label>
+
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewAfterHandWash@(j)Symbol" 
+                                                       id="NewAfterHandWash@(j)Cross" 
+                                                       value="X">
+                                                <label class="btn btn-outline-danger" for="NewAfterHandWash@(j)Cross">X</label>
+
+                                                <input type="radio" class="btn-check" 
+                                                       name="NewAfterHandWash@(j)Symbol" 
+                                                       id="NewAfterHandWash@(j)None" 
+                                                       value="" 
+                                                       checked>
+                                                <label class="btn btn-outline-secondary" for="NewAfterHandWash@(j)None">None</label>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                                <input type="hidden" id="newAfterHandWash" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group mb-3 form-check">
+                        <input type="checkbox" id="newGloves" class="form-check-input" />
+                        <label class="form-check-label">Gloves Used?</label>
+                    </div>
+                    
+                    <div class="btn-group">
+                        <button type="button" id="addNewActivityBtn" class="btn btn-success">Add Activity</button>
+                        <button type="button" id="cancelNewActivity" class="btn btn-secondary">Cancel</button>
+                    </div>
                 </div>
             </div>
 
@@ -184,12 +479,396 @@
     }
 
     <script>
-        // Additional validation and form handling
         $(document).ready(function() {
-            $('form').on('submit', function() {
-                console.log('Form submitted');
-                return true;
+            // Add Activity Button
+            $('#addActivityBtn').on('click', function() {
+                $('#newActivityForm').show();
             });
+            
+            // Cancel New Activity
+            $('#cancelNewActivity').on('click', function() {
+                resetNewActivityForm();
+                $('#newActivityForm').hide();
+            });
+
+            // Function to update hidden input from symbol selections for new activity
+            function updateNewActivityHiddenInputs() {
+                // For BeforeHandRub
+                const beforeRubValues = [];
+                for (let i = 1; i <= 2; i++) {
+                    const symbol = $(`input[name="NewBeforeHandRub${i}Symbol"]:checked`).val();
+                    if (symbol) {
+                        beforeRubValues.push(`${i},${symbol}`);
+                    }
+                }
+                $('#newBeforeHandRub').val(beforeRubValues.join(';'));
+
+                // For BeforeHandWash
+                const beforeWashValues = [];
+                for (let i = 1; i <= 2; i++) {
+                    const symbol = $(`input[name="NewBeforeHandWash${i}Symbol"]:checked`).val();
+                    if (symbol) {
+                        beforeWashValues.push(`${i},${symbol}`);
+                    }
+                }
+                $('#newBeforeHandWash').val(beforeWashValues.join(';'));
+
+                // For AfterHandRub
+                const afterRubValues = [];
+                for (let i = 3; i <= 5; i++) {
+                    const symbol = $(`input[name="NewAfterHandRub${i}Symbol"]:checked`).val();
+                    if (symbol) {
+                        afterRubValues.push(`${i},${symbol}`);
+                    }
+                }
+                $('#newAfterHandRub').val(afterRubValues.join(';'));
+
+                // For AfterHandWash
+                const afterWashValues = [];
+                for (let i = 3; i <= 5; i++) {
+                    const symbol = $(`input[name="NewAfterHandWash${i}Symbol"]:checked`).val();
+                    if (symbol) {
+                        afterWashValues.push(`${i},${symbol}`);
+                    }
+                }
+        $('#newAfterHandWash').val(afterWashValues.join(';'));
+        }
+
+        // Listen for changes to radio buttons and update hidden inputs
+        $('.new-before-hand-rub input, .new-before-hand-wash input, .new-after-hand-rub input, .new-after-hand-wash input').on('change', updateNewActivityHiddenInputs);
+
+        // Function to update existing activity hidden inputs
+        function updateExistingActivityHiddenInputs(index) {
+            // For BeforeHandRub
+            const beforeRubValues = [];
+            for (let i = 1; i <= 2; i++) {
+                const symbol = $(`input[name="Activities[${index}].BeforeHandRub${i}Symbol"]:checked`).val();
+                if (symbol) {
+                    beforeRubValues.push(`${i},${symbol}`);
+                }
+            }
+            $(`input[name="Activities[${index}].BeforeHandRub"]`).val(beforeRubValues.join(';'));
+
+            // For BeforeHandWash
+            const beforeWashValues = [];
+            for (let i = 1; i <= 2; i++) {
+                const symbol = $(`input[name="Activities[${index}].BeforeHandWash${i}Symbol"]:checked`).val();
+                if (symbol) {
+                    beforeWashValues.push(`${i},${symbol}`);
+                }
+            }
+            $(`input[name="Activities[${index}].BeforeHandWash"]`).val(beforeWashValues.join(';'));
+
+            // For AfterHandRub
+            const afterRubValues = [];
+            for (let i = 3; i <= 5; i++) {
+                const symbol = $(`input[name="Activities[${index}].AfterHandRub${i}Symbol"]:checked`).val();
+                if (symbol) {
+                    afterRubValues.push(`${i},${symbol}`);
+                }
+            }
+            $(`input[name="Activities[${index}].AfterHandRub"]`).val(afterRubValues.join(';'));
+
+            // For AfterHandWash
+            const afterWashValues = [];
+            for (let i = 3; i <= 5; i++) {
+                const symbol = $(`input[name="Activities[${index}].AfterHandWash${i}Symbol"]:checked`).val();
+                if (symbol) {
+                    afterWashValues.push(`${i},${symbol}`);
+                }
+            }
+            $(`input[name="Activities[${index}].AfterHandWash"]`).val(afterWashValues.join(';'));
+        }
+
+        // Listen for changes to existing activity radio buttons
+        $('.edit-before-hand-rub input, .edit-before-hand-wash input, .edit-after-hand-rub input, .edit-after-hand-wash input').on('change', function() {
+            const index = $(this).closest('[data-index]').data('index');
+            updateExistingActivityHiddenInputs(index);
+        });
+
+        // Initialize all existing activity hidden inputs
+        $('[data-index]').each(function() {
+            const index = $(this).data('index');
+            updateExistingActivityHiddenInputs(index);
+        });
+
+        // Add new activity to the form
+        $('#addNewActivityBtn').on('click', function() {
+            const nextIndex = $('.activity-item').length;
+            const activityName = $('#newActivity').val();
+
+            if (!activityName) {
+                alert('Please enter an activity name');
+                return;
+            }
+
+            // Update hidden inputs for new activity
+            updateNewActivityHiddenInputs();
+
+            // Get values from the new activity form
+            const beforeHandRub = $('#newBeforeHandRub').val();
+            const beforeHandWash = $('#newBeforeHandWash').val();
+            const afterHandRub = $('#newAfterHandRub').val();
+            const afterHandWash = $('#newAfterHandWash').val();
+            const glovesUsed = $('#newGloves').is(':checked') ? 'True' : 'False';
+
+            // Create HTML for the new activity
+            const newActivityHtml = `
+            <div class="activity-item border-bottom pb-3 mb-4">
+                <input type="hidden" name="Activities[${nextIndex}].ActId" value="0" />
+                <input type="hidden" name="Activities[${nextIndex}].HHId" value="${$('input[name="HHId"]').val()}" />
+
+                <div class="form-group mb-3">
+                    <label>Activity</label>
+                    <input type="text" name="Activities[${nextIndex}].Activity" value="${activityName}" class="form-control" />
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label>Before Hand Rub</label>
+                            <div class="d-flex flex-wrap gap-3 mt-2 edit-before-hand-rub" data-index="${nextIndex}">
+            `;
+
+            // Add Before Hand Rub options
+            for (let j = 1; j <= 2; j++) {
+                const checkedSymbol = $(`input[name="NewBeforeHandRub${j}Symbol"]:checked`).val();
+                newActivityHtml += `
+                    <div class="border p-2 rounded">
+                        <div class="fw-bold mb-1">Number ${j}</div>
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].BeforeHandRub${j}Symbol"
+                                   id="Activities[${nextIndex}].BeforeHandRub${j}Check"
+                                   value="✓"
+                                   ${checkedSymbol === '✓' ? 'checked' : ''}>
+                            <label class="btn btn-outline-success" for="Activities[${nextIndex}].BeforeHandRub${j}Check">✓</label>
+
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].BeforeHandRub${j}Symbol"
+                                   id="Activities[${nextIndex}].BeforeHandRub${j}Cross"
+                                   value="X"
+                                   ${checkedSymbol === 'X' ? 'checked' : ''}>
+                            <label class="btn btn-outline-danger" for="Activities[${nextIndex}].BeforeHandRub${j}Cross">X</label>
+
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].BeforeHandRub${j}Symbol"
+                                   id="Activities[${nextIndex}].BeforeHandRub${j}None"
+                                   value=""
+                                   ${!checkedSymbol ? 'checked' : ''}>
+                            <label class="btn btn-outline-secondary" for="Activities[${nextIndex}].BeforeHandRub${j}None">None</label>
+                        </div>
+                    </div>
+                `;
+            }
+
+        // Continue with the newActivityHtml string - adding Before Hand Wash section
+            newActivityHtml += `
+                    </div>
+                    <input type="hidden" name="Activities[${nextIndex}].BeforeHandRub" value="${beforeHandRub}" class="hand-rub-input" />
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label>Before Hand Wash</label>
+                    <div class="d-flex flex-wrap gap-3 mt-2 edit-before-hand-wash" data-index="${nextIndex}">
+            `;
+
+            // Add Before Hand Wash options
+            for (let j = 1; j <= 2; j++) {
+                const checkedSymbol = $(`input[name="NewBeforeHandWash${j}Symbol"]:checked`).val();
+                newActivityHtml += `
+                    <div class="border p-2 rounded">
+                        <div class="fw-bold mb-1">Number ${j}</div>
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].BeforeHandWash${j}Symbol"
+                                   id="Activities[${nextIndex}].BeforeHandWash${j}Check"
+                                   value="✓"
+                                   ${checkedSymbol === '✓' ? 'checked' : ''}>
+                            <label class="btn btn-outline-success" for="Activities[${nextIndex}].BeforeHandWash${j}Check">✓</label>
+
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].BeforeHandWash${j}Symbol"
+                                   id="Activities[${nextIndex}].BeforeHandWash${j}Cross"
+                                   value="X"
+                                   ${checkedSymbol === 'X' ? 'checked' : ''}>
+                            <label class="btn btn-outline-danger" for="Activities[${nextIndex}].BeforeHandWash${j}Cross">X</label>
+
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].BeforeHandWash${j}Symbol"
+                                   id="Activities[${nextIndex}].BeforeHandWash${j}None"
+                                   value=""
+                                   ${!checkedSymbol ? 'checked' : ''}>
+                            <label class="btn btn-outline-secondary" for="Activities[${nextIndex}].BeforeHandWash${j}None">None</label>
+                        </div>
+                    </div>
+                `;
+            }
+
+            newActivityHtml += `
+                    </div>
+                    <input type="hidden" name="Activities[${nextIndex}].BeforeHandWash" value="${beforeHandWash}" class="hand-wash-input" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label>After Hand Rub</label>
+                    <div class="d-flex flex-wrap gap-3 mt-2 edit-after-hand-rub" data-index="${nextIndex}">
+            `;
+
+            // Add After Hand Rub options
+            for (let j = 3; j <= 5; j++) {
+                const checkedSymbol = $(`input[name="NewAfterHandRub${j}Symbol"]:checked`).val();
+                newActivityHtml += `
+                    <div class="border p-2 rounded">
+                        <div class="fw-bold mb-1">Number ${j}</div>
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].AfterHandRub${j}Symbol"
+                                   id="Activities[${nextIndex}].AfterHandRub${j}Check"
+                                   value="✓"
+                                   ${checkedSymbol === '✓' ? 'checked' : ''}>
+                            <label class="btn btn-outline-success" for="Activities[${nextIndex}].AfterHandRub${j}Check">✓</label>
+
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].AfterHandRub${j}Symbol"
+                                   id="Activities[${nextIndex}].AfterHandRub${j}Cross"
+                                   value="X"
+                                   ${checkedSymbol === 'X' ? 'checked' : ''}>
+                            <label class="btn btn-outline-danger" for="Activities[${nextIndex}].AfterHandRub${j}Cross">X</label>
+
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].AfterHandRub${j}Symbol"
+                                   id="Activities[${nextIndex}].AfterHandRub${j}None"
+                                   value=""
+                                   ${!checkedSymbol ? 'checked' : ''}>
+                            <label class="btn btn-outline-secondary" for="Activities[${nextIndex}].AfterHandRub${j}None">None</label>
+                        </div>
+                    </div>
+                `;
+            }
+
+            newActivityHtml += `
+                    </div>
+                    <input type="hidden" name="Activities[${nextIndex}].AfterHandRub" value="${afterHandRub}" class="hand-rub-input" />
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label>After Hand Wash</label>
+                    <div class="d-flex flex-wrap gap-3 mt-2 edit-after-hand-wash" data-index="${nextIndex}">
+            `;
+
+            // Add After Hand Wash options
+            for (let j = 3; j <= 5; j++) {
+                const checkedSymbol = $(`input[name="NewAfterHandWash${j}Symbol"]:checked`).val();
+                newActivityHtml += `
+                    <div class="border p-2 rounded">
+                        <div class="fw-bold mb-1">Number ${j}</div>
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].AfterHandWash${j}Symbol"
+                                   id="Activities[${nextIndex}].AfterHandWash${j}Check"
+                                   value="✓"
+                                   ${checkedSymbol === '✓' ? 'checked' : ''}>
+                            <label class="btn btn-outline-success" for="Activities[${nextIndex}].AfterHandWash${j}Check">✓</label>
+
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].AfterHandWash${j}Symbol"
+                                   id="Activities[${nextIndex}].AfterHandWash${j}Cross"
+                                   value="X"
+                                   ${checkedSymbol === 'X' ? 'checked' : ''}>
+                            <label class="btn btn-outline-danger" for="Activities[${nextIndex}].AfterHandWash${j}Cross">X</label>
+
+                            <input type="radio" class="btn-check"
+                                   name="Activities[${nextIndex}].AfterHandWash${j}Symbol"
+                                   id="Activities[${nextIndex}].AfterHandWash${j}None"
+                                   value=""
+                                   ${!checkedSymbol ? 'checked' : ''}>
+                            <label class="btn btn-outline-secondary" for="Activities[${nextIndex}].AfterHandWash${j}None">None</label>
+                        </div>
+                    </div>
+                `;
+            }
+
+            newActivityHtml += `
+                    </div>
+                    <input type="hidden" name="Activities[${nextIndex}].AfterHandWash" value="${afterHandWash}" class="hand-wash-input" />
+                </div>
+            </div>
+        </div>
+            `;
+
+            // Add gloves checkbox and remove button
+            newActivityHtml += `
+                <div class="form-group mb-3 form-check">
+                    <input type="checkbox" name="Activities[${nextIndex}].Gloves" value="True" class="form-check-input" ${glovesUsed === 'True' ? 'checked' : ''} />
+                    <label class="form-check-label">Gloves Used?</label>
+                </div>
+
+                <button type="button" class="btn btn-sm btn-danger remove-activity">Remove Activity</button>
+            </div>`;
+
+            // Add new activity to the container
+            $('#activitiesContainer').append(newActivityHtml);
+
+            // Add hidden inputs with values
+            $(`<input type="hidden" name="Activities[${nextIndex}].BeforeHandRub" value="${beforeHandRub}" class="hand-rub-input" />`).appendTo(`[data-index="${nextIndex}"]`);
+            $(`<input type="hidden" name="Activities[${nextIndex}].BeforeHandWash" value="${beforeHandWash}" class="hand-wash-input" />`).appendTo(`[data-index="${nextIndex}"]`);
+            $(`<input type="hidden" name="Activities[${nextIndex}].AfterHandRub" value="${afterHandRub}" class="hand-rub-input" />`).appendTo(`[data-index="${nextIndex}"]`);
+            $(`<input type="hidden" name="Activities[${nextIndex}].AfterHandWash" value="${afterHandWash}" class="hand-wash-input" />`).appendTo(`[data-index="${nextIndex}"]`);
+
+            // Attach event handlers to new elements
+            bindRemoveActivityHandler();
+
+            // Reset and hide the new activity form
+            resetNewActivityForm();
+            $('#newActivityForm').hide();
+        });
+
+        // Function to reset new activity form
+        function resetNewActivityForm() {
+            $('#newActivity').val('');
+            $('#newGloves').prop('checked', false);
+            $('.new-before-hand-rub input[value=""]').prop('checked', true);
+            $('.new-before-hand-wash input[value=""]').prop('checked', true);
+            $('.new-after-hand-rub input[value=""]').prop('checked', true);
+            $('.new-after-hand-wash input[value=""]').prop('checked', true);
+            updateNewActivityHiddenInputs();
+        }
+
+        // Function to handle remove activity button
+        function bindRemoveActivityHandler() {
+            $('.remove-activity').off('click').on('click', function() {
+                if (confirm('Are you sure you want to remove this activity?')) {
+                    $(this).closest('.activity-item').remove();
+                    // Renumber remaining activities
+                    $('.activity-item').each(function(index) {
+                        // Update all input names and IDs with new index
+                        // ...
+                    });
+                }
+            });
+        }
+
+        // Initial binding
+        bindRemoveActivityHandler();
+
+        // Submit handler to ensure all hidden inputs are updated
+        $('form').on('submit', function() {
+            // Update all existing activity hidden inputs one more time
+            $('[data-index]').each(function() {
+                const index = $(this).data('index');
+                updateExistingActivityHiddenInputs(index);
+            });
+        });
+
         });
     </script>
 }

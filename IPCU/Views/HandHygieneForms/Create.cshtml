@@ -22,12 +22,57 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label asp-for="Area" class="form-label">Area</label>
-                    <input asp-for="Area" class="form-control" required />
+                    <select asp-for="Area" class="form-select" required>
+                        <option value="">-- Select Area --</option>
+                        <option value="Unit 2A">Unit 2A</option>
+                        <option value="Unit 2B">Unit 2B</option>
+                        <option value="Unit 2C">Unit 2C</option>
+                        <option value="Unit 2D">Unit 2D</option>
+                        <option value="Unit 2E">Unit 2E</option>
+                        <option value="Unit 2F">Unit 2F</option>
+                        <option value="Unit 2G">Unit 2G</option>
+                        <option value="Unit 2H">Unit 2H</option>
+                        <option value="2B Extension">2B Extension</option>
+                        <option value="2D Extension">2D Extension</option>
+                        <option value="2E Extension">2E Extension</option>
+                        <option value="Unit 3A">Unit 3A</option>
+                        <option value="Unit 3B">Unit 3B</option>
+                        <option value="Unit 3C">Unit 3C</option>
+                        <option value="Unit 3D">Unit 3D</option>
+                        <option value="Unit 3E">Unit 3E</option>
+                        <option value="Unit 3F">Unit 3F</option>
+                        <option value="CTU">CTU</option>
+                        <option value="PDU">PDU</option>
+                        <option value="CCRU">CCRU</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Laboratory">Laboratory</option>
+                        <option value="Radiology">Radiology</option>
+                        <option value="Rehab">Rehab</option>
+                        <option value="OR-RR">OR-RR</option>
+                        <option value="OPS">OPS</option>
+                        <option value="AITU">AITU</option>
+                        <option value="IVASC">IVASC</option>
+                        <option value="AUEC">AUEC</option>
+                        <option value="ICU/IMCU">ICU/IMCU</option>
+                        <option value="ER">ER</option>
+                        <option value="PULMO">PULMO</option>
+                        <option value="HD Annex">HD Annex</option>
+                        <option value="HD Main">HD Main</option>
+                        <option value="ICN/OBSERVER">ICN/OBSERVER</option>
+                        <option value="MVML">MVML</option>
+                        <option value="VVR">VVR</option>
+                        <option value="ABV">ABV</option>
+                    </select>
                     <span asp-validation-for="Area" class="text-danger"></span>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label asp-for="Observer" class="form-label">Observer</label>
-                    <input asp-for="Observer" class="form-control" required />
+                    <select asp-for="Observer" class="form-select" required>
+                        <option value="">-- Select ICN/Observer --</option>
+                        <option value="MVML">MVML</option>
+                        <option value="VVR">VVR</option>
+                        <option value="ABV">ABV</option>
+                    </select>
                     <span asp-validation-for="Observer" class="text-danger"></span>
                 </div>
             </div>
@@ -130,8 +175,8 @@
                         <div class="row">
                             <div class="col-md-4 mb-2">
                                 <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="RoomType" id="ice-imcu" value="ICE/IMCU" required>
-                                    <label class="form-check-label" for="ice-imcu">ICE/IMCU</label>
+                                    <input type="radio" class="form-check-input" name="RoomType" id="icu-imcu" value="ICU/IMCU" required>
+                                    <label class="form-check-label" for="icu-imcu">ICU/IMCU</label>
                                 </div>
                             </div>
                             <div class="col-md-4 mb-2">
@@ -168,8 +213,9 @@
         <div class="card-body">
             <div class="mb-3">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="isolation-toggle" name="Isolation">
+                    <input class="form-check-input" type="checkbox" id="isolation-toggle" name="Isolation" value="true">
                     <label class="form-check-label" for="isolation-toggle">Isolation Observed?</label>
+                    <input type="hidden" name="Isolation" value="false">
                 </div>
             </div>
 
@@ -180,25 +226,25 @@
                         <div class="row">
                             <div class="col-md-3 mb-2">
                                 <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="IsolationPrecaution" id="airborne" value="Airborne">
+                                    <input type="radio" class="form-check-input isolation-precaution-radio" name="IsolationPrecaution" id="airborne" value="Airborne">
                                     <label class="form-check-label" for="airborne">Airborne</label>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-2">
                                 <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="IsolationPrecaution" id="droplet" value="Droplet">
+                                    <input type="radio" class="form-check-input isolation-precaution-radio" name="IsolationPrecaution" id="droplet" value="Droplet">
                                     <label class="form-check-label" for="droplet">Droplet</label>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-2">
                                 <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="IsolationPrecaution" id="contact" value="Contact">
+                                    <input type="radio" class="form-check-input isolation-precaution-radio" name="IsolationPrecaution" id="contact" value="Contact">
                                     <label class="form-check-label" for="contact">Contact</label>
                                 </div>
                             </div>
                             <div class="col-md-3 mb-2">
                                 <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="IsolationPrecaution" id="protective" value="Protective">
+                                    <input type="radio" class="form-check-input isolation-precaution-radio" name="IsolationPrecaution" id="protective" value="Protective">
                                     <label class="form-check-label" for="protective">Protective</label>
                                 </div>
                             </div>
@@ -256,11 +302,11 @@
 
                         <div id="hygiene-resources" style="display: none;">
                             <div class="form-check mb-2">
-                                <input type="radio" class="form-check-input" name="EnvironmentResource" id="hand-sanitizer" value="Hand sanitizer">
+                                <input type="radio" class="form-check-input environment-resource-radio" name="EnvironmentResource" id="hand-sanitizer" value="Hand sanitizer">
                                 <label class="form-check-label" for="hand-sanitizer">Hand sanitizer</label>
                             </div>
                             <div class="form-check mb-2">
-                                <input type="radio" class="form-check-input" name="EnvironmentResource" id="soap-water" value="Soap and water">
+                                <input type="radio" class="form-check-input environment-resource-radio" name="EnvironmentResource" id="soap-water" value="Soap and water">
                                 <label class="form-check-label" for="soap-water">Soap and water</label>
                             </div>
                         </div>
@@ -289,7 +335,7 @@
             <i class="fas fa-arrow-left me-1"></i> Back to List
         </a>
         <button type="submit" class="btn btn-primary">
-            <i class="fas fa-save me-1"></i> Submit Form
+            <i class="fas fa-save me-1"></i> Next Form
         </button>
     </div>
 </form>
@@ -298,13 +344,44 @@
     <script>
         // Toggle isolation precaution section visibility
         document.getElementById('isolation-toggle').addEventListener('change', function() {
-            document.getElementById('isolation-precaution-section').style.display = this.checked ? 'block' : 'none';
+            const precautionSection = document.getElementById('isolation-precaution-section');
+            precautionSection.style.display = this.checked ? 'block' : 'none';
+
+            // Get all radio buttons in the isolation precaution section
+            const radioButtons = document.querySelectorAll('.isolation-precaution-radio');
+
+            // Update required attribute based on isolation toggle
+            radioButtons.forEach(function(radio) {
+                radio.required = this.checked;
+            }, this);
+
+            // If isolation is unchecked, reset any selected value
+            if (!this.checked) {
+                radioButtons.forEach(function(radio) {
+                    radio.checked = false;
+                });
+            }
         });
 
         // Toggle environment observation sections
         document.getElementById('env-observe-toggle').addEventListener('change', function() {
             document.getElementById('hygiene-resources').style.display = this.checked ? 'block' : 'none';
             document.getElementById('not-observed').style.display = this.checked ? 'none' : 'block';
+
+            // Get all radio buttons in the environment resource section
+            const radioButtons = document.querySelectorAll('.environment-resource-radio');
+
+            // Update required attribute based on environment toggle
+            radioButtons.forEach(function(radio) {
+                radio.required = this.checked;
+            }, this);
+
+            // If environment toggle is unchecked, reset any selected value
+            if (!this.checked) {
+                radioButtons.forEach(function(radio) {
+                    radio.checked = false;
+                });
+            }
         });
 
         // Handle "Other" options
@@ -345,6 +422,34 @@
                         const roomOther = document.getElementById('room-other');
                         const obsvOther = document.getElementById('obsv-other');
 
+                        // Check if isolation precaution is required but not selected
+                        const isolationToggle = document.getElementById('isolation-toggle');
+                        if (isolationToggle.checked) {
+                            const precautionSelected = Array.from(
+                                document.querySelectorAll('.isolation-precaution-radio')
+                            ).some(radio => radio.checked);
+
+                            if (!precautionSelected) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                alert('Please select an Isolation Precaution type');
+                            }
+                        }
+
+                        // Check if environment resource is required but not selected
+                        const envObserveToggle = document.getElementById('env-observe-toggle');
+                        if (envObserveToggle.checked) {
+                            const resourceSelected = Array.from(
+                                document.querySelectorAll('.environment-resource-radio')
+                            ).some(radio => radio.checked);
+
+                            if (!resourceSelected) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                alert('Please select a Hand Hygiene Resource type');
+                            }
+                        }
+
                         if (hcwOther.checked && !document.getElementById('hcw-other-text').value.trim()) {
                             event.preventDefault();
                             event.stopPropagation();
@@ -361,6 +466,36 @@
                             event.preventDefault();
                             event.stopPropagation();
                             alert('Please specify "Other" Observation method');
+                        }
+
+                        // Handle ObsvPatientEnvironment and IsolationPrecaution hidden values
+                        // These ensure proper value submission when toggles are off
+
+                        // For isolation
+                        if (!isolationToggle.checked) {
+                            // Create a hidden input to send empty value for IsolationPrecaution
+                            const hiddenIsolationInput = document.createElement('input');
+                            hiddenIsolationInput.type = 'hidden';
+                            hiddenIsolationInput.name = 'IsolationPrecaution';
+                            hiddenIsolationInput.value = '';
+                            form.appendChild(hiddenIsolationInput);
+                        }
+
+                        // For environment observation
+                        if (!envObserveToggle.checked) {
+                            // Create a hidden input to send the "off" value
+                            const hiddenEnvInput = document.createElement('input');
+                            hiddenEnvInput.type = 'hidden';
+                            hiddenEnvInput.name = 'ObsvPatientEnvironment';
+                            hiddenEnvInput.value = 'off';
+                            form.appendChild(hiddenEnvInput);
+
+                            // Create a hidden input to send empty value for EnvironmentResource
+                            const hiddenResourceInput = document.createElement('input');
+                            hiddenResourceInput.type = 'hidden';
+                            hiddenResourceInput.name = 'EnvironmentResource';
+                            hiddenResourceInput.value = '';
+                            form.appendChild(hiddenResourceInput);
                         }
 
                         // Handle other validations
