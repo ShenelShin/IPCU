@@ -11,10 +11,12 @@ using IPCU.Services;
 using X.PagedList;
 using X.PagedList.Mvc.Core;
 using X.PagedList.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace IPCU.Controllers
 {
+    [Authorize]
     public class TrainingSummaryController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -72,6 +74,7 @@ namespace IPCU.Controllers
         }
 
         // GET: TrainingSummary/Create
+        [AllowAnonymous]
         public IActionResult Create()
         {
             return View();
@@ -83,7 +86,7 @@ namespace IPCU.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Create([Bind("Id,Title,Venue,DateOfTraining,TrainingMethodology,ProfessionalCategory,TotalParticipantsMale,TotalParticipantsFemale,PostTestEvaluationGrade,FinalRating,FlowFollowed,RulesEstablished,InitiateDiscussion,TechnicalCapability,ContentOrganization,ObjectiveStated,ContentQuality,FlowOfTopic,RelevanceOfTopic,PracticeApplication,LearningActivities,VisualAids,PresentKnowledge,BalancePrinciples,AddressClarifications,Preparedness,TeachingPersonality,EstablishRapport,RespectForParticipants,VoicePersonality,TimeManagement,SMELecturer,SuggestionsForImprovement, SayToSpeaker")] TrainingEvaluation trainingEvaluation)
         {
             if (ModelState.IsValid)
