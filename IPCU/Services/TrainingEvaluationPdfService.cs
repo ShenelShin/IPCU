@@ -132,6 +132,7 @@
                                     AddRow("Date:", training.DateOfTraining.ToString("dd MMM yyyy"));
                                     AddRow("Venue:", training.Venue);
                                     AddRow("Methodology:", training.TrainingMethodology); // No underline for the last row
+                                    AddRow("Professional Category:", training.ProfessionalCategory);
                                     AddRow("SME/Lecturer:", training.SMELecturer, false); // NEWLY ADDED LINE
                                 });
                             });
