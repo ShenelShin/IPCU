@@ -70,23 +70,90 @@
 <div class="container">
     <h2>Monthly Hand Hygiene Compliance Summary - @selectedMonth.ToString("MMMM yyyy")</h2>
 
-    <div class="mb-4">
-        <form asp-action="MonthlySummary" method="get" class="form-inline">
-            <div class="form-group mr-2">
-                <label for="date" class="mr-2">Select Month:</label>
-                <input type="month" id="date" name="date" class="form-control" value="@selectedMonth.ToString("yyyy-MM")" />
-            </div>
-            <button type="submit" class="btn btn-primary">View</button>
-
-            @if (lastGenerated.HasValue && showRegenerate)
-            {
-                <div class="ml-3">
-                    <small class="text-muted">Last generated: @lastGenerated.Value.ToString("g")</small>
-                    <a asp-action="MonthlySummary" asp-route-date="@selectedMonth.ToString("yyyy-MM-dd")" asp-route-regenerate="true" class="btn btn-outline-secondary btn-sm ml-2">Regenerate</a>
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Report Options</h5>
+        </div>
+        <div class="card-body">
+            <form asp-action="MonthlySummary" method="get">
+                <div class="row">
+                    <!-- Month selection with View button beside it -->
+                    <div class="col-md-4 mb-3">
+                        <label for="date" class="form-label">Select Month</label>
+                        <div class="d-flex">
+                            <input type="month" id="date" name="date" class="form-control me-2" value="@selectedMonth.ToString("yyyy-MM")" />
+                            <button type="submit" class="btn btn-primary">View</button>
+                        </div>
+                    </div>
                 </div>
-            }
-        </form>
+
+                <div class="row">
+                    <!-- Remarks field -->
+                    <div class="col-md-8 mb-3">
+                        <label for="remarks" class="form-label">Remarks</label>
+                        <textarea id="remarks" name="remarks" class="form-control" rows="2" placeholder="Enter remarks here..."></textarea>
+                        <small class="text-muted">
+                            Required when regenerating data
+                        </small>
+                    </div>
+
+                    <!-- Regenerate button and generation info -->
+                    <div class="col-md-4 mb-3">
+                        @if (lastGenerated.HasValue && showRegenerate)
+                        {
+                            <div class="mt-4">
+                                <button type="button" onclick="regenerateWithRemarks('@selectedMonth.ToString("yyyy-MM-dd")')" class="btn btn-outline-secondary">
+                                    Regenerate
+                                </button>
+                            </div>
+
+                            <small class="text-muted d-block mt-2">
+                                Last generated: @lastGenerated.Value.ToString("MMM d, yyyy h:mm tt")
+                            </small>
+                        }
+                    </div>
+                </div>
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger mt-3">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+            </form>
+        </div>
     </div>
+
+    <!-- Display existing remarks if they exist -->
+    @if (ViewBag.CurrentRemarks != null && !string.IsNullOrEmpty(ViewBag.CurrentRemarks))
+    {
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h6 class="mb-0">Current Report Remarks</h6>
+            </div>
+            <div class="card-body bg-light">
+                <p class="card-text">@ViewBag.CurrentRemarks</p>
+            </div>
+        </div>
+    }
+
+    <script>
+        function regenerateWithRemarks(dateStr) {
+            var remarks = document.getElementById('remarks').value.trim();
+            if (!remarks) {
+                alert('Remarks are required when regenerating data.');
+                document.getElementById('remarks').focus();
+                return false;
+            }
+
+            // Construct the URL with both date and remarks parameters
+            window.location.href = '@Url.Action("MonthlySummary")' +
+                '?date=' + dateStr +
+                '&regenerate=true' +
+                '&remarks=' + encodeURIComponent(remarks);
+        }
+    </script>
+</div>
 
     <!-- Summary Dashboard -->
     <div class="row mb-4">

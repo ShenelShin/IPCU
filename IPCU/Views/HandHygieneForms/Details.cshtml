@@ -18,10 +18,10 @@
             <dd class="col-sm-9">@Html.DisplayFor(model => model.Observer)</dd>
 
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Date)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Date)</dd>
+            <dd class="col-sm-9">@Model.Date.ToString("MMMM dd, yyyy")</dd>
 
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Time)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Time)</dd>
+            <dd class="col-sm-9">@Model.Time.ToString(@"hh\:mm")</dd>
 
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
             <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
@@ -31,12 +31,33 @@
 
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.RoomType)</dt>
             <dd class="col-sm-9">@Html.DisplayFor(model => model.RoomType)</dd>
+        </dl>
+    </div>
+</div>
 
+<div class="card mb-4">
+    <div class="card-header">
+        <h4>Isolation Information</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row">
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Isolation)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.Isolation)</dd>
+            <dd class="col-sm-9">
+                @if (Model.Isolation == true)
+                {
+                    <span class="badge bg-success">Yes</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">No</span>
+                }
+            </dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IsolationPrecaution)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.IsolationPrecaution)</dd>
+            @if (Model.Isolation == true && !string.IsNullOrEmpty(Model.IsolationPrecaution))
+            {
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.IsolationPrecaution)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.IsolationPrecaution)</dd>
+            }
         </dl>
     </div>
 </div>
@@ -50,8 +71,21 @@
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ObsvPatientCare)</dt>
             <dd class="col-sm-9">@Html.DisplayFor(model => model.ObsvPatientCare)</dd>
 
-            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ObsvPatientEnvironment)</dt>
-            <dd class="col-sm-9">@Html.DisplayFor(model => model.ObsvPatientEnvironment)</dd>
+            <dt class="col-sm-3">Hand Hygiene Resources</dt>
+            <dd class="col-sm-9">
+                @if (Model.ObsvPatientEnvironment == "on")
+                {
+                    <span class="badge bg-success">Available</span>
+                    @if (!string.IsNullOrEmpty(Model.EnvironmentResource))
+                    {
+                        <span class="ms-2">(@Model.EnvironmentResource)</span>
+                    }
+                }
+                else
+                {
+                    <span class="badge bg-warning">Not observed</span>
+                }
+            </dd>
 
             <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ObsvPatientContact)</dt>
             <dd class="col-sm-9">@Html.DisplayFor(model => model.ObsvPatientContact)</dd>
@@ -76,10 +110,10 @@
                 @{
                     var complianceRate = Model.ComplianceRate;
                 }
-                @if (complianceRate != 0)  // Check if rate has been calculated
+                @if (complianceRate > 0)  // Check if rate has been calculated
                 {
-                    <span class="@(complianceRate >= 85m ? "text-success" : complianceRate >= 70m ? "text-warning" : "text-danger")">
-                        @complianceRate.ToString("0.0")%
+                    <span class="@(complianceRate >= 0.85m ? "text-success" : complianceRate >= 0.70m ? "text-warning" : "text-danger")">
+                        @(complianceRate.ToString("P2"))
                     </span>
                 }
                 else
@@ -90,6 +124,7 @@
         </dl>
     </div>
 </div>
+
 @if (Model.Activities != null && Model.Activities.Count > 0)
 {
     <div class="card mb-4">
@@ -102,11 +137,11 @@
                     <thead>
                         <tr>
                             <th>Activity</th>
-                            <th class="text-center">Before Hand Rub</th>
-                            <th class="text-center">Before Hand Wash</th>
-                            <th class="text-center">After Hand Rub</th>
-                            <th class="text-center">After Hand Wash</th>
-                            <th class="text-center">Gloves</th>
+                            <th>Before Hand Rub</th>
+                            <th>Before Hand Wash</th>
+                            <th>After Hand Rub</th>
+                            <th>After Hand Wash</th>
+                            <th>Gloves</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -114,54 +149,18 @@
                         {
                             <tr>
                                 <td>@activity.Activity</td>
-                                <td class="text-center">
-                                    @if (!string.IsNullOrEmpty(activity.BeforeHandRub))
+                                <td>@Html.Raw(FormatHygieneData(activity.BeforeHandRub))</td>
+                                <td>@Html.Raw(FormatHygieneData(activity.BeforeHandWash))</td>
+                                <td>@Html.Raw(FormatHygieneData(activity.AfterHandRub))</td>
+                                <td>@Html.Raw(FormatHygieneData(activity.AfterHandWash))</td>
+                                <td>
+                                    @if (activity.Gloves == "True" || activity.Gloves == "1")
                                     {
-                                        @Html.Raw(activity.BeforeHandRub)
+                                        <span class="text-success">Yes</span>
                                     }
                                     else
                                     {
-                                        <span>-</span>
-                                    }
-                                </td>
-                                <td class="text-center">
-                                    @if (!string.IsNullOrEmpty(activity.BeforeHandWash))
-                                    {
-                                        @Html.Raw(activity.BeforeHandWash)
-                                    }
-                                    else
-                                    {
-                                        <span>-</span>
-                                    }
-                                </td>
-                                <td class="text-center">
-                                    @if (!string.IsNullOrEmpty(activity.AfterHandRub))
-                                    {
-                                        @Html.Raw(activity.AfterHandRub)
-                                    }
-                                    else
-                                    {
-                                        <span>-</span>
-                                    }
-                                </td>
-                                <td class="text-center">
-                                    @if (!string.IsNullOrEmpty(activity.AfterHandWash))
-                                    {
-                                        @Html.Raw(activity.AfterHandWash)
-                                    }
-                                    else
-                                    {
-                                        <span>-</span>
-                                    }
-                                </td>
-                                <td class="text-center">
-                                    @if (activity.Gloves == "True")
-                                    {
-                                        <span class="text-success">✓</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-danger">✗</span>
+                                        <span class="text-danger">No</span>
                                     }
                                 </td>
                             </tr>
@@ -181,3 +180,51 @@
         <i class="fas fa-arrow-left"></i> Back to List
     </a>
 </div>
+
+@functions {
+    public string FormatHygieneData(string data)
+    {
+        if (string.IsNullOrEmpty(data))
+            return "<span class='text-muted'>None</span>";
+
+        var result = "";
+        var items = data.Split(';');
+        foreach (var item in items)
+        {
+            if (!string.IsNullOrEmpty(item))
+            {
+                var parts = item.Split(',');
+                if (parts.Length == 2)
+                {
+                    string moment = "";
+                    switch (parts[0])
+                    {
+                        case "1":
+                            moment = "Before patient";
+                            break;
+                        case "2":
+                            moment = "Before procedure";
+                            break;
+                        case "3":
+                            moment = "After fluids";
+                            break;
+                        case "4":
+                            moment = "After patient";
+                            break;
+                        case "5":
+                            moment = "After surroundings";
+                            break;
+                        default:
+                            moment = parts[0];
+                            break;
+                    }
+                    // Convert numerical value to symbol
+                    string symbol = parts[1] == "1" ? "✓" : "✗";
+                    string bgClass = parts[1] == "1" ? "bg-success" : "bg-danger";
+                    result += $"<span class='badge {bgClass} me-1 mb-1'>{moment}: {symbol}</span> ";
+                }
+            }
+        }
+        return string.IsNullOrEmpty(result) ? "<span class='text-muted'>None</span>" : result;
+    }
+}

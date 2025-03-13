@@ -26,5 +26,9 @@ namespace IPCU.Models
 
         [Required]
         public DateTime GeneratedDate { get; set; }
+
+        [StringLength(255)]
+        public string? Remarks { get; set; }
+
     }
 }

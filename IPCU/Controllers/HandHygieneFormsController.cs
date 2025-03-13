@@ -289,7 +289,7 @@ namespace IPCU.Controllers
             {
                 if (string.IsNullOrEmpty(entry)) continue;
                 var parts = entry.Split(',');
-                if (parts.Length == 2 && parts[1] == "✓")
+                if (parts.Length == 2 && parts[1] == "1") // Change from "✓" to "1"
                 {
                     compliantCount++;
                 }
@@ -472,8 +472,7 @@ namespace IPCU.Controllers
         }
 
         // GET: HandHygieneForms/MonthlySummary
-        // GET: HandHygieneForms/MonthlySummary
-        public async Task<IActionResult> MonthlySummary(DateTime? date, bool regenerate = false, string generationDate = null)
+        public async Task<IActionResult> MonthlySummary(DateTime? date, bool regenerate = false, string generationDate = null, string remarks = null)
         {
             // Default to current month if no date provided
             var targetDate = date ?? DateTime.Now;
@@ -526,11 +525,19 @@ namespace IPCU.Controllers
                     new Dictionary<string, (int compliant, int total, decimal rate)>();
                 ViewBag.ObserverSummaries = ConvertToDictionary(summariesForGeneration, "Observer") ??
                     new Dictionary<string, (int compliant, int total, decimal rate)>();
+                ViewBag.CurrentRemarks = summariesForGeneration.FirstOrDefault()?.Remarks;
 
                 ViewBag.LastGenerated = actualGenDate;
                 ViewBag.Regenerate = false;
 
                 return View();
+            }
+
+            // If we're regenerating but no remarks were provided, redirect back with a warning
+            if (regenerate && string.IsNullOrEmpty(remarks))
+            {
+                TempData["ErrorMessage"] = "Remarks are required when regenerating data.";
+                return RedirectToAction("MonthlySummary", new { date = targetDate.ToString("yyyy-MM-dd") });
             }
 
             // Get all forms for the selected month
@@ -571,7 +578,8 @@ namespace IPCU.Controllers
                     ViewBag.AreaSummaries,
                     ViewBag.NurseAreaSummaries,
                     ViewBag.ProfessionSummaries,
-                    ViewBag.ObserverSummaries);
+                    ViewBag.ObserverSummaries,
+                    remarks);
 
                 // Get the latest generation date after saving
                 var latestGeneration = await _context.HandHygieneComplianceSummary
@@ -635,7 +643,8 @@ namespace IPCU.Controllers
             Dictionary<string, (int compliant, int total, decimal rate)> areaSummaries,
             Dictionary<string, (int compliant, int total, decimal rate)> nurseAreaSummaries,
             Dictionary<string, (int compliant, int total, decimal rate)> professionSummaries,
-            Dictionary<string, (int compliant, int total, decimal rate)> observerSummaries)
+            Dictionary<string, (int compliant, int total, decimal rate)> observerSummaries,
+            string remarks = null)
         {
             // Don't remove existing summaries - we'll keep history
             DateTime generationTimestamp = DateTime.Now;
@@ -653,7 +662,8 @@ namespace IPCU.Controllers
                         TotalCompliantActions = kvp.Value.compliant,
                         TotalObservedOpportunities = kvp.Value.total,
                         ComplianceRate = kvp.Value.rate,
-                        GeneratedDate = generationTimestamp
+                        GeneratedDate = generationTimestamp,
+                        Remarks = remarks
                     };
 
                     _context.HandHygieneComplianceSummary.Add(newSummary);

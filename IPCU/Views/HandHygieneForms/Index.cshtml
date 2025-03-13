@@ -123,12 +123,12 @@
                                                         {
                                                             <tr>
                                                                 <td>@activity.Activity</td>
-                                                                <td>@activity.BeforeHandRub</td>
-                                                                <td>@activity.BeforeHandWash</td>
-                                                                <td>@activity.AfterHandRub</td>
-                                                                <td>@activity.AfterHandWash</td>
+                                                                <td>@Html.Raw(FormatHygieneData(activity.BeforeHandRub))</td>
+                                                                <td>@Html.Raw(FormatHygieneData(activity.BeforeHandWash))</td>
+                                                                <td>@Html.Raw(FormatHygieneData(activity.AfterHandRub))</td>
+                                                                <td>@Html.Raw(FormatHygieneData(activity.AfterHandWash))</td>
                                                                 <td>
-                                                                    @if (activity.Gloves == "True")
+                                                                    @if (activity.Gloves == "True" || activity.Gloves == "1")
                                                                     {
                                                                         <span class="text-success">Yes</span>
                                                                     }
@@ -162,6 +162,53 @@
         </div>
     }
 </div>
+
+@functions {
+    public string FormatHygieneData(string data)
+    {
+        if (string.IsNullOrEmpty(data))
+            return "";
+        var result = "";
+        var items = data.Split(';');
+        foreach (var item in items)
+        {
+            if (!string.IsNullOrEmpty(item))
+            {
+                var parts = item.Split(',');
+                if (parts.Length == 2)
+                {
+                    string moment = "";
+                    switch (parts[0])
+                    {
+                        case "1":
+                            moment = "Before patient";
+                            break;
+                        case "2":
+                            moment = "Before procedure";
+                            break;
+                        case "3":
+                            moment = "After fluids";
+                            break;
+                        case "4":
+                            moment = "After patient";
+                            break;
+                        case "5":
+                            moment = "After surroundings";
+                            break;
+                        default:
+                            moment = parts[0];
+                            break;
+                    }
+                    // Convert numerical value to symbol
+                    string symbol = parts[1] == "1" ? "✓" : "✗";
+                    string bgClass = parts[1] == "1" ? "bg-success" : "bg-danger";
+                    result += $"<span class='badge {bgClass} me-1 mb-1'>{moment}: {symbol}</span> ";
+                }
+            }
+        }
+        return result;
+    }
+}
 
 @section Scripts {
     <script>

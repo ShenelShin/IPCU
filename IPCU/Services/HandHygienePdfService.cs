@@ -746,7 +746,7 @@ namespace IPCU.Services
                 if (string.IsNullOrEmpty(entry)) continue;
 
                 var parts = entry.Split(',');
-                if (parts.Length == 2 && parts[1] == "✓")
+                if (parts.Length == 2 && parts[1] == "1") // Change from "✓" to "1"
                 {
                     compliantCount++;
                 }
@@ -763,7 +763,7 @@ namespace IPCU.Services
                 return;
             }
 
-            // Split multiple entries (format: "1,✓;2,X;3,✓")
+            // Split multiple entries (format: "1,1;2,0;3,1")
             var entries = data.Split(';');
 
             container.Text(text =>
@@ -777,7 +777,10 @@ namespace IPCU.Services
                     if (parts.Length == 2)
                     {
                         string number = parts[0];
-                        string symbol = parts[1];
+                        string symbolValue = parts[1];
+
+                        // Convert numerical value to symbol
+                        string symbol = symbolValue == "1" ? "✓" : "X";
 
                         // Add a space between entries (except for the first one)
                         if (!isFirst)
