@@ -20,6 +20,7 @@ namespace IPCU.Data
  
 
         public DbSet<TestFormModel> TestForms { get; set; }
+        public DbSet<PreTestClinical> PreTestClinicals { get; set; }
 
     }
 
