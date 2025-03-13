@@ -12,6 +12,10 @@ namespace IPCU.Controllers
         {
             return View(); // This will look for Views/Test/Instructions.cshtml
         }
+        public IActionResult Instructions2()
+        {
+            return View();
+        }
 
     }
 }

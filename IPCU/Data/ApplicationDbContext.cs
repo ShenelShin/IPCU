@@ -17,6 +17,8 @@ namespace IPCU.Data
         public DbSet<HHActivity> HHActivities { get; set; }
         public DbSet<FitTestingFormHistory> FitTestingFormHistory { get; set; }
         public DbSet<Trainee> Trainees { get; set; }
+ 
 
     }
+
 }
