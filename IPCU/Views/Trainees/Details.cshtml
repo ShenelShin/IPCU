@@ -1,0 +1,80 @@
+﻿@model IPCU.Models.Trainee
+
+@{
+    ViewData["Title"] = "Trainee Details";
+}
+
+<div class="container mt-4">
+    <!-- Header -->
+    <div class="card border-primary shadow-lg">
+        <div class="card-header bg-primary text-white text-center">
+            <h2><i class="fas fa-user"></i> Trainee Details</h2>
+        </div>
+
+        <!-- Table Boxed Layout -->
+        <div class="card-body">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th class="bg-light">Full Name</th>
+                        <td>@Html.DisplayFor(model => model.FullName)</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Sex</th>
+                        <td>@Html.DisplayFor(model => model.Sex)</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Department</th>
+                        <td>@Html.DisplayFor(model => model.Department)</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">N95</th>
+                        <td>@Html.DisplayFor(model => model.N95)</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">ID Printing</th>
+                        <td>@Html.DisplayFor(model => model.IDPrinting)</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Basic Infection</th>
+                        <td>@Html.DisplayFor(model => model.BasicInfection)</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Proper Hand</th>
+                        <td>@Html.DisplayFor(model => model.ProperHand)</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Glove Removal</th>
+                        <td>@Html.DisplayFor(model => model.GloveRemoval)</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Pre Test Score</th>
+                        <td>@Html.DisplayFor(model => model.PreTestScore)</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Post Test Score</th>
+                        <td>@Html.DisplayFor(model => model.PostTestScore)</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Rate</th>
+                        <td>@Html.DisplayFor(model => model.Rate)</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-light">Training Report</th>
+                        <td>@Html.DisplayFor(model => model.TrainingReport)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Buttons -->
+        <div class="card-footer d-flex justify-content-end gap-2">
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-warning px-4">
+                <i class="fas fa-edit"></i> Edit
+            </a>
+            <a asp-action="Index" class="btn btn-secondary px-4">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </div>
+</div>

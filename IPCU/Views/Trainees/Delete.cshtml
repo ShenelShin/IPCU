@@ -1,0 +1,86 @@
+﻿@model IPCU.Models.Trainee
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg rounded-3 border-danger">
+        <div class="card-header bg-danger text-white text-center">
+            <h2 class="mb-0"><i class="fas fa-exclamation-triangle"></i> Confirm Deletion</h2>
+        </div>
+
+        <div class="card-body">
+            <div class="alert alert-danger text-center fw-bold">
+                Are you sure you want to delete this record?
+            </div>
+
+            <!-- Details Section -->
+            <table class="table table-striped table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Full Name</th>
+                        <td>@Html.DisplayFor(model => model.FullName)</td>
+                    </tr>
+                    <tr>
+                        <th>Sex</th>
+                        <td>@Html.DisplayFor(model => model.Sex)</td>
+                    </tr>
+                    <tr>
+                        <th>Department</th>
+                        <td>@Html.DisplayFor(model => model.Department)</td>
+                    </tr>
+                    <tr>
+                        <th>N95</th>
+                        <td>@Html.DisplayFor(model => model.N95)</td>
+                    </tr>
+                    <tr>
+                        <th>ID Printing</th>
+                        <td>@Html.DisplayFor(model => model.IDPrinting)</td>
+                    </tr>
+                    <tr>
+                        <th>Basic Infection</th>
+                        <td>@Html.DisplayFor(model => model.BasicInfection)</td>
+                    </tr>
+                    <tr>
+                        <th>Proper Hand</th>
+                        <td>@Html.DisplayFor(model => model.ProperHand)</td>
+                    </tr>
+                    <tr>
+                        <th>Glove Removal</th>
+                        <td>@Html.DisplayFor(model => model.GloveRemoval)</td>
+                    </tr>
+                    <tr>
+                        <th>Pre Test Score</th>
+                        <td>@Html.DisplayFor(model => model.PreTestScore)</td>
+                    </tr>
+                    <tr>
+                        <th>Post Test Score</th>
+                        <td>@Html.DisplayFor(model => model.PostTestScore)</td>
+                    </tr>
+                    <tr>
+                        <th>Rate</th>
+                        <td>@Html.DisplayFor(model => model.Rate)</td>
+                    </tr>
+                    <tr>
+                        <th>Training Report</th>
+                        <td>@Html.DisplayFor(model => model.TrainingReport)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Buttons Section -->
+            <form asp-action="Delete" class="d-flex justify-content-center gap-2 mt-3">
+                <input type="hidden" asp-for="Id" />
+
+                <button type="submit" class="btn btn-danger px-4 py-2 shadow-sm">
+                    <i class="fas fa-trash"></i> Delete
+                </button>
+
+                <a asp-action="Index" class="btn btn-secondary px-4 py-2 shadow-sm">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -30,11 +30,19 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label asp-for="Venue" class="control-label"></label>
-                            <input asp-for="Venue" class="form-control" placeholder="Enter venue" required />
+                            <label asp-for="Venue" class="control-label">Select Venue</label>
+                            <select asp-for="Venue" class="form-control" required>
+                                <option value="">Select a venue</option>
+                                <option value="Alano Auditorium">Alano Auditorium</option>
+                                <option value="Enrique T. Ona Auditorium">Enrique T. Ona Auditorium</option>
+                                <option value="Claver Auditorium">Claver Auditorium</option>
+                                <option value="Doctor's Lounge">Doctor's Lounge</option>
+                                <option value="Refresher Training">Refresher Training</option>
+                            </select>
                             <span asp-validation-for="Venue" class="text-danger"></span>
                         </div>
                     </div>
+
                 </div>
 
                 <div class="row">
@@ -111,38 +119,67 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="FlowFollowed" class="control-label">Flow was Followed</label>
-                            <input asp-for="FlowFollowed" class="form-control" placeholder="Enter flow followed" required />
+                            <select asp-for="FlowFollowed" class="form-control" required>
+                                <option value="">Select an option</option>
+                                <option value="1">1 - Needs Improvement</option>
+                                <option value="2">2 - Fair</option>
+                                <option value="3">3 - Satisfactory</option>
+                                <option value="4">4 - Very Satisfactory</option>
+                                <option value="5">5 - Excellent</option>
+                            </select>
                             <span asp-validation-for="FlowFollowed" class="text-danger"></span>
                         </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="form-group">
                             <label asp-for="RulesEstablished" class="control-label">Rules Clearly Established</label>
-                            <input asp-for="RulesEstablished" class="form-control" placeholder="Enter rules established" required />
+                            <select asp-for="RulesEstablished" class="form-control" required>
+                                <option value="">Select an option</option>
+                                <option value="1">1 - Needs Improvement</option>
+                                <option value="2">2 - Fair</option>
+                                <option value="3">3 - Satisfactory</option>
+                                <option value="4">4 - Very Satisfactory</option>
+                                <option value="5">5 - Excellent</option>
+                            </select>
                             <span asp-validation-for="RulesEstablished" class="text-danger"></span>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="InitiateDiscussion" class="control-label">Ability to Initiate Discussion</label>
-                            <input asp-for="InitiateDiscussion" class="form-control" placeholder="Enter discussion initiation rating" required />
-                            <span asp-validation-for="InitiateDiscussion" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="InitiateDiscussion" class="control-label">Ability to Initiate Discussion</label>
+                                <select asp-for="InitiateDiscussion" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="InitiateDiscussion" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="TechnicalCapability" class="control-label">Technical Capability</label>
+                                <select asp-for="TechnicalCapability" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="TechnicalCapability" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="TechnicalCapability" class="control-label">Technical Capability</label>
-                            <input asp-for="TechnicalCapability" class="form-control" placeholder="Enter technical capability rating" required />
-                            <span asp-validation-for="TechnicalCapability" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
 
 
-                <!-- Instructor's Evaluation -->
+
+                <!-- Instructor's Evaluation
                 <h4 class="text-secondary mt-4">Instructor's Evaluation</h4>
                 <hr />
                 <div class="row">
@@ -161,147 +198,291 @@
                         </div>
                     </div>
                 </div>
+                    -->
+                    <!-- Module Content -->
+                    <h4 class="text-secondary mt-4">Module Evaluation</h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ContentQuality" class="control-label">Content Quality</label>
+                                <select asp-for="ContentQuality" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="ContentQuality" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="FlowOfTopic" class="control-label">Flow of Topic</label>
+                                <select asp-for="FlowOfTopic" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="FlowOfTopic" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
 
-                <!-- Module Content -->
-                <h4 class="text-secondary mt-4">Module Evaluation</h4>
-                <hr />
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="ContentQuality" class="control-label">Content Quality</label>
-                            <input asp-for="ContentQuality" class="form-control" placeholder="Describe quality" required />
-                            <span asp-validation-for="ContentQuality" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ContentOrganization" class="control-label">Content Organization</label>
+                                <select asp-for="ContentOrganization" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="ContentOrganization" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ObjectiveStated" class="control-label">Objective Clearly Stated</label>
+                                <select asp-for="ObjectiveStated" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="ObjectiveStated" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="FlowOfTopic" class="control-label">Flow of Topic</label>
-                            <input asp-for="FlowOfTopic" class="form-control" placeholder="Describe flow" required />
-                            <span asp-validation-for="FlowOfTopic" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="ContentOrganization" class="control-label">Content Organization</label>
-                            <input asp-for="ContentOrganization" class="form-control" placeholder="Describe organization" required />
-                            <span asp-validation-for="ContentOrganization" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="RelevanceOfTopic" class="control-label">Relevance of the Topic</label>
+                                <select asp-for="RelevanceOfTopic" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="RelevanceOfTopic" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PracticeApplication" class="control-label">Practice Application</label>
+                                <select asp-for="PracticeApplication" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="PracticeApplication" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="ObjectiveStated" class="control-label">Objective Clearly Stated</label>
-                            <input asp-for="ObjectiveStated" class="form-control" placeholder="State objective" required />
-                            <span asp-validation-for="ObjectiveStated" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="RelevanceOfTopic" class="control-label">Relevance of the Topic</label>
-                            <input asp-for="RelevanceOfTopic" class="form-control" placeholder="Describe relevance" required />
-                            <span asp-validation-for="RelevanceOfTopic" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="LearningActivities" class="control-label">Learning Activities</label>
+                                <select asp-for="LearningActivities" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="LearningActivities" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="VisualAids" class="control-label">Visual Aids (Module Presentation)</label>
+                                <select asp-for="VisualAids" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="VisualAids" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="PracticeApplication" class="control-label">Practice Application</label>
-                            <input asp-for="PracticeApplication" class="form-control" placeholder="Describe practice application" required />
-                            <span asp-validation-for="PracticeApplication" class="text-danger"></span>
+
+
+
+                    <h4 class="text-secondary mt-4">Mastery of the Subject Matter</h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="PresentKnowledge" class="control-label">Ability to Present Knowledge</label>
+                                <select asp-for="PresentKnowledge" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="PresentKnowledge" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="BalancePrinciples" class="control-label">Ability to Balance Principles</label>
+                                <select asp-for="BalancePrinciples" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="BalancePrinciples" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="AddressClarifications" class="control-label">Ability to Address Clarifications</label>
+                                <select asp-for="AddressClarifications" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="AddressClarifications" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="LearningActivities" class="control-label">Learning Activities</label>
-                            <input asp-for="LearningActivities" class="form-control" placeholder="Describe activities" required />
-                            <span asp-validation-for="LearningActivities" class="text-danger"></span>
+                    <h4 class="text-secondary mt-4">Trainor-related Characteristics</h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="TeachingPersonality" class="control-label">Teaching Personality</label>
+                                <select asp-for="TeachingPersonality" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="TeachingPersonality" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Preparedness" class="control-label">Preparedness of the SME</label>
+                                <select asp-for="Preparedness" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="Preparedness" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EstablishRapport" class="control-label">Ability to Establish Rapport</label>
+                                <select asp-for="EstablishRapport" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="EstablishRapport" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="RespectForParticipants" class="control-label">Genuine Respect for Participants</label>
+                                <select asp-for="RespectForParticipants" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="RespectForParticipants" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="VoicePersonality" class="control-label">Voice Personality</label>
+                                <select asp-for="VoicePersonality" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="VoicePersonality" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="TimeManagement" class="control-label">Time Management</label>
+                                <select asp-for="TimeManagement" class="form-control" required>
+                                    <option value="">Select an option</option>
+                                    <option value="1">1 - Needs Improvement</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Satisfactory</option>
+                                    <option value="4">4 - Very Satisfactory</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                                <span asp-validation-for="TimeManagement" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="VisualAids" class="control-label">Visual Aids (Module Presentation)</label>
-                            <input asp-for="VisualAids" class="form-control" placeholder="Describe visual aids" required />
-                            <span asp-validation-for="VisualAids" class="text-danger"></span>
+
+                    <h4 class="text-secondary mt-4">Trainor-related Characteristics</h4>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-group">
+                                <label asp-for="SMELecturer" class="control-label">Name of SME/Lecturer</label>
+                                <select asp-for="SMELecturer" class="form-control" required>
+                                    <option value="">Select SME/Lecturer</option>
+                                    <option value="Maria Lourdes Bernadeth M. Laxina">Maria Lourdes Bernadeth M. Laxina</option>
+                                    <option value="Vernalissa V. Relloso">Vernalissa V. Relloso</option>
+                                    <option value="Arvee B. Vega">Arvee B. Vega</option>
+                                </select>
+                                <span asp-validation-for="SMELecturer" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
 
-                <h4 class="text-secondary mt-4">Mastery of the Subject Matter</h4>
-                <hr />
-                <div class="row">
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-                            <label asp-for="PresentKnowledge" class="control-label">Ability to Present Knowledge</label>
-                            <input asp-for="PresentKnowledge" class="form-control" required />
-                            <span asp-validation-for="PresentKnowledge" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="BalancePrinciples" class="control-label">Ability to Balance Principles</label>
-                            <input asp-for="BalancePrinciples" class="form-control" required />
-                            <span asp-validation-for="BalancePrinciples" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="AddressClarifications" class="control-label">Ability to Address Clarifications</label>
-                            <input asp-for="AddressClarifications" class="form-control" required />
-                            <span asp-validation-for="AddressClarifications" class="text-danger"></span>
-                        </div>
-
-                    </div>
-                </div>
-
-                <h4 class="text-secondary mt-4">Trainor-related Characteristics</h4>
-                <hr />
-                <div class="row">
-                    <div class="col-md-6">
-                        
-                        <div class="form-group">
-                            <label asp-for="TeachingPersonality" class="control-label">Teaching Personality</label>
-                            <input asp-for="TeachingPersonality" class="form-control" required />
-                            <span asp-validation-for="TeachingPersonality" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Preparedness" class="control-label">Preparedness of the SME</label>
-                            <input asp-for="Preparedness" class="form-control" required />
-                            <span asp-validation-for="Preparedness" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="EstablishRapport" class="control-label">Ability to Establish Rapport</label>
-                            <input asp-for="EstablishRapport" class="form-control" required />
-                            <span asp-validation-for="EstablishRapport" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="RespectForParticipants" class="control-label">Genuine Respect for Participants</label>
-                            <input asp-for="RespectForParticipants" class="form-control" required />
-                            <span asp-validation-for="RespectForParticipants" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="VoicePersonality" class="control-label">Voice Personality</label>
-                            <input asp-for="VoicePersonality" class="form-control" required />
-                            <span asp-validation-for="VoicePersonality" class="text-danger"></span>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="TimeManagement" class="control-label">Time Management</label>
-                            <input asp-for="TimeManagement" class="form-control" required />
-                            <span asp-validation-for="TimeManagement" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Suggestions -->
-                <h4 class="text-secondary mt-4">What is the best thing you can say about the speaker?</h4>
-                <hr />
+                    <hr />
+                    <h4 class="text-secondary mt-4">Please suggest ways in which the speaker can  improve and can be more effective in the delivery of the topics.</h4>       
                 <div class="form-group">
-                    <textarea asp-for="SuggestionsForImprovement" class="form-control" rows="4" placeholder="Enter suggestions" required></textarea>
+                    <textarea asp-for="SuggestionsForImprovement" class="form-control mb-4" rows="4" placeholder="Enter suggestions" required></textarea>
                     <span asp-validation-for="SuggestionsForImprovement" class="text-danger"></span>
+                </div>
+
+                    <hr />
+                  <h4 class="text-secondary mt-4">What is the best thing you can say about the speaker?</h4>
+                
+                <div class="form-group">
+                    <textarea asp-for="SayToSpeaker" class="form-control" rows="4" placeholder="Enter suggestions" required></textarea>
+                    <span asp-validation-for="SayToSpeaker" class="text-danger"></span>
                 </div>
 
 
