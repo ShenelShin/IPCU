@@ -14,6 +14,8 @@ namespace IPCU.Models
 
         [Required]
         public string DUO { get; set; }
+        [Required]
+        public string Professional_Category { get; set; }
 
         [Display(Name = "Limitation")]
         public string Limitation { get; set; }
@@ -89,6 +91,19 @@ namespace IPCU.Models
 
         public int SubmissionCount { get; set; } = 0;
         public int MaxRetakes { get; set; } = 2;
+        public string Status
+        {
+            get
+            {
+                if (Test_Results == "Passed")
+                {
+                    return ExpiringAt >= DateTime.Now ? "Passed" : "Expired";
+                }
+                return "Failed";
+            }
+        }
+
     }
+
 
 }

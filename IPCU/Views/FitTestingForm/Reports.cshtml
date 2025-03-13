@@ -1,0 +1,168 @@
+﻿@{
+    ViewData["Title"] = "Reports";
+
+    var attendanceForPhysicians = ViewBag.AttendanceForPhysicians as List<IPCU.Models.FitTestingForm>;
+    var attendanceForNursingAndAllied = ViewBag.AttendanceForNursingAndAllied as List<IPCU.Models.FitTestingForm>;
+}
+<style>
+    .table-container {
+        max-height: 400px; /* Adjust height as needed */
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        position: relative;
+    }
+
+    .table thead {
+        position: sticky;
+        top: 0;
+        background-color: #fff; /* Keep it visible */
+        z-index: 2; /* Ensure it stays above the scrolling content */
+    }
+
+        .table thead th {
+            background-color: #343a40; /* Dark header */
+            color: #fff; /* White text */
+            position: sticky;
+            top: 0;
+            z-index: 3;
+        }
+</style>
+<h2>Reports</h2>
+
+<!-- Attendance for Physicians Table -->
+<h3>Attendance for Physicians</h3>
+<div style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd;">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Department/Unit/Office</th>
+                <th>Professional Category</th>
+                <th>Fit Test Solution</th>
+                <th>Status</th> <!-- New Column -->
+                <th>Fit Tester</th>
+                <th>Date Fit Tested</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (attendanceForPhysicians != null)
+            {
+                @foreach (var item in attendanceForPhysicians.Take(10)) // Now Take() works
+                {
+                    <tr>
+                        <td>@item.HCW_Name</td>
+                        <td>@item.DUO</td>
+                        <td>@item.Professional_Category</td>
+                        <td>@item.Fit_Test_Solution</td>
+                        <td>@item.Status</td> <!-- Displaying the new computed property -->
+                        <td>@item.Name_of_Fit_Tester</td>
+                        <td>@item.SubmittedAt.ToString("yyyy-MM-dd")</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Attendance for Nursing and Allied Table -->
+<h3>Attendance for Nursing and Allied</h3>
+<div style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd;">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>HCW Name</th>
+                <th>DUO</th>
+                <th>Professional Category</th>
+                <th>Fit Test Solution</th>
+                <th>Status</th>
+                <th>Fit Tester</th>
+                <th>Date Fit Tested</th>
+                @*<th>Expiring At</th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.AttendanceForNursingAndAllied)
+            {
+                <tr>
+                    <td>@item.HCW_Name</td>
+                    <td>@item.DUO</td>
+                    <td>@item.Professional_Category</td>
+                    <td>@item.Fit_Test_Solution</td>
+                    <td class="@(item.Test_Results == "Expired" ? "text-danger" : "text-success")">
+                        @item.Test_Results
+                    </td>
+                    <td>@item.Name_of_Fit_Tester</td>
+                    <td>@item.SubmittedAt.ToString("yyyy-MM-dd")</td>
+                    @*<td>@item.ExpiringAt.ToString("yyyy-MM-dd")</td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<h3>DUO Unit Tally Report</h3>
+<div style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd;">
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Unit</th>
+            <th>Total Fit Tested</th>
+             <th>Expired</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.TallyReport)
+        {
+            <tr>
+                <td>@item.Unit</td>
+                <td>@item.TotalFitTested</td>
+                 <td>@item.Expired</td>
+            </tr>
+        }
+    </tbody>
+</table>
+</div>
+<h3>DUO Unit Tally Medical</h3>
+<div style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd;">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Unit</th>
+                <th>Total Fit Tested</th>
+                <th>Expired</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.TallyMedical)
+            {
+                <tr>
+                    <td>@item.Unit</td>
+                    <td>@item.TotalFitTested</td>
+                    <td>@item.Expired</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<h3>DUO Unit Tally Allied</h3>
+<div style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd;">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Unit</th>
+                <th>Total Fit Tested</th>
+                <th>Expired</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.TallyAllied)
+            {
+                <tr>
+                    <td>@item.Unit</td>
+                    <td>@item.TotalFitTested</td>
+                    <td>@item.Expired</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

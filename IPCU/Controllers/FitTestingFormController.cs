@@ -329,6 +329,98 @@ namespace IPCU.Controllers
             return RedirectToAction("Details", new { id });
         }
 
+        public IActionResult Reports()
+        {
+            var physicianCategories = new List<string>
+    {
+        "Consultant - Plantilla", "Physician - Plantilla", "Resident - Plantilla",
+        "Fellows - Plantilla", "Consultant-Active Non-Plantilla", "Resident - Plantilla Second Year",
+        "Resident - Plantilla First Year", "Resident - Third Year - Plantilla",
+        "Resident - Second Year - Plantilla", "Resident - First Year - Plantilla",
+        "Plantilla - MS II", "Plantilla - DM III", "Plantilla - MS I",
+        "Plantilla - DED IV", "Plantilla - MS III", "Fellow Plantilla - 1st Year",
+        "Fellow Plantilla - 2nd Year", "Active Non-Plantilla", "Fellow - 3rd Year",
+        "Fellow - 2nd Year", "Fellow - 1st Year", "Medical Officer III", "Fellow",
+        "Resident", "Consultants - Plantilla", "Visiting Consultant", "Consultant",
+        "Consultant - Non-Plantilla", "MO III"
+    };
+            var duoList = new List<string>
+    {
+        "Unit 2A", "Unit 2B", "Unit 2C", "Unit 2D", "Unit 2E/Ext",
+        "Unit 2F/2G", "Unit 2H", "Unit 3A", "Unit 3B", "Unit 3C", "Unit 3D/Celtran",
+        "Unit 3E", "Unit 3F", "ICU", "ER", "PD", "HDU", "AEUC", "ORU", "CCRU",
+        "iVASC", "OPS", "AITU", "PCU", "IPCU"
+    };
+            var duoMedical = new List<string>
+    {
+        "Adult Nephrology", "Surgery", "OTVS", "Pedia Nephrology", "Urology", "IM", "Anesthesiology"
+    };
+            var duoAllied = new List<string>
+    {
+        "Cardiology", "HOPE", "Nuclear", "Radiology/DMITRI", "PMRS", "PLMD", "Pulmonology"
+    };
+            var fitTests = _context.FitTestingForm.ToList();
+            var currentDate = DateTime.Now;
+
+
+            // Get "Attendance for Physicians" (only Passed results)
+            var attendanceForPhysicians = _context.FitTestingForm
+                .Where(f => physicianCategories.Contains(f.Professional_Category) && f.Test_Results == "Passed")
+                .ToList();
+
+            var attendanceForNursingAndAllied = _context.FitTestingForm
+                .Where(f => !physicianCategories.Contains(f.Professional_Category) && f.Test_Results == "Passed")
+                .Select(f => new FitTestingReportViewModel
+                {
+                    HCW_Name = f.HCW_Name,
+                    DUO = f.DUO,
+                    Professional_Category = f.Professional_Category,
+                    Fit_Test_Solution = f.Fit_Test_Solution,
+                    Test_Results = f.ExpiringAt < currentDate ? "Expired" : "Passed", // Tag expired records
+                    Name_of_Fit_Tester = f.Name_of_Fit_Tester,
+                    SubmittedAt = f.SubmittedAt,
+                    ExpiringAt = f.ExpiringAt
+                })
+                .ToList();
+            var tallyReport = duoList
+                .Select(unit => new
+                {
+                    Unit = unit,
+                    TotalFitTested = fitTests.Count(f => f.DUO == unit && f.Test_Results == "Passed"),
+                    Expired = fitTests.Count(f => f.DUO == unit && f.Test_Results == "Passed" && f.ExpiringAt < currentDate)
+                })
+                .ToList();
+
+            var tallyMedical = duoMedical
+                .Select(unit => new
+                {
+                    Unit = unit,
+                    TotalFitTested = fitTests.Count(f => f.DUO == unit && f.Test_Results == "Passed"),
+                    Expired = fitTests.Count(f => f.DUO == unit && f.Test_Results == "Passed" && f.ExpiringAt < currentDate)
+                })
+                .ToList();
+
+            var tallyAllied = duoAllied
+               .Select(unit => new
+               {
+                   Unit = unit,
+                   TotalFitTested = fitTests.Count(f => f.DUO == unit && f.Test_Results == "Passed"),
+                   Expired = fitTests.Count(f => f.DUO == unit && f.Test_Results == "Passed" && f.ExpiringAt < currentDate)
+               })
+               .ToList();
+
+
+            // Pass all lists to the view
+            ViewBag.AttendanceForPhysicians = attendanceForPhysicians;
+            ViewBag.AttendanceForNursingAndAllied = attendanceForNursingAndAllied;
+            ViewBag.TallyReport = tallyReport;
+            ViewBag.TallyMedical = tallyMedical;
+            ViewBag.TallyAllied = tallyAllied;
+
+
+
+            return View();
+        }
 
     }
 }
