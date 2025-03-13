@@ -731,29 +731,37 @@ namespace IPCU.Controllers
             return summaryDictionary;
         }
 
-        // GET: Reports/ExportPDF
-        public async Task<IActionResult> ExportPDF(DateTime? date)
+        public async Task<IActionResult> ExportPDF(DateTime? date, DateTime? generationDate)
         {
             // Default to current month if no date provided
             var targetDate = date ?? DateTime.Now;
             var startDate = new DateTime(targetDate.Year, targetDate.Month, 1);
             var endDate = startDate.AddMonths(1).AddDays(-1);
 
-            // Get all summaries
-            var allSummaries = await _context.HandHygieneComplianceSummary.ToListAsync();
+            // Get all summaries for the selected month
+            var allSummaries = await _context.HandHygieneComplianceSummary
+                .Where(s => s.Month.Year == startDate.Year && s.Month.Month == startDate.Month)
+                .OrderByDescending(s => s.GeneratedDate)
+                .ToListAsync();
 
-            // Filter summaries for the selected month
-            var existingSummaries = new List<HandHygieneComplianceSummary>();
-            foreach (var summary in allSummaries)
+            // Use selected generation date if provided, otherwise get the latest
+            var selectedGenerationDate = generationDate;
+
+            // If no generation date is specified, use the latest
+            if (selectedGenerationDate == null)
             {
-                if (summary.Month.Year == startDate.Year && summary.Month.Month == startDate.Month)
-                {
-                    existingSummaries.Add(summary);
-                }
+                selectedGenerationDate = allSummaries
+                    .Select(s => s.GeneratedDate)
+                    .FirstOrDefault();
             }
 
+            // Filter summaries for the selected generation (using fuzzy match for DateTime)
+            var selectedSummaries = allSummaries
+                .Where(s => selectedGenerationDate != default && Math.Abs((s.GeneratedDate - selectedGenerationDate.Value).TotalSeconds) < 1)
+                .ToList();
+
             // If no summaries exist, generate them
-            if (existingSummaries.Count == 0)
+            if (selectedSummaries.Count == 0)
             {
                 // Get all forms for the selected month
                 var allForms = await _context.HandHygieneForms.Include(f => f.Activities).ToListAsync();
@@ -804,10 +812,10 @@ namespace IPCU.Controllers
             else
             {
                 // Convert existing summaries to dictionaries
-                var areaSummaries = ConvertToDictionary(existingSummaries, "Area") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
-                var nurseAreaSummaries = ConvertToDictionary(existingSummaries, "NurseArea") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
-                var professionSummaries = ConvertToDictionary(existingSummaries, "Profession") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
-                var observerSummaries = ConvertToDictionary(existingSummaries, "Observer") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                var areaSummaries = ConvertToDictionary(selectedSummaries, "Area") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                var nurseAreaSummaries = ConvertToDictionary(selectedSummaries, "NurseArea") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                var professionSummaries = ConvertToDictionary(selectedSummaries, "Profession") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                var observerSummaries = ConvertToDictionary(selectedSummaries, "Observer") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
 
                 // Create PDF service
                 var pdfService = new MonthlySummaryPdfService();
@@ -819,35 +827,49 @@ namespace IPCU.Controllers
                     observerSummaries
                 );
 
+                // Add generation date to filename
+                string generationDateStr = selectedGenerationDate.HasValue
+                    ? $"_Gen{selectedGenerationDate.Value:yyyyMMdd_HHmmss}"
+                    : "";
+
                 return File(
                     pdfBytes,
                     "application/pdf",
-                    $"HandHygieneSummary_{startDate:yyyy-MM}.pdf",
+                    $"HandHygieneSummary_{startDate:yyyy-MM}{generationDateStr}.pdf",
                     false  // Inline viewing
                 );
             }
         }
 
         // GET: HandHygieneForms/ExportExcel
-        public async Task<IActionResult> ExportExcel(DateTime? date)
+        public async Task<IActionResult> ExportExcel(DateTime? date, DateTime? generationDate)
         {
             // Default to current month if no date provided
             var targetDate = date ?? DateTime.Now;
             var startDate = new DateTime(targetDate.Year, targetDate.Month, 1);
             var endDate = startDate.AddMonths(1).AddDays(-1);
 
-            // Get all summaries
-            var allSummaries = await _context.HandHygieneComplianceSummary.ToListAsync();
+            // Get all summaries for the selected month
+            var allSummaries = await _context.HandHygieneComplianceSummary
+                .Where(s => s.Month.Year == startDate.Year && s.Month.Month == startDate.Month)
+                .OrderByDescending(s => s.GeneratedDate)
+                .ToListAsync();
 
-            // Filter summaries for the selected month
-            var existingSummaries = new List<HandHygieneComplianceSummary>();
-            foreach (var summary in allSummaries)
+            // Use selected generation date if provided, otherwise get the latest
+            var selectedGenerationDate = generationDate;
+
+            // If no generation date is specified, use the latest
+            if (selectedGenerationDate == null)
             {
-                if (summary.Month.Year == startDate.Year && summary.Month.Month == startDate.Month)
-                {
-                    existingSummaries.Add(summary);
-                }
+                selectedGenerationDate = allSummaries
+                    .Select(s => s.GeneratedDate)
+                    .FirstOrDefault();
             }
+
+            // Filter summaries for the selected generation (using fuzzy match for DateTime)
+            var selectedSummaries = allSummaries
+                .Where(s => selectedGenerationDate != default && Math.Abs((s.GeneratedDate - selectedGenerationDate.Value).TotalSeconds) < 1)
+                .ToList();
 
             // If no summaries exist, generate them
             Dictionary<string, (int compliant, int total, decimal rate)> areaSummaries;
@@ -855,7 +877,7 @@ namespace IPCU.Controllers
             Dictionary<string, (int compliant, int total, decimal rate)> professionSummaries;
             Dictionary<string, (int compliant, int total, decimal rate)> observerSummaries;
 
-            if (existingSummaries.Count == 0)
+            if (selectedSummaries.Count == 0)
             {
                 // Get all forms for the selected month
                 var allForms = await _context.HandHygieneForms.Include(f => f.Activities).ToListAsync();
@@ -889,11 +911,16 @@ namespace IPCU.Controllers
             else
             {
                 // Convert existing summaries to dictionaries
-                areaSummaries = ConvertToDictionary(existingSummaries, "Area") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
-                nurseAreaSummaries = ConvertToDictionary(existingSummaries, "NurseArea") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
-                professionSummaries = ConvertToDictionary(existingSummaries, "Profession") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
-                observerSummaries = ConvertToDictionary(existingSummaries, "Observer") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                areaSummaries = ConvertToDictionary(selectedSummaries, "Area") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                nurseAreaSummaries = ConvertToDictionary(selectedSummaries, "NurseArea") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                professionSummaries = ConvertToDictionary(selectedSummaries, "Profession") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                observerSummaries = ConvertToDictionary(selectedSummaries, "Observer") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
             }
+
+            // Add generation date to Excel filename
+            string generationDateStr = selectedGenerationDate.HasValue
+                ? $"_Gen{selectedGenerationDate.Value:yyyyMMdd_HHmmss}"
+                : "";
 
             // Generate Excel file
             using (var package = new ExcelPackage())
@@ -920,6 +947,15 @@ namespace IPCU.Controllers
                 worksheet.Cells[1, 1].Style.Font.Bold = true;
                 worksheet.Cells[1, 1].Style.Font.Size = 14;
                 worksheet.Cells[1, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                // Add generation date information
+                if (selectedGenerationDate.HasValue)
+                {
+                    worksheet.Cells[2, 1].Value = $"Generation Date: {selectedGenerationDate.Value:yyyy-MM-dd HH:mm:ss}";
+                    worksheet.Cells[2, 1, 2, 5].Merge = true;
+                    worksheet.Cells[2, 1].Style.Font.Bold = true;
+                    worksheet.Cells[2, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                }
 
                 worksheet.Cells[3, 1].Value = "Overall Compliance:";
                 worksheet.Cells[3, 2].Value = overallCompliance;
@@ -957,7 +993,7 @@ namespace IPCU.Controllers
                 return File(
                     excelData,
                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    $"HandHygieneSummary_{startDate:yyyy-MM}.xlsx"
+                    $"HandHygieneSummary_{startDate:yyyy-MM}{generationDateStr}.xlsx"
                 );
             }
         }
