@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using IPCU.Data;
+using IPCU.Models;
+using IPCU.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using IPCU.Data;
-using IPCU.Models;
-using System.Diagnostics;
-using IPCU.Services;
 using OfficeOpenXml;
+using System.Diagnostics;
 
 namespace IPCU.Controllers
 {
