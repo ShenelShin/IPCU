@@ -9,75 +9,74 @@
 <!-- Main Content -->
 <div class="container mt-5 text-center">
     <h1 class="display-4 text-primary fw-bold">Welcome to IPCU System</h1>
-    <p class="lead">Manage Patients & Hospital Records Efficiently</p>
+    <p class="lead">Managing Employee forms and Employee trainings efficiently for the IPCU.</p>
 
-    <!-- Three Cards Section -->
+    <!-- Cards Section -->
     <div class="row mt-5 justify-content-center">
-        <!-- View Patients Card -->
-        <div class="col-md-3">
-            <div class="card shadow-sm p-3">
-                <div class="card-body text-center">
-                    <i class="fa fa-eye fa-3x text-primary"></i>
-                    <h5 class="card-title mt-3">View Patients</h5>
-                    <p class="card-text">View the list of all registered patients.</p>
-                    <a asp-controller="PatientForm" asp-action="Index" class="btn btn-outline-primary">
-                        <i class="fa fa-arrow-right"></i> View Patients
+        <!-- View Patients Card (Blue) -->
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <i class="fas fa-eye fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">View Patients</h5>
+                </div>
+                <div class="card-body text-center p-4">
+                    <p class="card-text text-muted mb-4">View the list of all registered patients.</p>
+                    <a asp-controller="PatientForm" asp-action="Index" class="btn btn-primary">
+                        <i class="fas fa-arrow-right mr-1"></i> View Patients
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- Create Patient Card 
-  <div class="col-md-3">
-            <div class="card shadow-sm p-3">
-                <div class="card-body text-center">
-                    <i class="fa fa-user-plus fa-3x text-success"></i>
-                    <h5 class="card-title mt-3">Create Patient Form</h5>
-                    <p class="card-text">Create a Patient Form in the system.</p>
-                    <a asp-controller="PatientForm" asp-action="Create" class="btn btn-outline-success">
-                        <i class="fa fa-arrow-right"></i> Add Patient
-                    </a>
+        <!-- Training Summary Card (Orange) -->
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
+                <div class="card-header bg-warning text-white text-center py-3">
+                    <i class="fas fa-dumbbell fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">Training Summary Form</h5>
                 </div>
-            </div>
-        </div>-->
-
-        <!-- Training Summary Form Card -->
-        <div class="col-md-3">
-            <div class="card shadow-sm p-3">
-                <div class="card-body text-center">
-                    <i class="fa fa-dumbbell fa-3x text-success"></i> <!-- Barbell Icon -->
-                    <h5 class="card-title mt-3">Training Summary Form</h5>
-                    <p class="card-text">View or Fill out the Training Summary form.</p>
-                    <a asp-controller="TrainingSummary" asp-action="Index" class="btn btn-outline-success">
-                        <i class="fa fa-arrow-right"></i> Open Form
+                <div class="card-body text-center p-4">
+                    <p class="card-text text-muted mb-4">View or fill out the Training Summary form.</p>
+                    <a asp-controller="TrainingSummary" asp-action="Index" class="btn btn-warning text-white">
+                        <i class="fas fa-arrow-right mr-1"></i> Open Form
                     </a>
                 </div>
             </div>
         </div>
-        <!-- Hand Hygiene Form Card -->
-        <div class="col-md-3">
-            <div class="card shadow-sm p-3">
-                <div class="card-body text-center">
-                    <i class="fa fa-hands-wash fa-3x text-success"></i> <!-- Hand Hygiene Icon -->
-                    <h5 class="card-title mt-3">Hand Hygiene Form</h5>
-                    <p class="card-text">View or Fill out the Hand Hygiene Form.</p> 
-                    <a asp-controller="HandHygieneForms" asp-action="Index" class="btn btn-outline-success">
-                        <i class="fa fa-arrow-right"></i> Open Form
-                    </a>
-                    <a class="nav-link" asp-controller="HandHygieneForms" asp-action="MonthlySummary">Monthly Compliance Summary</a>
+
+        <!-- Hand Hygiene Card (Green) -->
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
+                <div class="card-header bg-success text-white text-center py-3">
+                    <i class="fas fa-hands-wash fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">Hand Hygiene Form</h5>
+                </div>
+                <div class="card-body text-center p-4">
+                    <p class="card-text text-muted mb-4">Track hand hygiene compliance and generate reports.</p>
+                    <div class="d-flex justify-content-between">
+                        <a asp-controller="HandHygieneForms" asp-action="Index" class="btn btn-success flex-grow-1 mr-2">
+                            <i class="fas fa-file-alt mr-1"></i> Open Form
+                        </a>
+                        <a asp-controller="HandHygieneForms" asp-action="MonthlySummary" class="btn btn-outline-success flex-grow-1">
+                            <i class="fas fa-chart-bar mr-1"></i> Summary
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Fit Testing Form Card -->
-        <div class="col-md-3">
-            <div class="card shadow-sm p-3">
-                <div class="card-body text-center">
-                    <i class="fa fa-file-medical fa-3x text-success"></i> <!-- Barbell Icon -->
-                    <h5 class="card-title mt-3">Fit Testing Form</h5>
-                    <p class="card-text">View or Fill out the Fit Testing Form</p>
-                    <a asp-controller="FitTestingForm" asp-action="Index" class="btn btn-outline-success">
-                        <i class="fa fa-arrow-right"></i> Open Form
+        <!-- Fit Testing Card (Purple) -->
+        <div class="col-md-3 mb-4">
+            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
+                <div class="card-header bg-purple text-white text-center py-3">
+                    <i class="fas fa-file-medical fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">Fit Testing Form</h5>
+                </div>
+                <div class="card-body text-center p-4">
+                    <p class="card-text text-muted mb-4">View or fill out the Fit Testing Form connected to the training.</p>
+                    <a asp-controller="FitTestingForm" asp-action="Index" class="btn btn-purple text-white">
+                        <i class="fas fa-arrow-right mr-1"></i> Open Form
                     </a>
                     <a asp-controller="FitTestingForm" asp-action="Reports" class="btn btn-outline-success">
                         <i class="fa fa-arrow-right"></i> Reports
@@ -88,5 +87,20 @@
     </div>
 </div>
 
+<style>
+    .bg-purple {
+        background-color: #6f42c1;
+    }
+
+    .btn-purple {
+        background-color: #6f42c1;
+        border-color: #6f42c1;
+    }
+
+        .btn-purple:hover {
+            background-color: #5a32a3;
+            border-color: #5a32a3;
+        }
+</style>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

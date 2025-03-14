@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using IPCU.Data;
+using IPCU.Models;
+using IPCU.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using IPCU.Data;
-using IPCU.Models;
+using OfficeOpenXml;
 using System.Diagnostics;
-using IPCU.Services;
 
 namespace IPCU.Controllers
 {
@@ -44,41 +41,41 @@ namespace IPCU.Controllers
             return View(handHygieneForm);
         }
 
-        // View Models for Monthly Summary
-        public class ComplianceSummary
-        {
-            public int TotalCompliantActions { get; set; }
-            public int TotalObservedOpportunities { get; set; }
-            public decimal ComplianceRate { get; set; } = 0;
+        //// View Models for Monthly Summary
+        //public class ComplianceSummary
+        //{
+        //    public int TotalCompliantActions { get; set; }
+        //    public int TotalObservedOpportunities { get; set; }
+        //    public decimal ComplianceRate { get; set; } = 0;
 
-            // Format compliance rate as percentage
-            public string ComplianceRateFormatted => ComplianceRate.ToString("P2");
-        }
+        //    // Format compliance rate as percentage
+        //    public string ComplianceRateFormatted => ComplianceRate.ToString("P2");
+        //}
 
-        public class AreaComplianceSummary : ComplianceSummary
-        {
-            public string Area { get; set; }
-        }
+        //public class AreaComplianceSummary : ComplianceSummary
+        //{
+        //    public string Area { get; set; }
+        //}
 
-        public class ProfessionComplianceSummary : ComplianceSummary
-        {
-            public string Profession { get; set; }
-        }
+        //public class ProfessionComplianceSummary : ComplianceSummary
+        //{
+        //    public string Profession { get; set; }
+        //}
 
-        public class ObserverComplianceSummary : ComplianceSummary
-        {
-            public string Observer { get; set; }
-        }
+        //public class ObserverComplianceSummary : ComplianceSummary
+        //{
+        //    public string Observer { get; set; }
+        //}
 
-        public class HHMonthlySummaryViewModel
-        {
-            public string Month { get; set; }
-            public ComplianceSummary OverallSummary { get; set; }
-            public List<AreaComplianceSummary> AreaSummaries { get; set; }
-            public List<AreaComplianceSummary> NurseAreaSummaries { get; set; }
-            public List<ProfessionComplianceSummary> ProfessionSummaries { get; set; }
-            public List<ObserverComplianceSummary> ObserverSummaries { get; set; }
-        }
+        //public class HHMonthlySummaryViewModel
+        //{
+        //    public string Month { get; set; }
+        //    public ComplianceSummary OverallSummary { get; set; }
+        //    public List<AreaComplianceSummary> AreaSummaries { get; set; }
+        //    public List<AreaComplianceSummary> NurseAreaSummaries { get; set; }
+        //    public List<ProfessionComplianceSummary> ProfessionSummaries { get; set; }
+        //    public List<ObserverComplianceSummary> ObserverSummaries { get; set; }
+        //}
 
         // GET: HandHygieneForms/Create
         public IActionResult Create()
@@ -292,7 +289,7 @@ namespace IPCU.Controllers
             {
                 if (string.IsNullOrEmpty(entry)) continue;
                 var parts = entry.Split(',');
-                if (parts.Length == 2 && parts[1] == "✓")
+                if (parts.Length == 2 && parts[1] == "1") // Change from "✓" to "1"
                 {
                     compliantCount++;
                 }
@@ -474,165 +471,592 @@ namespace IPCU.Controllers
             );
         }
 
-        public async Task<IActionResult> MonthlySummary(DateTime? date)
+        // GET: HandHygieneForms/MonthlySummary
+        public async Task<IActionResult> MonthlySummary(DateTime? date, bool regenerate = false, string generationDate = null, string remarks = null)
         {
             // Default to current month if no date provided
             var targetDate = date ?? DateTime.Now;
-            var firstDayOfMonth = new DateTime(targetDate.Year, targetDate.Month, 1);
-            var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+            var startDate = new DateTime(targetDate.Year, targetDate.Month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
 
-            // Get all forms for the selected month
-            var formsForMonth = await _context.HandHygieneForms
-                .Include(f => f.Activities)
-                .Where(f => f.Date >= firstDayOfMonth && f.Date <= lastDayOfMonth)
+            // Get all summaries for the selected month
+            var allMonthlySummaries = await _context.HandHygieneComplianceSummary
+                .Where(s => s.Month.Year == startDate.Year && s.Month.Month == startDate.Month)
+                .OrderByDescending(s => s.GeneratedDate)
                 .ToListAsync();
 
-            if (!formsForMonth.Any())
+            // Group summaries by generation date to get unique timestamps
+            var generationDates = allMonthlySummaries
+                .Select(s => s.GeneratedDate)
+                .Distinct()
+                .OrderByDescending(d => d)
+                .ToList();
+
+            ViewBag.GenerationDates = generationDates;
+            ViewBag.SelectedMonth = targetDate;
+
+            // If we have summaries and aren't regenerating, display the requested or most recent generation
+            if (allMonthlySummaries.Count > 0 && !regenerate)
             {
-                ViewBag.NoData = $"No data available for {targetDate.ToString("MMMM yyyy")}";
-                return View(new HHMonthlySummaryViewModel
+                DateTime? targetGenerationDate = null;
+
+                // Parse the generation date if provided
+                if (!string.IsNullOrEmpty(generationDate))
                 {
-                    Month = targetDate.ToString("MMMM yyyy"),
-                    OverallSummary = new ComplianceSummary(),
-                    AreaSummaries = new List<AreaComplianceSummary>(),
-                    ProfessionSummaries = new List<ProfessionComplianceSummary>(),
-                    ObserverSummaries = new List<ObserverComplianceSummary>()
-                });
-            }
-
-            // 1. Overall compliance per area
-            var areaSummaries = CalculateAreaSummaries(formsForMonth);
-
-            // 2. Nurse compliance per area
-            var nurseAreaSummaries = CalculateNurseAreaSummaries(formsForMonth);
-
-            // 3. Compliance per profession
-            var professionSummaries = CalculateProfessionSummaries(formsForMonth);
-
-            // 4. Compliance per observer (ICN)
-            var observerSummaries = CalculateObserverSummaries(formsForMonth);
-
-            // Calculate overall compliance across all forms
-            var overallSummary = new ComplianceSummary
-            {
-                TotalCompliantActions = formsForMonth.Sum(f => f.TotalCompliantActions),
-                TotalObservedOpportunities = formsForMonth.Sum(f => f.TotalObservedOpportunities)
-            };
-
-            // Calculate compliance rate if there are opportunities
-            if (overallSummary.TotalObservedOpportunities > 0)
-            {
-                overallSummary.ComplianceRate = (decimal)overallSummary.TotalCompliantActions / overallSummary.TotalObservedOpportunities;
-            }
-
-            // Create view model
-            var viewModel = new HHMonthlySummaryViewModel
-            {
-                Month = targetDate.ToString("MMMM yyyy"),
-                OverallSummary = overallSummary,
-                AreaSummaries = areaSummaries,
-                NurseAreaSummaries = nurseAreaSummaries,
-                ProfessionSummaries = professionSummaries,
-                ObserverSummaries = observerSummaries
-            };
-
-            return View(viewModel);
-        }
-
-        // Helper method to calculate compliance summaries per area
-        private List<AreaComplianceSummary> CalculateAreaSummaries(List<HandHygieneForm> forms)
-        {
-            var areaSummaries = new List<AreaComplianceSummary>();
-
-            // Group forms by area
-            var areaGroups = forms.GroupBy(f => f.Area);
-
-            foreach (var areaGroup in areaGroups)
-            {
-                var summary = new AreaComplianceSummary
-                {
-                    Area = areaGroup.Key,
-                    TotalCompliantActions = areaGroup.Sum(f => f.TotalCompliantActions),
-                    TotalObservedOpportunities = areaGroup.Sum(f => f.TotalObservedOpportunities)
-                };
-
-                // Calculate compliance rate
-                if (summary.TotalObservedOpportunities > 0)
-                {
-                    summary.ComplianceRate = (decimal)summary.TotalCompliantActions / summary.TotalObservedOpportunities;
+                    if (DateTime.TryParse(generationDate, out var parsedDate))
+                    {
+                        targetGenerationDate = parsedDate;
+                    }
                 }
 
-                areaSummaries.Add(summary);
+                // Use specified generation date or default to most recent
+                DateTime actualGenDate = targetGenerationDate ?? generationDates.FirstOrDefault();
+
+                // Filter summaries for this specific generation - use a fuzzy match for DateTime
+                var summariesForGeneration = allMonthlySummaries
+                    .Where(s => Math.Abs((s.GeneratedDate - actualGenDate).TotalSeconds) < 1)
+                    .ToList();
+
+                ViewBag.AreaSummaries = ConvertToDictionary(summariesForGeneration, "Area") ??
+                    new Dictionary<string, (int compliant, int total, decimal rate)>();
+                ViewBag.NurseAreaSummaries = ConvertToDictionary(summariesForGeneration, "NurseArea") ??
+                    new Dictionary<string, (int compliant, int total, decimal rate)>();
+                ViewBag.ProfessionSummaries = ConvertToDictionary(summariesForGeneration, "Profession") ??
+                    new Dictionary<string, (int compliant, int total, decimal rate)>();
+                ViewBag.ObserverSummaries = ConvertToDictionary(summariesForGeneration, "Observer") ??
+                    new Dictionary<string, (int compliant, int total, decimal rate)>();
+                ViewBag.CurrentRemarks = summariesForGeneration.FirstOrDefault()?.Remarks;
+
+                ViewBag.LastGenerated = actualGenDate;
+                ViewBag.Regenerate = false;
+
+                return View();
             }
 
-            return areaSummaries.OrderBy(a => a.Area).ToList();
-        }
-
-        // Helper method to calculate nurse compliance summaries per area
-        private List<AreaComplianceSummary> CalculateNurseAreaSummaries(List<HandHygieneForm> forms)
-        {
-            // Filter for nurse forms only
-            var nurseForms = forms.Where(f => f.HCWType.Contains("Nurse", StringComparison.OrdinalIgnoreCase)).ToList();
-
-            return CalculateAreaSummaries(nurseForms);
-        }
-
-        // Helper method to calculate compliance summaries per profession (HCWType)
-        private List<ProfessionComplianceSummary> CalculateProfessionSummaries(List<HandHygieneForm> forms)
-        {
-            var professionSummaries = new List<ProfessionComplianceSummary>();
-
-            // Group forms by HCWType (profession)
-            var professionGroups = forms.GroupBy(f => f.HCWType);
-
-            foreach (var professionGroup in professionGroups)
+            // If we're regenerating but no remarks were provided, redirect back with a warning
+            if (regenerate && string.IsNullOrEmpty(remarks))
             {
-                var summary = new ProfessionComplianceSummary
-                {
-                    Profession = professionGroup.Key,
-                    TotalCompliantActions = professionGroup.Sum(f => f.TotalCompliantActions),
-                    TotalObservedOpportunities = professionGroup.Sum(f => f.TotalObservedOpportunities)
-                };
+                TempData["ErrorMessage"] = "Remarks are required when regenerating data.";
+                return RedirectToAction("MonthlySummary", new { date = targetDate.ToString("yyyy-MM-dd") });
+            }
 
-                // Calculate compliance rate
-                if (summary.TotalObservedOpportunities > 0)
+            // Get all forms for the selected month
+            var allForms = await _context.HandHygieneForms.Include(f => f.Activities).ToListAsync();
+
+            // Filter forms within the selected date range
+            var forms = new List<HandHygieneForm>();
+            foreach (var form in allForms)
+            {
+                if (form.Date >= startDate && form.Date <= endDate)
                 {
-                    summary.ComplianceRate = (decimal)summary.TotalCompliantActions / summary.TotalObservedOpportunities;
+                    forms.Add(form);
+                }
+            }
+
+            // Generate summaries without using lambdas
+            ViewBag.AreaSummaries = GenerateSummary(forms, "Area");
+
+            var nurseForms = new List<HandHygieneForm>();
+            foreach (var form in forms)
+            {
+                if (form.HCWType == "Nurse")
+                {
+                    nurseForms.Add(form);
+                }
+            }
+
+            ViewBag.NurseAreaSummaries = GenerateSummary(nurseForms, "Area");
+            ViewBag.ProfessionSummaries = GenerateSummary(forms, "HCWType");
+            ViewBag.ObserverSummaries = GenerateSummary(forms, "Observer");
+
+            ViewBag.Regenerate = true;
+
+            // Save the data if regenerate is true
+            if (regenerate)
+            {
+                await SaveSummaries(startDate,
+                    ViewBag.AreaSummaries,
+                    ViewBag.NurseAreaSummaries,
+                    ViewBag.ProfessionSummaries,
+                    ViewBag.ObserverSummaries,
+                    remarks);
+
+                // Get the latest generation date after saving
+                var latestGeneration = await _context.HandHygieneComplianceSummary
+                    .Where(s => s.Month.Year == startDate.Year && s.Month.Month == startDate.Month)
+                    .OrderByDescending(s => s.GeneratedDate)
+                    .Select(s => s.GeneratedDate)
+                    .FirstOrDefaultAsync();
+
+                ViewBag.LastGenerated = latestGeneration;
+            }
+
+            return View();
+        }
+
+        // POST: HandHygieneForms/SaveSummaries
+        [HttpPost]
+        public async Task<IActionResult> SaveSummaries(DateTime date)
+        {
+            var startDate = new DateTime(date.Year, date.Month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+            // Get all forms for the selected month
+            var allForms = await _context.HandHygieneForms.Include(f => f.Activities).ToListAsync();
+
+            // Filter forms within the selected date range
+            var forms = new List<HandHygieneForm>();
+            foreach (var form in allForms)
+            {
+                if (form.Date >= startDate && form.Date <= endDate)
+                {
+                    forms.Add(form);
+                }
+            }
+
+            // Generate summaries
+            var areaSummaries = GenerateSummary(forms, "Area");
+
+            var nurseForms = new List<HandHygieneForm>();
+            foreach (var form in forms)
+            {
+                if (form.HCWType == "Nurse")
+                {
+                    nurseForms.Add(form);
+                }
+            }
+
+            var nurseAreaSummaries = GenerateSummary(nurseForms, "Area");
+            var professionSummaries = GenerateSummary(forms, "HCWType");
+            var observerSummaries = GenerateSummary(forms, "Observer");
+
+            // Save the summaries
+            await SaveSummaries(startDate, areaSummaries, nurseAreaSummaries, professionSummaries, observerSummaries);
+
+            return Json(new { success = true });
+        }
+
+        // Save summaries to the database
+        // Save summaries to the database while preserving history
+        private async Task SaveSummaries(
+            DateTime date,
+            Dictionary<string, (int compliant, int total, decimal rate)> areaSummaries,
+            Dictionary<string, (int compliant, int total, decimal rate)> nurseAreaSummaries,
+            Dictionary<string, (int compliant, int total, decimal rate)> professionSummaries,
+            Dictionary<string, (int compliant, int total, decimal rate)> observerSummaries,
+            string remarks = null)
+        {
+            // Don't remove existing summaries - we'll keep history
+            DateTime generationTimestamp = DateTime.Now;
+
+            // Helper function to add summaries to the database
+            void AddSummaries(Dictionary<string, (int compliant, int total, decimal rate)> summaries, string summaryType)
+            {
+                foreach (var kvp in summaries)
+                {
+                    var newSummary = new HandHygieneComplianceSummary
+                    {
+                        Month = date,
+                        SummaryType = summaryType,
+                        Category = kvp.Key,
+                        TotalCompliantActions = kvp.Value.compliant,
+                        TotalObservedOpportunities = kvp.Value.total,
+                        ComplianceRate = kvp.Value.rate,
+                        GeneratedDate = generationTimestamp,
+                        Remarks = remarks
+                    };
+
+                    _context.HandHygieneComplianceSummary.Add(newSummary);
+                }
+            }
+
+            // Save each type of summary
+            AddSummaries(areaSummaries, "Area");
+            AddSummaries(nurseAreaSummaries, "NurseArea");
+            AddSummaries(professionSummaries, "Profession");
+            AddSummaries(observerSummaries, "Observer");
+
+            await _context.SaveChangesAsync();
+        }
+
+
+        // Helper function to convert summaries into a dictionary without using lambdas
+        private Dictionary<string, (int compliant, int total, decimal rate)> ConvertToDictionary(
+            List<HandHygieneComplianceSummary> summaries, string summaryType)
+        {
+            var dictionary = new Dictionary<string, (int compliant, int total, decimal rate)>();
+
+            foreach (var summary in summaries)
+            {
+                if (summary.SummaryType == summaryType)
+                {
+                    dictionary[summary.Category] = (
+                        summary.TotalCompliantActions,
+                        summary.TotalObservedOpportunities,
+                        summary.ComplianceRate);
+                }
+            }
+
+            return dictionary;
+        }
+
+        // Helper function to generate summary dictionaries without using lambdas
+        private Dictionary<string, (int compliant, int total, decimal rate)> GenerateSummary(
+            List<HandHygieneForm> forms, string groupingField)
+        {
+            var summaryDictionary = new Dictionary<string, (int compliant, int total, decimal rate)>();
+
+            foreach (var form in forms)
+            {
+                string key = groupingField == "Area" ? form.Area :
+                             groupingField == "HCWType" ? form.HCWType :
+                             groupingField == "Observer" ? form.Observer : "";
+
+                if (!string.IsNullOrEmpty(key))
+                {
+                    if (!summaryDictionary.ContainsKey(key))
+                    {
+                        summaryDictionary[key] = (0, 0, 0);
+                    }
+
+                    var existing = summaryDictionary[key];
+                    int newCompliant = existing.compliant + form.TotalCompliantActions;
+                    int newTotal = existing.total + form.TotalObservedOpportunities;
+                    decimal newRate = newTotal > 0 ? (decimal)newCompliant / newTotal : 0;
+
+                    summaryDictionary[key] = (newCompliant, newTotal, newRate);
+                }
+            }
+
+            return summaryDictionary;
+        }
+
+        public async Task<IActionResult> ExportPDF(DateTime? date, DateTime? generationDate)
+        {
+            // Default to current month if no date provided
+            var targetDate = date ?? DateTime.Now;
+            var startDate = new DateTime(targetDate.Year, targetDate.Month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+            // Get all summaries for the selected month
+            var allSummaries = await _context.HandHygieneComplianceSummary
+                .Where(s => s.Month.Year == startDate.Year && s.Month.Month == startDate.Month)
+                .OrderByDescending(s => s.GeneratedDate)
+                .ToListAsync();
+
+            // Use selected generation date if provided, otherwise get the latest
+            var selectedGenerationDate = generationDate;
+
+            // If no generation date is specified, use the latest
+            if (selectedGenerationDate == null)
+            {
+                selectedGenerationDate = allSummaries
+                    .Select(s => s.GeneratedDate)
+                    .FirstOrDefault();
+            }
+
+            // Filter summaries for the selected generation (using fuzzy match for DateTime)
+            var selectedSummaries = allSummaries
+                .Where(s => selectedGenerationDate != default && Math.Abs((s.GeneratedDate - selectedGenerationDate.Value).TotalSeconds) < 1)
+                .ToList();
+
+            // If no summaries exist, generate them
+            if (selectedSummaries.Count == 0)
+            {
+                // Get all forms for the selected month
+                var allForms = await _context.HandHygieneForms.Include(f => f.Activities).ToListAsync();
+
+                // Filter forms within the selected date range
+                var forms = new List<HandHygieneForm>();
+                foreach (var form in allForms)
+                {
+                    if (form.Date >= startDate && form.Date <= endDate)
+                    {
+                        forms.Add(form);
+                    }
                 }
 
-                professionSummaries.Add(summary);
-            }
+                // Generate summaries
+                var areaSummaries = GenerateSummary(forms, "Area");
 
-            return professionSummaries.OrderBy(p => p.Profession).ToList();
-        }
-
-        // Helper method to calculate compliance summaries per observer (ICN)
-        private List<ObserverComplianceSummary> CalculateObserverSummaries(List<HandHygieneForm> forms)
-        {
-            var observerSummaries = new List<ObserverComplianceSummary>();
-
-            // Group forms by Observer
-            var observerGroups = forms.GroupBy(f => f.Observer);
-
-            foreach (var observerGroup in observerGroups)
-            {
-                var summary = new ObserverComplianceSummary
+                var nurseForms = new List<HandHygieneForm>();
+                foreach (var form in forms)
                 {
-                    Observer = observerGroup.Key,
-                    TotalCompliantActions = observerGroup.Sum(f => f.TotalCompliantActions),
-                    TotalObservedOpportunities = observerGroup.Sum(f => f.TotalObservedOpportunities)
-                };
-
-                // Calculate compliance rate
-                if (summary.TotalObservedOpportunities > 0)
-                {
-                    summary.ComplianceRate = (decimal)summary.TotalCompliantActions / summary.TotalObservedOpportunities;
+                    if (form.HCWType == "Nurse")
+                    {
+                        nurseForms.Add(form);
+                    }
                 }
 
-                observerSummaries.Add(summary);
+                var nurseAreaSummaries = GenerateSummary(nurseForms, "Area");
+                var professionSummaries = GenerateSummary(forms, "HCWType");
+                var observerSummaries = GenerateSummary(forms, "Observer");
+
+                // Create PDF service
+                var pdfService = new MonthlySummaryPdfService();
+                var pdfBytes = pdfService.GeneratePdf(
+                    startDate,
+                    areaSummaries,
+                    nurseAreaSummaries,
+                    professionSummaries,
+                    observerSummaries
+                );
+
+                return File(
+                    pdfBytes,
+                    "application/pdf",
+                    $"HandHygieneSummary_{startDate:yyyy-MM}.pdf",
+                    false  // Inline viewing
+                );
+            }
+            else
+            {
+                // Convert existing summaries to dictionaries
+                var areaSummaries = ConvertToDictionary(selectedSummaries, "Area") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                var nurseAreaSummaries = ConvertToDictionary(selectedSummaries, "NurseArea") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                var professionSummaries = ConvertToDictionary(selectedSummaries, "Profession") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                var observerSummaries = ConvertToDictionary(selectedSummaries, "Observer") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+
+                // Create PDF service
+                var pdfService = new MonthlySummaryPdfService();
+                var pdfBytes = pdfService.GeneratePdf(
+                    startDate,
+                    areaSummaries,
+                    nurseAreaSummaries,
+                    professionSummaries,
+                    observerSummaries
+                );
+
+                // Add generation date to filename
+                string generationDateStr = selectedGenerationDate.HasValue
+                    ? $"_Gen{selectedGenerationDate.Value:yyyyMMdd_HHmmss}"
+                    : "";
+
+                return File(
+                    pdfBytes,
+                    "application/pdf",
+                    $"HandHygieneSummary_{startDate:yyyy-MM}{generationDateStr}.pdf",
+                    false  // Inline viewing
+                );
+            }
+        }
+
+        // GET: HandHygieneForms/ExportExcel
+        public async Task<IActionResult> ExportExcel(DateTime? date, DateTime? generationDate)
+        {
+            // Default to current month if no date provided
+            var targetDate = date ?? DateTime.Now;
+            var startDate = new DateTime(targetDate.Year, targetDate.Month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+
+            // Get all summaries for the selected month
+            var allSummaries = await _context.HandHygieneComplianceSummary
+                .Where(s => s.Month.Year == startDate.Year && s.Month.Month == startDate.Month)
+                .OrderByDescending(s => s.GeneratedDate)
+                .ToListAsync();
+
+            // Use selected generation date if provided, otherwise get the latest
+            var selectedGenerationDate = generationDate;
+
+            // If no generation date is specified, use the latest
+            if (selectedGenerationDate == null)
+            {
+                selectedGenerationDate = allSummaries
+                    .Select(s => s.GeneratedDate)
+                    .FirstOrDefault();
             }
 
-            return observerSummaries.OrderBy(o => o.Observer).ToList();
+            // Filter summaries for the selected generation (using fuzzy match for DateTime)
+            var selectedSummaries = allSummaries
+                .Where(s => selectedGenerationDate != default && Math.Abs((s.GeneratedDate - selectedGenerationDate.Value).TotalSeconds) < 1)
+                .ToList();
+
+            // If no summaries exist, generate them
+            Dictionary<string, (int compliant, int total, decimal rate)> areaSummaries;
+            Dictionary<string, (int compliant, int total, decimal rate)> nurseAreaSummaries;
+            Dictionary<string, (int compliant, int total, decimal rate)> professionSummaries;
+            Dictionary<string, (int compliant, int total, decimal rate)> observerSummaries;
+
+            if (selectedSummaries.Count == 0)
+            {
+                // Get all forms for the selected month
+                var allForms = await _context.HandHygieneForms.Include(f => f.Activities).ToListAsync();
+
+                // Filter forms within the selected date range
+                var forms = new List<HandHygieneForm>();
+                foreach (var form in allForms)
+                {
+                    if (form.Date >= startDate && form.Date <= endDate)
+                    {
+                        forms.Add(form);
+                    }
+                }
+
+                // Generate summaries
+                areaSummaries = GenerateSummary(forms, "Area");
+
+                var nurseForms = new List<HandHygieneForm>();
+                foreach (var form in forms)
+                {
+                    if (form.HCWType == "Nurse")
+                    {
+                        nurseForms.Add(form);
+                    }
+                }
+
+                nurseAreaSummaries = GenerateSummary(nurseForms, "Area");
+                professionSummaries = GenerateSummary(forms, "HCWType");
+                observerSummaries = GenerateSummary(forms, "Observer");
+            }
+            else
+            {
+                // Convert existing summaries to dictionaries
+                areaSummaries = ConvertToDictionary(selectedSummaries, "Area") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                nurseAreaSummaries = ConvertToDictionary(selectedSummaries, "NurseArea") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                professionSummaries = ConvertToDictionary(selectedSummaries, "Profession") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+                observerSummaries = ConvertToDictionary(selectedSummaries, "Observer") ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+            }
+
+            // Add generation date to Excel filename
+            string generationDateStr = selectedGenerationDate.HasValue
+                ? $"_Gen{selectedGenerationDate.Value:yyyyMMdd_HHmmss}"
+                : "";
+
+            // Generate Excel file
+            using (var package = new ExcelPackage())
+            {
+                // Calculate overall compliance
+                int totalCompliant = 0;
+                int totalOpportunities = 0;
+                decimal overallCompliance = 0;
+
+                foreach (var area in areaSummaries)
+                {
+                    totalCompliant += area.Value.compliant;
+                    totalOpportunities += area.Value.total;
+                }
+
+                overallCompliance = totalOpportunities > 0 ? (decimal)totalCompliant / totalOpportunities : 0;
+
+                // Create a single worksheet
+                var worksheet = package.Workbook.Worksheets.Add("Hand Hygiene Compliance");
+
+                // Title and summary data
+                worksheet.Cells[1, 1].Value = $"Hand Hygiene Compliance Summary - {startDate:MMMM yyyy}";
+                worksheet.Cells[1, 1, 1, 5].Merge = true;
+                worksheet.Cells[1, 1].Style.Font.Bold = true;
+                worksheet.Cells[1, 1].Style.Font.Size = 14;
+                worksheet.Cells[1, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+
+                // Add generation date information
+                if (selectedGenerationDate.HasValue)
+                {
+                    worksheet.Cells[2, 1].Value = $"Generation Date: {selectedGenerationDate.Value:yyyy-MM-dd HH:mm:ss}";
+                    worksheet.Cells[2, 1, 2, 5].Merge = true;
+                    worksheet.Cells[2, 1].Style.Font.Bold = true;
+                    worksheet.Cells[2, 1].Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                }
+
+                worksheet.Cells[3, 1].Value = "Overall Compliance:";
+                worksheet.Cells[3, 2].Value = overallCompliance;
+                worksheet.Cells[3, 2].Style.Numberformat.Format = "0.0%";
+
+                worksheet.Cells[4, 1].Value = "Compliant Actions:";
+                worksheet.Cells[4, 2].Value = totalCompliant;
+
+                worksheet.Cells[5, 1].Value = "Observed Opportunities:";
+                worksheet.Cells[5, 2].Value = totalOpportunities;
+
+                worksheet.Cells[6, 1].Value = "Report Generated:";
+                worksheet.Cells[6, 2].Value = DateTime.Now;
+                worksheet.Cells[6, 2].Style.Numberformat.Format = "yyyy-MM-dd HH:mm:ss";
+
+                int currentRow = 8;
+
+                // Add Areas (All Staff) section
+                currentRow = AddDataSection(worksheet, currentRow, "Areas (All Staff)", areaSummaries);
+
+                // Add Areas (Nurses Only) section
+                currentRow = AddDataSection(worksheet, currentRow + 2, "Areas (Nurses Only)", nurseAreaSummaries);
+
+                // Add Healthcare Workers section
+                currentRow = AddDataSection(worksheet, currentRow + 2, "Healthcare Workers", professionSummaries);
+
+                // Add Observers section
+                currentRow = AddDataSection(worksheet, currentRow + 2, "Observers", observerSummaries);
+
+                // Auto-fit columns
+                worksheet.Cells.AutoFitColumns();
+
+                // Return the Excel file
+                var excelData = package.GetAsByteArray();
+                return File(
+                    excelData,
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    $"HandHygieneSummary_{startDate:yyyy-MM}{generationDateStr}.xlsx"
+                );
+            }
+        }
+
+        // Helper method to add a data section to the worksheet
+        private int AddDataSection(ExcelWorksheet worksheet, int startRow, string sectionTitle, Dictionary<string, (int compliant, int total, decimal rate)> data)
+        {
+            // Add section title
+            worksheet.Cells[startRow, 1].Value = sectionTitle;
+            worksheet.Cells[startRow, 1, startRow, 4].Merge = true;
+            worksheet.Cells[startRow, 1].Style.Font.Bold = true;
+            worksheet.Cells[startRow, 1].Style.Font.Size = 12;
+            worksheet.Cells[startRow, 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+            worksheet.Cells[startRow, 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(220, 220, 220));
+
+            // Add headers
+            int headerRow = startRow + 1;
+            worksheet.Cells[headerRow, 1].Value = "Category";
+            worksheet.Cells[headerRow, 2].Value = "Compliant Actions";
+            worksheet.Cells[headerRow, 3].Value = "Observed Opportunities";
+            worksheet.Cells[headerRow, 4].Value = "Compliance Rate";
+
+            // Style headers
+            using (var range = worksheet.Cells[headerRow, 1, headerRow, 4])
+            {
+                range.Style.Font.Bold = true;
+                range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(200, 200, 200));
+                range.Style.Border.Bottom.Style = OfficeOpenXml.Style.ExcelBorderStyle.Medium;
+            }
+
+            // Add data
+            int dataRow = headerRow + 1;
+            foreach (var item in data)
+            {
+                worksheet.Cells[dataRow, 1].Value = item.Key;
+                worksheet.Cells[dataRow, 2].Value = item.Value.compliant;
+                worksheet.Cells[dataRow, 3].Value = item.Value.total;
+                worksheet.Cells[dataRow, 4].Value = item.Value.rate;
+                worksheet.Cells[dataRow, 4].Style.Numberformat.Format = "0.00%";
+
+                // Apply conditional formatting based on compliance rate
+                if (item.Value.rate >= 0.8m)
+                {
+                    worksheet.Cells[dataRow, 4].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    worksheet.Cells[dataRow, 4].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(198, 239, 206)); // Light green
+                }
+                else if (item.Value.rate >= 0.6m)
+                {
+                    worksheet.Cells[dataRow, 4].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    worksheet.Cells[dataRow, 4].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(255, 235, 156)); // Light yellow
+                }
+                else
+                {
+                    worksheet.Cells[dataRow, 4].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    worksheet.Cells[dataRow, 4].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(255, 199, 206)); // Light red
+                }
+
+                dataRow++;
+            }
+
+            // Return the last row number used
+            return dataRow;
         }
 
     }

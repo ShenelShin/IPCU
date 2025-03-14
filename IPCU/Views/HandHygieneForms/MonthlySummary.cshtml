@@ -1,166 +1,326 @@
-﻿@model IPCU.Controllers.HandHygieneFormsController.HHMonthlySummaryViewModel
-@{
+﻿@{
     ViewData["Title"] = "Monthly Hand Hygiene Compliance Summary";
+    var selectedMonth = (DateTime)ViewBag.SelectedMonth;
+    var lastGenerated = ViewBag.LastGenerated as DateTime?;
+    var showRegenerate = !(ViewBag.Regenerate ?? false);
+
+    // Extract compliance data by calculating from available summaries
+    var areaSummaries = ViewBag.AreaSummaries as Dictionary<string, (int compliant, int total, decimal rate)> ?? new Dictionary<string, (int compliant, int total, decimal rate)>();
+
+    // Calculate overall compliance
+    int totalCompliant = 0;
+    int totalOpportunities = 0;
+    decimal overallCompliance = 0;
+
+    foreach (var area in areaSummaries)
+    {
+        totalCompliant += area.Value.compliant;
+        totalOpportunities += area.Value.total;
+    }
+
+    overallCompliance = totalOpportunities > 0 ? (decimal)totalCompliant / totalOpportunities : 0;
+}
+
+@if (ViewBag.GenerationDates != null && ViewBag.GenerationDates.Count > 0)
+{
+    <div class="form-group">
+        <label for="generationDate">View Generation:</label>
+        <select id="generationDate" class="form-control" onchange="loadGeneration()">
+            @{
+                // Use a HashSet to track displayed dates
+                var displayedDates = new HashSet<string>();
+            }
+
+            @foreach (var genDate in ViewBag.GenerationDates)
+            {
+                string formattedDate = genDate.ToString("yyyy-MM-dd HH:mm:ss");
+
+                // Only show this date if we haven't already displayed it
+                if (!displayedDates.Contains(formattedDate))
+                {
+                    displayedDates.Add(formattedDate);
+
+                    bool isSelected = formattedDate == ViewBag.LastGenerated.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    if (isSelected)
+                    {
+                        <option value="@genDate.ToString("yyyy-MM-ddTHH:mm:ss")" selected>
+                            @formattedDate
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@genDate.ToString("yyyy-MM-ddTHH:mm:ss")">
+                            @formattedDate
+                        </option>
+                    }
+                }
+            }
+        </select>
+    </div>
+    <script>
+        function loadGeneration() {
+            var selectedDate = document.getElementById("generationDate").value;
+            var monthParam = '@ViewBag.SelectedMonth.ToString("yyyy-MM-dd")';
+            window.location.href = '/HandHygieneForms/MonthlySummary?date=' + monthParam + '&generationDate=' + encodeURIComponent(selectedDate);
+        }
+    </script>
 }
 
 <div class="container">
-    <h2>Hand Hygiene Compliance Summary - @Model.Month</h2>
+    <h2>Monthly Hand Hygiene Compliance Summary - @selectedMonth.ToString("MMMM yyyy")</h2>
 
-    <!-- Month selector -->
-    <form asp-action="MonthlySummary" method="get" class="mb-4">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="input-group">
-                    <input type="month" name="date" class="form-control"
-                           value="@DateTime.Parse(Model.Month).ToString("yyyy-MM")" />
-                    <div class="input-group-append">
-                        <button type="submit" class="btn btn-primary">View Month</button>
-                    </div>
-                </div>
-            </div>
+    <div class="card mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Report Options</h5>
         </div>
-    </form>
-
-    @if (ViewBag.NoData != null)
-    {
-        <div class="alert alert-info">
-            @ViewBag.NoData
-        </div>
-    }
-    else
-    {
-        <!-- Overall Summary Card -->
-        <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <h4>Overall Compliance</h4>
-            </div>
-            <div class="card-body">
+        <div class="card-body">
+            <form asp-action="MonthlySummary" method="get">
                 <div class="row">
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h2 class="mb-0">@Model.OverallSummary.ComplianceRateFormatted</h2>
-                                <p class="text-muted">Compliance Rate</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h2 class="mb-0">@Model.OverallSummary.TotalCompliantActions</h2>
-                                <p class="text-muted">Compliant Actions</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h2 class="mb-0">@Model.OverallSummary.TotalObservedOpportunities</h2>
-                                <p class="text-muted">Total Opportunities</p>
-                            </div>
+                    <!-- Month selection with View button beside it -->
+                    <div class="col-md-4 mb-3">
+                        <label for="date" class="form-label">Select Month</label>
+                        <div class="d-flex">
+                            <input type="month" id="date" name="date" class="form-control me-2" value="@selectedMonth.ToString("yyyy-MM")" />
+                            <button type="submit" class="btn btn-primary">View</button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- All Professions by Area Section -->
-        <div class="card mb-4">
-            <div class="card-header bg-success text-white">
-                <h4>Compliance by Area (All Professions)</h4>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>Area</th>
-                                <th>Compliant Actions</th>
-                                <th>Total Opportunities</th>
-                                <th>Compliance Rate</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var area in Model.AreaSummaries)
-                            {
-                                <tr>
-                                    <td>@area.Area</td>
-                                    <td>@area.TotalCompliantActions</td>
-                                    <td>@area.TotalObservedOpportunities</td>
-                                    <td>@area.ComplianceRateFormatted</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <!-- Remarks field -->
+                    <div class="col-md-8 mb-3">
+                        <label for="remarks" class="form-label">Remarks</label>
+                        <textarea id="remarks" name="remarks" class="form-control" rows="2" placeholder="Enter remarks here..."></textarea>
+                        <small class="text-muted">
+                            Required when regenerating data
+                        </small>
+                    </div>
+
+                    <!-- Regenerate button and generation info -->
+                    <div class="col-md-4 mb-3">
+                        @if (lastGenerated.HasValue && showRegenerate)
+                        {
+                            <div class="mt-4">
+                                <button type="button" onclick="regenerateWithRemarks('@selectedMonth.ToString("yyyy-MM-dd")')" class="btn btn-outline-secondary">
+                                    Regenerate
+                                </button>
+                            </div>
+
+                            <small class="text-muted d-block mt-2">
+                                Last generated: @lastGenerated.Value.ToString("MMM d, yyyy h:mm tt")
+                            </small>
+                        }
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Nurses by Area Section -->
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger mt-3">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+
+    <!-- Display existing remarks if they exist -->
+    @if (ViewBag.CurrentRemarks != null && !string.IsNullOrEmpty(ViewBag.CurrentRemarks))
+    {
         <div class="card mb-4">
             <div class="card-header bg-info text-white">
-                <h4>Nurse Compliance by Area</h4>
+                <h6 class="mb-0">Current Report Remarks</h6>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="thead-light">
+            <div class="card-body bg-light">
+                <p class="card-text">@ViewBag.CurrentRemarks</p>
+            </div>
+        </div>
+    }
+
+    <script>
+        function regenerateWithRemarks(dateStr) {
+            var remarks = document.getElementById('remarks').value.trim();
+            if (!remarks) {
+                alert('Remarks are required when regenerating data.');
+                document.getElementById('remarks').focus();
+                return false;
+            }
+
+            // Construct the URL with both date and remarks parameters
+            window.location.href = '@Url.Action("MonthlySummary")' +
+                '?date=' + dateStr +
+                '&regenerate=true' +
+                '&remarks=' + encodeURIComponent(remarks);
+        }
+    </script>
+</div>
+
+    <!-- Summary Dashboard -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Overall Compliance</h5>
+                    <div class="display-4 @(overallCompliance >= 0.8m ? "text-success" : overallCompliance >= 0.6m ? "text-warning" : "text-danger")">
+                        @(overallCompliance.ToString("P1"))
+                    </div>
+                    <p class="card-text">@totalCompliant of @totalOpportunities opportunities</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="alert @GetComplianceAlertClass(overallCompliance)">
+                <h5>
+                    <i class="@GetComplianceIconClass(overallCompliance)"></i>
+                    @GetComplianceMessage(overallCompliance)
+                </h5>
+            </div>
+        </div>
+
+        @functions {
+            private string GetComplianceAlertClass(decimal compliance) =>
+            compliance >= 0.8m ? "alert-success" :
+            compliance >= 0.6m ? "alert-warning" :
+            "alert-danger";
+
+            private string GetComplianceIconClass(decimal compliance) =>
+            compliance >= 0.8m ? "fas fa-check-circle" :
+            compliance >= 0.6m ? "fas fa-exclamation-triangle" :
+            "fas fa-exclamation-circle";
+
+            private string GetComplianceMessage(decimal compliance) =>
+            compliance >= 0.8m ? "Great compliance level" :
+            compliance >= 0.6m ? "Compliance needs improvement" :
+            "Critical compliance level";
+        }
+    </div>
+
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-tabs" id="summaryTabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link active" id="areas-tab" data-bs-toggle="tab" data-bs-target="#areas" type="button" role="tab" aria-controls="areas" aria-selected="true">Areas (All Staff)</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="nurses-tab" data-bs-toggle="tab" data-bs-target="#nurses" type="button" role="tab" aria-controls="nurses" aria-selected="false">Areas (Nurses Only)</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="professions-tab" data-bs-toggle="tab" data-bs-target="#professions" type="button" role="tab" aria-controls="professions" aria-selected="false">Healthcare Workers</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="observers-tab" data-bs-toggle="tab" data-bs-target="#observers" type="button" role="tab" aria-controls="observers" aria-selected="false">Observers</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="summaryTabsContent">
+        <!-- 1. Area Summary (All Professions) -->
+        <div class="tab-pane fade show active" id="areas" role="tabpanel" aria-labelledby="areas-tab">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">Compliance by Area (All Professions)</div>
+                <div class="card-body">
+                    <table class="table table-striped table-hover" id="areasTable">
+                        <thead>
                             <tr>
                                 <th>Area</th>
                                 <th>Compliant Actions</th>
-                                <th>Total Opportunities</th>
+                                <th>Observed Opportunities</th>
                                 <th>Compliance Rate</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if (!Model.NurseAreaSummaries.Any())
+                            @if (ViewBag.AreaSummaries != null && ((Dictionary<string, (int, int, decimal)>)ViewBag.AreaSummaries).Count > 0)
                             {
-                                <tr>
-                                    <td colspan="4" class="text-center">No nurse data available for this month</td>
-                                </tr>
-                            }
-                            else
-                            {
-                                @foreach (var area in Model.NurseAreaSummaries)
+                                foreach (var item in (Dictionary<string, (int, int, decimal)>)ViewBag.AreaSummaries)
                                 {
                                     <tr>
-                                        <td>@area.Area</td>
-                                        <td>@area.TotalCompliantActions</td>
-                                        <td>@area.TotalObservedOpportunities</td>
-                                        <td>@area.ComplianceRateFormatted</td>
+                                        <td>@item.Key</td>
+                                        <td>@item.Value.Item1</td> <!-- Compliant Actions -->
+                                        <td>@item.Value.Item2</td> <!-- Observed Opportunities -->
+                                        <td>@(item.Value.Item3.ToString("P2"))</td> <!-- Compliance Rate -->
                                     </tr>
                                 }
                             }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">No data available for Areas</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- Profession Summary Section -->
-        <div class="card mb-4">
-            <div class="card-header bg-warning text-dark">
-                <h4>Compliance by Profession</h4>
+        <!-- 2. Nurse Area Summary -->
+        <div class="tab-pane fade" id="nurses" role="tabpanel" aria-labelledby="nurses-tab">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">Compliance by Area (Nurses Only)</div>
+                <div class="card-body">
+                    <table class="table table-striped table-hover" id="nursesTable">
+                        <thead>
+                            <tr>
+                                <th>Area</th>
+                                <th>Compliant Actions</th>
+                                <th>Observed Opportunities</th>
+                                <th>Compliance Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (ViewBag.NurseAreaSummaries != null && ((Dictionary<string, (int, int, decimal)>)ViewBag.NurseAreaSummaries).Count > 0)
+                            {
+                                foreach (var item in (Dictionary<string, (int, int, decimal)>)ViewBag.NurseAreaSummaries)
+                                {
+                                    <tr>
+                                        <td>@item.Key</td>
+                                        <td>@item.Value.Item1</td> <!-- Compliant Actions -->
+                                        <td>@item.Value.Item2</td> <!-- Observed Opportunities -->
+                                        <td>@(item.Value.Item3.ToString("P2"))</td> <!-- Compliance Rate -->
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">No data available for Nurses</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="thead-light">
+        </div>
+
+        <!-- 3. Healthcare Workers Summary -->
+        <div class="tab-pane fade" id="professions" role="tabpanel" aria-labelledby="professions-tab">
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">Compliance by Profession</div>
+                <div class="card-body">
+                    <table class="table table-striped table-hover" id="professionsTable">
+                        <thead>
                             <tr>
                                 <th>Profession</th>
                                 <th>Compliant Actions</th>
-                                <th>Total Opportunities</th>
+                                <th>Observed Opportunities</th>
                                 <th>Compliance Rate</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var profession in Model.ProfessionSummaries)
+                            @if (ViewBag.ProfessionSummaries != null && ((Dictionary<string, (int, int, decimal)>)ViewBag.ProfessionSummaries).Count > 0)
+                            {
+                                foreach (var item in (Dictionary<string, (int, int, decimal)>)ViewBag.ProfessionSummaries)
+                                {
+                                    <tr>
+                                        <td>@item.Key</td>
+                                        <td>@item.Value.Item1</td> <!-- Compliant Actions -->
+                                        <td>@item.Value.Item2</td> <!-- Observed Opportunities -->
+                                        <td>@(item.Value.Item3.ToString("P2"))</td> <!-- Compliance Rate -->
+                                    </tr>
+                                }
+                            }
+                            else
                             {
                                 <tr>
-                                    <td>@profession.Profession</td>
-                                    <td>@profession.TotalCompliantActions</td>
-                                    <td>@profession.TotalObservedOpportunities</td>
-                                    <td>@profession.ComplianceRateFormatted</td>
+                                    <td colspan="4" class="text-center text-muted">No data available for Healthcare Workers</td>
                                 </tr>
                             }
                         </tbody>
@@ -169,30 +329,37 @@
             </div>
         </div>
 
-        <!-- Observer Summary Section -->
-        <div class="card mb-4">
-            <div class="card-header bg-secondary text-white">
-                <h4>Compliance by Observer</h4>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="thead-light">
+        <!-- 4. Observers Summary -->
+        <div class="tab-pane fade" id="observers" role="tabpanel" aria-labelledby="observers-tab">
+            <div class="card mb-4">
+                <div class="card-header bg-warning text-white">Compliance by Observer</div>
+                <div class="card-body">
+                    <table class="table table-striped table-hover" id="observersTable">
+                        <thead>
                             <tr>
                                 <th>Observer</th>
                                 <th>Compliant Actions</th>
-                                <th>Total Opportunities</th>
+                                <th>Observed Opportunities</th>
                                 <th>Compliance Rate</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var observer in Model.ObserverSummaries)
+                            @if (ViewBag.ObserverSummaries != null && ((Dictionary<string, (int, int, decimal)>)ViewBag.ObserverSummaries).Count > 0)
+                            {
+                                foreach (var item in (Dictionary<string, (int, int, decimal)>)ViewBag.ObserverSummaries)
+                                {
+                                    <tr>
+                                        <td>@item.Key</td>
+                                        <td>@item.Value.Item1</td> <!-- Compliant Actions -->
+                                        <td>@item.Value.Item2</td> <!-- Observed Opportunities -->
+                                        <td>@(item.Value.Item3.ToString("P2"))</td> <!-- Compliance Rate -->
+                                    </tr>
+                                }
+                            }
+                            else
                             {
                                 <tr>
-                                    <td>@observer.Observer</td>
-                                    <td>@observer.TotalCompliantActions</td>
-                                    <td>@observer.TotalObservedOpportunities</td>
-                                    <td>@observer.ComplianceRateFormatted</td>
+                                    <td colspan="4" class="text-center text-muted">No data available for Observers</td>
                                 </tr>
                             }
                         </tbody>
@@ -200,9 +367,134 @@
                 </div>
             </div>
         </div>
-    }
+    </div>
 
-    <div class="text-center mb-4">
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    <!-- Export and Save Options -->
+    <div class="card mb-4">
+        <div class="card-header bg-light">Actions</div>
+        <div class="card-body">
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary" id="exportPDF"><i class="far fa-file-pdf"></i> Export as PDF</button>
+                <button type="button" class="btn btn-outline-success" id="exportExcel"><i class="far fa-file-excel"></i> Export as Excel</button>
+                <button type="button" class="btn btn-outline-info" id="saveSummary"><i class="fas fa-save"></i> Save Summary</button>
+            </div>
+            <p id="saveMessage" class="mt-2 text-success" style="display: none;">Summary saved successfully!</p>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Check Bootstrap version and use appropriate tab initialization
+            var bootstrapVersion = (typeof bootstrap !== 'undefined') ? 5 : 4;
+
+            if (bootstrapVersion === 5) {
+                // Bootstrap 5 tab handling
+                var tabElementList = [].slice.call(document.querySelectorAll('#summaryTabs button'));
+                var tabList = tabElementList.map(function(tabEl) {
+                    return new bootstrap.Tab(tabEl);
+                });
+
+                document.querySelectorAll('#summaryTabs button').forEach(function(tab) {
+                    tab.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        var tabTarget = document.querySelector(this.getAttribute('data-bs-target'));
+                        var activeTabId = this.getAttribute('data-bs-target');
+                        localStorage.setItem('activeHygieneTab', activeTabId);
+                    });
+                });
+
+                // Restore active tab
+                var activeTabId = localStorage.getItem('activeHygieneTab');
+                if (activeTabId) {
+                    var activeTab = document.querySelector('#summaryTabs button[data-bs-target="' + activeTabId + '"]');
+                    if (activeTab) {
+                        var tab = new bootstrap.Tab(activeTab);
+                        tab.show();
+                    }
+                }
+            } else {
+                // Bootstrap 4 tab handling
+                $('#summaryTabs a').on('click', function(e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                    localStorage.setItem('activeHygieneTab', $(this).attr('href'));
+                });
+
+                // Restore active tab
+                var activeTab = localStorage.getItem('activeHygieneTab');
+                if (activeTab) {
+                    $('#summaryTabs a[href="' + activeTab + '"]').tab('show');
+                }
+
+                // Fix tab navigation link attributes
+                $('#summaryTabs a').each(function() {
+                    $(this).attr('data-toggle', 'tab');
+                });
+            }
+
+            // Initialize DataTables
+            if ($.fn.DataTable) {
+                $('#areasTable').DataTable({
+                    "order": [[3, "desc"]],
+                    "paging": true,
+                    "searching": true,
+                    "info": true,
+                    "responsive": true
+                });
+
+                $('#nursesTable').DataTable({
+                    "order": [[3, "desc"]],
+                    "paging": true,
+                    "searching": true,
+                    "info": true,
+                    "responsive": true
+                });
+
+                $('#professionsTable').DataTable({
+                    "order": [[3, "desc"]],
+                    "paging": true,
+                    "searching": true,
+                    "info": true,
+                    "responsive": true
+                });
+
+                $('#observersTable').DataTable({
+                    "order": [[3, "desc"]],
+                    "paging": true,
+                    "searching": true,
+                    "info": true,
+                    "responsive": true
+                });
+            }
+
+            // Export buttons
+            $('#exportExcel').on('click', function() {
+                window.location.href = '/HandHygieneForms/ExportExcel?date=' + $('#date').val();
+            });
+
+            $('#exportPDF').on('click', function() {
+                var selectedDate = $('#date').val();
+                window.location.href = '/HandHygieneForms/ExportPDF?date=' + selectedDate;
+            });
+
+            // Save Summaries
+            $('#saveSummary').on('click', function() {
+                var selectedMonth = $('#date').val();
+                $.ajax({
+                    url: '/HandHygieneForms/SaveSummaries',
+                    type: 'POST',
+                    data: { date: selectedMonth },
+                    success: function() {
+                        $('#saveMessage').show().delay(3000).fadeOut();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error saving summary:", error);
+                        alert('Error saving summary. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+}
