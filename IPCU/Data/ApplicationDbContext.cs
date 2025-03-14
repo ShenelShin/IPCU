@@ -19,7 +19,7 @@ namespace IPCU.Data
         public DbSet<Trainee> Trainees { get; set; }
  
 
-        public DbSet<TestFormModel> TestForms { get; set; }
+        public DbSet<PreTestNonClinical> PreTestNonClinicals { get; set; }
         public DbSet<PreTestClinical> PreTestClinicals { get; set; }
 
     }
