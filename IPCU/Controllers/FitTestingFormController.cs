@@ -10,6 +10,8 @@ using IPCU.Models;
 using X.PagedList;
 using X.PagedList.Mvc.Core;
 using X.PagedList.Extensions;
+using ClosedXML.Excel;
+using System.IO;
 
 namespace IPCU.Controllers
 {
@@ -409,6 +411,21 @@ namespace IPCU.Controllers
                })
                .ToList();
 
+            // Totals for tallyReport
+            int totalFitTestedReport = tallyReport.Sum(t => t.TotalFitTested);
+            int totalExpiredReport = tallyReport.Sum(t => t.Expired);
+
+            // Totals for tallyMedical
+            int totalFitTestedMedical = tallyMedical.Sum(t => t.TotalFitTested);
+            int totalExpiredMedical = tallyMedical.Sum(t => t.Expired);
+
+            // Totals for tallyAllied
+            int totalFitTestedAllied = tallyAllied.Sum(t => t.TotalFitTested);
+            int totalExpiredAllied = tallyAllied.Sum(t => t.Expired);
+
+            // Grand Totals (sum of all three)
+            int grandTotalFitTested = totalFitTestedReport + totalFitTestedMedical + totalFitTestedAllied;
+            int grandTotalExpired = totalExpiredReport + totalExpiredMedical + totalExpiredAllied;
 
             // Pass all lists to the view
             ViewBag.AttendanceForPhysicians = attendanceForPhysicians;
@@ -417,9 +434,134 @@ namespace IPCU.Controllers
             ViewBag.TallyMedical = tallyMedical;
             ViewBag.TallyAllied = tallyAllied;
 
+            ViewBag.TotalFitTestedReport = totalFitTestedReport;
+            ViewBag.TotalExpiredReport = totalExpiredReport;
+            ViewBag.TotalFitTestedMedical = totalFitTestedMedical;
+            ViewBag.TotalExpiredMedical = totalExpiredMedical;
+            ViewBag.TotalFitTestedAllied = totalFitTestedAllied;
+            ViewBag.TotalExpiredAllied = totalExpiredAllied;
+
+            ViewBag.GrandTotalFitTested = grandTotalFitTested;
+            ViewBag.GrandTotalExpired = grandTotalExpired;
 
 
             return View();
+        }
+        public IActionResult ExportToExcel()
+        {
+            var attendanceForPhysicians = _context.FitTestingForm
+                .Where(f => f.Test_Results == "Passed")
+                .ToList();
+
+            var attendanceForNursingAndAllied = _context.FitTestingForm
+                .Where(f => f.Test_Results == "Passed")
+                .ToList();
+
+            var tallyReport = _context.FitTestingForm
+                .GroupBy(f => f.DUO)
+                .Select(g => new
+                {
+                    Unit = g.Key,
+                    TotalFitTested = g.Count(f => f.Test_Results == "Passed"),
+                    Expired = g.Count(f => f.ExpiringAt < DateTime.Now && f.Test_Results == "Passed")
+                }).ToList();
+
+            using (var workbook = new XLWorkbook())
+            {
+                void FormatHeaders(IXLWorksheet sheet, int columnCount)
+                {
+                    var headerRow = sheet.Row(1);
+                    headerRow.Style.Font.Bold = true;
+                    headerRow.Style.Fill.BackgroundColor = XLColor.LightGray;
+                    sheet.Columns(1, columnCount).AdjustToContents();
+                }
+
+                var worksheet1 = workbook.Worksheets.Add("Physicians");
+                worksheet1.Cell(1, 1).Value = "Name";
+                worksheet1.Cell(1, 2).Value = "Department/Unit/Office";
+                worksheet1.Cell(1, 3).Value = "Professional Category";
+                worksheet1.Cell(1, 4).Value = "Fit Test Solution";
+                worksheet1.Cell(1, 5).Value = "Status";
+                worksheet1.Cell(1, 6).Value = "Fit Tester";
+                worksheet1.Cell(1, 7).Value = "Date Fit Tested";
+                FormatHeaders(worksheet1, 7);
+
+                int row = 2;
+                foreach (var item in attendanceForPhysicians)
+                {
+                    worksheet1.Cell(row, 1).Value = item.HCW_Name;
+                    worksheet1.Cell(row, 2).Value = item.DUO;
+                    worksheet1.Cell(row, 3).Value = item.Professional_Category;
+                    worksheet1.Cell(row, 4).Value = item.Fit_Test_Solution;
+                    worksheet1.Cell(row, 5).Value = item.Test_Results;
+                    worksheet1.Cell(row, 6).Value = item.Name_of_Fit_Tester;
+                    worksheet1.Cell(row, 7).Value = item.SubmittedAt.ToString("yyyy-MM-dd");
+                    row++;
+                }
+
+                var worksheet2 = workbook.Worksheets.Add("Nursing & Allied");
+                worksheet2.Cell(1, 1).Value = "Name";
+                worksheet2.Cell(1, 2).Value = "Department/Unit/Office";
+                worksheet2.Cell(1, 3).Value = "Professional Category";
+                worksheet2.Cell(1, 4).Value = "Fit Test Solution";
+                worksheet2.Cell(1, 5).Value = "Status";
+                worksheet2.Cell(1, 6).Value = "Fit Tester";
+                worksheet2.Cell(1, 7).Value = "Date Fit Tested";
+                FormatHeaders(worksheet2, 7);
+
+                row = 2;
+                foreach (var item in attendanceForNursingAndAllied)
+                {
+                    worksheet2.Cell(row, 1).Value = item.HCW_Name;
+                    worksheet2.Cell(row, 2).Value = item.DUO;
+                    worksheet2.Cell(row, 3).Value = item.Professional_Category;
+                    worksheet2.Cell(row, 4).Value = item.Fit_Test_Solution;
+                    worksheet2.Cell(row, 5).Value = item.Test_Results;
+                    worksheet2.Cell(row, 6).Value = item.Name_of_Fit_Tester;
+                    worksheet2.Cell(row, 7).Value = item.SubmittedAt.ToString("yyyy-MM-dd");
+                    row++;
+                }
+
+                var worksheet3 = workbook.Worksheets.Add("Tally Report");
+                worksheet3.Cell(1, 1).Value = "Unit";
+                worksheet3.Cell(1, 2).Value = "Total Fit Tested";
+                worksheet3.Cell(1, 3).Value = "Expired";
+                FormatHeaders(worksheet3, 3);
+
+                row = 2;
+                foreach (var item in tallyReport)
+                {
+                    worksheet3.Cell(row, 1).Value = item.Unit;
+                    worksheet3.Cell(row, 2).Value = item.TotalFitTested;
+                    worksheet3.Cell(row, 3).Value = item.Expired;
+                    row++;
+                }
+
+                var summarySheet = workbook.Worksheets.Add("Summary");
+                summarySheet.Cell(1, 1).Value = "Category";
+                summarySheet.Cell(1, 2).Value = "Total Fit Tested";
+                summarySheet.Cell(1, 3).Value = "Expired";
+                FormatHeaders(summarySheet, 3);
+
+                summarySheet.Cell(2, 1).Value = "Physicians";
+                summarySheet.Cell(2, 2).Value = attendanceForPhysicians.Count;
+                summarySheet.Cell(2, 3).Value = attendanceForPhysicians.Count(f => f.ExpiringAt < DateTime.Now);
+
+                summarySheet.Cell(3, 1).Value = "Nursing & Allied";
+                summarySheet.Cell(3, 2).Value = attendanceForNursingAndAllied.Count;
+                summarySheet.Cell(3, 3).Value = attendanceForNursingAndAllied.Count(f => f.ExpiringAt < DateTime.Now);
+
+                summarySheet.Cell(4, 1).Value = "Grand Total";
+                summarySheet.Cell(4, 2).FormulaA1 = "=B2+B3";
+                summarySheet.Cell(4, 3).FormulaA1 = "=C2+C3";
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    var content = stream.ToArray();
+                    return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Fit_Testing_Reports.xlsx");
+                }
+            }
         }
 
     }

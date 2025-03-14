@@ -28,6 +28,7 @@
         }
 </style>
 <h2>Reports</h2>
+<a asp-action="ExportToExcel" class="btn btn-success">Export to Excel</a>
 
 <!-- Attendance for Physicians Table -->
 <h3>Attendance for Physicians</h3>
@@ -101,26 +102,34 @@
 </div>
 <h3>DUO Unit Tally Report</h3>
 <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd;">
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Unit</th>
-            <th>Total Fit Tested</th>
-             <th>Expired</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in ViewBag.TallyReport)
-        {
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>@item.Unit</td>
-                <td>@item.TotalFitTested</td>
-                 <td>@item.Expired</td>
+                <th>Unit</th>
+                <th>Total Fit Tested</th>
+                <th>Expired</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.TallyReport)
+            {
+                <tr>
+                    <td>@item.Unit</td>
+                    <td>@item.TotalFitTested</td>
+                    <td>@item.Expired</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Total</th>
+                <th>@ViewBag.TotalFitTestedReport</th>
+                <th>@ViewBag.TotalExpiredReport</th>
+            </tr>
+        </tfoot>
+    </table>
 </div>
+
 <h3>DUO Unit Tally Medical</h3>
 <div style="max-height: 400px; overflow-y: auto; border: 1px solid #ddd;">
     <table class="table table-bordered">
@@ -141,6 +150,13 @@
                 </tr>
             }
         </tbody>
+        <tfoot>
+            <tr>
+                <th>Total</th>
+                <th>@ViewBag.TotalFitTestedMedical</th>
+                <th>@ViewBag.TotalExpiredMedical</th>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -164,5 +180,30 @@
                 </tr>
             }
         </tbody>
+        <tfoot>
+            <tr>
+                <th>Total</th>
+                <th>@ViewBag.TotalFitTestedAllied</th>
+                <th>@ViewBag.TotalExpiredAllied</th>
+            </tr>
+        </tfoot>
     </table>
 </div>
+
+<h3>Grand Total</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Total Fit Tested</th>
+            <th>Expired</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Grand Total</td>
+            <td>@ViewBag.GrandTotalFitTested</td>
+            <td>@ViewBag.GrandTotalExpired</td>
+        </tr>
+    </tbody>
+</table>
