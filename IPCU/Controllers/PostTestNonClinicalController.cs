@@ -4,12 +4,12 @@ using IPCU.Data;
 
 namespace IPCU.Controllers
 {
-    public class PreTestClinicalController : Controller
+    public class PostTestNonClinicalController : Controller
     {
         private readonly ApplicationDbContext _context;
 
         // Inject the database context
-        public PreTestClinicalController(ApplicationDbContext context)
+        public PostTestNonClinicalController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace IPCU.Controllers
         /// <returns>The Quiz view.</returns>
         public IActionResult Quiz()
         {
-            return View("-/Views/PostTestNonClinicals/Quiz.cshtmlsss");
+            return View();
         }
 
         /// <summary>
