@@ -46,10 +46,20 @@ namespace IPCU.Controllers
         {
             return View();
         }
+        public IActionResult PostTest()
+        {
+            return View();
+        }
 
         public IActionResult StartExam()
         {
             return View("Form");
+        }
+
+        public IActionResult PostTestClinicals()
+        {
+            return View("~/Views/PostTestNonClinicals/Quiz.cshtml");
+
         }
 
         [HttpPost]
