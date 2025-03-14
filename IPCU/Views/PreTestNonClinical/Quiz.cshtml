@@ -72,7 +72,8 @@
     <h2 class="text-center">Pre-Test Non-Clinical Quiz</h2>
     <p class="text-center text-muted">Please fill out all fields before submitting.</p>
 
-    <form asp-action="SubmitQuiz" method="post">
+    <form asp-controller="PreTestNonClinical" asp-action="SubmitQuiz" method="post">
+
 
         <!-- Personal Information -->
         <h4 class="mt-4">Personal Information</h4>
@@ -160,11 +161,11 @@
             <div class="question-box">
                 <strong>@(index + 1). @question</strong>
                 <div class="form-check">
-                    <input type="radio" name="selectedAnswers[@index]" value="Hand Washing" class="form-check-input">
+                    <input type="radio" name="selectedMatchingAnswers[@index]" value="Hand Washing" class="form-check-input">
                     <label class="form-check-label">Hand Washing</label>
                 </div>
                 <div class="form-check">
-                    <input type="radio" name="selectedAnswers[@index]" value="Hand Rubbing" class="form-check-input">
+                    <input type="radio" name="selectedMatchingAnswers[@index]" value="Hand Rubbing" class="form-check-input">
                     <label class="form-check-label">Hand Rubbing</label>
                 </div>
             </div>
@@ -192,7 +193,7 @@
                 @foreach (var choice in choices)
                 {
                     <div class="form-check">
-                        <input type="radio" name="multipleChoice[@index]" value="@choice" class="form-check-input">
+                        <input type="radio" name="selectedMultipleChoiceAnswers[@index]" value="@choice" class="form-check-input">
                         <label class="form-check-label">@choice</label>
                     </div>
                 }
@@ -203,3 +204,24 @@
 
     </form>
 </div>
+<script>
+       document.querySelector("form").addEventListener("submit", function (event) {
+        let selectedMatching = [];
+        let selectedMultipleChoice = [];
+
+        document.querySelectorAll("input[name^='selectedMatchingAnswers']:checked").forEach(input => {
+            selectedMatching.push(input.value);
+        });
+
+        document.querySelectorAll("input[name^='selectedMultipleChoiceAnswers']:checked").forEach(input => {
+            selectedMultipleChoice.push(input.value);
+        });
+
+        console.log("Selected Matching:", selectedMatching);
+        console.log("Selected Multiple Choice:", selectedMultipleChoice);
+
+        if (selectedMatching.length === 0 || selectedMultipleChoice.length === 0) {
+            console.warn("No answers selected! Make sure you selected at least one option.");
+        }
+    });
+</script>

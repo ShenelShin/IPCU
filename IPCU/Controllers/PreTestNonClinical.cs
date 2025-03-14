@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IPCU.Controllers
 {
-    public class PreTestNonClinical : Controller
+    public class PreTestNonClinicalController : Controller
     {
         private readonly ApplicationDbContext _context;
 
         // Inject the database context
-        public PreTestNonClinical(ApplicationDbContext context)
+        public PreTestNonClinicalController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -28,48 +28,58 @@ namespace IPCU.Controllers
             return View();
         }
 
-        /// <summary>
-        /// Handles the submission of the quiz form.
-        /// </summary>
-        /// <param name="model">The PreTestClinical model containing user details.</param>
-        /// <param name="selectedAnswers">Array of selected answers (indices).</param>
-        /// <returns>Redirects to the QuizResult view with the computed score.</returns>
-        [HttpPost]
-        public IActionResult SubmitQuiz(PreTestClinical model, int[] selectedAnswers)
+
+        private readonly string[] matchingCorrectAnswers = { "Hand Washing", "Hand Washing", "Hand Washing", "Hand Rubbing", "Hand Washing", "Hand Washing", "Hand Washing", "Hand Rubbing" };
+        private readonly string[] multipleChoiceCorrectAnswers =
         {
-            // Validate the model
+    "Yellow waste bin",
+    "To protect patients and healthcare workers from respiratory infections, including influenza, tuberculosis, and other airborne diseases",
+    "1 hour",
+    "Frequent and proper hand hygiene",
+    "20-30 seconds",
+    "Prevent the spread of infections among patients, healthcare workers, and visitors",
+    "Masks should fully cover the nose and mouth at all times inside the hospital"
+};
+
+        [HttpPost]
+        public IActionResult SubmitQuiz(PreTestNonClinical model, string[] selectedMatchingAnswers, string[] selectedMultipleChoiceAnswers)
+        {
             if (ModelState.IsValid)
             {
-                // Compute the score based on the selected answers
                 int score = 0;
-                for (int i = 0; i < correctAnswers.Length; i++)
+
+                // Validate Matching Type Answers
+                for (int i = 0; i < matchingCorrectAnswers.Length; i++)
                 {
-                    if (i < selectedAnswers.Length && selectedAnswers[i] == correctAnswers[i])
+                    if (i < selectedMatchingAnswers.Length && selectedMatchingAnswers[i] == matchingCorrectAnswers[i])
                     {
                         score++;
                     }
                 }
 
-                // Store the score in the model
-                model.PRETCSCORE = score;
+                // Validate Multiple Choice Answers
+                for (int i = 0; i < multipleChoiceCorrectAnswers.Length; i++)
+                {
+                    if (i < selectedMultipleChoiceAnswers.Length && selectedMultipleChoiceAnswers[i] == multipleChoiceCorrectAnswers[i])
+                    {
+                        score++;
+                    }
+                }
 
-                // Save the model to the database
-                _context.PreTestClinicals.Add(model);
+                model.PRETNONCSCORE = score;
+
+                _context.PreTestNonClinicals.Add(model);
                 _context.SaveChanges();
 
-                // Redirect to the result page with the score
-                return RedirectToAction("QuizResult", new { score = model.PRETCSCORE });
+                return RedirectToAction("QuizResult", new { score = model.PRETNONCSCORE });
             }
 
-            // If validation fails, redisplay the quiz form
             return View("Quiz", model);
         }
 
-        /// <summary>
-        /// Displays the quiz result page.
-        /// </summary>
+
         /// <param name="score">The computed score from the quiz.</param>
-        /// <returns>The QuizResult view.</returns>
+
         public IActionResult QuizResult(int score)
         {
             ViewBag.Score = score;
