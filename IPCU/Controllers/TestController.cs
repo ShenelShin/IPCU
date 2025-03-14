@@ -46,6 +46,10 @@ namespace IPCU.Controllers
         {
             return View();
         }
+        public IActionResult InstructionsPreC()
+        {
+            return View();
+        }
 
         public IActionResult StartExam()
         {
