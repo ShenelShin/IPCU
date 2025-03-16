@@ -14,8 +14,6 @@ namespace IPCU.Controllers
             _context = context;
         }
 
-
-
         public IActionResult TakeTest()
         {
             return View();
@@ -38,7 +36,11 @@ namespace IPCU.Controllers
         {
             return View("~/Views/PreTestNonClinical/Quiz.cshtml");
         }
+        public IActionResult PostExamNonClinicals()
+        {
+            return View("~/Views/PostTestNonClinicals/Quiz.cshtml");
+        }
 
-        
+
     }
 }

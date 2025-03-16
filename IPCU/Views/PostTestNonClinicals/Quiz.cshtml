@@ -1,6 +1,7 @@
-﻿@model IPCU.Models.PostTestNonCLinical
+﻿@model IPCU.Models.PostTestNonClinical
 
-<form asp-action="SubmitQuiz" method="post">
+<form asp-controller="PostTestNonClinical" asp-action="SubmitQuiz" method="post">
+
     <div>
         <label>Full Name:</label>
         <input asp-for="FullName" />
@@ -65,19 +66,19 @@
 
     <div>
         <label>Question 1:</label>
-        <input type="radio" name="selectedAnswers[0]" value="0" /> Option 1
+        <input type="radio" name="selectedAnswers[0]" value="0" required /> Option 1
         <input type="radio" name="selectedAnswers[0]" value="1" /> Option 2
     </div>
 
     <div>
         <label>Question 2:</label>
-        <input type="radio" name="selectedAnswers[1]" value="0" /> Option 1
+        <input type="radio" name="selectedAnswers[1]" value="0" required /> Option 1
         <input type="radio" name="selectedAnswers[1]" value="1" /> Option 2
     </div>
 
     <div>
         <label>Question 3:</label>
-        <input type="radio" name="selectedAnswers[2]" value="0" /> Option 1
+        <input type="radio" name="selectedAnswers[2]" value="0" required /> Option 1
         <input type="radio" name="selectedAnswers[2]" value="1" /> Option 2
     </div>
 

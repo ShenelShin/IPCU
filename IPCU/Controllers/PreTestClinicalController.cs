@@ -23,7 +23,7 @@ namespace IPCU.Controllers
         /// <returns>The Quiz view.</returns>
         public IActionResult Quiz()
         {
-            return View("-/Views/PostTestNonClinicals/Quiz.cshtmlsss");
+            return View("-/Views/PostTestNonClinicals/Quiz.cshtmls");
         }
 
         /// <summary>
