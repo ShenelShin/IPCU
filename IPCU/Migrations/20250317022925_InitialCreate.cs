@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace IPCU.Migrations
 {
     /// <inheritdoc />
-    public partial class CleanDb : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -173,6 +173,46 @@ namespace IPCU.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PatientForms", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostTestClinicals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AgeGroup = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Sex = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PWD = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CivilStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Department = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    POSTCSCORE = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostTestClinicals", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PostTestNonCLinicals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmployeeId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AgeGroup = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Sex = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PWD = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CivilStatus = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Department = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    POSTSCORE = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PostTestNonCLinicals", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -527,6 +567,12 @@ namespace IPCU.Migrations
 
             migrationBuilder.DropTable(
                 name: "PatientForms");
+
+            migrationBuilder.DropTable(
+                name: "PostTestClinicals");
+
+            migrationBuilder.DropTable(
+                name: "PostTestNonCLinicals");
 
             migrationBuilder.DropTable(
                 name: "PreTestClinicals");
