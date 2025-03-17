@@ -11,7 +11,7 @@ namespace IPCU.Models
         public string FullName { get; set; }
 
         [Required]
-        public string EmployeeId { get; set; } // New field
+        public string EmployeeId { get; set; }
 
         [Required(ErrorMessage = "Age Group is required.")]
         public string AgeGroup { get; set; }
@@ -27,6 +27,14 @@ namespace IPCU.Models
 
         [Required(ErrorMessage = "Department is required.")]
         public string Department { get; set; }
-        public int POSTSCORE { get; set; }  // Store the computed score
+
+        public int POSTSCORE { get; set; } // Store the computed score
+
+        // Additional properties that don't need to be stored in the database
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public int TotalQuestions { get; set; }
+
+        [System.ComponentModel.DataAnnotations.Schema.NotMapped]
+        public double PercentageScore { get; set; }
     }
 }
