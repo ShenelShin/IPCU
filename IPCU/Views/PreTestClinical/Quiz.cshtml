@@ -1,6 +1,6 @@
 ﻿@model IPCU.Models.PreTestClinical
 
-<form asp-controller="PreTestClinical" asp-action="QuizResult" method="post">
+<form asp-controller="PreTestClinical" asp-action="SubmitQuiz" method="post">
     <div>
         <label>Full Name:</label>
         <input asp-for="FullName" />
@@ -174,7 +174,7 @@
         <input type="radio" name="selectedAnswers[13]" value="3" /> Improve hospital ranking
     </div>
 
-   <!-- <div>
+   
         <label>What are the 5 Moments for Hand Hygiene, as recommended by the World Health Organization (WHO)? Select all that apply.</label><br>
         <input type="checkbox" name="selectedAnswers[14][]" value="0" /> Before touching a patient<br>
         <input type="checkbox" name="selectedAnswers[14][]" value="1" /> Before a procedure<br>
@@ -186,7 +186,7 @@
         <input type="checkbox" name="selectedAnswers[14][]" value="7" /> After using the restroom<br>
         <input type="checkbox" name="selectedAnswers[14][]" value="8" /> After touching a patient's surroundings<br>
         <input type="checkbox" name="selectedAnswers[14][]" value="9" /> Before preparing or eating food<br>
-    </div>-->
+    </div>
 
     <div>
         <label>Which of the following is the most effective way to prevent the spread of infections?</label><br>
