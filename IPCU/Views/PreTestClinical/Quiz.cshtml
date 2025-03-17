@@ -1,6 +1,8 @@
 ﻿@model IPCU.Models.PreTestClinical
 
-<form asp-controller="PreTestClinical" asp-action="QuizResult" method="post">
+<h2>Pre-Test Clinical Questionnaire</h2>
+
+<form asp-controller="PreTestClinical" asp-action="Submit" method="post">
     <div>
         <label>Full Name:</label>
         <input asp-for="FullName" />
@@ -174,19 +176,19 @@
         <input type="radio" name="selectedAnswers[13]" value="3" /> Improve hospital ranking
     </div>
 
-   <!-- <div>
+  <div>
         <label>What are the 5 Moments for Hand Hygiene, as recommended by the World Health Organization (WHO)? Select all that apply.</label><br>
-        <input type="checkbox" name="selectedAnswers[14][]" value="0" /> Before touching a patient<br>
-        <input type="checkbox" name="selectedAnswers[14][]" value="1" /> Before a procedure<br>
-        <input type="checkbox" name="selectedAnswers[14][]" value="2" /> Before touching your eyes, nose, or mouth<br>
-        <input type="checkbox" name="selectedAnswers[14][]" value="3" /> After playing with animals<br>
-        <input type="checkbox" name="selectedAnswers[14][]" value="4" /> After a procedure or exposure to body fluids<br>
-        <input type="checkbox" name="selectedAnswers[14][]" value="5" /> After blowing your nose, coughing, or sneezing<br>
-        <input type="checkbox" name="selectedAnswers[14][]" value="6" /> After touching a patient<br>
-        <input type="checkbox" name="selectedAnswers[14][]" value="7" /> After using the restroom<br>
-        <input type="checkbox" name="selectedAnswers[14][]" value="8" /> After touching a patient's surroundings<br>
-        <input type="checkbox" name="selectedAnswers[14][]" value="9" /> Before preparing or eating food<br>
-    </div>-->
+        <input type="checkbox" name="selectedAnswers14" value="0" /> Before touching a patient<br>
+        <input type="checkbox" name="selectedAnswers14" value="1" /> Before a procedure<br>
+        <input type="checkbox" name="selectedAnswers14" value="2" /> Before touching your eyes, nose, or mouth<br>
+        <input type="checkbox" name="selectedAnswers14" value="3" /> After playing with animals<br>
+        <input type="checkbox" name="selectedAnswers14" value="4" /> After a procedure or exposure to body fluids<br>
+        <input type="checkbox" name="selectedAnswers14" value="5" /> After blowing your nose, coughing, or sneezing<br>
+        <input type="checkbox" name="selectedAnswers14" value="6" /> After touching a patient<br>
+        <input type="checkbox" name="selectedAnswers14" value="7" /> After using the restroom<br>
+        <input type="checkbox" name="selectedAnswers14" value="8" /> After touching a patient's surroundings<br>
+        <input type="checkbox" name="selectedAnswers14" value="9" /> Before preparing or eating food<br>
+    </div>
 
     <div>
         <label>Which of the following is the most effective way to prevent the spread of infections?</label><br>
@@ -255,6 +257,3 @@
     <button type="submit">Submit Quiz</button>
 </form>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
