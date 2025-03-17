@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IPCU.Models;
+using System.Linq;
 using IPCU.Data;
 
 namespace IPCU.Controllers
@@ -14,64 +15,96 @@ namespace IPCU.Controllers
             _context = context;
         }
 
-        // Correct answers for the quiz
-        private readonly int[] correctAnswers = { 0, 0, 1 }; // Example: Question 1: option 0, Question 2: option 0, etc.
-
-        /// <summary>
-        /// Displays the quiz form.
-        /// </summary>
-        /// <returns>The Quiz view.</returns>
+        [HttpGet]
         public IActionResult Quiz()
         {
-            return View("-/Views/PostTestNonClinicals/Quiz.cshtmls");
+            return View(new PreTestClinical());
         }
 
-        /// <summary>
-        /// Handles the submission of the quiz form.
-        /// </summary>
-        /// <param name="model">The PreTestClinical model containing user details.</param>
-        /// <param name="selectedAnswers">Array of selected answers (indices).</param>
-        /// <returns>Redirects to the QuizResult view with the computed score.</returns>
         [HttpPost]
-        public IActionResult SubmitQuiz(PreTestClinical model, int[] selectedAnswers)
+        public IActionResult Submit(PreTestClinical model, string[] selectedAnswers14)
         {
-            // Validate the model
             if (ModelState.IsValid)
             {
-                // Compute the score based on the selected answers
-                int score = 0;
-                for (int i = 0; i < correctAnswers.Length; i++)
+                try
                 {
-                    if (i < selectedAnswers.Length && selectedAnswers[i] == correctAnswers[i])
-                    {
-                        score++;
-                    }
+                    // Compute the score
+                    int score = 0;
+                    if (Request.Form["selectedAnswers[0]"] == "0") // Correct answer for Q1
+                        score += 1;
+                    if (Request.Form["selectedAnswers[1]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[2]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[3]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[4]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[5]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[6]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[7]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[8]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[9]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[10]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[11]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[12]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[13]"] == "0")
+                        score += 1;
+                    if (selectedAnswers14 != null && selectedAnswers14.Contains("0") && selectedAnswers14.Contains("1"))
+                        score += 1;
+                    if (Request.Form["selectedAnswers[15]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[16]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[17]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[18]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[19]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[20]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[21]"] == "0")
+                        score += 1;
+                    if (Request.Form["selectedAnswers[22]"] == "0")
+                        score += 1;
+
+
+                    model.PRETCSCORE = score;
+
+                    // Save to database
+                    _context.PreTestClinicals.Add(model);
+                    _context.SaveChanges();
+
+                    // Pass the model ID to the Success action
+                    return RedirectToAction("QuizResult", new { id = model.Id });
                 }
-
-                // Store the score in the model
-                model.PRETCSCORE = score;
-
-                // Save the model to the database
-                _context.PreTestClinicals.Add(model);
-                _context.SaveChanges();
-
-                // Redirect to the result page with the score
-                return RedirectToAction("QuizResult", new { score = model.PRETCSCORE });
+                catch (Exception ex)
+                {
+                    // Log the exception
+                    Console.WriteLine(ex.InnerException?.Message);
+                    ModelState.AddModelError("", "An error occurred while saving the data.");
+                }
             }
-
-            // If validation fails, redisplay the quiz form
             return View("Quiz", model);
         }
 
-        /// <summary>
-        /// Displays the quiz result page.
-        /// </summary>
-        /// <param name="score">The computed score from the quiz.</param>
-        /// <returns>The QuizResult view.</returns>
-        public IActionResult QuizResult(int score)
+        public IActionResult QuizResult(int id)
         {
-            ViewBag.Score = score;
-            return View();
+            var model = _context.PreTestClinicals.Find(id);
+            if (model == null)
+            {
+                return RedirectToAction("Quiz"); // Redirect if no model is found
+            }
+            return View(model);
         }
     }
 }

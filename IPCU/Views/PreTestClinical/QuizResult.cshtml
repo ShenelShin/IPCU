@@ -1,5 +1,21 @@
-﻿<div class="container mt-5">
-    <h2>Quiz Result</h2>
-    <p>Your Score: @ViewBag.Score</p>
-    <a href="/" class="btn btn-primary">Take Quiz Again</a>
+﻿@model IPCU.Models.PreTestClinical
+
+@{
+    ViewData["Title"] = "Success";
+}
+
+<div class="text-center">
+    @if (Model != null)
+    {
+        <h1>Success!</h1>
+        <p>Your Post-Test Clinical Questionnaire has been successfully submitted.</p>
+        <p>Thank you, <strong>@Model.FullName</strong>, for your participation.</p>
+        <p>Your score: <strong>@Model.PRETCSCORE</strong></p>
+    }
+    else
+    {
+        <h1>Error</h1>
+        <p>No submission data found.</p>
+    }
+    <a asp-action="Quiz" class="btn btn-primary">Return to Form</a>
 </div>

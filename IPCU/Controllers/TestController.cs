@@ -49,5 +49,9 @@ namespace IPCU.Controllers
         {
             return View("~/Views/PostTestClinical/Index.cshtml");
         }
+        public IActionResult StartExamPreC()
+        {
+            return View("~/Views/PreTestClinical/Quiz.cshtml");
+        }
     }
 }
