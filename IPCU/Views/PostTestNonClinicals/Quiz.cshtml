@@ -1,89 +1,263 @@
-﻿@model IPCU.Models.PostTestNonClinical
+﻿@model IPCU.Models.PreTestNonClinical
 
-<form asp-controller="PostTestNonClinical" asp-action="SubmitQuiz" method="post">
+<!-- Google Forms-Like Styling -->
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+    }
 
-    <div>
-        <label>Full Name:</label>
-        <input asp-for="FullName" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
+    .form-container {
+        max-width: 700px;
+        background: white;
+        margin: 40px auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2, h4 {
+        color: #333;
+    }
+
+    .form-label {
+        font-weight: 600;
+    }
+
+    .form-control, .form-select {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+    }
+
+    .form-check-label {
+        font-size: 16px;
+        margin-left: 5px;
+    }
+
+    .form-check-input {
+        transform: scale(1.2);
+        margin-right: 5px;
+    }
+
+    .submit-btn {
+        background-color: #4285F4;
+        color: white;
+        padding: 12px;
+        width: 100%;
+        border: none;
+        font-size: 18px;
+        border-radius: 8px;
+        transition: 0.3s;
+    }
+
+        .submit-btn:hover {
+            background-color: #2c6fed;
+        }
+
+    .question-box {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+</style>
+<form id="quizForm" action="your_submission_url" method="post">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card shadow-sm p-5">
+                <h2 class="text-center">Post-Test (Non-Clinical & Admin Staff)</h2>
+                <p class="text-center text-muted">Please fill out all fields before submitting.</p>
+
+                <h4 class="mt-3">Personal Information</h4>
+
+                <form asp-controller="PreTestNonClinical" asp-action="SubmitQuiz" method="post">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Full Name:</label>
+                        <input asp-for="FullName" class="form-control form-control-lg" placeholder="Enter your full name" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Employee ID:</label>
+                        <input asp-for="EmployeeId" class="form-control form-control-lg" placeholder="Enter your Employee ID" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Age Group:</label>
+                        <select asp-for="AgeGroup" class="form-select form-select-lg">
+                            <option value="">Select</option>
+                            <option value="18-25">18-25</option>
+                            <option value="26-35">26-35</option>
+                            <option value="36-45">36-45</option>
+                            <option value="46+">46+</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Sex:</label>
+                        <select asp-for="Sex" class="form-select form-select-lg">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">PWD:</label>
+                        <select asp-for="PWD" class="form-select form-select-lg">
+                            <option value="">Select</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Civil Status:</label>
+                        <select asp-for="CivilStatus" class="form-select form-select-lg" required>
+                            <option value="">Select</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Department:</label>
+                        <input asp-for="Department" class="form-control form-control-lg" placeholder="Enter your department" />
+                    </div>
+                    
+                    <hr>
+
+                    <!-- Matching Type -->
+                    <h4 class="mt-4">I. Matching Type</h4>
+                    <p class="text-muted">Match the hand hygiene indication (Column A) with the recommended hand hygiene procedure (Column B). Choose the best answer.</p>
+
+                    @foreach (var (question, index) in new List<string>
+                    {
+                    "After signing documents",
+                    "After using the bathroom",
+                    "Before drinking any medication",
+                    "After paying/handling money",
+                    "After covering cough with hands",
+                    "Before eating",
+                    "After an attendance time-in (biometrics)",
+                    "After sneezing"
+                    }.Select((value, i) => (value, i)))
+                    {
+                        <div class="question-box mb-3">
+                            <strong>@(index + 1). @question</strong>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="selectedMatchingAnswers[@index]" value="Hand Washing" class="form-check-input">
+                                <label class="form-check-label">Hand Washing</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="selectedMatchingAnswers[@index]" value="Hand Rubbing" class="form-check-input">
+                                <label class="form-check-label">Hand Rubbing</label>
+                            </div>
+                        </div>
+                    }
+
+                    <hr>
+
+                    <!-- Multiple Choice -->
+                    <h4 class="mt-4">II. Multiple Choice</h4>
+                    <p class="text-muted">Choose the best answer.</p>
+
+                    @foreach (var (question, choices, index) in new List<(string, List<string>)>
+                    {
+                    ("Which of the following is the most effective way to prevent the spread of infections?", new List<string> { "Wearing a mask at all times", "Frequent and proper hand hygiene", "Using antibiotics for all patients", "Spraying disinfectant in the air" }),
+                    ("Which of the following best describes the proper use of masks in a healthcare facility such as NKTI?", new List<string> { "Masks should be worn below the nose to allow for comfortable breathing", "Masks should be removed when talking to patients to improve communication", "Masks should fully cover the nose and mouth at all times inside the hospital", "Masks can be reused indefinitely as long as they appear clean" }),
+                    ("Alcohol-based hand rubbing should be done for how many seconds to be effective?", new List<string> { "5-10 seconds", "10-20 seconds", "20-30 seconds", "30-60 seconds" }),
+                    ("What is the primary goal of infection prevention and control (IPC) in a healthcare setting?", new List<string> { "Reduce hospital costs", "Protect only healthcare workers from infections", "Prevent the spread of infections among patients, healthcare workers, and visitors", "Improve hospital ranking" }),
+                    ("If a healthcare worker sustained a needle stick injury in the course of her duty, he/she should report within?", new List<string> { "Within the week", "1 hour", "24 hours", "72 hours" }),
+                    ("What is the primary goal of infection prevention and control (IPC) in a healthcare setting?Goal of infection prevention?", new List<string> { "Reduce hospital costs", "Protect only healthcare workers from infections", "Prevent the spread of infections among patients, healthcare workers, and visitors", "Improve hospital ranking" }),
+                    ("Which of the following best describes the proper use of masks in a healthcare facility such as NKTI?", new List<string> { "Masks should be worn below the nose to allow for comfortable breathing", "Masks should be removed when talking to patients to other healthcare workers", "Masks should fully cover the nose and mouth at all times inside the hospital", "Masks can be reused indefinitely as long as they appear clean" })
+                    }.Select((q, i) => (q.Item1, q.Item2, i)))
+                    {
+                        <div class="question-box mb-3">
+                            <strong>@(index + 1). @question</strong>
+                            @foreach (var choice in choices)
+                            {
+                                <div class="form-check mb-2">
+                                    <input type="radio" name="selectedMultipleChoiceAnswers[@index]" value="@choice" class="form-check-input">
+                                    <label class="form-check-label">@choice</label>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <!-- Matching Type Proper Waste Segregation -->
+                    <h4 class="mt-4">III. Proper Waste Segregation</h4>
+                    <p class="text-muted">Choose where to put the waste in its correct bin.</p>
+
+                    @foreach (var (question, index) in new List<string>
+                    {
+                    "Used face mask",
+                    "Banana peel",
+                    "Shredded paper",
+                    "Plastic bags",
+                    "Styrofoam",
+                    "Used gloves",
+                    "Paper cups"
+                    }.Select((value, i) => (value, i)))
+                    {
+                        <div class="question-box mb-3">
+                            <strong>@(index + 1). @question</strong>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="selectedWasteSegregation[@index]" value="Black waste bin" class="form-check-input">
+                                <label class="form-check-label">Black waste bin</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="selectedWasteSegregation[@index]" value="Green waste bin" class="form-check-input">
+                                <label class="form-check-label">Green waste bin</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input type="radio" name="selectedWasteSegregation[@index]" value="Yellow waste bin" class="form-check-input">
+                                <label class="form-check-label">Yellow waste bin</label>
+                            </div>
+                        </div>
+                    }
+
+                    <hr>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </form>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div>
-        <label>Employee ID:</label>
-        <input asp-for="EmployeeId" />
-        <span asp-validation-for="EmployeeId" class="text-danger"></span>
-    </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("quizForm").addEventListener("submit", function (event) {
+            let isValid = true;
+            let questionGroups = document.querySelectorAll("[name^='selectedMatchingAnswers'], [name^='selectedMultipleChoiceAnswers'], [name^='selectedWasteSegregation']");
 
-    <div>
-        <label>Age Group:</label>
-        <select asp-for="AgeGroup">
-            <option value="">Select</option>
-            <option value="18-25">18-25</option>
-            <option value="26-35">26-35</option>
-            <option value="36-45">36-45</option>
-            <option value="46+">46+</option>
-        </select>
-        <span asp-validation-for="AgeGroup" class="text-danger"></span>
-    </div>
+            let questionNames = new Set();
+            questionGroups.forEach(input => {
+                questionNames.add(input.name);
+            });
 
-    <div>
-        <label>Sex:</label>
-        <select asp-for="Sex">
-            <option value="">Select</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select>
-        <span asp-validation-for="Sex" class="text-danger"></span>
-    </div>
+            questionNames.forEach(name => {
+                let checked = document.querySelector(`input[name="${name}"]:checked`);
+                if (!checked) {
+                    isValid = false;
+                }
+            });
 
-    <div>
-        <label>PWD:</label>
-        <select asp-for="PWD">
-            <option value="">Select</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select>
-        <span asp-validation-for="PWD" class="text-danger"></span>
-    </div>
+            if (!isValid) {
+                event.preventDefault(); // Prevent form submission
+                alert("Please answer all questions before submitting.");
+            }
+        });
+    });
+</script>
 
-    <div>
-        <label>Civil Status:</label>
-        <select asp-for="CivilStatus">
-            <option value="">Select</option>
-            <option value="Single">Single</option>
-            <option value="Married">Married</option>
-            <option value="Divorced">Divorced</option>
-            <option value="Widowed">Widowed</option>
-        </select>
-        <span asp-validation-for="CivilStatus" class="text-danger"></span>
-    </div>
 
-    <div>
-        <label>Department:</label>
-        <input asp-for="Department" />
-        <span asp-validation-for="Department" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label>Question 1:</label>
-        <input type="radio" name="selectedAnswers[0]" value="0" required /> Option 1
-        <input type="radio" name="selectedAnswers[0]" value="1" /> Option 2
-    </div>
-
-    <div>
-        <label>Question 2:</label>
-        <input type="radio" name="selectedAnswers[1]" value="0" required /> Option 1
-        <input type="radio" name="selectedAnswers[1]" value="1" /> Option 2
-    </div>
-
-    <div>
-        <label>Question 3:</label>
-        <input type="radio" name="selectedAnswers[2]" value="0" required /> Option 1
-        <input type="radio" name="selectedAnswers[2]" value="1" /> Option 2
-    </div>
-
-    <button type="submit">Submit Quiz</button>
-</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
