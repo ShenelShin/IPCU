@@ -1,0 +1,21 @@
+﻿@model IPCU.Models.PostTestClinical
+
+@{
+    ViewData["Title"] = "Success";
+}
+
+<div class="text-center">
+    @if (Model != null)
+    {
+        <h1>Success!</h1>
+        <p>Your Post-Test Clinical Questionnaire has been successfully submitted.</p>
+        <p>Thank you, <strong>@Model.FullName</strong>, for your participation.</p>
+        <p>Your score: <strong>@Model.POSTCSCORE</strong></p>
+    }
+    else
+    {
+        <h1>Error</h1>
+        <p>No submission data found.</p>
+    }
+    <a asp-action="Index" class="btn btn-primary">Return to Form</a>
+</div>
