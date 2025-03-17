@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250317073307_AddActionColumns")]
+    partial class AddActionColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1022,12 +1025,6 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("GloveRemoval")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IDPrinting")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PWD")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1038,14 +1035,14 @@ namespace IPCU.Migrations
                     b.Property<int>("PreScore")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProperHand")
+                    b.Property<string>("SelectedAction")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SelectedOption")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sex")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TrainingReport")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

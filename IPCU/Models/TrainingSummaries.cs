@@ -32,6 +32,12 @@ namespace IPCU.Models
         public int PostScore { get; set; } // Store the computed post-test score (both clinical and non-clinical)
 
         public DateTime DateCreated { get; set; } = DateTime.Now; // Automatically set the creation date
+        public string? ProperHand { get; set; } // Stores "Pass" or "Fail"
+        public string? GloveRemoval { get; set; } // Stores "Pass" or "Fail"
+        public string? IDPrinting { get; set; } // Stores "Pass" or "Fail"
+        public string? TrainingReport { get; set; } // New Column
+
+
     }
 
 }
