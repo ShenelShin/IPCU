@@ -31,6 +31,10 @@ namespace IPCU.Controllers
         {
             return View();
         }
+        public IActionResult InstructionsPostClinical()
+        {
+            return View();
+        }
 
         public IActionResult StartExam()
         {
@@ -41,6 +45,9 @@ namespace IPCU.Controllers
             return View("~/Views/PostTestNonClinicals/Quiz.cshtml");
         }
 
-
+        public IActionResult StartExamPostC()
+        {
+            return View("~/Views/PostTestClinical/Index.cshtml");
+        }
     }
 }
