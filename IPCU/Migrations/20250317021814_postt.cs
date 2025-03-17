@@ -5,7 +5,7 @@
 namespace IPCU.Migrations
 {
     /// <inheritdoc />
-    public partial class PostTestClinic : Migration
+    public partial class postt : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

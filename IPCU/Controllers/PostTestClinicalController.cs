@@ -108,12 +108,13 @@ namespace IPCU.Controllers
             return View("Index", model);
         }
 
+        [HttpGet("Success")]
         public IActionResult Success(int id)
         {
             var model = _context.PostTestClinicals.Find(id);
             if (model == null)
             {
-                return RedirectToAction("Index"); // Redirect if no model is found
+                return RedirectToAction("Index");
             }
             return View(model);
         }
