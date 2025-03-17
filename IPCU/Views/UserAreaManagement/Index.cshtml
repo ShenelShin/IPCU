@@ -1,0 +1,45 @@
+﻿@model List<IPCU.Models.UserAreaViewModel>
+@{
+    ViewData["Title"] = "User Area Management";
+}
+
+<div class="container">
+    <h2>User Area Management</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <p>
+        <a asp-action="BatchAssignAreas" class="btn btn-primary">Batch Assign Areas</a>
+    </p>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Assigned Area</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>@user.FullName</td>
+                    <td>@user.Email</td>
+                    <td>@(string.IsNullOrEmpty(user.AssignedArea) ? "Not Assigned" : user.AssignedArea)</td>
+                    <td>
+                        <a asp-action="AssignArea" asp-route-userId="@user.UserId" class="btn btn-sm btn-info">
+                            Assign Area
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
