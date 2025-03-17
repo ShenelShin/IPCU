@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250317061526_AddDateCreatedToModel")]
+    partial class AddDateCreatedToModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,112 +139,6 @@ namespace IPCU.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("IPCU.Models.EvaluationViewModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("AddressClarifications")
-                        .HasColumnType("float");
-
-                    b.Property<double>("BalancePrinciples")
-                        .HasColumnType("float");
-
-                    b.Property<double>("ContentOrganization")
-                        .HasColumnType("float");
-
-                    b.Property<double>("ContentQuality")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("EstablishRapport")
-                        .HasColumnType("float");
-
-                    b.Property<double>("FinalRating")
-                        .HasColumnType("float");
-
-                    b.Property<double>("FlowFollowed")
-                        .HasColumnType("float");
-
-                    b.Property<double>("FlowOfTopic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("InitiateDiscussion")
-                        .HasColumnType("float");
-
-                    b.Property<double>("LearningActivities")
-                        .HasColumnType("float");
-
-                    b.Property<double>("ObjectiveStated")
-                        .HasColumnType("float");
-
-                    b.Property<double>("PracticeApplication")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Preparedness")
-                        .HasColumnType("float");
-
-                    b.Property<double>("PresentKnowledge")
-                        .HasColumnType("float");
-
-                    b.Property<double>("RelevanceOfTopic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("RespectForParticipants")
-                        .HasColumnType("float");
-
-                    b.Property<double>("RulesEstablished")
-                        .HasColumnType("float");
-
-                    b.Property<string>("SMELecturer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SayToSpeaker")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.PrimitiveCollection<string>("ServiceClassification")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SuggestionsForImprovement")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("TeachingPersonality")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TechnicalCapability")
-                        .HasColumnType("float");
-
-                    b.Property<double>("TimeManagement")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("TrainingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Venue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("VisualAids")
-                        .HasColumnType("float");
-
-                    b.Property<double>("VoicePersonality")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EvaluationViewModel");
                 });
 
             modelBuilder.Entity("IPCU.Models.FitTestingForm", b =>
@@ -989,56 +886,6 @@ namespace IPCU.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TrainingEvaluation");
-                });
-
-            modelBuilder.Entity("IPCU.Models.TrainingSummary", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AgeGroup")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CivilStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Department")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmployeeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PWD")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PostScore")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PreScore")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Sex")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TrainingSummaries");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

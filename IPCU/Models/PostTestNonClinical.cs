@@ -36,5 +36,7 @@ namespace IPCU.Models
 
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
         public double PercentageScore { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.Now;
+
     }
 }

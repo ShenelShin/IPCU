@@ -1,4 +1,4 @@
-﻿@model IPCU.Models.PreTestClinical
+﻿@model IPCU.Models.TrainingSummary
 
 @{
     ViewData["Title"] = "Success";
@@ -10,7 +10,7 @@
         <h1>Success!</h1>
         <p>Your Post-Test Clinical Questionnaire has been successfully submitted.</p>
         <p>Thank you, <strong>@Model.FullName</strong>, for your participation.</p>
-        <p>Your score: <strong>@Model.PRETCSCORE</strong></p>
+        <p>Your score: <strong>@Model.PostScore</strong></p>
     }
     else
     {

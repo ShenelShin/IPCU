@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "Training Summary Report";
+
+    // Clinical and Non-Clinical Data
+    var clinicalData = ViewData["ClinicalData"] as IEnumerable<dynamic>;
+    var nonClinicalData = ViewData["NonClinicalData"] as IEnumerable<dynamic>;
+}
+
+<h2>Training Summary Report</h2>
+
+<!-- Clinical Data Table -->
+<h3>Clinical</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Employee ID</th>
+            <th>Age Group</th>
+            <th>Sex</th>
+            <th>PWD</th>
+            <th>Civil Status</th>
+            <th>Department</th>
+            <th>Pre-Test Score</th>
+            <th>Post-Test Score</th>
+            <th>Basic Infection</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (clinicalData != null)
+        {
+            foreach (var item in clinicalData)
+            {
+                <tr>
+                    <td>@item.FullName</td>
+                    <td>@item.EmployeeId</td>
+                    <td>@item.AgeGroup</td>
+                    <td>@item.Sex</td>
+                    <td>@item.PWD</td>
+                    <td>@item.CivilStatus</td>
+                    <td>@item.Department</td>
+                    <td>@item.PRETCSCORE</td>
+                    <td>@item.POSTCSCORE</td>
+                    <td>@item.DateCreated.ToString("MMMM dd, yyyy")</td>
+
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<!-- Non-Clinical Data Table -->
+<h3>Non-Clinical</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Employee ID</th>
+            <th>Age Group</th>
+            <th>Sex</th>
+            <th>PWD</th>
+            <th>Civil Status</th>
+            <th>Department</th>
+            <th>Pre-Test Score</th>
+            <th>Post-Test Score</th>
+            <th>Basic Infection</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (nonClinicalData != null)
+        {
+            foreach (var item in nonClinicalData)
+            {
+                <tr>
+                    <td>@item.FullName</td>
+                    <td>@item.EmployeeId</td>
+                    <td>@item.AgeGroup</td>
+                    <td>@item.Sex</td>
+                    <td>@item.PWD</td>
+                    <td>@item.CivilStatus</td>
+                    <td>@item.Department</td>
+                    <td>@item.PRETNONCSCORE</td>
+                    <td>@item.POSTNONSCORE</td>
+                    <td>@item.DateCreated.ToString("MMMM dd, yyyy")</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

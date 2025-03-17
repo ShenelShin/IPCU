@@ -2,35 +2,23 @@
 
 namespace IPCU.Models
 {
-    public class TrainingEvaluation
+    public class EvaluationViewModel
     {
-  
+        [Key]
         public int Id { get; set; }
+        [Required, EmailAddress]
+        public string Email { get; set; }
 
-        [Required]
-        public string Title { get; set; }
+        [Required, DataType(DataType.Date)]
+        [Display(Name = "Date of Training")]
+        public DateTime TrainingDate { get; set; }
 
         [Required]
         public string Venue { get; set; }
 
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime DateOfTraining { get; set; }
+        [Display(Name = "Service Classification")]
+        public List<string> ServiceClassification { get; set; }
 
-        [Required]
-        public string TrainingMethodology { get; set; }
-
-        [Required]
-        public string ProfessionalCategory { get; set; }
-
-        [Required]
-        public int TotalParticipantsMale { get; set; }
-
-        [Required]
-        public int TotalParticipantsFemale { get; set; }
-
-        [Required]
-        public double PostTestEvaluationGrade { get; set; }
 
         [Required]
         public double FinalRating { get; set; }
