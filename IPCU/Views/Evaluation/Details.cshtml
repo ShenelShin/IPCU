@@ -1,0 +1,198 @@
+﻿@model IPCU.Models.EvaluationViewModel
+
+
+@{
+    ViewData["Title"] = "Evaluation Details";
+}
+
+<style>
+    /* Make sure body and html occupy full height without scroll */
+    html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+    }
+
+    .full-page-card {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .card-body {
+        flex-grow: 1;
+        overflow-y: auto;
+    }
+</style>
+
+<div class="container-fluid p-3 h-100">
+
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden full-page-card">
+
+        <!-- Header -->
+        <div class="card-header bg-primary bg-gradient text-white d-flex justify-content-between align-items-center p-3">
+            <h2 class="mb-0 d-flex align-items-center">
+                <i class="bi bi-clipboard-check-fill me-2 fs-4"></i> Evaluation Summary
+            </h2>
+            <a asp-action="Index" class="btn btn-light btn-sm shadow-sm">
+                <i class="bi bi-arrow-left-circle me-1"></i>Back to List
+            </a>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body p-4">
+
+            <!-- General Info -->
+            <section class="mb-4">
+                <h4 class="text-primary fw-bold mb-3"><i class="bi bi-info-circle-fill me-2"></i>General Information</h4>
+                <dl class="row gy-2 gx-4">
+                    <dt class="col-sm-3 text-muted">Email</dt>
+                    <dd class="col-sm-9">@Model.Email</dd>
+
+                    <dt class="col-sm-3 text-muted">Training Date</dt>
+                    <dd class="col-sm-9">@Model.TrainingDate.ToShortDateString()</dd>
+
+                    <dt class="col-sm-3 text-muted">Venue</dt>
+                    <dd class="col-sm-9">@Model.Venue</dd>
+                    <dt class="col-sm-4 text-muted">Service Classification</dt>
+                    <dd class="col-sm-8">
+                        <ul class="list-unstyled mb-0">
+                            @foreach (var item in Model.ServiceClassification)
+                            {
+                                <li><i class="bi bi-check-circle text-success me-2"></i> @item</li>
+                            }
+                        </ul>
+                    </dd>
+
+                    <dt class="col-sm-3 text-muted">Final Rating</dt>
+                    <dd class="col-sm-9 fw-bold text-success">@Model.FinalRating</dd>
+                </dl>
+            </section>
+
+            <!-- Training Delivery -->
+            <section class="mb-4">
+                <h4 class="text-secondary fw-bold mb-3"><i class="bi bi-people-fill me-2"></i>Training Delivery & Content</h4>
+
+                <!-- Program Facilitation -->
+                <div class="p-3 mb-3 bg-light rounded-3">
+                    <span class="badge bg-secondary mb-2">Program Facilitation</span>
+                    <dl class="row gy-2 gx-4">
+                        <dt class="col-sm-3">Flow Followed</dt>
+                        <dd class="col-sm-9">@Model.FlowFollowed</dd>
+
+                        <dt class="col-sm-3">Rules Established</dt>
+                        <dd class="col-sm-9">@Model.RulesEstablished</dd>
+
+                        <dt class="col-sm-3">Initiate Discussion</dt>
+                        <dd class="col-sm-9">@Model.InitiateDiscussion</dd>
+
+                        <dt class="col-sm-3">Technical Capability</dt>
+                        <dd class="col-sm-9">@Model.TechnicalCapability</dd>
+                    </dl>
+                </div>
+
+                <!-- Module Evaluation -->
+                <div class="p-3 mb-3 bg-light rounded-3">
+                    <span class="badge bg-secondary mb-2">Module Evaluation</span>
+                    <dl class="row gy-2 gx-4">
+                        <dt class="col-sm-3">Content Organization</dt>
+                        <dd class="col-sm-9">@Model.ContentOrganization</dd>
+
+                        <dt class="col-sm-3">Objective Stated</dt>
+                        <dd class="col-sm-9">@Model.ObjectiveStated</dd>
+
+                        <dt class="col-sm-3">Content Quality</dt>
+                        <dd class="col-sm-9">@Model.ContentQuality</dd>
+
+                        <dt class="col-sm-3">Flow of Topic</dt>
+                        <dd class="col-sm-9">@Model.FlowOfTopic</dd>
+
+                        <dt class="col-sm-3">Relevance of Topic</dt>
+                        <dd class="col-sm-9">@Model.RelevanceOfTopic</dd>
+
+                        <dt class="col-sm-3">Practice Application</dt>
+                        <dd class="col-sm-9">@Model.PracticeApplication</dd>
+
+                        <dt class="col-sm-3">Learning Activities</dt>
+                        <dd class="col-sm-9">@Model.LearningActivities</dd>
+
+                        <dt class="col-sm-3">Visual Aids</dt>
+                        <dd class="col-sm-9">@Model.VisualAids</dd>
+                    </dl>
+                </div>
+            </section>
+
+            <!-- Lecturer Evaluation -->
+            <section class="mb-4">
+                <h4 class="text-secondary fw-bold mb-3"><i class="bi bi-person-badge-fill me-2"></i>Lecturer Evaluation</h4>
+
+                <!-- Mastery -->
+                <div class="p-3 mb-3 bg-light rounded-3">
+                    <span class="badge bg-secondary mb-2">Mastery of Subject Matter</span>
+                    <dl class="row gy-2 gx-4">
+                        <dt class="col-sm-3">Present Knowledge</dt>
+                        <dd class="col-sm-9">@Model.PresentKnowledge</dd>
+
+                        <dt class="col-sm-3">Balance Principles</dt>
+                        <dd class="col-sm-9">@Model.BalancePrinciples</dd>
+
+                        <dt class="col-sm-3">Address Clarifications</dt>
+                        <dd class="col-sm-9">@Model.AddressClarifications</dd>
+                    </dl>
+                </div>
+
+                <!-- Soft Skills -->
+                <div class="p-3 mb-3 bg-light rounded-3">
+                    <span class="badge bg-secondary mb-2">Trainor Characteristics</span>
+                    <dl class="row gy-2 gx-4">
+                        <dt class="col-sm-3">Preparedness</dt>
+                        <dd class="col-sm-9">@Model.Preparedness</dd>
+
+                        <dt class="col-sm-3">Teaching Personality</dt>
+                        <dd class="col-sm-9">@Model.TeachingPersonality</dd>
+
+                        <dt class="col-sm-3">Establish Rapport</dt>
+                        <dd class="col-sm-9">@Model.EstablishRapport</dd>
+
+                        <dt class="col-sm-3">Respect for Participants</dt>
+                        <dd class="col-sm-9">@Model.RespectForParticipants</dd>
+
+                        <dt class="col-sm-3">Voice Personality</dt>
+                        <dd class="col-sm-9">@Model.VoicePersonality</dd>
+
+                        <dt class="col-sm-3">Time Management</dt>
+                        <dd class="col-sm-9">@Model.TimeManagement</dd>
+
+                        <dt class="col-sm-3">SME Lecturer</dt>
+                        <dd class="col-sm-9">@Model.SMELecturer</dd>
+                    </dl>
+                </div>
+            </section>
+
+            <!-- Additional Feedback -->
+            <section class="mb-4">
+                <h4 class="text-primary fw-bold mb-3"><i class="bi bi-chat-dots-fill me-2"></i>Additional Feedback</h4>
+                <dl class="row gy-2 gx-4">
+                    <dt class="col-sm-3">Suggestions for Improvement</dt>
+                    <dd class="col-sm-9">@Model.SuggestionsForImprovement</dd>
+
+                    <dt class="col-sm-3">Message to Speaker</dt>
+                    <dd class="col-sm-9">@Model.SayToSpeaker</dd>
+                </dl>
+            </section>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-end gap-3">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary shadow-sm">
+                    <i class="bi bi-pencil-square me-1"></i> Edit
+                </a>
+                <a asp-action="Index" class="btn btn-secondary shadow-sm">
+                    <i class="bi bi-list-ul me-1"></i> Back to List
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

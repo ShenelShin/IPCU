@@ -24,6 +24,7 @@ namespace IPCU.Data
         public DbSet<PreTestClinical> PreTestClinicals { get; set; }
         public DbSet<PostTestNonClinical> PostTestNonCLinicals { get; set; }
         public DbSet<PostTestClinical> PostTestClinicals { get; set; }
+        public DbSet<IPCU.Models.EvaluationViewModel> EvaluationViewModel { get; set; } = default!;
 
 
     }

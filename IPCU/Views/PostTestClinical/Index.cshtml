@@ -61,36 +61,69 @@
             </div>
             <div class="card-body">
                 <div class="row g-3">
+
                     <div class="col-md-6">
                         <label asp-for="FullName" class="form-label">Full Name</label>
-                        <input asp-for="FullName" class="form-control" required />
+                        <input asp-for="FullName" class="form-control" placeholder="Enter full name" required />
                         <div class="invalid-feedback">Please enter your full name.</div>
                     </div>
+
                     <div class="col-md-6">
                         <label asp-for="EmployeeId" class="form-label">Employee ID</label>
-                        <input asp-for="EmployeeId" class="form-control" required />
+                        <input asp-for="EmployeeId" class="form-control" placeholder="Enter employee ID" required />
                         <div class="invalid-feedback">Please enter your Employee ID.</div>
                     </div>
-                    <div class="col-md-4">
+
+                    <div class="col-md-6">
                         <label asp-for="AgeGroup" class="form-label">Age Group</label>
-                        <input asp-for="AgeGroup" class="form-control" required />
+                        <select asp-for="AgeGroup" class="form-select" required>
+                            <option value="">Select</option>
+                            <option value="18-25">18-25</option>
+                            <option value="26-35">26-35</option>
+                            <option value="36-45">36-45</option>
+                            <option value="46+">46+</option>
+                        </select>
+                        <span asp-validation-for="AgeGroup" class="text-danger"></span>
                     </div>
-                    <div class="col-md-4">
+
+                    <div class="col-md-6">
                         <label asp-for="Sex" class="form-label">Sex</label>
-                        <input asp-for="Sex" class="form-control" required />
+                        <select asp-for="Sex" class="form-select" required>
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <span asp-validation-for="Sex" class="text-danger"></span>
                     </div>
-                    <div class="col-md-4">
-                        <label asp-for="PWD" class="form-label">PWD Status</label>
-                        <input asp-for="PWD" class="form-control" required />
+
+                    <div class="col-md-6">
+                        <label asp-for="PWD" class="form-label">PWD</label>
+                        <select asp-for="PWD" class="form-select" required>
+                            <option value="">Select</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                        <span asp-validation-for="PWD" class="text-danger"></span>
                     </div>
+
                     <div class="col-md-6">
                         <label asp-for="CivilStatus" class="form-label">Civil Status</label>
-                        <input asp-for="CivilStatus" class="form-control" required />
+                        <select asp-for="CivilStatus" class="form-select" required>
+                            <option value="">Select</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                        <span asp-validation-for="CivilStatus" class="text-danger"></span>
                     </div>
-                    <div class="col-md-6">
+
+                    <div class="col-md-12">
                         <label asp-for="Department" class="form-label">Department</label>
-                        <input asp-for="Department" class="form-control" required />
+                        <input asp-for="Department" class="form-control" placeholder="Enter your department" required />
+                        <span asp-validation-for="Department" class="text-danger"></span>
                     </div>
+
                 </div>
             </div>
         </div>
