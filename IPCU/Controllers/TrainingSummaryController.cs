@@ -200,6 +200,77 @@ namespace IPCU.Controllers
 
             return File(pdfBytes, "application/pdf");
         }
+        public async Task<IActionResult> Reports()
+        {
+            // Fetch all PreTestClinical and PostTestClinical data
+            var preTestClinicals = await _context.PreTestClinicals.ToListAsync();
+            var postTestClinicals = await _context.PostTestClinicals.ToListAsync();
+
+            // Perform grouping and select the latest PreTestClinical and PostTestClinical in memory
+            var clinicalData = preTestClinicals
+                .GroupBy(pre => pre.EmployeeId)
+                .Select(grouped =>
+                {
+                    var latestPre = grouped.OrderByDescending(pre => pre.DateCreated).FirstOrDefault();
+                    var latestPost = postTestClinicals
+                        .Where(post => post.EmployeeId == grouped.Key)
+                        .OrderByDescending(post => post.DateCreated)
+                        .FirstOrDefault();
+
+                    return new
+                    {
+                        latestPre.FullName,
+                        latestPre.EmployeeId,
+                        latestPre.AgeGroup,
+                        latestPre.Sex,
+                        latestPre.PWD,
+                        latestPre.CivilStatus,
+                        latestPre.Department,
+                        PRETCSCORE = latestPre.PRETCSCORE,
+                        POSTCSCORE = latestPost != null ? latestPost.POSTCSCORE : (float?)null,
+                        latestPre.DateCreated
+
+                    };
+                })
+                .ToList();
+
+            // Fetch all PreTestNonClinical and PostTestNonClinical data
+            var preTestNonClinicals = await _context.PreTestNonClinicals.ToListAsync();
+            var postTestNonClinicals = await _context.PostTestNonCLinicals.ToListAsync();
+
+            // Perform grouping and select the latest PreTestNonClinical and PostTestNonClinical in memory
+            var nonClinicalData = preTestNonClinicals
+                .GroupBy(preNon => preNon.EmployeeId)
+                .Select(grouped =>
+                {
+                    var latestPreNon = grouped.OrderByDescending(preNon => preNon.DateCreated).FirstOrDefault();
+                    var latestPostNon = postTestNonClinicals
+                        .Where(postNon => postNon.EmployeeId == grouped.Key)
+                        .OrderByDescending(postNon => postNon.DateCreated)
+                        .FirstOrDefault();
+
+                    return new
+                    {
+                        latestPreNon.FullName,
+                        latestPreNon.EmployeeId,
+                        latestPreNon.AgeGroup,
+                        latestPreNon.Sex,
+                        latestPreNon.PWD,
+                        latestPreNon.CivilStatus,
+                        latestPreNon.Department,
+                        PRETNONCSCORE = latestPreNon.PRETNONCSCORE,
+                        POSTNONSCORE = latestPostNon != null ? latestPostNon.POSTNONSCORE : (int?)null,
+                        latestPreNon.DateCreated
+                    };
+                })
+                .ToList();
+
+            // Combine both datasets into ViewData
+            ViewData["ClinicalData"] = clinicalData;
+            ViewData["NonClinicalData"] = nonClinicalData;
+
+            return View();
+        }
 
     }
 }

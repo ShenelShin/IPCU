@@ -1,8 +1,8 @@
-﻿﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace IPCU.Models
 {
-    public class PreTestClinical
+    public class TrainingSummary
     {
         [Key]
         public int Id { get; set; }
@@ -11,7 +11,7 @@ namespace IPCU.Models
         public string FullName { get; set; }
 
         [Required]
-        public string EmployeeId { get; set; } // New field
+        public string EmployeeId { get; set; } // Unique identifier for employees
 
         [Required(ErrorMessage = "Age Group is required.")]
         public string AgeGroup { get; set; }
@@ -27,8 +27,11 @@ namespace IPCU.Models
 
         [Required(ErrorMessage = "Department is required.")]
         public string Department { get; set; }
-        public int PRETCSCORE { get; set; }  // Store the computed score
-        public DateTime DateCreated { get; set; } = DateTime.Now;
 
+        public int PreScore { get; set; }  // Store the computed pre-test score (both clinical and non-clinical)
+        public int PostScore { get; set; } // Store the computed post-test score (both clinical and non-clinical)
+
+        public DateTime DateCreated { get; set; } = DateTime.Now; // Automatically set the creation date
     }
+
 }

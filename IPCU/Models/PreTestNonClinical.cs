@@ -28,5 +28,7 @@ namespace IPCU.Models
         [Required(ErrorMessage = "Department is required.")]
         public string Department { get; set; }
         public int PRETNONCSCORE { get; set; }  // Store the computed score
+        public DateTime DateCreated { get; set; } = DateTime.Now;
+
     }
 }

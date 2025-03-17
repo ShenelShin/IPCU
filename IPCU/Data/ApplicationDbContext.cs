@@ -25,6 +25,7 @@ namespace IPCU.Data
         public DbSet<PostTestNonClinical> PostTestNonCLinicals { get; set; }
         public DbSet<PostTestClinical> PostTestClinicals { get; set; }
 
+        public DbSet<TrainingSummary> TrainingSummaries { get; set; }
 
     }
 

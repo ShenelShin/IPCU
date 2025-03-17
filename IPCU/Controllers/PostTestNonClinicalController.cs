@@ -1,9 +1,6 @@
 ﻿using IPCU.Data;
 using IPCU.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
-using IPCU.Models;
-using IPCU.Data;
 using System.Linq;
 
 namespace IPCU.Controllers
@@ -71,7 +68,6 @@ namespace IPCU.Controllers
             string[] selectedMultipleChoiceAnswers,
             string[] selectedWasteSegregation)
         {
-            // Validate the model
             if (!ModelState.IsValid)
             {
                 return View("Quiz", model);
@@ -80,7 +76,7 @@ namespace IPCU.Controllers
             int totalScore = 0;
             int totalQuestions = 0;
 
-            // Check matching type answers (Section I)
+            // Validate Matching Type Answers (Section I)
             if (selectedMatchingAnswers != null)
             {
                 for (int i = 0; i < correctMatchingAnswers.Length && i < selectedMatchingAnswers.Length; i++)
@@ -97,7 +93,7 @@ namespace IPCU.Controllers
                 totalQuestions += correctMatchingAnswers.Length;
             }
 
-            // Check multiple choice answers (Section II)
+            // Validate Multiple Choice Answers (Section II)
             if (selectedMultipleChoiceAnswers != null)
             {
                 for (int i = 0; i < correctMultipleChoiceAnswers.Length && i < selectedMultipleChoiceAnswers.Length; i++)
@@ -114,7 +110,7 @@ namespace IPCU.Controllers
                 totalQuestions += correctMultipleChoiceAnswers.Length;
             }
 
-            // Check waste segregation answers (Section III)
+            // Validate Waste Segregation Answers (Section III)
             if (selectedWasteSegregation != null)
             {
                 for (int i = 0; i < correctWasteSegregationAnswers.Length && i < selectedWasteSegregation.Length; i++)
@@ -131,34 +127,56 @@ namespace IPCU.Controllers
                 totalQuestions += correctWasteSegregationAnswers.Length;
             }
 
-            // Store the score in the model
-            model.POSTNONSCORE = totalScore;
-
-            // Calculate percentage (for display purposes)
             double percentageScore = (double)totalScore / totalQuestions * 100;
 
-            // Save to database
+            // Check if an entry for this EmployeeId already exists
+            var existingEntry = _context.TrainingSummaries.FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId);
+
+            if (existingEntry != null)
+            {
+                // Update existing record
+                existingEntry.PostScore = totalScore; // Update PostScore with new score
+                existingEntry.DateCreated = DateTime.Now; // Update timestamp
+                _context.TrainingSummaries.Update(existingEntry);
+            }
+            else
+            {
+                // Create a new record if no existing entry is found
+                var trainingSummary = new TrainingSummary
+                {
+                    FullName = model.FullName,
+                    EmployeeId = model.EmployeeId,
+                    AgeGroup = model.AgeGroup,
+                    Sex = model.Sex,
+                    PWD = model.PWD,
+                    CivilStatus = model.CivilStatus,
+                    Department = model.Department,
+                    PreScore = 0, // Assuming this is a Post-Test, PreScore is set to 0
+                    PostScore = totalScore,
+                    DateCreated = DateTime.Now
+                };
+
+                _context.TrainingSummaries.Add(trainingSummary);
+            }
+
             try
             {
-                _context.PostTestNonCLinicals.Add(model);
                 _context.SaveChanges();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                // Log the exception
                 ModelState.AddModelError("", "Unable to save the quiz result. Please try again.");
                 return View("Quiz", model);
             }
 
-            // Redirect to the result page with the score
             return RedirectToAction("QuizResult", new
             {
-                id = model.Id,
                 score = totalScore,
                 totalQuestions = totalQuestions,
                 percentageScore = percentageScore
             });
         }
+
 
         /// <summary>
         /// Displays the quiz result page.
@@ -177,7 +195,8 @@ namespace IPCU.Controllers
             ViewBag.PassingScore = 70; // Assuming 70% is passing
             ViewBag.Passed = percentageScore >= 70;
 
-            return View();
+            return View(); // Ensure this is returning the view correctly
         }
+
     }
 }
