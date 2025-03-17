@@ -2,7 +2,7 @@
 
 namespace IPCU.Models
 {
-    public class PostTestNonCLinical
+    public class PostTestNonClinical
     {
         [Key]
         public int Id { get; set; }
@@ -27,6 +27,6 @@ namespace IPCU.Models
 
         [Required(ErrorMessage = "Department is required.")]
         public string Department { get; set; }
-        public int POSTTSCORE { get; set; }  // Store the computed score
+        public int POSTSCORE { get; set; }  // Store the computed score
     }
 }

@@ -33,8 +33,8 @@ namespace IPCU.Controllers
         /// <param name="selectedAnswers">Array of selected answers (indices).</param>
         /// <returns>Redirects to the QuizResult view with the computed score.</returns>
         [HttpPost]
-        public IActionResult SubmitQuiz(PreTestClinical model, int[] selectedAnswers)
-        {
+       public IActionResult SubmitQuiz(PostTestNonClinical model, int[] selectedAnswers)
+{
             // Validate the model
             if (ModelState.IsValid)
             {
@@ -49,19 +49,19 @@ namespace IPCU.Controllers
                 }
 
                 // Store the score in the model
-                model.PRETCSCORE = score;
+                model.POSTSCORE = score;
 
                 // Save the model to the database
-                _context.PreTestClinicals.Add(model);
+                _context.PostTestNonCLinicals   .Add(model);
                 _context.SaveChanges();
 
                 // Redirect to the result page with the score
-                return RedirectToAction("QuizResult", new { score = model.PRETCSCORE });
+                return RedirectToAction("QuizResult", new { score = model.POSTSCORE });
             }
 
             // If validation fails, redisplay the quiz form
-            return View("Quiz", model);
-        }
+            return View("Quiz", model); 
+        }   
 
         /// <summary>
         /// Displays the quiz result page.
@@ -71,7 +71,7 @@ namespace IPCU.Controllers
         public IActionResult QuizResult(int score)
         {
             ViewBag.Score = score;
-            return View();
+            return View("~/Views/PostTestNonClinicals/QuizResult.cshtml");
         }
     }
 }

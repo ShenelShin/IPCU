@@ -15,7 +15,7 @@ namespace IPCU.Controllers
         }
 
         // Correct answers for the quiz
-        private readonly int[] correctAnswers = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }; // Example: Question 1: option 0, Question 2: option 0, etc.
+        private readonly int[] correctAnswers = { 0, 0, 1 }; // Example: Question 1: option 0, Question 2: option 0, etc.
 
         /// <summary>
         /// Displays the quiz form.
@@ -23,7 +23,7 @@ namespace IPCU.Controllers
         /// <returns>The Quiz view.</returns>
         public IActionResult Quiz()
         {
-            return View();
+            return View("-/Views/PostTestNonClinicals/Quiz.cshtmls");
         }
 
         /// <summary>
