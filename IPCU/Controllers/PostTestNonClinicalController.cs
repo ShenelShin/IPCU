@@ -132,7 +132,7 @@ namespace IPCU.Controllers
             }
 
             // Store the score in the model
-            model.POSTSCORE = totalScore;
+            model.POSTNONSCORE = totalScore;
 
             // Calculate percentage (for display purposes)
             double percentageScore = (double)totalScore / totalQuestions * 100;

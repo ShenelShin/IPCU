@@ -28,7 +28,7 @@ namespace IPCU.Models
         [Required(ErrorMessage = "Department is required.")]
         public string Department { get; set; }
 
-        public int POSTSCORE { get; set; } // Store the computed score
+        public int POSTNONSCORE { get; set; } // Store the computed score
 
         // Additional properties that don't need to be stored in the database
         [System.ComponentModel.DataAnnotations.Schema.NotMapped]
