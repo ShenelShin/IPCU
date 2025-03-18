@@ -36,7 +36,7 @@ namespace IPCU.Controllers
         }
         public async Task<IActionResult> SummaryReport()
         {
-            var summaryData = await _context.Evaluations
+            var evaluations = await _context.Evaluations
                 .GroupBy(e => e.TrainingDate)
                 .Select(g => new EvaluationSummaryViewModel
                 {
@@ -45,7 +45,6 @@ namespace IPCU.Controllers
                     MaleCount = g.Count(e => e.Sex == "Male"),
                     FemaleCount = g.Count(e => e.Sex == "Female"),
 
-                    // Calculate the overall final rating as an average of all numeric rating fields
                     FinalRating = (g.Average(e => e.FlowFollowed) +
                                   g.Average(e => e.RulesEstablished) +
                                   g.Average(e => e.InitiateDiscussion) +
@@ -68,34 +67,40 @@ namespace IPCU.Controllers
                                   g.Average(e => e.VoicePersonality) +
                                   g.Average(e => e.TimeManagement)) / 21,
 
-                    AverageFlowFollowed = g.Average(e => e.FlowFollowed),
-                    AverageRulesEstablished = g.Average(e => e.RulesEstablished),
-                    AverageInitiateDiscussion = g.Average(e => e.InitiateDiscussion),
-                    AverageTechnicalCapability = g.Average(e => e.TechnicalCapability),
-                    AverageContentOrganization = g.Average(e => e.ContentOrganization),
-                    AverageObjectiveStated = g.Average(e => e.ObjectiveStated),
-                    AverageContentQuality = g.Average(e => e.ContentQuality),
-                    AverageFlowOfTopic = g.Average(e => e.FlowOfTopic),
-                    AverageRelevanceOfTopic = g.Average(e => e.RelevanceOfTopic),
-                    AveragePracticeApplication = g.Average(e => e.PracticeApplication),
-                    AverageLearningActivities = g.Average(e => e.LearningActivities),
-                    AverageVisualAids = g.Average(e => e.VisualAids),
-                    AveragePresentKnowledge = g.Average(e => e.PresentKnowledge),
-                    AverageBalancePrinciples = g.Average(e => e.BalancePrinciples),
-                    AverageAddressClarifications = g.Average(e => e.AddressClarifications),
-                    AveragePreparedness = g.Average(e => e.Preparedness),
-                    AverageTeachingPersonality = g.Average(e => e.TeachingPersonality),
-                    AverageEstablishRapport = g.Average(e => e.EstablishRapport),
-                    AverageRespectForParticipants = g.Average(e => e.RespectForParticipants),
-                    AverageVoicePersonality = g.Average(e => e.VoicePersonality),
-                    AverageTimeManagement = g.Average(e => e.TimeManagement),
-
                     CombinedSuggestions = string.Join("; ", g.Select(e => e.SuggestionsForImprovement).Where(s => !string.IsNullOrEmpty(s))),
                     CombinedSayToSpeaker = string.Join("; ", g.Select(e => e.SayToSpeaker).Where(s => !string.IsNullOrEmpty(s)))
                 })
                 .ToListAsync();
 
-            return View(summaryData);
+            // Retrieve the TrainingSummaries grouped by DateCreated
+            var trainingSummaries = await _context.TrainingSummaries
+                .GroupBy(t => t.DateCreated.Date) // Remove time component
+                .Select(g => new
+                {
+                    DateCreated = g.Key, // Now this contains only the date
+                    AverageRate = g.Average(t => t.Rate)
+                })
+                .ToListAsync();
+
+
+            // Merge TrainingSummaries into Evaluations based on TrainingDate = DateCreated
+            foreach (var eval in evaluations)
+            {
+                Console.WriteLine($"Checking for TrainingDate: {eval.TrainingDate.Date}");
+
+                var summary = trainingSummaries.FirstOrDefault(ts => ts.DateCreated == eval.TrainingDate.Date);
+
+                if (summary != null)
+                {
+                    Console.WriteLine($"Found match for {eval.TrainingDate.Date} → Average Rate: {summary.AverageRate}");
+                    eval.PostTestEvaluationGrade = summary.AverageRate;
+                }
+                else
+                {
+                    Console.WriteLine($"No match found for {eval.TrainingDate.Date}");
+                }
+            }
+            return View(evaluations);
         }
 
     }

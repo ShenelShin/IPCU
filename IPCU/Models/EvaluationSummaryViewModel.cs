@@ -7,6 +7,8 @@
         public int MaleCount { get; set; }
         public int FemaleCount { get; set; }
         public double FinalRating { get; set; } // Overall rating from all rating fields
+        public double? PostTestEvaluationGrade { get; set; } // New field for average Rate
+
 
         // Existing rating averages
         public double AverageFlowFollowed { get; set; }
