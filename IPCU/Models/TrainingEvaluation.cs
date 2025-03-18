@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace IPCU.Models
 {
     public class TrainingEvaluation
     {
-  
         public int Id { get; set; }
 
         [Required]
@@ -32,8 +32,10 @@ namespace IPCU.Models
         [Required]
         public double PostTestEvaluationGrade { get; set; }
 
+        // ✅ Add FinalRating Here
         [Required]
         public double FinalRating { get; set; }
+
         // Program Facilitation Rating
         public double FlowFollowed { get; set; }
         public double RulesEstablished { get; set; }
@@ -70,4 +72,5 @@ namespace IPCU.Models
 
         public string SayToSpeaker { get; set; }
     }
+
 }

@@ -27,6 +27,9 @@ namespace IPCU.Data
         public DbSet<IPCU.Models.EvaluationViewModel> EvaluationViewModel { get; set; } = default!;
 
         public DbSet<TrainingSummary> TrainingSummaries { get; set; }
+        public DbSet<EvaluationViewModel> Evaluations { get; set; }
+        public DbSet<TrainingEvaluation> TrainingEvaluations { get; set; } // ✅ Ensure this is present
+        public DbSet<EvaluationSummary> EvaluationSummaries { get; set; } // Is this present?
 
     }
 

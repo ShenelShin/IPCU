@@ -1,0 +1,35 @@
+﻿@model List<IPCU.Models.EvaluationSummaryViewModel>
+
+@{
+    ViewData["Title"] = "Evaluation Summary Report";
+}
+
+<h2>Evaluation Summary Report</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date of Training</th>
+            <th>Total Participants</th>
+            <th>Male</th>
+            <th>Female</th>
+            <th>Final Rating</th>
+            <th>Suggestions for Improvement</th>
+            <th>Say to Speaker</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TrainingDate.ToString("yyyy-MM-dd")</td>
+                <td>@item.TotalParticipants</td>
+                <td>@item.MaleCount</td>
+                <td>@item.FemaleCount</td>
+                <td>@item.FinalRating.ToString("0.00")</td>
+                <td>@item.CombinedSuggestions</td>
+                <td>@item.CombinedSayToSpeaker</td>
+            </tr>
+        }
+    </tbody>
+</table>

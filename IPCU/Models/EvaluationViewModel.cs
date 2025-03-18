@@ -19,9 +19,6 @@ namespace IPCU.Models
         [Display(Name = "Service Classification")]
         public List<string> ServiceClassification { get; set; }
 
-
-        [Required]
-        public double FinalRating { get; set; }
         // Program Facilitation Rating
         public double FlowFollowed { get; set; }
         public double RulesEstablished { get; set; }
@@ -53,6 +50,8 @@ namespace IPCU.Models
 
         [Required]
         public string SMELecturer { get; set; }
+
+        public string Sex { get; set; }
 
         public string SuggestionsForImprovement { get; set; }
 

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using IPCU.Data;
 using IPCU.Models;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace IPCU.Controllers
 {
@@ -19,144 +17,9 @@ namespace IPCU.Controllers
             _context = context;
         }
 
-        // GET: Evaluation
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.EvaluationViewModel.ToListAsync());
-        }
-
         public IActionResult Form()
         {
             return View();
-        }
-
-        // GET: Evaluation/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var evaluationViewModel = await _context.EvaluationViewModel
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (evaluationViewModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(evaluationViewModel);
-        }
-
-        // GET: Evaluation/Create
-        public IActionResult Create()
-        {
-            return View("Form");
-        }
-
-        // POST: Evaluation/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Email,TrainingDate,Venue,ServiceClassification,FinalRating,FlowFollowed,RulesEstablished,InitiateDiscussion,TechnicalCapability,ContentOrganization,ObjectiveStated,ContentQuality,FlowOfTopic,RelevanceOfTopic,PracticeApplication,LearningActivities,VisualAids,PresentKnowledge,BalancePrinciples,AddressClarifications,Preparedness,TeachingPersonality,EstablishRapport,RespectForParticipants,VoicePersonality,TimeManagement,SMELecturer,SuggestionsForImprovement,SayToSpeaker")] EvaluationViewModel evaluationViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(evaluationViewModel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(evaluationViewModel);
-        }
-
-        // GET: Evaluation/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var evaluationViewModel = await _context.EvaluationViewModel.FindAsync(id);
-            if (evaluationViewModel == null)
-            {
-                return NotFound();
-            }
-            return View(evaluationViewModel);
-        }
-
-        // POST: Evaluation/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Email,TrainingDate,Venue,ServiceClassification,FinalRating,FlowFollowed,RulesEstablished,InitiateDiscussion,TechnicalCapability,ContentOrganization,ObjectiveStated,ContentQuality,FlowOfTopic,RelevanceOfTopic,PracticeApplication,LearningActivities,VisualAids,PresentKnowledge,BalancePrinciples,AddressClarifications,Preparedness,TeachingPersonality,EstablishRapport,RespectForParticipants,VoicePersonality,TimeManagement,SMELecturer,SuggestionsForImprovement,SayToSpeaker")] EvaluationViewModel evaluationViewModel)
-        {
-            if (id != evaluationViewModel.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(evaluationViewModel);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!EvaluationViewModelExists(evaluationViewModel.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(evaluationViewModel);
-        }
-
-        // GET: Evaluation/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var evaluationViewModel = await _context.EvaluationViewModel
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (evaluationViewModel == null)
-            {
-                return NotFound();
-            }
-
-            return View(evaluationViewModel);
-        }
-
-        // POST: Evaluation/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var evaluationViewModel = await _context.EvaluationViewModel.FindAsync(id);
-            if (evaluationViewModel != null)
-            {
-                _context.EvaluationViewModel.Remove(evaluationViewModel);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool EvaluationViewModelExists(int id)
-        {
-            return _context.EvaluationViewModel.Any(e => e.Id == id);
         }
 
         [HttpPost]
@@ -165,11 +28,75 @@ namespace IPCU.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(evaluationViewModel);
+                _context.Evaluations.Add(evaluationViewModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(evaluationViewModel);
         }
+        public async Task<IActionResult> SummaryReport()
+        {
+            var summaryData = await _context.Evaluations
+                .GroupBy(e => e.TrainingDate)
+                .Select(g => new EvaluationSummaryViewModel
+                {
+                    TrainingDate = g.Key,
+                    TotalParticipants = g.Count(),
+                    MaleCount = g.Count(e => e.Sex == "Male"),
+                    FemaleCount = g.Count(e => e.Sex == "Female"),
+
+                    // Calculate the overall final rating as an average of all numeric rating fields
+                    FinalRating = (g.Average(e => e.FlowFollowed) +
+                                  g.Average(e => e.RulesEstablished) +
+                                  g.Average(e => e.InitiateDiscussion) +
+                                  g.Average(e => e.TechnicalCapability) +
+                                  g.Average(e => e.ContentOrganization) +
+                                  g.Average(e => e.ObjectiveStated) +
+                                  g.Average(e => e.ContentQuality) +
+                                  g.Average(e => e.FlowOfTopic) +
+                                  g.Average(e => e.RelevanceOfTopic) +
+                                  g.Average(e => e.PracticeApplication) +
+                                  g.Average(e => e.LearningActivities) +
+                                  g.Average(e => e.VisualAids) +
+                                  g.Average(e => e.PresentKnowledge) +
+                                  g.Average(e => e.BalancePrinciples) +
+                                  g.Average(e => e.AddressClarifications) +
+                                  g.Average(e => e.Preparedness) +
+                                  g.Average(e => e.TeachingPersonality) +
+                                  g.Average(e => e.EstablishRapport) +
+                                  g.Average(e => e.RespectForParticipants) +
+                                  g.Average(e => e.VoicePersonality) +
+                                  g.Average(e => e.TimeManagement)) / 21,
+
+                    AverageFlowFollowed = g.Average(e => e.FlowFollowed),
+                    AverageRulesEstablished = g.Average(e => e.RulesEstablished),
+                    AverageInitiateDiscussion = g.Average(e => e.InitiateDiscussion),
+                    AverageTechnicalCapability = g.Average(e => e.TechnicalCapability),
+                    AverageContentOrganization = g.Average(e => e.ContentOrganization),
+                    AverageObjectiveStated = g.Average(e => e.ObjectiveStated),
+                    AverageContentQuality = g.Average(e => e.ContentQuality),
+                    AverageFlowOfTopic = g.Average(e => e.FlowOfTopic),
+                    AverageRelevanceOfTopic = g.Average(e => e.RelevanceOfTopic),
+                    AveragePracticeApplication = g.Average(e => e.PracticeApplication),
+                    AverageLearningActivities = g.Average(e => e.LearningActivities),
+                    AverageVisualAids = g.Average(e => e.VisualAids),
+                    AveragePresentKnowledge = g.Average(e => e.PresentKnowledge),
+                    AverageBalancePrinciples = g.Average(e => e.BalancePrinciples),
+                    AverageAddressClarifications = g.Average(e => e.AddressClarifications),
+                    AveragePreparedness = g.Average(e => e.Preparedness),
+                    AverageTeachingPersonality = g.Average(e => e.TeachingPersonality),
+                    AverageEstablishRapport = g.Average(e => e.EstablishRapport),
+                    AverageRespectForParticipants = g.Average(e => e.RespectForParticipants),
+                    AverageVoicePersonality = g.Average(e => e.VoicePersonality),
+                    AverageTimeManagement = g.Average(e => e.TimeManagement),
+
+                    CombinedSuggestions = string.Join("; ", g.Select(e => e.SuggestionsForImprovement).Where(s => !string.IsNullOrEmpty(s))),
+                    CombinedSayToSpeaker = string.Join("; ", g.Select(e => e.SayToSpeaker).Where(s => !string.IsNullOrEmpty(s)))
+                })
+                .ToListAsync();
+
+            return View(summaryData);
+        }
+
     }
 }

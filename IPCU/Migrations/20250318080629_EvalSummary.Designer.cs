@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250318080629_EvalSummary")]
+    partial class EvalSummary
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,98 +142,6 @@ namespace IPCU.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("IPCU.Models.EvaluationSummary", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("AvgAddressClarifications")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgBalancePrinciples")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgContentOrganization")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgContentQuality")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgEstablishRapport")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgFlowFollowed")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgFlowOfTopic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgInitiateDiscussion")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgLearningActivities")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgObjectiveStated")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgPracticeApplication")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgPreparedness")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgPresentKnowledge")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgRelevanceOfTopic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgRespectForParticipants")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgRulesEstablished")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgTeachingPersonality")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgTechnicalCapability")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgTimeManagement")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgVisualAids")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgVoicePersonality")
-                        .HasColumnType("float");
-
-                    b.Property<int>("FemaleCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaleCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalEvaluations")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TrainingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Venue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EvaluationSummaries");
                 });
 
             modelBuilder.Entity("IPCU.Models.EvaluationViewModel", b =>
