@@ -1,0 +1,207 @@
+﻿@model IPCU.Models.SSTInfectionModel
+
+@{
+    ViewBag.Title = "SST Infection Checklist";
+}
+
+<style>
+    fieldset {
+        border: 2px solid #000;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    legend {
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+    td, th {
+        border: 1px solid #000;
+        padding: 5px;
+        vertical-align: top;
+    }
+
+    label {
+        font-weight: normal;
+    }
+</style>
+
+<h2 style="text-align:center;">SST Infection Checklist Form</h2>
+
+@using (Html.BeginForm("Submit", "InfectionChecklist", FormMethod.Post))
+{ 
+    <fieldset>
+        <legend>Patient Information</legend>
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.PatientName) <br />@Html.TextBoxFor(m => m.PatientName)</td>
+                <td>@Html.LabelFor(m => m.HospitalNumber) <br />@Html.TextBoxFor(m => m.HospitalNumber)</td>
+                <td>@Html.LabelFor(m => m.DateOfBirth) <br />@Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}", new { type = "date" })</td>
+                <td>@Html.LabelFor(m => m.Age) <br />@Html.TextBoxFor(m => m.Age)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.UnitWardArea) <br />@Html.TextBoxFor(m => m.UnitWardArea)</td>
+                <td>@Html.LabelFor(m => m.MainService) <br />@Html.TextBoxFor(m => m.MainService)</td>
+                <td>@Html.LabelFor(m => m.DateOfEvent) <br />@Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}", new { type = "date" })</td>
+                <td>@Html.LabelFor(m => m.Investigator) <br />@Html.TextBoxFor(m => m.Investigator)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.DateOfAdmission) <br />@Html.TextBoxFor(m => m.DateOfAdmission, "{0:yyyy-MM-dd}", new { type = "date" })</td>
+                <td>@Html.LabelFor(m => m.Disposition) <br />@Html.TextBoxFor(m => m.Disposition)</td>
+                <td>@Html.LabelFor(m => m.Gender) <br />@Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female" }))</td>
+                <td>@Html.LabelFor(m => m.Classification) <br />@Html.DropDownListFor(m => m.Classification, new SelectList(new[] { "Pay", "Service" }))</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.MDRO) <br />@Html.CheckBoxFor(m => m.MDRO) Yes</td>
+                <td>@Html.LabelFor(m => m.InfectionType) <br />@Html.DropDownListFor(m => m.InfectionType, new SelectList(new[] { "BURN", "DECU", "ST", "SKIN" }))</td>
+                <td>@Html.LabelFor(m => m.InfectionClassification) <br />@Html.TextBoxFor(m => m.InfectionClassification)</td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- BURN Infection Section -->
+    <fieldset>
+        <legend>BURN - BURN INFECTION</legend>
+        <div>
+            @Html.CheckBoxFor(m => m.BurnAppearanceChange)
+            @Html.Label("Patient has a change in burn wound appearance or character, such as rapid eschar separation, or dark brown, black, or violaceous discoloration of the eschar")
+        </div>
+
+        <p><strong>AND</strong></p>
+
+        <div>
+            @Html.CheckBoxFor(m => m.BurnOrganismIdentified)
+            @Html.Label("Organism(s) identified from blood by a culture or non-culture based microbiologic testing method")
+        </div>
+
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.BurnCultureDate, "Culture date:") <br />@Html.TextBoxFor(m => m.BurnCultureDate)</td>
+                <td>@Html.LabelFor(m => m.BurnCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.BurnCultureResults)</td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- DECU Section -->
+    <fieldset>
+        <legend>DECU - DECUBITUS ULCER INFECTION</legend>
+
+        <p><em>Also known as pressure injury infection, including both superficial and deep infections</em></p>
+
+        <p><strong>At least two (2) of the following localized signs or symptoms:</strong></p>
+
+        <div>@Html.CheckBoxFor(m => m.DecubitusErythema) @Html.Label("Erythema*")</div>
+        <div>@Html.CheckBoxFor(m => m.DecubitusTenderness) @Html.Label("Tenderness*")</div>
+        <div>@Html.CheckBoxFor(m => m.DecubitusSwelling) @Html.Label("Swelling of decubitus wound edges*")</div>
+
+        <p><strong>AND</strong></p>
+        <div>@Html.CheckBoxFor(m => m.DecubitusOrganismIdentified) @Html.Label("Organism(s) identified from blood by a culture or non-culture based microbiologic testing method")</div>
+
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.DecubitusCultureDate, "Culture date:") <br />@Html.TextBoxFor(m => m.DecubitusCultureDate)</td>
+                <td>@Html.LabelFor(m => m.DecubitusCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.DecubitusCultureResults)</td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- ST-Soft Tissue Infection -->
+    <fieldset>
+        <legend>ST - Soft Tissue Infection</legend>
+  <p><em>For muscle and/or fascia 
+    [for example, necrotizing fasciitis, infectious gangrene, necrotizing cellulitis, infectious myositis, lymphadenitis, lymphangitis, or parotitis] 
+    excluding decubitus ulcers, burns, and infections at vascular access sites (see VASC)</em></p>
+
+        <p><strong>At least one (1) of the following criteria:</strong></p>
+
+        <div>@Html.CheckBoxFor(m => m.STOrganismIdentified) @Html.Label("Organism(s) identified from tissue or drainage from affected site by culture/non-culture based microbiologic testing method")</div>
+        <div>@Html.CheckBoxFor(m => m.STDrainage) @Html.Label("Purulent drainage at affected site")</div>
+        <div>@Html.CheckBoxFor(m => m.STAbscess) @Html.Label("Patient has an abscess or other evidence of infection on gross anatomic or histopathologic exam")</div>
+
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.STCultureDate, "Culture date:") <br />@Html.TextBoxFor(m => m.STCultureDate)</td>
+                <td>@Html.LabelFor(m => m.STCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.STCultureResults)</td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- SKIN Infection -->
+    <fieldset>
+        <legend>SKIN - SKIN INFECTION</legend>
+        <p><em>For skin and/or subcutaneous, excluding decubitus ulcers, burns, and infections at vascular access sites</em></p>
+
+        <p><strong>At least one (1) of the following criteria:</strong></p>
+
+        <div>
+            @Html.CheckBoxFor(m => m.SkinPurulentDrainage, new { @class = "trigger-checkbox" })
+            @Html.Label("Purulent drainage")
+        </div>
+        <div>
+            @Html.CheckBoxFor(m => m.SkinVesicles, new { @class = "trigger-checkbox" })
+            @Html.Label("Vesicles")
+        </div>
+        <div>
+            @Html.CheckBoxFor(m => m.SkinPustules, new { @class = "trigger-checkbox" })
+            @Html.Label("Pustules")
+        </div>
+        <div>
+            @Html.CheckBoxFor(m => m.SkinBoils, new { @class = "trigger-checkbox" })
+            @Html.Label("Boils (excluding acne)")
+        </div>
+
+
+        <div id="localized-symptoms-section" style="display: none;">
+            <p><strong>At least two (2) of localized signs/symptoms:</strong></p>
+            <div>@Html.CheckBoxFor(m => m.LocalizedPainTenderness) @Html.Label("Pain* or tenderness*")</div>
+            <div>@Html.CheckBoxFor(m => m.LocalizedSwelling) @Html.Label("Swelling*")</div>
+            <div>@Html.CheckBoxFor(m => m.LocalizedErythema) @Html.Label("Erythema*")</div>
+            <div>@Html.CheckBoxFor(m => m.LocalizedHeat) @Html.Label("Heat*")</div>
+
+            <p><strong>AND at least one (1) of:</strong></p>
+            <div>@Html.CheckBoxFor(m => m.OrganismIdentifiedFromAspiration) @Html.Label("Organism(s) identified from aspirate or drainage from affected site by a culture or non-culture based testing method")</div>
+            <div>@Html.CheckBoxFor(m => m.MultinucleatedGiantCellsSeen) @Html.Label("Multinucleated giant cells seen on microscopic examination of affected tissue")</div>
+            <div>@Html.CheckBoxFor(m => m.DiagnosticAntibodyTiter) @Html.Label("Diagnostic single antibody titer (IgM) or 4-fold increase in paired sera (IgG) for organism")</div>
+        </div>
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.SkinCultureDate, "Culture date:") <br />@Html.TextBoxFor(m => m.SkinCultureDate)</td>
+                <td>@Html.LabelFor(m => m.SkinCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.SkinCultureResults)</td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <button type="submit">Submit</button>
+}
+
+@if (TempData["Success"] != null)
+{
+    <p style="color:green;">@TempData["Success"]</p>
+}
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function checkTriggerCheckboxes() {
+            let anyChecked = $('.trigger-checkbox').is(':checked');
+            if (anyChecked) {
+                $('#localized-symptoms-section').slideDown();
+            } else {
+                $('#localized-symptoms-section').slideUp();
+            }
+        }
+
+        $(document).ready(function () {
+            checkTriggerCheckboxes(); // Initial check (in case pre-checked)
+            $('.trigger-checkbox').change(function () {
+                checkTriggerCheckboxes();
+            });
+        });
+    </script>
+}
