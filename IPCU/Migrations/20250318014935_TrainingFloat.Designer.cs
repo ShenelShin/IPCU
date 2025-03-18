@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250318014935_TrainingFloat")]
+    partial class TrainingFloat
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1042,13 +1045,7 @@ namespace IPCU.Migrations
                     b.Property<float>("PostScore")
                         .HasColumnType("real");
 
-                    b.Property<float>("PostScore_Total")
-                        .HasColumnType("real");
-
                     b.Property<float>("PreScore")
-                        .HasColumnType("real");
-
-                    b.Property<float>("PreScore_Total")
                         .HasColumnType("real");
 
                     b.Property<string>("ProperHand")

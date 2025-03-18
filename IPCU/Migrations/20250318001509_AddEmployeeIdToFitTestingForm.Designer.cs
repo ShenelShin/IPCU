@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250318001509_AddEmployeeIdToFitTestingForm")]
+    partial class AddEmployeeIdToFitTestingForm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1039,23 +1042,14 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<float>("PostScore")
-                        .HasColumnType("real");
+                    b.Property<int>("PostScore")
+                        .HasColumnType("int");
 
-                    b.Property<float>("PostScore_Total")
-                        .HasColumnType("real");
-
-                    b.Property<float>("PreScore")
-                        .HasColumnType("real");
-
-                    b.Property<float>("PreScore_Total")
-                        .HasColumnType("real");
+                    b.Property<int>("PreScore")
+                        .HasColumnType("int");
 
                     b.Property<string>("ProperHand")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("Rate")
-                        .HasColumnType("real");
 
                     b.Property<string>("Sex")
                         .IsRequired()

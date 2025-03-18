@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPCU.Models
 {
@@ -28,8 +29,11 @@ namespace IPCU.Models
         [Required(ErrorMessage = "Department is required.")]
         public string Department { get; set; }
 
-        public int PreScore { get; set; }  // Store the computed pre-test score (both clinical and non-clinical)
-        public int PostScore { get; set; } // Store the computed post-test score (both clinical and non-clinical)
+        public float PreScore { get; set; }  // Store the computed pre-test score (both clinical and non-clinical)
+        public float PreScore_Total { get; set; }
+        public float PostScore { get; set; } // Store the computed post-test score (both clinical and non-clinical)
+        public float PostScore_Total { get; set; }
+        public float Rate { get; set; } // Store the computed post-test score (both clinical and non-clinical)
 
         public DateTime DateCreated { get; set; } = DateTime.Now; // Automatically set the creation date
         public string? ProperHand { get; set; } // Stores "Pass" or "Fail"
@@ -37,7 +41,8 @@ namespace IPCU.Models
         public string? IDPrinting { get; set; } // Stores "Pass" or "Fail"
         public string? TrainingReport { get; set; } // New Column
 
-
+        [NotMapped] // Prevents it from being stored in the database
+        public string Respiratory_Type { get; set; }
     }
 
 }

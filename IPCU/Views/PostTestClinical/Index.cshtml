@@ -1,232 +1,288 @@
 ﻿@model IPCU.Models.PostTestClinical
-@{
-    // Precaution Type Identification Questions
-    var precautionQuestions = new List<string>
-    {
-        "What precaution is required for tuberculosis patients?",
-        "What precaution applies to patients with MRSA?",
-        "Which precaution should be used for COVID-19?",
-        "What is the precaution type for influenza cases?",
-        "What precaution is necessary for chickenpox (Varicella)?",
-        "Which precaution is for C. difficile infection?",
-        "Precaution type for meningococcal meningitis?",
-        "Precaution needed for norovirus outbreak?",
-        "Precaution for pertussis (whooping cough)?",
-        "Precaution type for EVD (Ebola Virus Disease)?",
-        "Precaution for hepatitis B management?",
-        "Precaution for scabies patients?",
-        "Precaution for SARS patients?",
-        "Precaution type for measles (rubeola)?",
-        "Precaution needed for conjunctivitis cases?",
-        "Precaution for RSV (Respiratory Syncytial Virus)?",
-        "Precaution required during any invasive procedure?"
-    };
 
-    // Room Placement Questions
-    var roomQuestions = new List<string>
-    {
-        "Best room placement for airborne infection patients?",
-        "Where to place patients with multi-drug resistant organisms?",
-        "Ideal room type for neutropenic patients?",
-        "Room placement for droplet precaution cases?",
-        "Room for patients requiring strict isolation?",
-        "Where should pediatric contact precaution patients be placed?",
-        "Room placement for immunocompromised individuals?"
-    };
+<h2>Post-Test Clinical Questionnaire</h2>
 
-    // PPE Questions
-    var ppeQuestions = new List<string>
-    {
-        "Which PPE should be used for handling blood samples?",
-        "What PPE is required for respiratory procedures?",
-        "Which PPE is essential during surgery?",
-        "What PPE protects against splashes and sprays?",
-        "Which PPE is necessary when handling hazardous chemicals?"
-    };
-}
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-
-<div class="container my-5">
-    <div class="text-center mb-4">
-        <h2 class="fw-bold">Post-Test Clinical Questionnaire</h2>
-        <p class="text-muted">Please complete all sections carefully.</p>
-    </div>
 <form asp-controller="PostTestClinical" asp-action="Submit" method="post">
+    <!-- User Information -->
+    <div>
+        <label asp-for="FullName">Full Name</label>
+        <input asp-for="FullName" />
+        <span asp-validation-for="FullName"></span>
+    </div>
+    <div>
+        <label asp-for="EmployeeId">Employee ID</label>
+        <input asp-for="EmployeeId" />
+        <span asp-validation-for="EmployeeId"></span>
+    </div>
+    <div>
+        <label asp-for="AgeGroup">Age Group</label>
+        <input asp-for="AgeGroup" />
+        <span asp-validation-for="AgeGroup"></span>
+    </div>
+    <div>
+        <label asp-for="Sex">Sex</label>
+        <input asp-for="Sex" />
+        <span asp-validation-for="Sex"></span>
+    </div>
+    <div>
+        <label asp-for="PWD">PWD Status</label>
+        <input asp-for="PWD" />
+        <span asp-validation-for="PWD"></span>
+    </div>
+    <div>
+        <label asp-for="CivilStatus">Civil Status</label>
+        <input asp-for="CivilStatus" />
+        <span asp-validation-for="CivilStatus"></span>
+    </div>
+    <div>
+        <label asp-for="Department">Department</label>
+        <input asp-for="Department" />
+        <span asp-validation-for="Department"></span>
+    </div>
 
-        <!-- Personal Information -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Personal Information</h5>
-            </div>
-            <div class="card-body">
-                <div class="row g-3">
+    <!-- Questions -->
 
-                    <div class="col-md-6">
-                        <label asp-for="FullName" class="form-label">Full Name</label>
-                        <input asp-for="FullName" class="form-control" placeholder="Enter full name" required />
-                        <div class="invalid-feedback">Please enter your full name.</div>
-                    </div>
+    <div>
+        <h4>Tetanus</h4>
+        <input type="radio" name="Question1" value="Airborne precaution" /> Airborne precaution
+        <input type="radio" name="Question1" value="Contact precaution	" /> Contact precaution
+        <input type="radio" name="Question1" value="Droplet precaution	" /> Droplet precaution
+        <input type="radio" name="Question1" value="Standard precaution" /> Standard precaution
+    </div>
 
-                    <div class="col-md-6">
-                        <label asp-for="EmployeeId" class="form-label">Employee ID</label>
-                        <input asp-for="EmployeeId" class="form-control" placeholder="Enter employee ID" required />
-                        <div class="invalid-feedback">Please enter your Employee ID.</div>
-                    </div>
+    <div>
+        <h4>Human Metapneumovirus</h4>
+        <input type="radio" name="Question2" value="Airborne precaution" /> Airborne precaution
+        <input type="radio" name="Question2" value="Contact precaution	" /> Contact precaution
+        <input type="radio" name="Question2" value="Droplet precaution	" /> Droplet precaution
+        <input type="radio" name="Question2" value="Standard precaution" /> Standard precaution
+    </div>
 
-                    <div class="col-md-6">
-                        <label asp-for="AgeGroup" class="form-label">Age Group</label>
-                        <select asp-for="AgeGroup" class="form-select" required>
-                            <option value="">Select</option>
-                            <option value="18-25">18-25</option>
-                            <option value="26-35">26-35</option>
-                            <option value="36-45">36-45</option>
-                            <option value="46+">46+</option>
-                        </select>
-                        <span asp-validation-for="AgeGroup" class="text-danger"></span>
-                    </div>
+    <div>
+        <h4>CRE</h4>
+        <input type="radio" name="Question3" value="Airborne precaution" /> Airborne precaution
+        <input type="radio" name="Question3" value="Contact precaution	" /> Contact precaution
+        <input type="radio" name="Question3" value="Droplet precaution	" /> Droplet precaution
+        <input type="radio" name="Question3" value="Standard precaution" /> Standard precaution
+    </div>
 
-                    <div class="col-md-6">
-                        <label asp-for="Sex" class="form-label">Sex</label>
-                        <select asp-for="Sex" class="form-select" required>
-                            <option value="">Select</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
-                        <span asp-validation-for="Sex" class="text-danger"></span>
-                    </div>
+    <div>
+        <h4>Diphtheria</h4>
+        <input type="radio" name="Question4" value="Airborne precaution" /> Airborne precaution
+        <input type="radio" name="Question4" value="Contact precaution	" /> Contact precaution
+        <input type="radio" name="Question4" value="Droplet precaution	" /> Droplet precaution
+        <input type="radio" name="Question4" value="Standard precaution" /> Standard precaution
+    </div>
 
-                    <div class="col-md-6">
-                        <label asp-for="PWD" class="form-label">PWD</label>
-                        <select asp-for="PWD" class="form-select" required>
-                            <option value="">Select</option>
-                            <option value="Yes">Yes</option>
-                            <option value="No">No</option>
-                        </select>
-                        <span asp-validation-for="PWD" class="text-danger"></span>
-                    </div>
+    <div>
+        <h4>Varicella</h4>
+        <input type="radio" name="Question5" value="Airborne precaution" /> Airborne precaution
+        <input type="radio" name="Question5" value="Contact precaution	" /> Contact precaution
+        <input type="radio" name="Question5" value="Droplet precaution	" /> Droplet precaution
+        <input type="radio" name="Question5" value="Standard precaution" /> Standard precaution
+    </div>
 
-                    <div class="col-md-6">
-                        <label asp-for="CivilStatus" class="form-label">Civil Status</label>
-                        <select asp-for="CivilStatus" class="form-select" required>
-                            <option value="">Select</option>
-                            <option value="Single">Single</option>
-                            <option value="Married">Married</option>
-                            <option value="Divorced">Divorced</option>
-                            <option value="Widowed">Widowed</option>
-                        </select>
-                        <span asp-validation-for="CivilStatus" class="text-danger"></span>
-                    </div>
+    <div>
+        <h4>COVID-19</h4>
+        <input type="radio" name="Question6" value="Airborne precaution" /> Airborne precaution
+        <input type="radio" name="Question6" value="Contact precaution	" /> Contact precaution
+        <input type="radio" name="Question6" value="Droplet precaution	" /> Droplet precaution
+        <input type="radio" name="Question6" value="Standard precaution" /> Standard precaution
+    </div>
 
-                    <div class="col-md-12">
-                        <label asp-for="Department" class="form-label">Department</label>
-                        <input asp-for="Department" class="form-control" placeholder="Enter your department" required />
-                        <span asp-validation-for="Department" class="text-danger"></span>
-                    </div>
+    <div>
+        <h4>Human Immunodeficiency virus</h4>
+        <input type="radio" name="Question7" value="Airborne precaution" /> Airborne precaution
+        <input type="radio" name="Question7" value="Contact precaution	" /> Contact precaution
+        <input type="radio" name="Question7" value="Droplet precaution	" /> Droplet precaution
+        <input type="radio" name="Question7" value="Standard precaution" /> Standard precaution
+    </div>
 
-                </div>
-            </div>
-        </div>
+    <div>
+        <h4>Extrapulmonary Tuberculosis</h4>
+        <input type="radio" name="Question8" value="Airborne precaution" /> Airborne precaution
+        <input type="radio" name="Question8" value="Contact precaution	" /> Contact precaution
+        <input type="radio" name="Question8" value="Droplet precaution	" /> Droplet precaution
+        <input type="radio" name="Question8" value="Standard precaution" /> Standard precaution
+    </div>
 
-        <!-- Precaution Questions -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-secondary text-white">
-                <h5 class="mb-0">Precaution Type Identification</h5>
-            </div>
-            <div class="card-body">
-                @for (int i = 0; i < precautionQuestions.Count; i++)
-                {
-                    <div class="mb-3">
-                        <h6>@precautionQuestions[i]</h6>
-                        <div class="row">
-                            @foreach (var option in new[] { "Airborne precaution", "Contact precaution", "Droplet precaution", "Standard precaution" })
-                            {
-                                <div class="col-md-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="Question@(i + 1)" value="@option" required />
-                                        <label class="form-check-label">@option</label>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
+    <div>
+        <h4>A patient is diagnosed with Clostridioides difficile (C. difficile) infection. What type of precautions should be implemented?</h4>
+        <input type="radio" name="Question9" value="Standard Precautions" /> Standard Precautions
+        <input type="radio" name="Question9" value="Standard Precautions	" /> Standard Precautions
+        <input type="radio" name="Question9" value="Standard Precautions	" /> Standard Precautions
+        <input type="radio" name="Question9" value="Standard Precautions" /> Standard Precautions
+    </div>
 
-        <!-- Room Placement -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-info text-white">
-                <h5 class="mb-0">Room Placement</h5>
-            </div>
-            <div class="card-body">
-                @for (int i = 0; i < roomQuestions.Count; i++)
-                {
-                    <div class="mb-3">
-                        <h6>@roomQuestions[i]</h6>
-                        <div class="row">
-                            @foreach (var option in new[] { "Single room only", "Ward type", "AIIR or Isolation room" })
-                            {
-                                <div class="col-md-4">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="Question@(i + 18)" value="@option" />
-                                        <label class="form-check-label">@option</label>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
+    <div>
+        <h4>In high-risk areas of health care facilities such as isolation rooms, the recommended minimal ventilation rate is</h4>
+        <input type="radio" name="Question10" value="8 ACH" /> 8 air changes per hour (ACH)
+        <input type="radio" name="Question10" value="10 ACH" /> 10 air changes per hour (ACH)
+        <input type="radio" name="Question10" value="12 ACH" /> 12 air changes per hour (ACH)
+        <input type="radio" name="Question10" value="14 ACH" /> 14 air changes per hour (ACH)
+    </div>
 
-        <!-- PPE Section -->
-        <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-warning text-dark">
-                <h5 class="mb-0">Personal Protective Equipment (PPE)</h5>
-            </div>
-            <div class="card-body">
-                @for (int i = 0; i < ppeQuestions.Count; i++)
-                {
-                    <div class="mb-3">
-                        <h6>@ppeQuestions[i]</h6>
-                        <div class="row">
-                            @foreach (var option in new[] { "Gloves", "Isolation Gown", "Mask", "Respirator or N95", "Face/Eye Protection" })
-                            {
-                                <div class="col-md-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="Question@(i + 25)" value="@option" />
-                                        <label class="form-check-label">@option</label>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
+    <div>
+        <h4>If a healthcare worker sustained a needle stick injury in the course of duty, he/she should report within?</h4>
+        <input type="radio" name="Question11" value="Within the week" /> Within the week<br>
+        <input type="radio" name="Question11" value="1 hour" /> 1 hour<br>
+        <input type="radio" name="Question11" value="24 hours" /> 24 hours<br>
+        <input type="radio" name="Question11" value="72 hours" /> 72 hours
+    </div>
 
-        <!-- Submit -->
-        <div class="text-center">
-            <button type="submit" class="btn btn-success btn-lg px-5">Submit</button>
-        </div>
+    <div>
+        <h4>What is the correct sequence for doffing PPE?</h4>
+        <input type="radio" name="Question12" value="Gown-Gloves-Mask-Goggles" /> Gown → Gloves → Mask → Goggles<br>
+        <input type="radio" name="Question12" value="Mask-Gown-Gloves-Goggles" /> Mask → Gown → Gloves → Goggles<br>
+        <input type="radio" name="Question12" value="Gown-Mask-Goggles-Gloves" /> Gown → Mask → Goggles → Gloves<br>
+        <input type="radio" name="Question12" value="Gloves-Gown-Goggles-Mask" /> Gloves → Gown → Goggles → Mask
+    </div>
 
-    </form>
-</div>
+    <div>
+        <h4>What is the primary goal of infection prevention and control (IPC) in a healthcare setting?</h4>
+        <input type="radio" name="Question13" value="Reduce hospital costs" /> Reduce hospital costs<br>
+        <input type="radio" name="Question13" value="Protect only healthcare workers" /> Protect only healthcare workers from infections<br>
+        <input type="radio" name="Question13" value="Prevent infections" /> Prevent the spread of infections among patients, healthcare workers, and visitors<br>
+        <input type="radio" name="Question13" value="Improve hospital ranking" /> Improve hospital ranking
+    </div>
 
-<script>
-    // Bootstrap validation
-    (() => {
-        'use strict'
-        const forms = document.querySelectorAll('.needs-validation')
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                if (!form.checkValidity()) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                }
-                form.classList.add('was-validated')
-            }, false)
-        })
-    })()
-</script>
+    <div>
+        <h4>Alcohol-based hand rubbing should be done for how many seconds to be effective?</h4>
+        <input type="radio" name="Question14" value="5-10 seconds" /> 5-10 seconds<br>
+        <input type="radio" name="Question14" value="10-20 seconds" /> 10-20 seconds<br>
+        <input type="radio" name="Question14" value="20-30 seconds" /> 20-30 seconds<br>
+        <input type="radio" name="Question14" value="30-60 seconds" /> 30-60 seconds
+    </div>
+
+    <div>
+        <h4>Which type of PPE is required when caring for a patient with confirmed tuberculosis?</h4>
+        <input type="radio" name="Question15" value="Surgical mask" /> Surgical mask<br>
+        <input type="radio" name="Question15" value="N95 respirator" /> N95 respirator<br>
+        <input type="radio" name="Question15" value="Face shield only" /> Face shield only<br>
+        <input type="radio" name="Question15" value="Gloves only" /> Gloves only
+    </div>
+
+    <div>
+        <h4>When cohorting patients with the same suspected or confirmed diagnosis in one room, the distance must be maintained between each patient at:</h4>
+        <input type="radio" name="Question16" value="1 foot" /> 1 foot<br>
+        <input type="radio" name="Question16" value="2 feet" /> 2 feet<br>
+        <input type="radio" name="Question16" value="3 feet" /> 3 feet (1 meter)<br>
+        <input type="radio" name="Question16" value="6 feet" /> 6 feet (2 meters)
+    </div>
+
+    <div>
+        <h4>Which of the following is the most effective way to prevent the spread of infections?</h4>
+        <input type="radio" name="Question17" value="Wearing a mask" /> Wearing a mask at all times<br>
+        <input type="radio" name="Question17" value="Hand hygiene" /> Frequent and proper hand hygiene<br>
+        <input type="radio" name="Question17" value="Antibiotics" /> Using antibiotics for all patients<br>
+        <input type="radio" name="Question17" value="Disinfectant spray" /> Spraying disinfectant in the air
+    </div>
+
+    <h3>Select the correct room placement for each patient (single, ward), and PPE to be used by 
+        each healthcare worker based on its disease and mode of transmission [pre-pandemic]:</h3>
+
+    <h5>
+        Place the patient in the appropriate room
+    </h5>
+
+    <div>
+        <h4>Measles, with active lesions</h4>
+        <input type="checkbox" name="Question18" value="Single room only" /> Single room only
+        <input type="checkbox" name="Question18" value="Ward type" /> Ward type
+        <input type="checkbox" name="Question18" value="AIIR or Isolation room" />AIIR or Isolation room
+    </div>
+
+    <div>
+        <h4>MRSA patient</h4>
+        <input type="checkbox" name="Question19" value="Single room only" /> Single room only
+        <input type="checkbox" name="Question19" value="Ward type" /> Ward type
+        <input type="checkbox" name="Question19" value="AIIR or Isolation room" />AIIR or Isolation room
+    </div>
+
+    <div>
+        <h4>Patient with Dengue Hemorrhagic Fever</h4>
+        <input type="checkbox" name="Question20" value="Single room only" /> Single room only
+        <input type="checkbox" name="Question20" value="Ward type" /> Ward type
+        <input type="checkbox" name="Question20" value="AIIR or Isolation room" />AIIR or Isolation room
+    </div>
+
+    <div>
+        <h4>Bacteriologically confirmed pulmonary TB with ongoing treatment of less than 14 days</h4>
+        <input type="checkbox" name="Question21" value="Single room only" /> Single room only
+        <input type="checkbox" name="Question21" value="Ward type" /> Ward type
+        <input type="checkbox" name="Question21" value="AIIR or Isolation room" />AIIR or Isolation room
+    </div>
+
+    <div>
+        <h4>COVID, intubated patient</h4>
+        <input type="checkbox" name="Question22" value="Single room only" /> Single room only
+        <input type="checkbox" name="Question22" value="Ward type" /> Ward type
+        <input type="checkbox" name="Question22" value="AIIR or Isolation room" />AIIR or Isolation room
+    </div>
+
+    <div>
+        <h4>Intubated patient, ETA positive of CRE</h4>
+        <input type="checkbox" name="Question23" value="Single room only" /> Single room only
+        <input type="checkbox" name="Question23" value="Ward type" /> Ward type
+        <input type="checkbox" name="Question23" value="AIIR or Isolation room" />AIIR or Isolation room
+    </div>
+
+    <div>
+        <h4>HIV patient, with CD4 count of >200t</h4>
+        <input type="checkbox" name="Question24" value="Single room only" /> Single room only
+        <input type="checkbox" name="Question24" value="Ward type" /> Ward type
+        <input type="checkbox" name="Question24" value="AIIR or Isolation room" />AIIR or Isolation room
+    </div>
+
+    <h5>
+        Check the PPE required for each patient based on your risk assessment 9pts
+    </h5>
+
+    <div>
+        <h4>Hepatitis B patient for blood extraction</h4>
+        <input type="checkbox" name="Question25" value="Gloves" /> Gloves
+        <input type="checkbox" name="Question25" value="Isolation Gown" /> Isolation Gown
+        <input type="checkbox" name="Question25" value="Mask" /> Mask
+        <input type="checkbox" name="Question25" value="Respirator or N95" /> Respirator or N95
+        <input type="checkbox" name="Question25" value="Face/Eye Protection" /> Face/Eye Protection
+    </div>
+
+    <div>
+        <h4>Vital signs taking for a Post KT patient</h4>
+        <input type="checkbox" name="Question26" value="Gloves" /> Gloves
+        <input type="checkbox" name="Question26" value="Isolation Gown" /> Isolation Gown
+        <input type="checkbox" name="Question26" value="Mask" /> Mask
+        <input type="checkbox" name="Question26" value="Respirator or N95" /> Respirator or N95
+        <input type="checkbox" name="Question26" value="Face/Eye Protection" /> Face/Eye Protection
+    </div>
+
+    <div>
+        <h4>Blood extraction in a patient with VRE</h4>
+        <input type="checkbox" name="Question27" value="Gloves" /> Gloves
+        <input type="checkbox" name="Question27" value="Isolation Gown" /> Isolation Gown
+        <input type="checkbox" name="Question27" value="Mask" /> Mask
+        <input type="checkbox" name="Question27" value="Respirator or N95" /> Respirator or N95
+        <input type="checkbox" name="Question27" value="Face/Eye Protection" /> Face/Eye Protection
+    </div>
+
+    <div>
+        <h4>Intubating pneumonia patient</h4>
+        <input type="checkbox" name="Question28" value="Gloves" /> Gloves
+        <input type="checkbox" name="Question28" value="Isolation Gown" /> Isolation Gown
+        <input type="checkbox" name="Question28" value="Mask" /> Mask
+        <input type="checkbox" name="Question28" value="Respirator or N95" /> Respirator or N95
+        <input type="checkbox" name="Question28" value="Face/Eye Protection" /> Face/Eye Protection
+    </div>
+
+    <div>
+        <h4>Post HSCT patient with fever</h4>
+        <input type="checkbox" name="Question29" value="Gloves" /> Gloves
+        <input type="checkbox" name="Question29" value="Isolation Gown" /> Isolation Gown
+        <input type="checkbox" name="Question29" value="Mask" /> Mask
+        <input type="checkbox" name="Question29" value="Respirator or N95" /> Respirator or N95
+        <input type="checkbox" name="Question29" value="Face/Eye Protection" /> Face/Eye Protection
+    </div>
+
+
+    <button type="submit">Submit</button>
+</form>

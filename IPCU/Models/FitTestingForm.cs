@@ -10,6 +10,9 @@ namespace IPCU.Models
         public int Id { get; set; }
 
         [Required]
+        public string EmployeeId { get; set; } // Identifier for other tables
+
+        [Required]
         public string HCW_Name { get; set; }
 
         [Required]
