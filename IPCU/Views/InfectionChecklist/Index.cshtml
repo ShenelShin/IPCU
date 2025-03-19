@@ -35,36 +35,43 @@
 <h2 style="text-align:center;">SST Infection Checklist Form</h2>
 
 @using (Html.BeginForm("Submit", "InfectionChecklist", FormMethod.Post))
-{ 
+{
     <fieldset>
         <legend>Patient Information</legend>
         <table>
             <tr>
-                <td>@Html.LabelFor(m => m.PatientName) <br />@Html.TextBoxFor(m => m.PatientName)</td>
+                <td>@Html.LabelFor(m => m.Fname, "First Name") <br />@Html.TextBoxFor(m => m.Fname)</td>
+                <td>@Html.LabelFor(m => m.Mname, "Middle Name") <br />@Html.TextBoxFor(m => m.Mname)</td>
+                <td>@Html.LabelFor(m => m.Lname, "Last Name") <br />@Html.TextBoxFor(m => m.Lname)</td>
                 <td>@Html.LabelFor(m => m.HospitalNumber) <br />@Html.TextBoxFor(m => m.HospitalNumber)</td>
+            </tr>
+            <tr>
                 <td>@Html.LabelFor(m => m.DateOfBirth) <br />@Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}", new { type = "date" })</td>
                 <td>@Html.LabelFor(m => m.Age) <br />@Html.TextBoxFor(m => m.Age)</td>
-            </tr>
-            <tr>
                 <td>@Html.LabelFor(m => m.UnitWardArea) <br />@Html.TextBoxFor(m => m.UnitWardArea)</td>
                 <td>@Html.LabelFor(m => m.MainService) <br />@Html.TextBoxFor(m => m.MainService)</td>
+            </tr>
+            <tr>
                 <td>@Html.LabelFor(m => m.DateOfEvent) <br />@Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}", new { type = "date" })</td>
                 <td>@Html.LabelFor(m => m.Investigator) <br />@Html.TextBoxFor(m => m.Investigator)</td>
-            </tr>
-            <tr>
                 <td>@Html.LabelFor(m => m.DateOfAdmission) <br />@Html.TextBoxFor(m => m.DateOfAdmission, "{0:yyyy-MM-dd}", new { type = "date" })</td>
                 <td>@Html.LabelFor(m => m.Disposition) <br />@Html.TextBoxFor(m => m.Disposition)</td>
-                <td>@Html.LabelFor(m => m.Gender) <br />@Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female" }))</td>
-                <td>@Html.LabelFor(m => m.Classification) <br />@Html.DropDownListFor(m => m.Classification, new SelectList(new[] { "Pay", "Service" }))</td>
             </tr>
             <tr>
+                <td>@Html.LabelFor(m => m.Gender) <br />@Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female" }))</td>
+                <td>@Html.LabelFor(m => m.Classification) <br />@Html.DropDownListFor(m => m.Classification, new SelectList(new[] { "Pay", "Service" }))</td>
                 <td>@Html.LabelFor(m => m.MDRO) <br />@Html.CheckBoxFor(m => m.MDRO) Yes</td>
                 <td>@Html.LabelFor(m => m.InfectionType) <br />@Html.DropDownListFor(m => m.InfectionType, new SelectList(new[] { "BURN", "DECU", "ST", "SKIN" }))</td>
+            </tr>
+            <tr>
                 <td>@Html.LabelFor(m => m.InfectionClassification) <br />@Html.TextBoxFor(m => m.InfectionClassification)</td>
+                <td></td>
+                <td></td>
                 <td></td>
             </tr>
         </table>
     </fieldset>
+
 
     <!-- BURN Infection Section -->
     <fieldset>
