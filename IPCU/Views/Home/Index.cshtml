@@ -22,9 +22,13 @@
                 </div>
                 <div class="card-body text-center p-4">
                     <p class="card-text text-muted mb-4">View the list of all registered patients.</p>
-                    <a asp-controller="PatientForm" asp-action="Index" class="btn btn-primary">
-                        <i class="fas fa-arrow-right mr-1"></i> View Patients
+                    <a asp-controller="PatientMasters" asp-action="Index" class="btn btn-primary">
+                        <i class="fas fa-arrow-right mr-1"></i> Master
                     </a>
+                    <a asp-controller="Patients" asp-action="Index" class="btn btn-primary">
+                        <i class="fas fa-arrow-right mr-1"></i> Patient
+                    </a>
+
                 </div>
             </div>
         </div>
@@ -148,6 +152,26 @@
                         </a>
                        
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add this to the Second Row in document 2 -->
+        <div class="col-md-3 mb-4">
+            <!-- ICN Patient Management Card -->
+            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
+                <div class="card-header bg-info text-white text-center py-3">
+                    <i class="fas fa-hospital-user fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">ICN Patient Management</h5>
+                </div>
+                <div class="card-body text-center p-4">
+                    <p class="card-text text-muted mb-4">View patients in your assigned areas admitted for 48+ hours.</p>
+                    <a asp-controller="ICNPatient" asp-action="Index" class="btn btn-info text-white">
+                        <i class="fas fa-arrow-right mr-1"></i> View Patients
+                    </a>
+                    <a asp-controller="ICNPatient" asp-action="Details" class="btn btn-outline-info">
+                        <i class="fas fa-user-md mr-1"></i> Patient Details
+                    </a>
                 </div>
             </div>
         </div>

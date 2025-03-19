@@ -1,0 +1,84 @@
+﻿@model IPCU.Models.AddConnectedDeviceViewModel
+@{
+    ViewData["Title"] = "Add Connected Device";
+}
+
+<div class="container-fluid">
+    <h2>Add Connected Device</h2>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>@Model.PatientName</h4>
+                    <p class="mb-0">
+                        <small>
+                            <strong>Hospital Number:</strong> @Model.HospNum |
+                            <strong>Location:</strong> @Model.AdmLocation |
+                            <strong>Room:</strong> @Model.RoomID
+                        </small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Device Details</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddConnectedDevice" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="IdNum" />
+                        <input type="hidden" asp-for="HospNum" />
+                        <input type="hidden" asp-for="AdmLocation" />
+                        <input type="hidden" asp-for="RoomID" />
+                        <input type="hidden" asp-for="PatientName" />
+
+                        <div class="mb-3">
+                            <label asp-for="DeviceType" class="form-label"></label>
+                            <select asp-for="DeviceType" class="form-select">
+                                <option value="">-- Select Device Type --</option>
+                                <option value="CL">Central Line (CL)</option>
+                                <option value="IUC">Indwelling Urinary Catheter (IUC)</option>
+                                <option value="MV">Mechanical Ventilator (MV)</option>
+                                <option value="NG">Nasogastric Tube (NG)</option>
+                                <option value="PICC">Peripherally Inserted Central Catheter (PICC)</option>
+                                <option value="ET">Endotracheal Tube (ET)</option>
+                                <option value="PEG">Percutaneous Endoscopic Gastrostomy (PEG)</option>
+                                <option value="TRACH">Tracheostomy (TRACH)</option>
+                            </select>
+                            <span asp-validation-for="DeviceType" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DeviceInsert" class="form-label"></label>
+                            <input asp-for="DeviceInsert" class="form-control" type="date" />
+                            <span asp-validation-for="DeviceInsert" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DeviceRemove" class="form-label"></label>
+                            <input asp-for="DeviceRemove" class="form-control" type="date" />
+                            <span asp-validation-for="DeviceRemove" class="text-danger"></span>
+                            <small class="form-text text-muted">Leave blank if device is still in place</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="ConnectedDevices" asp-route-id="@Model.IdNum" class="btn btn-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

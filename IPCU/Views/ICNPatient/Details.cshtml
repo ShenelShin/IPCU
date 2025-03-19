@@ -1,0 +1,67 @@
+﻿@model IPCU.Models.PatientViewModel
+@{
+    ViewData["Title"] = "Patient Details";
+}
+<div class="container-fluid">
+    <h2>Patient Details</h2>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>@Model.PatientName</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.HospNum)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.HospNum)</dd>
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Age)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Age)</dd>
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Sex)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Sex)</dd>
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CivilStatus)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.CivilStatus)</dd>
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PatientType)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.PatientType)</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <dl class="row">
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.AdmLocation)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.AdmLocation)</dd>
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.RoomID)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.RoomID)</dd>
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.AdmType)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.AdmType)</dd>
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.AdmDate)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.AdmDate)</dd>
+                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.AdmissionDuration)</dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.AdmissionDuration) days</dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <hr />
+                    <h5>Contact Information</h5>
+                    <dl class="row">
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.EmailAddress)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.EmailAddress)</dd>
+                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CellNum)</dt>
+                        <dd class="col-sm-10">@Html.DisplayFor(model => model.CellNum)</dd>
+                    </dl>
+                </div>
+                <div class="card-footer d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    <div>
+                        <a asp-action="VitalSigns" asp-route-id="@Model.IdNum" class="btn btn-primary me-2">
+                            <i class="fas fa-heartbeat me-1"></i> View Vital Signs
+                        </a>
+                        <a asp-action="ConnectedDevices" asp-route-id="@Model.IdNum" class="btn btn-info">
+                            <i class="fas fa-plug me-1"></i> View Connected Devices
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

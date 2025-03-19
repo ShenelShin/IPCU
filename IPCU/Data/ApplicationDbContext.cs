@@ -31,6 +31,42 @@ namespace IPCU.Data
         public DbSet<TrainingEvaluation> TrainingEvaluations { get; set; } // ✅ Ensure this is present
         public DbSet<EvaluationSummary> EvaluationSummaries { get; set; } // Is this present?
 
+        public DbSet<Patient> Patients { get; set; }
+        public DbSet<PatientMaster> PatientMasters { get; set; }
+        public DbSet<VitalSigns> VitalSigns { get; set; }
+
+        public DbSet<DeviceConnected> DeviceConnected { get; set; }
+
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+
+        //    // Optional: Configure relationships if needed
+        //    modelBuilder.Entity<Patient>()
+        //        .HasOne<PatientMaster>()
+        //        .WithMany()
+        //        .HasForeignKey(p => p.HospNum);
+        //}
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
+
+        //    // Configure the relationships for VitalSignsTable
+        //    modelBuilder.Entity<VitalSigns>()
+        //        .HasOne(v => v.Patient)
+        //        .WithMany()
+        //        .HasForeignKey(v => v.HospNum)
+        //        .OnDelete(DeleteBehavior.NoAction);  // Use NoAction to avoid circular cascade delete
+
+        //    modelBuilder.Entity<VitalSigns>()
+        //        .HasOne(v => v.PatientMaster)
+        //        .WithMany()
+        //        .HasForeignKey(v => v.HospNum)
+        //        .OnDelete(DeleteBehavior.NoAction);  // Use NoAction to avoid circular cascade delete
+        //}
+
     }
 
 }
