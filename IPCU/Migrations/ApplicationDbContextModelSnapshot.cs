@@ -141,96 +141,33 @@ namespace IPCU.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("IPCU.Models.EvaluationSummary", b =>
+            modelBuilder.Entity("IPCU.Models.DeviceConnected", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("DeviceId")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("DeviceInsert")
+                        .HasColumnType("date");
 
-                    b.Property<double>("AvgAddressClarifications")
-                        .HasColumnType("float");
+                    b.Property<DateTime?>("DeviceRemove")
+                        .HasColumnType("date");
 
-                    b.Property<double>("AvgBalancePrinciples")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgContentOrganization")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgContentQuality")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgEstablishRapport")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgFlowFollowed")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgFlowOfTopic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgInitiateDiscussion")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgLearningActivities")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgObjectiveStated")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgPracticeApplication")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgPreparedness")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgPresentKnowledge")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgRelevanceOfTopic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgRespectForParticipants")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgRulesEstablished")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgTeachingPersonality")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgTechnicalCapability")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgTimeManagement")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgVisualAids")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgVoicePersonality")
-                        .HasColumnType("float");
-
-                    b.Property<int>("FemaleCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaleCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalEvaluations")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TrainingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Venue")
+                    b.Property<string>("DeviceType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("HospNum")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
-                    b.ToTable("EvaluationSummaries");
+                    b.HasKey("DeviceId");
+
+                    b.HasIndex("HospNum");
+
+                    b.ToTable("DeviceConnected");
                 });
 
             modelBuilder.Entity("IPCU.Models.EvaluationViewModel", b =>
@@ -1622,6 +1559,17 @@ namespace IPCU.Migrations
                     b.HasIndex("HospNum");
 
                     b.ToTable("VitalSigns");
+                });
+
+            modelBuilder.Entity("IPCU.Models.DeviceConnected", b =>
+                {
+                    b.HasOne("IPCU.Models.PatientMaster", "PatientMaster")
+                        .WithMany()
+                        .HasForeignKey("HospNum")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PatientMaster");
                 });
 
             modelBuilder.Entity("IPCU.Models.FitTestingFormHistory", b =>

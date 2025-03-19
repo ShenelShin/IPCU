@@ -33,8 +33,9 @@ namespace IPCU.Data
         public DbSet<Patient> Patients { get; set; }
         public DbSet<PatientMaster> PatientMasters { get; set; }
         public DbSet<VitalSigns> VitalSigns { get; set; }
-
         public DbSet<DeviceConnected> DeviceConnected { get; set; }
+
+        public DbSet<SSTInfectionModel> SSTInfectionModels { get; set; }
 
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)

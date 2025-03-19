@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250319015857_AddDeviceConnected")]
-    partial class AddDeviceConnected
+    [Migration("20250319061659_merge3")]
+    partial class merge3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -144,96 +144,33 @@ namespace IPCU.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("IPCU.Models.EvaluationSummary", b =>
+            modelBuilder.Entity("IPCU.Models.DeviceConnected", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("DeviceId")
+                        .HasMaxLength(36)
+                        .HasColumnType("nvarchar(36)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<DateTime>("DeviceInsert")
+                        .HasColumnType("date");
 
-                    b.Property<double>("AvgAddressClarifications")
-                        .HasColumnType("float");
+                    b.Property<DateTime?>("DeviceRemove")
+                        .HasColumnType("date");
 
-                    b.Property<double>("AvgBalancePrinciples")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgContentOrganization")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgContentQuality")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgEstablishRapport")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgFlowFollowed")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgFlowOfTopic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgInitiateDiscussion")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgLearningActivities")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgObjectiveStated")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgPracticeApplication")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgPreparedness")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgPresentKnowledge")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgRelevanceOfTopic")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgRespectForParticipants")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgRulesEstablished")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgTeachingPersonality")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgTechnicalCapability")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgTimeManagement")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgVisualAids")
-                        .HasColumnType("float");
-
-                    b.Property<double>("AvgVoicePersonality")
-                        .HasColumnType("float");
-
-                    b.Property<int>("FemaleCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaleCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalEvaluations")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TrainingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Venue")
+                    b.Property<string>("DeviceType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("HospNum")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
-                    b.ToTable("EvaluationSummaries");
+                    b.HasKey("DeviceId");
+
+                    b.HasIndex("HospNum");
+
+                    b.ToTable("DeviceConnected");
                 });
 
             modelBuilder.Entity("IPCU.Models.EvaluationViewModel", b =>
@@ -1047,6 +984,174 @@ namespace IPCU.Migrations
                     b.ToTable("PreTestNonClinicals");
                 });
 
+            modelBuilder.Entity("IPCU.Models.SSTInfectionModel", b =>
+                {
+                    b.Property<int>("SSTID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SSTID"));
+
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("BurnAppearanceChange")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BurnCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BurnCultureResults")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("BurnOrganismIdentified")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Classification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateOfAdmission")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfEvent")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DecubitusCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DecubitusCultureResults")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("DecubitusErythema")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("DecubitusOrganismIdentified")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("DecubitusSwelling")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("DecubitusTenderness")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("DiagnosticAntibodyTiter")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Disposition")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Fname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HospitalNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InfectionClassification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InfectionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Investigator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Lname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LocalizedErythema")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LocalizedHeat")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LocalizedPainTenderness")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LocalizedSwelling")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MDRO")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MainService")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("MultinucleatedGiantCellsSeen")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("OrganismIdentifiedFromAspiration")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("STAbscess")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("STCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("STCultureResults")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("STDrainage")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("STOrganismIdentified")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SkinBoils")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SkinCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SkinCultureResults")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SkinPurulentDrainage")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SkinPustules")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("SkinVesicles")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UnitWardArea")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SSTID");
+
+                    b.ToTable("SSTInfectionModels");
+                });
+
             modelBuilder.Entity("IPCU.Models.Trainee", b =>
                 {
                     b.Property<int>("Id")
@@ -1457,6 +1562,17 @@ namespace IPCU.Migrations
                     b.HasIndex("HospNum");
 
                     b.ToTable("VitalSigns");
+                });
+
+            modelBuilder.Entity("IPCU.Models.DeviceConnected", b =>
+                {
+                    b.HasOne("IPCU.Models.PatientMaster", "PatientMaster")
+                        .WithMany()
+                        .HasForeignKey("HospNum")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PatientMaster");
                 });
 
             modelBuilder.Entity("IPCU.Models.FitTestingFormHistory", b =>
