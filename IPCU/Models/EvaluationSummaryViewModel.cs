@@ -7,13 +7,15 @@
         public int MaleCount { get; set; }
         public int FemaleCount { get; set; }
         public double FinalRating { get; set; } // Overall rating from all rating fields
+        public double? PostTestEvaluationGrade { get; set; } // New field for average Rate
+
 
         // Existing rating averages
         public double AverageFlowFollowed { get; set; }
         public double AverageRulesEstablished { get; set; }
         public double AverageInitiateDiscussion { get; set; }
-        public double AverageTechnicalCapability { get; set; }
-        public double AverageContentOrganization { get; set; }
+        public double AverageTechnicalCapability { get; set; } // program
+        public double AverageContentOrganization { get; set; } //speaker
         public double AverageObjectiveStated { get; set; }
         public double AverageContentQuality { get; set; }
         public double AverageFlowOfTopic { get; set; }
@@ -32,6 +34,13 @@
         public double AverageTimeManagement { get; set; }
 
         public string CombinedSuggestions { get; set; }
+
         public string CombinedSayToSpeaker { get; set; }
+        public double ProgramAverage { get; set; }
+        public double SpeakerAverage { get; set; }
+        public string Venue { get; set; }
+        public string Personnel { get; set; }
+        public string SMELecturer { get; set; }
+
     }
 }

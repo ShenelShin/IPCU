@@ -6,29 +6,37 @@
 
 <h2>Evaluation Summary Report</h2>
 
+<a asp-action="ExportToExcel" class="btn btn-primary">Export to Excel Summary Report</a>
+
 <table class="table table-striped">
     <thead>
         <tr>
             <th>Date of Training</th>
             <th>Total Participants</th>
-            <th>Male</th>
-            <th>Female</th>
+            @*<th>Male</th>
+            <th>Female</th>*@
             <th>Final Rating</th>
-            <th>Suggestions for Improvement</th>
-            <th>Say to Speaker</th>
+            <th>Post Test Grade</th>
+            @*<th>Suggestions for Improvement</th>
+            <th>Say to Speaker</th>*@
+            <th>Venue</th>
+            <th>SME Lecturer</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.TrainingDate.ToString("yyyy-MM-dd")</td>
+                <td>@item.TrainingDate.ToString("MMMM dd, yyyy")</td>
                 <td>@item.TotalParticipants</td>
-                <td>@item.MaleCount</td>
-                <td>@item.FemaleCount</td>
+                @*<td>@item.MaleCount</td>
+                <td>@item.FemaleCount</td>*@
                 <td>@item.FinalRating.ToString("0.00")</td>
-                <td>@item.CombinedSuggestions</td>
-                <td>@item.CombinedSayToSpeaker</td>
+                <td>@(item.PostTestEvaluationGrade.HasValue ? item.PostTestEvaluationGrade.Value.ToString("0.00") : "N/A")</td>
+                @*<td>@item.CombinedSuggestions</td>
+                <td>@item.CombinedSayToSpeaker</td>*@
+                <td>@item.Venue</td>
+                <td>@item.SMELecturer</td>
             </tr>
         }
     </tbody>
