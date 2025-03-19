@@ -20,8 +20,8 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Call this method to seed roles
-await SeedRolesAsync(app.Services);
+//// Call this method to seed roles
+//await SeedRolesAsync(app.Services);
 
 app.UseRouting();
 app.UseAuthentication();
@@ -34,21 +34,21 @@ app.MapControllerRoute(
 
 app.Run();
 
-// Method to seed initial roles
-async Task SeedRolesAsync(IServiceProvider serviceProvider)
-{
-    using var scope = serviceProvider.CreateScope();
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+//// Method to seed initial roles
+//async Task SeedRolesAsync(IServiceProvider serviceProvider)
+//{
+//    using var scope = serviceProvider.CreateScope();
+//    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    // Define your roles here
-    string[] roleNames = { "Admin", "Doctor", "Nurse", "Patient" };
+//    // Define your roles here
+//    string[] roleNames = { "Admin", "Doctor", "Nurse", "Patient" };
 
-    foreach (var roleName in roleNames)
-    {
-        var roleExists = await roleManager.RoleExistsAsync(roleName);
-        if (!roleExists)
-        {
-            await roleManager.CreateAsync(new IdentityRole(roleName));
-        }
-    }
-}
+//    foreach (var roleName in roleNames)
+//    {
+//        var roleExists = await roleManager.RoleExistsAsync(roleName);
+//        if (!roleExists)
+//        {
+//            await roleManager.CreateAsync(new IdentityRole(roleName));
+//        }
+//    }
+//}

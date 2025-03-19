@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250318093831_RemovePatientMasterRelationship")]
+    partial class RemovePatientMasterRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -675,13 +678,13 @@ namespace IPCU.Migrations
 
                     b.Property<string>("AdmLocation")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(1)
+                        .HasColumnType("nvarchar(1)");
 
                     b.Property<string>("AdmType")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.Property<string>("Age")
                         .IsRequired()
@@ -695,8 +698,8 @@ namespace IPCU.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DeathType")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(5)
+                        .HasColumnType("nvarchar(5)");
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
@@ -714,6 +717,8 @@ namespace IPCU.Migrations
                         .HasColumnType("nvarchar(8)");
 
                     b.HasKey("IdNum");
+
+                    b.HasIndex("HospNum");
 
                     b.ToTable("tbpatient");
                 });
@@ -1425,37 +1430,6 @@ namespace IPCU.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("VitalSigns", b =>
-                {
-                    b.Property<int>("VitalId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VitalId"));
-
-                    b.Property<string>("HospNum")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<string>("VitalSign")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("VitalSignDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("VitalSignValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("VitalId");
-
-                    b.HasIndex("HospNum");
-
-                    b.ToTable("VitalSigns");
-                });
-
             modelBuilder.Entity("IPCU.Models.FitTestingFormHistory", b =>
                 {
                     b.HasOne("IPCU.Models.FitTestingForm", "FitTestingForm")
@@ -1476,6 +1450,15 @@ namespace IPCU.Migrations
                         .IsRequired();
 
                     b.Navigation("HandHygieneForm");
+                });
+
+            modelBuilder.Entity("IPCU.Models.Patient", b =>
+                {
+                    b.HasOne("IPCU.Models.PatientMaster", null)
+                        .WithMany()
+                        .HasForeignKey("HospNum")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1527,17 +1510,6 @@ namespace IPCU.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("VitalSigns", b =>
-                {
-                    b.HasOne("IPCU.Models.PatientMaster", "PatientMaster")
-                        .WithMany()
-                        .HasForeignKey("HospNum")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PatientMaster");
                 });
 
             modelBuilder.Entity("IPCU.Models.HandHygieneForm", b =>

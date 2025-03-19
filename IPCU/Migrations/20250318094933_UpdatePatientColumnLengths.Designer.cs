@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250318094933_UpdatePatientColumnLengths")]
+    partial class UpdatePatientColumnLengths
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1425,37 +1428,6 @@ namespace IPCU.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("VitalSigns", b =>
-                {
-                    b.Property<int>("VitalId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VitalId"));
-
-                    b.Property<string>("HospNum")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<string>("VitalSign")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("VitalSignDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("VitalSignValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("VitalId");
-
-                    b.HasIndex("HospNum");
-
-                    b.ToTable("VitalSigns");
-                });
-
             modelBuilder.Entity("IPCU.Models.FitTestingFormHistory", b =>
                 {
                     b.HasOne("IPCU.Models.FitTestingForm", "FitTestingForm")
@@ -1527,17 +1499,6 @@ namespace IPCU.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("VitalSigns", b =>
-                {
-                    b.HasOne("IPCU.Models.PatientMaster", "PatientMaster")
-                        .WithMany()
-                        .HasForeignKey("HospNum")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PatientMaster");
                 });
 
             modelBuilder.Entity("IPCU.Models.HandHygieneForm", b =>
