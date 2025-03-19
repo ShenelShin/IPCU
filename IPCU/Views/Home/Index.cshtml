@@ -34,15 +34,15 @@
             <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
                 <div class="card-header bg-warning text-white text-center py-3">
                     <i class="fas fa-dumbbell fa-2x mb-2"></i>
-                    <h5 class="card-title mb-0">Training Summary Form</h5>
+                    <h5 class="card-title mb-0">Training Summary</h5>
                 </div>
                 <div class="card-body text-center p-4">
-                    <p class="card-text text-muted mb-4">View or fill out the Training Summary form.</p>
-                    <a asp-controller="TrainingSummary" asp-action="Index" class="btn btn-warning text-white">
-                        <i class="fas fa-arrow-right mr-1"></i> Open Form
+                    <p class="card-text text-muted mb-4">View asnwered assesments and create summary reports.</p>
+                    <a asp-controller="Evaluation" asp-action="SummaryReport" class="btn btn-warning text-white">
+                        <i class="fas fa-arrow-right mr-1"></i> Summary
                     </a>
                     <a asp-controller="TrainingSummary" asp-action="Reports" class="btn btn-outline-success">
-                        <i class="fa fa-arrow-right"></i> Training Summary
+                        <i class="fa fa-arrow-right"></i> Report
                     </a>
                 </div>
             </div>
