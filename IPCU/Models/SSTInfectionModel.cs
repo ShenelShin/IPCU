@@ -1,13 +1,18 @@
-﻿namespace IPCU.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IPCU.Models
 {
     public class SSTInfectionModel
     {
-    // Primary Key
+        // Primary Key
+        [Key]
         public int SSTID { get; set; }  // You can use int, or change to Guid if preferred
 
-    // Patient info fields
-    public string PatientName { get; set; }
-    public string HospitalNumber { get; set; }
+        // Patient info fields
+        public string Fname { get; set; }
+        public string Mname { get; set; }
+        public string Lname { get; set; }
+        public string HospitalNumber { get; set; }
     public DateTime DateOfBirth { get; set; }
     public int Age { get; set; }
     public string UnitWardArea { get; set; }

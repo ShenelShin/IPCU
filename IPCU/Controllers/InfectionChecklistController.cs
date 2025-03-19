@@ -1,9 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IPCU.Models;
+using IPCU.Data;
 namespace IPCU.Controllers
 {
     public class InfectionChecklistController : Controller
     {
+        private readonly ApplicationDbContext _context;
+
+        // Inject DbContext via constructor
+        public InfectionChecklistController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public ActionResult Index()
         {
             var model = new SSTInfectionModel();
@@ -11,14 +20,18 @@ namespace IPCU.Controllers
         }
 
         [HttpPost]
-        public ActionResult Submit(SSTInfectionModel model)
+        public IActionResult Submit(SSTInfectionModel model)
         {
             if (ModelState.IsValid)
             {
-                // Handle form submission logic here (save, process, etc.)
+                // Add to database
+                _context.SSTInfectionModels.Add(model);
+                _context.SaveChanges(); // Save
+
                 TempData["Success"] = "Checklist submitted successfully!";
                 return RedirectToAction("Index");
             }
+
             return View("Index", model);
         }
     }
