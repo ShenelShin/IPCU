@@ -142,12 +142,12 @@
                             row.RelativeItem(0.4f).Border(1).Padding(3).Background(Grey.Lighten3).Column(innerCol =>
                             {
                                 innerCol.Item().PaddingTop(7).Text("Post Test Evaluation Grade").Bold().AlignCenter();
-                                innerCol.Item().Text(training.PostTestEvaluationGrade.ToString()).FontSize(10).AlignCenter();
+                                //innerCol.Item().Text(training.PostTestEvaluationGrade.ToString()).FontSize(10).AlignCenter();
 
                                 innerCol.Item().PaddingVertical(5).LineHorizontal(0.5f); // Adds a horizontal line
 
                                 innerCol.Item().Text("Final Rating").Bold().AlignCenter();
-                                innerCol.Item().Text(training.FinalRating.ToString()).FontSize(10).AlignCenter();
+                               // innerCol.Item().Text(training.FinalRating.ToString()).FontSize(10).AlignCenter();
                             });
                         });
 

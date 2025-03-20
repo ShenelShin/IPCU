@@ -365,3 +365,4 @@ IPCU/appsettings.json
 IPCU/appsettings.json
 /IPCU/appsettings.json
 IPCU/appsettings.Development.json
+/IPCU/Views/TestResults/Index.cshtml

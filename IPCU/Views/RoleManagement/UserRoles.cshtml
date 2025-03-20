@@ -1,0 +1,59 @@
+﻿@model List<IPCU.Models.UserRolesViewModel>
+@{
+    ViewData["Title"] = "User Roles";
+}
+
+<h1>User Roles</h1>
+
+<div class="row mb-3">
+    <div class="col">
+        <a asp-action="Index" class="btn btn-secondary">Back to Role List</a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5>Users and their roles</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Roles</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>
+                            @if (user.Roles.Any())
+                            {
+                                <div class="d-flex flex-wrap gap-1">
+                                    @foreach (var role in user.Roles)
+                                    {
+                                        <span class="badge bg-primary">@role</span>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <span class="text-muted">No roles assigned</span>
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="ManageUserRoles" asp-route-userId="@user.UserId" class="btn btn-primary btn-sm">
+                                <i class="fas fa-user-cog"></i> Manage Roles
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -20,86 +20,99 @@ namespace IPCU.Controllers
         {
             return View(new PreTestClinical());
         }
-
         [HttpPost]
-        public IActionResult Submit(PreTestClinical model, string[] selectedAnswers14)
+        public IActionResult Submit(PostTestClinical model, string[] Question18, string[] Question19, string[] Question20, string[] Question21, string[] Question22, string[] Question23, string[] Question24,
+     string[] Question25, string[] Question26, string[] Question27, string[] Question28, string[] Question29)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     // Compute the score
-                    int score = 0;
-                    if (Request.Form["selectedAnswers[0]"] == "0") // Correct answer for Q1
-                        score += 1;
-                    if (Request.Form["selectedAnswers[1]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[2]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[3]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[4]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[5]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[6]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[7]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[8]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[9]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[10]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[11]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[12]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[13]"] == "0")
-                        score += 1;
-                    if (selectedAnswers14 != null && selectedAnswers14.Contains("0") && selectedAnswers14.Contains("1"))
-                        score += 1;
-                    if (Request.Form["selectedAnswers[15]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[16]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[17]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[18]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[19]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[20]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[21]"] == "0")
-                        score += 1;
-                    if (Request.Form["selectedAnswers[22]"] == "0")
-                        score += 1;
+                    float score = 0.0f;
+                    if (Request.Form["Question1"] == "Airborne precaution") score += 1.25f;
+                    if (Request.Form["Question2"] == "Airborne precaution") score += 1.25f;
+                    if (Request.Form["Question3"] == "Airborne precaution") score += 1.25f;
+                    if (Request.Form["Question4"] == "Airborne precaution") score += 1.25f;
+                    if (Request.Form["Question5"] == "Airborne precaution") score += 1.25f;
+                    if (Request.Form["Question6"] == "Airborne precaution") score += 1.25f;
+                    if (Request.Form["Question7"] == "Airborne precaution") score += 1.25f;
+                    if (Request.Form["Question8"] == "Airborne precaution") score += 1.25f;
+                    if (Request.Form["Question9"] == "Standard Precautions") score += 1.0f;
+                    if (Request.Form["Question10"] == "8 ACH") score += 1.0f;
+                    if (Request.Form["Question11"] == "Within the week") score += 1.0f;
+                    if (Request.Form["Question12"] == "Gown-Gloves-Mask-Goggles") score += 1.0f;
+                    if (Request.Form["Question13"] == "Reduce hospital costs") score += 1.0f;
+                    if (Request.Form["Question14"] == "5-10 seconds") score += 1.0f;
+                    if (Request.Form["Question15"] == "Surgical mask") score += 1.0f;
+                    if (Request.Form["Question16"] == "1 foot") score += 1.0f;
+                    if (Request.Form["Question17"] == "Wearing a mask") score += 1.0f;
 
+                    if (Question18 != null && Question18.Contains("Single room only") && Question18.Contains("Ward type")) score += 1.0f;
+                    if (Question19 != null && Question19.Contains("Single room only") && Question19.Contains("Ward type")) score += 1.0f;
+                    if (Question20 != null && Question20.Contains("Single room only") && Question20.Contains("Ward type")) score += 1.0f;
+                    if (Question21 != null && Question21.Contains("Single room only") && Question21.Contains("Ward type")) score += 1.0f;
+                    if (Question22 != null && Question22.Contains("Single room only") && Question22.Contains("Ward type")) score += 1.0f;
+                    if (Question23 != null && Question23.Contains("Single room only") && Question23.Contains("Ward type")) score += 1.0f;
+                    if (Question24 != null && Question24.Contains("Single room only") && Question24.Contains("Ward type")) score += 1.0f;
+                    if (Question25 != null && Question25.Contains("Gloves") && Question25.Contains("Isolation Gown")) score += 1.8f;
+                    if (Question26 != null && Question26.Contains("Gloves") && Question26.Contains("Isolation Gown")) score += 1.8f;
+                    if (Question27 != null && Question27.Contains("Gloves") && Question27.Contains("Isolation Gown")) score += 1.8f;
+                    if (Question28 != null && Question28.Contains("Gloves") && Question28.Contains("Isolation Gown")) score += 1.8f;
+                    if (Question29 != null && Question29.Contains("Gloves") && Question29.Contains("Isolation Gown")) score += 1.8f;
 
-                    model.PRETCSCORE = score;
+                    // Check if EmployeeId already exists in TrainingSummaries
+                    var existingEntry = _context.TrainingSummaries.FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId);
 
-                    // Save to database
-                    _context.PreTestClinicals.Add(model);
+                    if (existingEntry != null)
+                    {
+                        // Update existing record with Post-Test score
+                        existingEntry.PostScore = score;
+                        existingEntry.DateCreated = DateTime.Now;
+                        _context.TrainingSummaries.Update(existingEntry);
+                    }
+                    else
+                    {
+                        // Create new record
+                        var trainingSummary = new TrainingSummary
+                        {
+                            EmployeeId = model.EmployeeId,
+                            FullName = model.FullName,
+                            AgeGroup = model.AgeGroup,
+                            Sex = model.Sex,
+                            PWD = model.PWD,
+                            CivilStatus = model.CivilStatus,
+                            Department = model.Department,
+                            PreScore = score, // Since it's a post-test, PreScore defaults to 0
+                            PreScore_Total = 15, // Since it's a post-test, PreScore defaults to 0
+                            DateCreated = DateTime.Now
+                        };
+
+                        _context.TrainingSummaries.Add(trainingSummary);
+                    }
+
                     _context.SaveChanges();
 
-                    // Pass the model ID to the Success action
-                    return RedirectToAction("QuizResult", new { id = model.Id });
+                    // Redirect to Success view with the record ID
+                    var entryId = existingEntry != null ? existingEntry.Id : _context.TrainingSummaries
+                        .FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId)?.Id;
+
+                    return RedirectToAction("Success", new { id = entryId });
                 }
                 catch (Exception ex)
                 {
-                    // Log the exception
                     Console.WriteLine(ex.InnerException?.Message);
                     ModelState.AddModelError("", "An error occurred while saving the data.");
                 }
             }
-            return View("Quiz", model);
+            return View("Index", model);
         }
+
+
 
         public IActionResult QuizResult(int id)
         {
-            var model = _context.PreTestClinicals.Find(id);
+            var model = _context.TrainingSummaries.Find(id);
             if (model == null)
             {
                 return RedirectToAction("Quiz"); // Redirect if no model is found

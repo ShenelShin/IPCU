@@ -1,4 +1,4 @@
-﻿@model IPCU.Models.PreTestNonClinical
+﻿@model IPCU.Models.PostTestNonClinical
 
 <!-- Google Forms-Like Styling -->
 <style>
@@ -63,7 +63,6 @@
         margin-bottom: 10px;
     }
 </style>
-<form id="quizForm" action="your_submission_url" method="post">
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-7">
@@ -73,7 +72,7 @@
 
                 <h4 class="mt-3">Personal Information</h4>
 
-                <form asp-controller="PreTestNonClinical" asp-action="SubmitQuiz" method="post">
+                <form asp-controller="PostTestNonClinical" asp-action="SubmitQuiz" method="post">
                     <div class="mb-3">
                         <label class="form-label fw-bold">Full Name:</label>
                         <input asp-for="FullName" class="form-control form-control-lg" placeholder="Enter your full name" />
@@ -225,7 +224,6 @@
 
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
-                </form>
             </div>
         </div>
     </div>

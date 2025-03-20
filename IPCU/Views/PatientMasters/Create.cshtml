@@ -1,0 +1,103 @@
+﻿@model IPCU.Models.PatientMaster
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>PatientMaster</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="HospNum" class="control-label"></label>
+                <input asp-for="HospNum" class="form-control" />
+                <span asp-validation-for="HospNum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MiddleName" class="control-label"></label>
+                <input asp-for="MiddleName" class="form-control" />
+                <span asp-validation-for="MiddleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountNum" class="control-label"></label>
+                <input asp-for="AccountNum" class="form-control" />
+                <span asp-validation-for="AccountNum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sex" class="control-label"></label>
+                <input asp-for="Sex" class="form-control" />
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDate" class="control-label"></label>
+                <input asp-for="BirthDate" class="form-control" />
+                <span asp-validation-for="BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CivilStatus" class="control-label"></label>
+                <input asp-for="CivilStatus" class="form-control" />
+                <span asp-validation-for="CivilStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age" class="control-label"></label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientStatus" class="control-label"></label>
+                <input asp-for="PatientStatus" class="form-control" />
+                <span asp-validation-for="PatientStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="SeniorCitizenWithID" /> @Html.DisplayNameFor(model => model.SeniorCitizenWithID)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="cellnum" class="control-label"></label>
+                <input asp-for="cellnum" class="form-control" />
+                <span asp-validation-for="cellnum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmpNum" class="control-label"></label>
+                <input asp-for="EmpNum" class="form-control" />
+                <span asp-validation-for="EmpNum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientType" class="control-label"></label>
+                <input asp-for="PatientType" class="form-control" />
+                <span asp-validation-for="PatientType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" class="form-control" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

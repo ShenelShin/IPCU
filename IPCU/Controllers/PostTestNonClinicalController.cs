@@ -1,9 +1,6 @@
 ﻿using IPCU.Data;
 using IPCU.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
-using IPCU.Models;
-using IPCU.Data;
 using System.Linq;
 
 namespace IPCU.Controllers
@@ -67,20 +64,19 @@ namespace IPCU.Controllers
         /// <returns>Redirects to the QuizResult view with the computed score.</returns>
         [HttpPost]
         public IActionResult SubmitQuiz(PostTestNonClinical model,
-            string[] selectedMatchingAnswers,
-            string[] selectedMultipleChoiceAnswers,
-            string[] selectedWasteSegregation)
+     string[] selectedMatchingAnswers,
+     string[] selectedMultipleChoiceAnswers,
+     string[] selectedWasteSegregation)
         {
-            // Validate the model
             if (!ModelState.IsValid)
             {
                 return View("Quiz", model);
             }
 
             int totalScore = 0;
-            int totalQuestions = 0;
+            int totalQuestions = 20; // Hardcoded total number of questions
 
-            // Check matching type answers (Section I)
+            // Validate Matching Type Answers (Section I)
             if (selectedMatchingAnswers != null)
             {
                 for (int i = 0; i < correctMatchingAnswers.Length && i < selectedMatchingAnswers.Length; i++)
@@ -89,15 +85,10 @@ namespace IPCU.Controllers
                     {
                         totalScore++;
                     }
-                    totalQuestions++;
                 }
             }
-            else
-            {
-                totalQuestions += correctMatchingAnswers.Length;
-            }
 
-            // Check multiple choice answers (Section II)
+            // Validate Multiple Choice Answers (Section II)
             if (selectedMultipleChoiceAnswers != null)
             {
                 for (int i = 0; i < correctMultipleChoiceAnswers.Length && i < selectedMultipleChoiceAnswers.Length; i++)
@@ -106,15 +97,10 @@ namespace IPCU.Controllers
                     {
                         totalScore++;
                     }
-                    totalQuestions++;
                 }
             }
-            else
-            {
-                totalQuestions += correctMultipleChoiceAnswers.Length;
-            }
 
-            // Check waste segregation answers (Section III)
+            // Validate Waste Segregation Answers (Section III)
             if (selectedWasteSegregation != null)
             {
                 for (int i = 0; i < correctWasteSegregationAnswers.Length && i < selectedWasteSegregation.Length; i++)
@@ -123,61 +109,63 @@ namespace IPCU.Controllers
                     {
                         totalScore++;
                     }
-                    totalQuestions++;
                 }
+            }
+
+            // Calculate Rate (Percentage) and cast to float
+            float rate = (float)((totalScore / (double)totalQuestions) * 100);
+
+            // Check if an entry for this EmployeeId already exists
+            var existingEntry = _context.TrainingSummaries.FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId);
+
+            if (existingEntry != null)
+            {
+                // Update existing record
+                existingEntry.PostScore = totalScore;
+                existingEntry.Rate = rate; // Save computed rate as float
+                existingEntry.DateCreated = DateTime.Now;
+                _context.TrainingSummaries.Update(existingEntry);
             }
             else
             {
-                totalQuestions += correctWasteSegregationAnswers.Length;
+                // Create a new record
+                var trainingSummary = new TrainingSummary
+                {
+                    FullName = model.FullName,
+                    EmployeeId = model.EmployeeId,
+                    AgeGroup = model.AgeGroup,
+                    Sex = model.Sex,
+                    PostScore_Total = 20f,
+                    PWD = model.PWD,
+                    CivilStatus = model.CivilStatus,
+                    Department = model.Department,
+                    PostScore = totalScore,
+                    Rate = rate, // Save computed rate as float
+                    DateCreated = DateTime.Now
+                };
+
+                _context.TrainingSummaries.Add(trainingSummary);
             }
 
-            // Store the score in the model
-            model.POSTSCORE = totalScore;
-
-            // Calculate percentage (for display purposes)
-            double percentageScore = (double)totalScore / totalQuestions * 100;
-
-            // Save to database
             try
             {
-                _context.PostTestNonCLinicals.Add(model);
                 _context.SaveChanges();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-                // Log the exception
                 ModelState.AddModelError("", "Unable to save the quiz result. Please try again.");
                 return View("Quiz", model);
             }
 
-            // Redirect to the result page with the score
-            return RedirectToAction("QuizResult", new
-            {
-                id = model.Id,
-                score = totalScore,
-                totalQuestions = totalQuestions,
-                percentageScore = percentageScore
-            });
+            return RedirectToAction("QuizResult", new { score = totalScore, totalQuestions = totalQuestions, rate = rate });
         }
 
-        /// <summary>
-        /// Displays the quiz result page.
-        /// </summary>
-        /// <param name="id">The ID of the submitted quiz.</param>
-        /// <param name="score">The computed score from the quiz.</param>
-        /// <param name="totalQuestions">The total number of questions.</param>
-        /// <param name="percentageScore">The percentage score.</param>
-        /// <returns>The QuizResult view.</returns>
-        public IActionResult QuizResult(int id, int score, int totalQuestions, double percentageScore)
+        public IActionResult QuizResult(int score, int totalQuestions)
         {
-            ViewBag.Id = id;
             ViewBag.Score = score;
-            ViewBag.TotalQuestions = totalQuestions;
-            ViewBag.PercentageScore = percentageScore;
-            ViewBag.PassingScore = 70; // Assuming 70% is passing
-            ViewBag.Passed = percentageScore >= 70;
 
-            return View();
+            return View("~/Views/PostTestNonClinicals/QuizResult.cshtml");
         }
+
     }
 }

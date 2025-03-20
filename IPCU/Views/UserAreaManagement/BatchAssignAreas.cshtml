@@ -1,0 +1,47 @@
+﻿@model List<IPCU.Models.UserAreaViewModel>
+@{
+    ViewData["Title"] = "Batch Assign Areas";
+}
+
+<div class="container">
+    <h2>Batch Assign Areas</h2>
+
+    <form asp-action="BatchAssignAreas" method="post">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Assigned Area</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (var i = 0; i < Model.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Model[i].UserName
+                                <input type="hidden" asp-for="@Model[i].UserId" />
+                                <input type="hidden" asp-for="@Model[i].UserName" />
+                                <input type="hidden" asp-for="@Model[i].Email" />
+                                <input type="hidden" asp-for="@Model[i].FullName" />
+                            </td>
+                            <td>@Model[i].FullName</td>
+                            <td>@Model[i].Email</td>
+                            <td>
+                                <input asp-for="@Model[i].AssignedArea" class="form-control" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Save All Changes</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>

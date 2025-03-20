@@ -22,7 +22,7 @@ namespace IPCU.Controllers
 
         [HttpPost]
         public IActionResult Submit(PostTestClinical model, string[] Question18, string[] Question19, string[] Question20, string[] Question21, string[] Question22, string[] Question23, string[] Question24,
-            string[] Question25, string[] Question26, string[] Question27, string[] Question28, string[] Question29)
+                    string[] Question25, string[] Question26, string[] Question27, string[] Question28, string[] Question29)
         {
             if (ModelState.IsValid)
             {
@@ -30,22 +30,22 @@ namespace IPCU.Controllers
                 {
                     // Compute the score
                     float score = 0.0f;
-                    if (Request.Form["Question1"] == "Airborne precaution") // Correct answer for Q1
-                        score += 1.0f;
+                    if (Request.Form["Question1"] == "Airborne precaution")
+                        score += 1.25f;
                     if (Request.Form["Question2"] == "Airborne precaution")
-                        score += 1.0f;
+                        score += 1.25f;
                     if (Request.Form["Question3"] == "Airborne precaution")
-                        score += 1.0f;
+                        score += 1.25f;
                     if (Request.Form["Question4"] == "Airborne precaution")
-                        score += 1.0f;
+                        score += 1.25f;
                     if (Request.Form["Question5"] == "Airborne precaution")
-                        score += 1.0f;
+                        score += 1.25f;
                     if (Request.Form["Question6"] == "Airborne precaution")
-                        score += 1.0f;
+                        score += 1.25f;
                     if (Request.Form["Question7"] == "Airborne precaution")
-                        score += 1.0f;
+                        score += 1.25f;
                     if (Request.Form["Question8"] == "Airborne precaution")
-                        score += 1.0f;
+                        score += 1.25f;
                     if (Request.Form["Question9"] == "Standard Precautions")
                         score += 1.0f;
                     if (Request.Form["Question10"] == "8 ACH")
@@ -89,18 +89,54 @@ namespace IPCU.Controllers
                     if (Question29 != null && Question29.Contains("Gloves") && Question29.Contains("Isolation Gown"))
                         score += 1.8f;
 
-                    model.POSTCSCORE = score;
+                    // Calculate Rate (Percentage)
+                    float maxScore = 35.0f;
+                    float rate = (score / maxScore) * 100.0f;
 
-                    // Save to database
-                    _context.PostTestClinicals.Add(model);
+                    // Check if there's an existing entry for the same EmployeeId
+                    var existingEntry = _context.TrainingSummaries
+                        .FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId);
+
+                    if (existingEntry != null)
+                    {
+                        // Update existing record
+                        existingEntry.PostScore = score;
+                        existingEntry.Rate = rate; // Save Rate
+                        existingEntry.DateCreated = DateTime.Now;
+                        _context.TrainingSummaries.Update(existingEntry);
+                    }
+                    else
+                    {
+                        // Create a new record if no existing entry is found
+                        var trainingSummary = new TrainingSummary
+                        {
+                            FullName = model.FullName,
+                            EmployeeId = model.EmployeeId,
+                            AgeGroup = model.AgeGroup,
+                            Sex = model.Sex,
+                            PWD = model.PWD,
+                            PostScore_Total = 35f,
+                            CivilStatus = model.CivilStatus,
+                            Department = model.Department,
+                            PostScore = score,
+                            Rate = rate,  // Store computed Rate
+                            DateCreated = DateTime.Now
+                        };
+
+                        _context.TrainingSummaries.Add(trainingSummary);
+                    }
+
+                    // Save changes to the database
                     _context.SaveChanges();
 
-                    // Pass the model ID to the Success action
-                    return RedirectToAction("Success", new { id = model.Id });
+                    // Redirect to the Success action with the ID
+                    var entryId = existingEntry != null ? existingEntry.Id : _context.TrainingSummaries
+                        .FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId)?.Id;
+
+                    return RedirectToAction("Success", new { id = entryId });
                 }
                 catch (Exception ex)
                 {
-                    // Log the exception
                     Console.WriteLine(ex.InnerException?.Message);
                     ModelState.AddModelError("", "An error occurred while saving the data.");
                 }
@@ -108,10 +144,9 @@ namespace IPCU.Controllers
             return View("Index", model);
         }
 
-        [HttpGet("Success")]
         public IActionResult Success(int id)
         {
-            var model = _context.PostTestClinicals.Find(id);
+            var model = _context.TrainingSummaries.Find(id);
             if (model == null)
             {
                 return RedirectToAction("Index");

@@ -1,0 +1,269 @@
+﻿@model IEnumerable<IPCU.Models.PatientViewModel>
+@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = "ICN Patient List";
+}
+
+<!-- Custom CSS for the dashboard -->
+<style>
+    .dashboard-header {
+        background-color: #f8f9fa;
+        border-left: 4px solid #0d6efd;
+        padding: 15px 20px;
+        margin-bottom: 25px;
+        border-radius: 4px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .stats-card {
+        background-color: white;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.05);
+        transition: transform 0.2s;
+    }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stats-card .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+
+        .stats-card .label {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+    .patient-table {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
+
+        .patient-table thead {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .patient-table th {
+            font-weight: 500;
+            padding: 12px 15px;
+        }
+
+        .patient-table td {
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+
+    .dataTables_wrapper .dataTables_filter input {
+        border-radius: 20px;
+        border: 1px solid #ced4da;
+        padding: 5px 15px;
+    }
+
+    .room-badge {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .admission-duration {
+        font-weight: 500;
+    }
+
+        .admission-duration.critical {
+            color: #dc3545;
+        }
+
+        .admission-duration.warning {
+            color: #fd7e14;
+        }
+
+        .admission-duration.normal {
+            color: #0d6efd;
+        }
+
+    .btn-view-details {
+        border-radius: 20px;
+        padding: 4px 12px;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="dashboard-header">
+        <h2 class="mb-1">ICN Patient Monitoring Dashboard</h2>
+        <p class="text-muted mb-0">Patients in your assigned areas admitted for 48+ hours</p>
+    </div>
+
+    @{
+        var currentUser = await UserManager.GetUserAsync(User);
+        var assignedAreas = currentUser?.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
+    }
+    <div class="alert alert-info mb-4">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-map-marker-alt me-3"></i>
+            <div>
+                <strong>Your Assigned Area@(assignedAreas.Count > 1 ? "s" : ""):</strong>
+                @if (assignedAreas.Any())
+                {
+                    @string.Join(", ", assignedAreas)
+                }
+                else
+                {
+                    <span class="text-warning">No areas assigned</span>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="label mb-0">Total Patients</p>
+                        <h3 class="number mb-0">@Model.Count()</h3>
+                    </div>
+                    <div>
+                        <i class="fas fa-user-injured fa-2x text-primary opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="label mb-0">Average Stay</p>
+                        <h3 class="number mb-0">@(Model.Any() ? Math.Round(Model.Average(p => p.AdmissionDuration)) : 0) days</h3>
+                    </div>
+                    <div>
+                        <i class="fas fa-calendar-day fa-2x text-success opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="label mb-0">Extended Stay (7+ days)</p>
+                        <h3 class="number mb-0">@Model.Count(p => p.AdmissionDuration >= 7)</h3>
+                    </div>
+                    <div>
+                        <i class="fas fa-hourglass-half fa-2x text-warning opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stats-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="label mb-0">Locations</p>
+                        <h3 class="number mb-0">@Model.Select(p => p.AdmLocation).Distinct().Count()</h3>
+                    </div>
+                    <div>
+                        <i class="fas fa-hospital fa-2x text-info opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info shadow-sm">
+            <i class="fas fa-info-circle me-2"></i>
+            No patients found in your assigned areas who have been admitted for at least 48 hours.
+        </div>
+    }
+    else
+    {
+        <div class="card patient-table mb-4">
+            <div class="card-body p-0">
+                <table class="table table-hover m-0" id="patientsTable">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.HospNum)</th>
+                            <th>@Html.DisplayNameFor(model => model.PatientName)</th>
+                            <th>@Html.DisplayNameFor(model => model.AdmLocation)</th>
+                            <th>Room</th>
+                            <th>Admitted</th>
+                            <th>Duration</th>
+                            <th>@Html.DisplayNameFor(model => model.Age)/@Html.DisplayNameFor(model => model.Sex)</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td><span class="badge bg-light text-dark">@Html.DisplayFor(modelItem => item.HospNum)</span></td>
+                                <td>
+                                    <div class="fw-500">@Html.DisplayFor(modelItem => item.PatientName)</div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-primary">@Html.DisplayFor(modelItem => item.AdmLocation)</span>
+                                </td>
+                                <td>
+                                    <span class="room-badge bg-light text-dark">@Html.DisplayFor(modelItem => item.RoomID)</span>
+                                </td>
+                                <td>@item.AdmDate?.ToString("MMM dd, yyyy")</td>
+                                <td>
+                                    @{
+                                        string durationClass = item.AdmissionDuration >= 14 ? "critical" :
+                                        (item.AdmissionDuration >= 7 ? "warning" : "normal");
+                                    }
+                                    <span class="admission-duration @durationClass">
+                                        @Html.DisplayFor(modelItem => item.AdmissionDuration) days
+                                    </span>
+                                </td>
+                                <td>@item.Age yrs / @item.Sex</td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.IdNum" class="btn btn-sm btn-primary btn-view-details">
+                                        <i class="fas fa-eye me-1"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize DataTables with advanced features
+            $('#patientsTable').DataTable({
+                "responsive": true,
+                "order": [[2, "asc"], [3, "asc"]], // Sort by Location then Room
+                "pageLength": 10,
+                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                "language": {
+                    "search": "Search patients:",
+                    "lengthMenu": "Show _MENU_ patients",
+                    "info": "Showing _START_ to _END_ of _TOTAL_ patients"
+                },
+                "dom": '<"row"<"col-md-6"l><"col-md-6"f>>rtip',
+                "initComplete": function() {
+                    // Add a custom class to the search input
+                    $('.dataTables_filter input').addClass('form-control-sm');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,550 @@
+﻿@model IPCU.Models.PatientVitalSignsViewModel
+@{
+    ViewData["Title"] = "Patient Vital Signs";
+}
+
+<div class="container-fluid">
+    <h2>Vital Signs</h2>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h4>@Model.Patient.PatientName</h4>
+            <p class="mb-0">
+                @Model.Patient.AdmLocation - Room @Model.Patient.RoomID
+            </p>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col">
+            <a asp-action="AddVitalSign" asp-route-id="@Model.Patient.IdNum" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-1"></i> Add Vital Sign
+            </a>
+            <a asp-action="Details" asp-route-id="@Model.Patient.IdNum" class="btn btn-secondary ms-2">
+                Back to Patient Details
+            </a>
+        </div>
+    </div>
+
+    @if (Model.VitalSigns.Any())
+    {
+        <div class="card">
+            <div class="card-header">
+                <h5>Vital Signs History</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date/Time</th>
+                                <th>Vital Sign</th>
+                                <th>Value</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var vs in Model.VitalSigns)
+                            {
+                                <tr>
+                                    <td>@vs.VitalSignDate.ToString("MM/dd/yyyy hh:mm tt")</td>
+                                    <td>@vs.VitalSign</td>
+                                    @{
+                                        bool isAbnormal = false;
+                                        string statusText = "Normal";
+
+                                        // Check thresholds based on vital sign type
+                                        if (vs.VitalSign.Equals("Temperature", StringComparison.OrdinalIgnoreCase) ||
+                                        vs.VitalSign.Equals("Temp", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            double temp;
+                                            if (double.TryParse(vs.VitalSignValue, out temp))
+                                            {
+                                                isAbnormal = temp >= 38.0 || temp < 36.0;
+                                                statusText = isAbnormal ? (temp >= 38.0 ? "High" : "Low") : "Normal";
+                                            }
+                                        }
+                                        else if (vs.VitalSign.Equals("Respiratory Rate", StringComparison.OrdinalIgnoreCase) ||
+                                        vs.VitalSign.Equals("RR", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            double rr;
+                                            if (double.TryParse(vs.VitalSignValue, out rr))
+                                            {
+                                                isAbnormal = rr > 25;
+                                                statusText = isAbnormal ? "High" : "Normal";
+                                            }
+                                        }
+                                        else if (vs.VitalSign.Equals("WBC", StringComparison.OrdinalIgnoreCase) ||
+                                        vs.VitalSign.Contains("White Blood Cell", StringComparison.OrdinalIgnoreCase))
+                                        {
+                                            double wbc;
+                                            if (double.TryParse(vs.VitalSignValue, out wbc))
+                                            {
+                                                isAbnormal = wbc > 12000 || wbc < 4000;
+                                                statusText = isAbnormal ? (wbc > 12000 ? "High" : "Low") : "Normal";
+                                            }
+                                        }
+                                    }
+                                    <td class="@(isAbnormal ? "text-danger fw-bold" : "")">@vs.VitalSignValue</td>
+                                    <td>
+                                        <span class="badge @(isAbnormal ? "bg-danger" : "bg-success")">
+                                            @statusText
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vital Signs Trends Timeline -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Vital Signs Trends</h5>
+            </div>
+            <div class="card-body">
+                <!-- Navigation tabs -->
+                <ul class="nav nav-tabs" id="vitalSignsTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="temperature-tab" data-bs-toggle="tab" data-bs-target="#temperature" type="button" role="tab" aria-controls="temperature" aria-selected="true">
+                            <i class="fas fa-thermometer-half me-1"></i> Temperature
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="respiratory-tab" data-bs-toggle="tab" data-bs-target="#respiratory" type="button" role="tab" aria-controls="respiratory" aria-selected="false">
+                            <i class="fas fa-lungs me-1"></i> Respiratory Rate
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="wbc-tab" data-bs-toggle="tab" data-bs-target="#wbc" type="button" role="tab" aria-controls="wbc" aria-selected="false">
+                            <i class="fas fa-vial me-1"></i> WBC Count
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab content -->
+                <div class="tab-content pt-4" id="vitalSignsTabsContent">
+                    <!-- Temperature Timeline -->
+                    <div class="tab-pane fade show active" id="temperature" role="tabpanel" aria-labelledby="temperature-tab">
+                        <div class="timeline-container" id="temperatureTimeline">
+                            <div class="timeline-line"></div>
+                            <div class="timeline-markers" id="tempMarkers"></div>
+                        </div>
+                    </div>
+
+                    <!-- Respiratory Rate Timeline -->
+                    <div class="tab-pane fade" id="respiratory" role="tabpanel" aria-labelledby="respiratory-tab">
+                        <div class="timeline-container" id="respiratoryTimeline">
+                            <div class="timeline-line"></div>
+                            <div class="timeline-markers" id="rrMarkers"></div>
+                        </div>
+                    </div>
+
+                    <!-- WBC Timeline -->
+                    <div class="tab-pane fade" id="wbc" role="tabpanel" aria-labelledby="wbc-tab">
+                        <div class="timeline-container" id="wbcTimeline">
+                            <div class="timeline-line"></div>
+                            <div class="timeline-markers" id="wbcMarkers"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legend -->
+                <div class="row mt-4">
+                    <div class="col text-center">
+                        <div class="d-inline-block me-4">
+                            <span class="badge bg-success p-2"><i class="fas fa-circle me-1"></i> Normal</span>
+                        </div>
+                        <div class="d-inline-block me-4">
+                            <span class="badge bg-danger p-2"><i class="fas fa-circle me-1"></i> High</span>
+                        </div>
+                        <div class="d-inline-block">
+                            <span class="badge bg-primary p-2"><i class="fas fa-circle me-1"></i> Low</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .timeline-container {
+                position: relative;
+                width: 100%;
+                height: 180px;
+                margin: 20px 0;
+            }
+
+            .timeline-line {
+                position: absolute;
+                top: 80px;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background-color: #e9ecef;
+                z-index: 1;
+            }
+
+            .timeline-marker {
+                position: absolute;
+                transform: translateX(-50%);
+                z-index: 2;
+                text-align: center;
+                transition: all 0.3s ease;
+            }
+
+                .timeline-marker:hover {
+                    transform: translateX(-50%) scale(1.1);
+                    z-index: 3;
+                }
+
+            .timeline-date {
+                position: absolute;
+                bottom: -25px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 0.7rem;
+                color: #6c757d;
+                white-space: nowrap;
+            }
+
+            .timeline-time {
+                position: absolute;
+                top: -20px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 0.7rem;
+                color: #6c757d;
+                white-space: nowrap;
+            }
+
+            .timeline-icon {
+                width: 40px;
+                height: 40px;
+                background-color: #fff;
+                border: 3px solid;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.2rem;
+                cursor: pointer;
+            }
+
+            .timeline-value {
+                position: absolute;
+                top: 42px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-weight: bold;
+                font-size: 0.9rem;
+                white-space: nowrap;
+            }
+
+            .timeline-tooltip {
+                position: absolute;
+                top: -60px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: rgba(0,0,0,0.8);
+                color: white;
+                padding: 5px 10px;
+                border-radius: 4px;
+                font-size: 0.8rem;
+                visibility: hidden;
+                opacity: 0;
+                transition: opacity 0.3s;
+                white-space: nowrap;
+                z-index: 10;
+            }
+
+            .timeline-marker:hover .timeline-tooltip {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .timeline-icon.normal {
+                border-color: #198754;
+                color: #198754;
+            }
+
+            .timeline-icon.high {
+                border-color: #dc3545;
+                color: #dc3545;
+            }
+
+            .timeline-icon.low {
+                border-color: #0d6efd;
+                color: #0d6efd;
+            }
+
+            .timeline-value.normal {
+                color: #198754;
+            }
+
+            .timeline-value.high {
+                color: #dc3545;
+            }
+
+            .timeline-value.low {
+                color: #0d6efd;
+            }
+
+            /* Alternating positions for markers (top/bottom) */
+            .timeline-marker.position-top {
+                top: 20px;
+            }
+
+            .timeline-marker.position-bottom {
+                top: 80px;
+            }
+
+            .timeline-marker.position-top .timeline-value {
+                top: 42px;
+            }
+
+            .timeline-marker.position-bottom .timeline-value {
+                bottom: 42px;
+                top: auto;
+            }
+
+            /* Timeline tick marks for dates */
+            .timeline-tick {
+                position: absolute;
+                width: 2px;
+                height: 10px;
+                background-color: #adb5bd;
+                bottom: -10px;
+                z-index: 1;
+            }
+
+            .timeline-tick-label {
+                position: absolute;
+                bottom: -30px;
+                transform: translateX(-50%);
+                font-size: 0.7rem;
+                color: #6c757d;
+            }
+        </style>
+
+        @section Scripts {
+        <script>
+            // Filter and prepare data
+            const vitalSigns = @Html.Raw(Json.Serialize(Model.VitalSigns));
+
+            // Function to extract and prepare data for a specific vital sign
+            function prepareVitalSignData(vitalSignType) {
+                let data = [];
+
+                vitalSigns.forEach(vs => {
+                    // Match various forms of the vital sign names
+                    let matchesType = false;
+
+                    if (vitalSignType === 'temperature') {
+                        matchesType = vs.vitalSign.toLowerCase() === 'temperature' ||
+                                    vs.vitalSign.toLowerCase() === 'temp';
+                    } else if (vitalSignType === 'respiratoryRate') {
+                        matchesType = vs.vitalSign.toLowerCase() === 'respiratory rate' ||
+                                    vs.vitalSign.toLowerCase() === 'rr';
+                    } else if (vitalSignType === 'wbc') {
+                        matchesType = vs.vitalSign.toLowerCase() === 'wbc' ||
+                                    vs.vitalSign.toLowerCase().includes('white blood cell');
+                    }
+
+                    if (matchesType) {
+                        const value = parseFloat(vs.vitalSignValue);
+                        if (!isNaN(value)) {
+                            // Determine if value is abnormal
+                            let status = "normal";
+
+                            if (vitalSignType === 'temperature') {
+                                if (value >= 38.0) status = "high";
+                                else if (value < 36.0) status = "low";
+                            } else if (vitalSignType === 'respiratoryRate') {
+                                if (value > 25) status = "high";
+                            } else if (vitalSignType === 'wbc') {
+                                if (value > 12000) status = "high";
+                                else if (value < 4000) status = "low";
+                            }
+
+                            // Add to data array with date and value
+                            data.push({
+                                date: new Date(vs.vitalSignDate),
+                                value: value,
+                                status: status,
+                                displayValue: formatValue(vitalSignType, value)
+                            });
+                        }
+                    }
+                });
+
+                // Sort by date
+                data.sort((a, b) => a.date - b.date);
+
+                return data;
+            }
+
+            // Format value for display
+            function formatValue(type, value) {
+                if (type === 'temperature') {
+                    return value.toFixed(1) + '°C';
+                } else if (type === 'respiratoryRate') {
+                    return value.toString();
+                } else if (type === 'wbc') {
+                    return value.toLocaleString();
+                }
+                return value.toString();
+            }
+
+            // Get icon class based on vital sign type
+            function getIconClass(type) {
+                if (type === 'temperature') {
+                    return 'fas fa-thermometer-half';
+                } else if (type === 'respiratoryRate') {
+                    return 'fas fa-lungs';
+                } else if (type === 'wbc') {
+                    return 'fas fa-vial';
+                }
+                return 'fas fa-chart-line';
+            }
+
+            // Get status text
+            function getStatusText(status) {
+                if (status === 'high') return 'High';
+                if (status === 'low') return 'Low';
+                return 'Normal';
+            }
+
+            // Get tooltip text
+            function getTooltipText(type, value, status) {
+                let baseText = '';
+
+                if (type === 'temperature') {
+                    baseText = `Temperature: ${value.toFixed(1)}°C`;
+                } else if (type === 'respiratoryRate') {
+                    baseText = `Respiratory Rate: ${value} breaths/min`;
+                } else if (type === 'wbc') {
+                    baseText = `WBC Count: ${value.toLocaleString()} cells/μL`;
+                }
+
+                return `${baseText} (${getStatusText(status)})`;
+            }
+
+            // Function to create timeline visualization
+            function createTimeline(containerId, dataPoints, type) {
+                const container = document.getElementById(containerId);
+                if (!container || dataPoints.length === 0) return;
+
+                // Clear container
+                container.innerHTML = '';
+
+                // Calculate min and max date to determine the timeline range
+                const dates = dataPoints.map(item => item.date);
+                const minDate = new Date(Math.min.apply(null, dates.map(d => d.getTime())));
+                const maxDate = new Date(Math.max.apply(null, dates.map(d => d.getTime())));
+
+                // Add one day before and after to give some padding
+                minDate.setDate(minDate.getDate() - 1);
+                maxDate.setDate(maxDate.getDate() + 1);
+
+                const timeRange = maxDate.getTime() - minDate.getTime();
+                const containerWidth = container.offsetWidth;
+
+                // Add date ticks along the bottom
+                const daysInRange = Math.ceil((maxDate - minDate) / (1000 * 60 * 60 * 24)) + 1;
+                const ticksToShow = Math.min(daysInRange, 10); // Show at most 10 ticks
+                const tickInterval = Math.ceil(daysInRange / ticksToShow);
+
+                // Create timeline line first
+                const timelineLine = document.createElement('div');
+                timelineLine.className = 'timeline-line';
+                container.appendChild(timelineLine);
+
+                // Add date ticks
+                let currentTickDate = new Date(minDate);
+                for (let i = 0; i <= daysInRange; i += tickInterval) {
+                    currentTickDate = new Date(minDate);
+                    currentTickDate.setDate(minDate.getDate() + i);
+
+                    const tickPosition = ((currentTickDate - minDate) / timeRange) * 100;
+
+                    const tick = document.createElement('div');
+                    tick.className = 'timeline-tick';
+                    tick.style.left = `${tickPosition}%`;
+                    container.appendChild(tick);
+
+                    const tickLabel = document.createElement('div');
+                    tickLabel.className = 'timeline-tick-label';
+                    tickLabel.style.left = `${tickPosition}%`;
+                    tickLabel.textContent = currentTickDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    container.appendChild(tickLabel);
+                }
+
+                // Create markers for each data point
+                dataPoints.forEach((item, index) => {
+                    const position = ((item.date - minDate) / timeRange) * 100;
+                    const positionClass = index % 2 === 0 ? 'position-top' : 'position-bottom';
+
+                    const marker = document.createElement('div');
+                    marker.className = `timeline-marker ${positionClass}`;
+                    marker.style.left = `${position}%`;
+
+                    // Create tooltip
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'timeline-tooltip';
+                    tooltip.textContent = getTooltipText(type, item.value, item.status);
+                    marker.appendChild(tooltip);
+
+                    // Create time indicator
+                    const timeEl = document.createElement('div');
+                    timeEl.className = 'timeline-time';
+                    timeEl.textContent = item.date.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'});
+                    marker.appendChild(timeEl);
+
+                    // Create icon
+                    const icon = document.createElement('div');
+                    icon.className = `timeline-icon ${item.status}`;
+
+                    const iconI = document.createElement('i');
+                    iconI.className = getIconClass(type);
+                    icon.appendChild(iconI);
+                    marker.appendChild(icon);
+
+                    // Create value display
+                    const valueEl = document.createElement('div');
+                    valueEl.className = `timeline-value ${item.status}`;
+                    valueEl.textContent = item.displayValue;
+                    marker.appendChild(valueEl);
+
+                    // Create date display
+                    const dateEl = document.createElement('div');
+                    dateEl.className = 'timeline-date';
+                    dateEl.textContent = item.date.toLocaleDateString('en-US', {month: 'short', day: 'numeric'});
+                    marker.appendChild(dateEl);
+
+                    container.appendChild(marker);
+                });
+            }
+
+            // Initialize timelines when document is ready
+            document.addEventListener('DOMContentLoaded', function() {
+                // Prepare data for each vital sign
+                const temperatureData = prepareVitalSignData('temperature');
+                const respiratoryRateData = prepareVitalSignData('respiratoryRate');
+                const wbcData = prepareVitalSignData('wbc');
+
+                // Create timelines
+                createTimeline('tempMarkers', temperatureData, 'temperature');
+                createTimeline('rrMarkers', respiratoryRateData, 'respiratoryRate');
+                createTimeline('wbcMarkers', wbcData, 'wbc');
+            });
+        </script>
+    }
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No vital signs recorded for this patient yet.
+        </div>
+    }
+</div>

@@ -1,30 +1,13 @@
-﻿@{
-    ViewData["Title"] = "Post-Test Results | Non-Clinical Staff";
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = "Quiz Result";
+    int score = ViewBag.Score;
+   
 }
 
-<div class="form-container">
-    <h2 class="text-center">Post-Test Results</h2>
-    <p class="text-center text-muted">Non-Clinical & Admin Staff</p>
+<h2>Quiz Result</h2>
 
-    <div class="text-center mt-4 mb-4">
-        <div class="display-4">@ViewBag.Score / @ViewBag.TotalQuestions</div>
-        <h3>@ViewBag.PercentageScore.ToString("0.0")%</h3>
-    </div>
-
-    <div class="alert @(ViewBag.Passed ? "alert-success" : "alert-warning") text-center p-4 mb-4">
-        @if (ViewBag.Passed)
-        {
-            <h4>Congratulations! You passed the assessment.</h4>
-            <p>Thank you for completing the Post-Test for Infection Prevention and Control.</p>
-        }
-        else
-        {
-            <h4>You did not meet the passing score.</h4>
-            <p>Please review the Infection Prevention and Control materials and try again.</p>
-        }
-    </div>
-
-    <div class="mt-4 text-center">
-        <a href="/" class="btn submit-btn">Return to Home</a>
-    </div>
+<div>
+    <p><strong>Score:</strong> @score</p>
 </div>

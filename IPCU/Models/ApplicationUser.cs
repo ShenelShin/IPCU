@@ -25,4 +25,5 @@ public class ApplicationUser : IdentityUser
     public string? DefaultDepartment { get; set; }  // Nullable
     public string? SectionID { get; set; }  // Nullable
     public string? HEMOStationID { get; set; }  // Nullable
+    public string? AssignedArea { get; set; }
 }
