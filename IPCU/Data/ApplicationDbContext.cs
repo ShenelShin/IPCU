@@ -17,13 +17,12 @@ namespace IPCU.Data
         public DbSet<HHActivity> HHActivities { get; set; }
         public DbSet<FitTestingFormHistory> FitTestingFormHistory { get; set; }
         public DbSet<Trainee> Trainees { get; set; }
-
         public DbSet<HandHygieneComplianceSummary> HandHygieneComplianceSummary { get; set; }
-
         public DbSet<PreTestNonClinical> PreTestNonClinicals { get; set; }
         public DbSet<PreTestClinical> PreTestClinicals { get; set; }
         public DbSet<PostTestNonClinical> PostTestNonCLinicals { get; set; }
         public DbSet<PostTestClinical> PostTestClinicals { get; set; }
+        public DbSet<VentilatorEventChecklist> VentilatorEventChecklists { get; set; }
 
 
     }
