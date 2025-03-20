@@ -37,6 +37,9 @@ namespace IPCU.Data
 
         public DbSet<SSTInfectionModel> SSTInfectionModels { get; set; }
 
+        public DbSet<VentilatorEventChecklist> VentilatorEventChecklists { get; set; }
+
+
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
