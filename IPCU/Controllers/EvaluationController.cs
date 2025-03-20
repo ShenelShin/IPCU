@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ClosedXML.Excel;
 using System.IO;
+using System.Threading.Tasks;
+using IPCU.Services;
+using DocumentFormat.OpenXml.Office2010.PowerPoint;
+using QuestPDF.Fluent;
 
 namespace IPCU.Controllers
 {
@@ -18,6 +22,7 @@ namespace IPCU.Controllers
         {
             _context = context;
         }
+        
 
         public IActionResult Form()
         {
@@ -391,5 +396,101 @@ namespace IPCU.Controllers
 
             return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Evaluation_Summary.xlsx");
         }
+
+        public async Task<IActionResult> GeneratePdf(string id)
+        {
+            // Parse the ID (if it's a date, convert it back to DateTime)
+            var trainingDate = DateTime.ParseExact(id, "yyyyMMdd", null);
+
+            // Retrieve the specific evaluation summary
+            var evaluation = await _context.Evaluations
+                .Where(e => e.TrainingDate == trainingDate)
+                .GroupBy(e => e.TrainingDate)
+                .Select(g => new EvaluationSummaryViewModel
+                {
+                    TrainingDate = g.Key,
+                    TotalParticipants = g.Count(),
+                    MaleCount = g.Count(e => e.Sex == "Male"),
+                    FemaleCount = g.Count(e => e.Sex == "Female"),
+                    AverageFlowFollowed = g.Average(e => (double?)e.FlowFollowed) ?? 0,
+                    AverageRulesEstablished = g.Average(e => (double?)e.RulesEstablished) ?? 0,
+                    AverageInitiateDiscussion = g.Average(e => (double?)e.InitiateDiscussion) ?? 0,
+                    AverageTechnicalCapability = g.Average(e => (double?)e.TechnicalCapability) ?? 0,
+                    AverageContentOrganization = g.Average(e => (double?)e.ContentOrganization) ?? 0,
+                    AverageObjectiveStated = g.Average(e => (double?)e.ObjectiveStated) ?? 0,
+                    AverageContentQuality = g.Average(e => (double?)e.ContentQuality) ?? 0,
+                    AverageFlowOfTopic = g.Average(e => (double?)e.FlowOfTopic) ?? 0,
+                    AverageRelevanceOfTopic = g.Average(e => (double?)e.RelevanceOfTopic) ?? 0,
+                    AveragePracticeApplication = g.Average(e => (double?)e.PracticeApplication) ?? 0,
+                    AverageLearningActivities = g.Average(e => (double?)e.LearningActivities) ?? 0,
+                    AverageVisualAids = g.Average(e => (double?)e.VisualAids) ?? 0,
+                    AveragePresentKnowledge = g.Average(e => (double?)e.PresentKnowledge) ?? 0,
+                    AverageBalancePrinciples = g.Average(e => (double?)e.BalancePrinciples) ?? 0,
+                    AverageAddressClarifications = g.Average(e => (double?)e.AddressClarifications) ?? 0,
+                    AverageTeachingPersonality = g.Average(e => (double?)e.Preparedness) ?? 0,
+                    AveragePreparedness = g.Average(e => (double?)e.TeachingPersonality) ?? 0,
+                    AverageEstablishRapport = g.Average(e => (double?)e.EstablishRapport) ?? 0,
+                    AverageRespectForParticipants = g.Average(e => (double?)e.RespectForParticipants) ?? 0,
+                    AverageVoicePersonality = g.Average(e => (double?)e.VoicePersonality) ?? 0,
+                    AverageTimeManagement = g.Average(e => (double?)e.TimeManagement) ?? 0,
+
+                    FinalRating = Math.Round((
+                        g.Average(e => e.FlowFollowed) +
+                        g.Average(e => e.RulesEstablished) +
+                        g.Average(e => e.InitiateDiscussion) +
+                        g.Average(e => e.TechnicalCapability) +
+                        g.Average(e => e.ContentOrganization) +
+                        g.Average(e => e.ObjectiveStated) +
+                        g.Average(e => e.ContentQuality) +
+                        g.Average(e => e.FlowOfTopic) +
+                        g.Average(e => e.RelevanceOfTopic) +
+                        g.Average(e => e.PracticeApplication) +
+                        g.Average(e => e.LearningActivities) +
+                        g.Average(e => e.VisualAids) +
+                        g.Average(e => e.PresentKnowledge) +
+                        g.Average(e => e.BalancePrinciples) +
+                        g.Average(e => e.AddressClarifications) +
+                        g.Average(e => e.Preparedness) +
+                        g.Average(e => e.TeachingPersonality) +
+                        g.Average(e => e.EstablishRapport) +
+                        g.Average(e => e.RespectForParticipants) +
+                        g.Average(e => e.VoicePersonality) +
+                        g.Average(e => e.TimeManagement)) / 21, 2),
+                    SMELecturer = g.Select(e => e.SMELecturer).FirstOrDefault(),
+                    Venue = g.Select(e => e.Venue).FirstOrDefault(),
+
+                    CombinedSuggestions = string.Join("; ", g.Where(e => !string.IsNullOrEmpty(e.SuggestionsForImprovement))
+                                     .Select(e => e.SuggestionsForImprovement)),
+
+                    CombinedSayToSpeaker = string.Join("; ", g.Where(e => !string.IsNullOrEmpty(e.SayToSpeaker))
+                                      .Select(e => e.SayToSpeaker))
+                })
+                .FirstOrDefaultAsync();
+
+            if (evaluation == null)
+            {
+                return NotFound("Evaluation not found.");
+            }
+
+            // Retrieve the post-evaluation average for the specific batch
+            var trainingSummary = await _context.TrainingSummaries
+                .Where(t => t.DateCreated.Date == trainingDate.Date)
+                .Select(t => (double?)t.Rate) // Use nullable double to handle empty results
+                .AverageAsync() ?? 0; // Provide a default value of 0 if the sequence is empty
+
+            // Assign the post-evaluation average to the EvaluationSummaryViewModel
+            evaluation.PostTestEvaluationGrade = trainingSummary;
+
+            // Create an instance of the document manually
+            var document = new EvaluationReportDocument(new List<EvaluationSummaryViewModel> { evaluation });
+
+            // Render the PDF to a byte array
+            var pdfBytes = document.GeneratePdf();
+
+            // Return the PDF file as a download
+            return File(pdfBytes, "application/pdf", $"Evaluation_Summary_{id}.pdf");
+        }
+
+
     }
 }
