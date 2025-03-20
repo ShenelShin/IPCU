@@ -77,8 +77,20 @@ namespace IPCU.Controllers
                     CombinedSuggestions = string.Join("; ", g.Select(e => e.SuggestionsForImprovement).Where(s => !string.IsNullOrEmpty(s))),
                     CombinedSayToSpeaker = string.Join("; ", g.Select(e => e.SayToSpeaker).Where(s => !string.IsNullOrEmpty(s))),
 
-                     SMELecturer = g.Select(e => e.SMELecturer).FirstOrDefault(),
-                    Venue = g.Select(e => e.Venue).FirstOrDefault()
+                    SMELecturer = g
+                        .Where(e => !string.IsNullOrEmpty(e.SMELecturer)) // Filter out null/empty values
+                        .GroupBy(e => e.SMELecturer)                     // Group by SMELecturer
+                        .OrderByDescending(group => group.Count())       // Order groups by count (descending)
+                        .Select(group => group.Key)                      // Select the most common value
+                        .FirstOrDefault(),                               // Get the majority answer or null if none exists
+
+                    Venue = g
+                        .Where(e => !string.IsNullOrEmpty(e.Venue))      // Filter out null/empty values
+                        .GroupBy(e => e.Venue)                           // Group by Venue
+                        .OrderByDescending(group => group.Count())       // Order groups by count (descending)
+                        .Select(group => group.Key)                      // Select the most common value
+                        .FirstOrDefault(),                               // Get the majority answer or null if none exists
+
                 })
                 .ToListAsync();
 
@@ -125,8 +137,20 @@ namespace IPCU.Controllers
                    FemaleCount = g.Count(e => e.Sex == "Female"),
                    //SMELecturer = g.Select(e => e.SMELecturer).FirstOrDefault(), // Ensure this field is selected
                    //Venue = g.Select(e => e.Venue).FirstOrDefault(), // Ensure this field is selected
-                   SMELecturer = string.Join(", ", g.Select(e => e.SMELecturer).Where(s => !string.IsNullOrEmpty(s))),
-                   Venue = string.Join(", ", g.Select(e => e.Venue).Where(s => !string.IsNullOrEmpty(s))),
+                   SMELecturer = g
+                        .Where(e => !string.IsNullOrEmpty(e.SMELecturer)) // Filter out null/empty values
+                        .GroupBy(e => e.SMELecturer)                     // Group by SMELecturer
+                        .OrderByDescending(group => group.Count())       // Order groups by count (descending)
+                        .Select(group => group.Key)                      // Select the most common value
+                        .FirstOrDefault(),                               // Get the majority answer or null if none exists
+
+                    Venue = g
+                        .Where(e => !string.IsNullOrEmpty(e.Venue))      // Filter out null/empty values
+                        .GroupBy(e => e.Venue)                           // Group by Venue
+                        .OrderByDescending(group => group.Count())       // Order groups by count (descending)
+                        .Select(group => group.Key)                      // Select the most common value
+                        .FirstOrDefault(),                               // Get the majority answer or null if none exists
+
 
                    // Add missing average calculations
                    AverageFlowFollowed = g.Average(e => (double?)e.FlowFollowed) ?? 0,
@@ -456,8 +480,20 @@ namespace IPCU.Controllers
                         g.Average(e => e.RespectForParticipants) +
                         g.Average(e => e.VoicePersonality) +
                         g.Average(e => e.TimeManagement)) / 21, 2),
-                    SMELecturer = g.Select(e => e.SMELecturer).FirstOrDefault(),
-                    Venue = g.Select(e => e.Venue).FirstOrDefault(),
+                    SMELecturer = g
+                        .Where(e => !string.IsNullOrEmpty(e.SMELecturer)) // Filter out null/empty values
+                        .GroupBy(e => e.SMELecturer)                     // Group by SMELecturer
+                        .OrderByDescending(group => group.Count())       // Order groups by count (descending)
+                        .Select(group => group.Key)                      // Select the most common value
+                        .FirstOrDefault(),                               // Get the majority answer or null if none exists
+
+                    Venue = g
+                        .Where(e => !string.IsNullOrEmpty(e.Venue))      // Filter out null/empty values
+                        .GroupBy(e => e.Venue)                           // Group by Venue
+                        .OrderByDescending(group => group.Count())       // Order groups by count (descending)
+                        .Select(group => group.Key)                      // Select the most common value
+                        .FirstOrDefault(),                               // Get the majority answer or null if none exists
+
 
                     CombinedSuggestions = string.Join("; ", g.Where(e => !string.IsNullOrEmpty(e.SuggestionsForImprovement))
                                      .Select(e => e.SuggestionsForImprovement)),
