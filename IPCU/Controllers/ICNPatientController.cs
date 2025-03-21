@@ -63,7 +63,9 @@ namespace IPCU.Controllers
                                       RoomID = p.RoomID,
                                       Age = p.Age,
                                       Sex = m.Sex,
-                                      AdmissionDuration = EF.Functions.DateDiffDay(p.AdmDate.Value, DateTime.Now)
+                                      AdmissionDuration = EF.Functions.DateDiffDay(p.AdmDate.Value, DateTime.Now),
+                                      HaiStatus = m.HaiStatus,
+                                      HaiCount = m.HaiCount
                                   })
                                  .ToListAsync();
 
@@ -545,6 +547,160 @@ namespace IPCU.Controllers
 
             // Redirect back to the connected devices list
             return RedirectToAction(nameof(ConnectedDevices), new { id = model.IdNum });
+        }
+
+        // Add this action method to ICNPatientController
+        // Modify your UpdateHaiStatus method like this:
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateHaiStatus(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                // Get the current logged-in user to check assigned areas
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Get the patient
+                var patient = await _context.Patients
+                    .Where(p => p.IdNum == id)
+                    .FirstOrDefaultAsync();
+
+                if (patient == null)
+                {
+                    return NotFound();
+                }
+
+                var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
+                if (!assignedAreas.Contains(patient.AdmLocation))
+                {
+                    return Forbid();
+                }
+
+                // Get the PatientMaster record
+                var patientMaster = await _context.PatientMasters
+                    .FirstOrDefaultAsync(m => m.HospNum == patient.HospNum);
+
+                if (patientMaster == null)
+                {
+                    return NotFound();
+                }
+
+                // Add explicit debug logging
+                Console.WriteLine($"Before update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
+
+                // Update HAI status
+                patientMaster.HaiStatus = true; // Set HAI status to true
+
+                //// Simply increment the count since it's a non-nullable int
+                //patientMaster.HaiCount += 1;
+
+                Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
+
+                Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
+
+                Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
+
+                // Mark entity as modified to force update
+                _context.Entry(patientMaster).State = EntityState.Modified;
+
+                // Save changes
+                int rowsAffected = await _context.SaveChangesAsync();
+                Console.WriteLine($"SaveChanges completed. Rows affected: {rowsAffected}");
+
+                if (rowsAffected > 0)
+                {
+                    TempData["SuccessMessage"] = "Patient has been marked as having an HAI.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to update HAI status. No records were modified.";
+                }
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating HAI status: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+
+                TempData["ErrorMessage"] = $"An error occurred: {ex.Message}";
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        // Add this action method to ICNPatientController
+        public async Task<IActionResult> HaiChecklist(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            // Get the current logged-in user to check assigned areas
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Get the patient to verify they're in an assigned area
+            var patient = await _context.Patients
+                .Where(p => p.IdNum == id)
+                .FirstOrDefaultAsync();
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
+            if (!assignedAreas.Contains(patient.AdmLocation))
+            {
+                return Forbid();
+            }
+
+            // Get patient master data
+            var patientMaster = await _context.PatientMasters
+                .Where(m => m.HospNum == patient.HospNum)
+                .FirstOrDefaultAsync();
+
+            if (patientMaster == null || !patientMaster.HaiStatus)
+            {
+                // Redirect to details if patient doesn't have HAI status
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+            // Get basic patient info for the HAI checklist page
+            var patientInfo = await (from p in _context.Patients
+                                     join m in _context.PatientMasters on p.HospNum equals m.HospNum
+                                     where p.IdNum == id
+                                     select new PatientViewModel
+                                     {
+                                         IdNum = p.IdNum,
+                                         HospNum = p.HospNum,
+                                         AdmLocation = p.AdmLocation,
+                                         RoomID = p.RoomID,
+                                         LastName = m.LastName,
+                                         FirstName = m.FirstName,
+                                         MiddleName = m.MiddleName,
+                                         HaiStatus = m.HaiStatus,
+                                         HaiCount = m.HaiCount
+                                     })
+                               .FirstOrDefaultAsync();
+
+            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
+
+            // Return the HAI checklist view (which you'll create later)
+            return View(patientInfo);
         }
     }
 }

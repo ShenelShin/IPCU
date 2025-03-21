@@ -1,0 +1,160 @@
+﻿@model IPCU.Models.Diagnostics
+
+@{
+    ViewData["Title"] = "Edit Diagnostic Record";
+}
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h4 class="m-0 font-weight-bold text-primary">Edit Diagnostic Record</h4>
+            <div>
+                <a asp-action="Index" asp-route-hospNum="@ViewBag.HospNum" class="btn btn-sm btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        <strong>Patient:</strong> @ViewBag.PatientName |
+                        <strong>Hospital Number:</strong> @ViewBag.HospNum
+                    </div>
+                </div>
+            </div>
+
+            <form asp-action="Edit" id="diagnosticsForm">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                <input type="hidden" asp-for="DiagId" />
+                <input type="hidden" asp-for="HospNum" />
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="DateCollection" class="control-label">Collection Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                                </div>
+                                <input asp-for="DateCollection" class="form-control datepicker" />
+                            </div>
+                            <span asp-validation-for="DateCollection" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="SourceSite" class="control-label">Source Site</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                </div>
+                                <select asp-for="SourceSite" class="form-control">
+                                    <option value="">-- Select Source Site --</option>
+                                    <option value="Blood">Blood</option>
+                                    <option value="Urine">Urine</option>
+                                    <option value="Sputum">Sputum</option>
+                                    <option value="Wound">Wound</option>
+                                    <option value="CSF">CSF</option>
+                                    <option value="Stool">Stool</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="SourceSite" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="IsolateFindingsResult" class="control-label">Isolate Findings Result</label>
+                    <textarea asp-for="IsolateFindingsResult" class="form-control" rows="4" placeholder="Enter isolate findings details here..."></textarea>
+                    <span asp-validation-for="IsolateFindingsResult" class="text-danger"></span>
+                </div>
+
+                <div class="form-group text-right">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <a asp-action="Delete" asp-route-id="@Model.DiagId" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    @if (Model.Treatments != null && Model.Treatments.Any())
+    {
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h5 class="m-0 font-weight-bold text-primary">Current Antibiotics</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Antibiotic Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var treatment in Model.Treatments)
+                            {
+                                <tr>
+                                    <td>@treatment.Antibiotic?.Name</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center mt-3">
+                    <a asp-action="AddAntibiotics" asp-route-id="@Model.DiagId" class="btn btn-success">
+                        <i class="fas fa-pills"></i> Manage Antibiotics
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h5 class="m-0 font-weight-bold text-primary">Antibiotics</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i> No antibiotics have been added for this diagnostic record.
+                </div>
+                <div class="text-center">
+                    <a asp-action="AddAntibiotics" asp-route-id="@Model.DiagId" class="btn btn-success">
+                        <i class="fas fa-pills"></i> Add Antibiotics
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(function() {
+            // Initialize datepicker
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            // Confirmation dialog for delete
+            $('.btn-danger').click(function(e) {
+                if (!confirm('Are you sure you want to delete this diagnostic record? This action cannot be undone.')) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+}

@@ -43,5 +43,10 @@ namespace IPCU.Models
 
         [Display(Name = "Days Since Admission")]
         public int AdmissionDuration { get; set; }
+
+        [Display(Name = "HAI Status")]
+        public bool HaiStatus { get; set; }
+        [Display(Name = "HAI Count")]
+        public int HaiCount { get; set; }
     }
 }

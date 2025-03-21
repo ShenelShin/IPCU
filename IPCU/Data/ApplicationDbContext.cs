@@ -36,36 +36,41 @@ namespace IPCU.Data
         public DbSet<DeviceConnected> DeviceConnected { get; set; }
 
         public DbSet<SSTInfectionModel> SSTInfectionModels { get; set; }
+        public DbSet<Diagnostics> Diagnostics { get; set; }
+        public DbSet<Antibiotic> Antibiotics { get; set; }
+        public DbSet<DiagnosticsTreatment> DiagnosticsTreatments { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
+            // Configure Diagnostics entity
+            modelBuilder.Entity<Diagnostics>()
+                .HasOne(d => d.Patient)
+                .WithMany()
+                .HasForeignKey(d => d.HospNum)
+                .OnDelete(DeleteBehavior.Restrict);
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
+            // Only configure Patient navigation property
+            modelBuilder.Entity<Diagnostics>()
+                .Navigation(d => d.Patient).IsRequired(false);
 
-        //    // Optional: Configure relationships if needed
-        //    modelBuilder.Entity<Patient>()
-        //        .HasOne<PatientMaster>()
-        //        .WithMany()
-        //        .HasForeignKey(p => p.HospNum);
-        //}
+            // Do NOT add this line - it's causing the error
+            // modelBuilder.Entity<Diagnostics>()
+            //    .Navigation(d => d.Treatments).IsRequired(true);
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
+            // Configure the relationship between Diagnostics and DiagnosticsTreatment
+            modelBuilder.Entity<DiagnosticsTreatment>()
+                .HasOne(dt => dt.Diagnostic)
+                .WithMany(d => d.Treatments)
+                .HasForeignKey(dt => dt.DiagId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-        //    // Configure the relationships for VitalSignsTable
-        //    modelBuilder.Entity<VitalSigns>()
-        //        .HasOne(v => v.Patient)
-        //        .WithMany()
-        //        .HasForeignKey(v => v.HospNum)
-        //        .OnDelete(DeleteBehavior.NoAction);  // Use NoAction to avoid circular cascade delete
-
-        //    modelBuilder.Entity<VitalSigns>()
-        //        .HasOne(v => v.PatientMaster)
-        //        .WithMany()
-        //        .HasForeignKey(v => v.HospNum)
-        //        .OnDelete(DeleteBehavior.NoAction);  // Use NoAction to avoid circular cascade delete
-        //}
+            modelBuilder.Entity<DiagnosticsTreatment>()
+                .HasOne(dt => dt.Antibiotic)
+                .WithMany()
+                .HasForeignKey(dt => dt.AntibioticId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
 
     }
 

@@ -1,0 +1,703 @@
+﻿@model IPCU.Models.Diagnostics
+@{
+    ViewData["Title"] = "Add Antibiotics";
+}
+
+<div class="container-fluid">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Add Antibiotics for Diagnostic - @ViewBag.PatientName</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="AddAntibiotics" id="antibioticsForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="diagId" value="@Model.DiagId" />
+                <input type="hidden" name="hospNum" value="@Model.HospNum" />
+
+                <div class="row">
+                    <!-- Left column: Search and Available Antibiotics -->
+                    <div class="col-md-6">
+                        <div class="card mb-3 border-primary">
+                            <div class="card-header bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Available Antibiotics</h5>
+                                    <span class="badge bg-primary px-3 py-2" id="totalCount">Loading...</span>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="p-3 pb-2">
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                        <input type="text" id="antibioticSearch" class="form-control" placeholder="Search antibiotics..." autocomplete="off" />
+                                        <button type="button" class="btn btn-outline-secondary" id="clearSearchBtn">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div id="searchFeedback" class="text-muted small"></div>
+                                </div>
+                                <div class="antibiotic-list border-top" style="max-height: 300px; overflow-y: auto;">
+                                    <div class="text-center p-4">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <p class="mt-2">Loading antibiotics...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right column: Selected Antibiotics and Actions -->
+                    <div class="col-md-6">
+                        <div class="card mb-3 border-success">
+                            <div class="card-header bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Selected Antibiotics</h5>
+                                    <span class="badge bg-success px-3 py-2" id="selectedCount">0 selected</span>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="p-3 pb-0">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span id="selectedHelp" class="text-muted small">Select antibiotics from the list on the left.</span>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" id="clearAllBtn">
+                                            <i class="fas fa-trash-alt me-1"></i> Clear All
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="selected-antibiotics-list border-top" style="min-height: 100px; max-height: 300px; overflow-y: auto;">
+                                    <div class="text-center text-muted p-4 empty-selection-message">
+                                        <i class="fas fa-prescription-bottle fa-2x mb-2"></i>
+                                        <p>No antibiotics selected yet</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3 border-info">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">Add New Antibiotic</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-plus-circle"></i></span>
+                                    <input type="text" id="newAntibiotic" name="newAntibiotic" class="form-control" placeholder="Enter antibiotic name" autocomplete="off" />
+                                    <button type="button" class="btn btn-primary" id="addNewAntibioticBtn">
+                                        <i class="fas fa-plus"></i> Add
+                                    </button>
+                                </div>
+                                <div class="form-text text-muted">
+                                    Type to search existing antibiotics or add a new one if not found
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <a asp-action="Index" asp-route-hospNum="@Model.HospNum" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Back to List
+                    </a>
+                    <button type="submit" class="btn btn-primary" id="saveButton">
+                        <i class="fas fa-save me-1"></i> Save Antibiotics
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <!-- jQuery UI for autocomplete -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+
+    <!-- Optional: Toastr for notifications -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <script>
+        // Initialize toastr settings if available
+        if (typeof toastr !== 'undefined') {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-bottom-right",
+                "timeOut": "3000"
+            };
+        }
+    </script>
+    <script>
+         $(document).ready(function () {
+            // Store all antibiotics data
+            let allAntibiotics = [];
+            let selectedAntibiotics = new Set();
+            let alphabeticalGroups = {};
+
+            // Initialize loading spinner
+            function showSpinner(element) {
+                $(element).html('<i class="fas fa-spinner fa-spin"></i>');
+            }
+
+            // Initialize by loading all antibiotics
+            function loadAntibiotics() {
+                // Show loading state
+                $('.antibiotic-list').html('<div class="text-center p-4"><i class="fas fa-spinner fa-spin"></i> Loading antibiotics...</div>');
+
+                // Clear existing data
+                allAntibiotics = [];
+
+                // Load the selected antibiotics IDs first
+                let selectedAntibioticIds = [];
+        @if (ViewBag.SelectedAntibiotics != null)
+        {
+            foreach (var id in ViewBag.SelectedAntibiotics)
+            {
+                <text>selectedAntibioticIds.push('@id');</text>
+            }
+        }
+
+                // Use these IDs to populate the selectedAntibiotics Set
+                selectedAntibioticIds.forEach(id => {
+                    selectedAntibiotics.add(id.toString());
+                });
+
+                // Then load all antibiotics via AJAX
+                $.ajax({
+                    url: '/Diagnostics/GetAntibiotics',
+                    type: 'GET',
+                    data: { term: '' },  // Empty term to get all antibiotics
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log('Successfully loaded antibiotics:', data.length);
+
+                        if (data.length === 0) {
+                            $('.antibiotic-list').html('<div class="alert alert-warning">No antibiotics found in the database. Add your first antibiotic below.</div>');
+                            return;
+                        }
+
+                        // Populate allAntibiotics array
+                        data.forEach(antibiotic => {
+                            allAntibiotics.push({
+                                id: antibiotic.id,
+                                name: antibiotic.text
+                            });
+                        });
+
+                        // Organize antibiotics into alphabetical groups
+                        organizeAntibioticGroups(allAntibiotics);
+
+                        // Update UI
+                        renderAntibioticList();
+                        updateSelectionCount();
+                        updateTotalCount();
+                        renderSelectedAntibiotics();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading antibiotics:', error);
+                        $('.antibiotic-list').html('<div class="alert alert-danger">Failed to load antibiotics. Please refresh the page and try again.</div>');
+                    }
+                });
+            }
+
+            // Organize antibiotics into alphabetical groups
+            function organizeAntibioticGroups(antibiotics) {
+                alphabeticalGroups = {};
+
+                antibiotics.forEach(antibiotic => {
+                    const firstLetter = antibiotic.name.charAt(0).toUpperCase();
+                    if (!alphabeticalGroups[firstLetter]) {
+                        alphabeticalGroups[firstLetter] = [];
+                    }
+                    alphabeticalGroups[firstLetter].push(antibiotic);
+                });
+
+                // Sort groups alphabetically
+                Object.keys(alphabeticalGroups).forEach(letter => {
+                    alphabeticalGroups[letter].sort((a, b) => a.name.localeCompare(b.name));
+                });
+            }
+
+            // Render the antibiotics list in the left panel
+            function renderAntibioticList() {
+                const listElement = $('.antibiotic-list');
+                listElement.empty();
+
+                const sortedLetters = Object.keys(alphabeticalGroups).sort();
+
+                if (sortedLetters.length === 0) {
+                    listElement.append('<div class="text-center p-4 text-muted">No antibiotics found</div>');
+                    return;
+                }
+
+                sortedLetters.forEach(letter => {
+                    const antibiotics = alphabeticalGroups[letter];
+                    if (antibiotics.length === 0) return;
+
+                    const groupElement = $(`
+                        <div class="antibiotic-group">
+                            <div class="group-header bg-light px-3 py-2 fw-bold">${letter}</div>
+                            <div class="group-items"></div>
+                        </div>
+                    `);
+
+                    const groupItemsElement = groupElement.find('.group-items');
+
+                    antibiotics.forEach(antibiotic => {
+                        const isSelected = selectedAntibiotics.has(antibiotic.id.toString());
+                        const item = $(`
+                            <div class="antibiotic-item d-flex justify-content-between align-items-center px-3 py-2 border-bottom" data-id="${antibiotic.id}">
+                                <div class="d-flex align-items-center">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox"
+                                               id="antibiotic_${antibiotic.id}"
+                                               value="${antibiotic.id}"
+                                               name="selectedAntibiotics"
+                                               ${isSelected ? 'checked' : ''}>
+                                        <label class="form-check-label" for="antibiotic_${antibiotic.id}">
+                                            ${antibiotic.name}
+                                        </label>
+                                    </div>
+                                </div>
+                                <span class="badge bg-primary add-badge">
+                                    ${isSelected ? '<i class="fas fa-check"></i>' : '<i class="fas fa-plus"></i>'}
+                                </span>
+                            </div>
+                        `);
+
+                        groupItemsElement.append(item);
+                    });
+
+                    listElement.append(groupElement);
+                });
+            }
+
+            // Update the selection count
+            function updateSelectionCount() {
+                const count = selectedAntibiotics.size;
+                $('#selectedCount').text(count + ' selected');
+
+                if (count > 0) {
+                    $('.empty-selection-message').hide();
+                    $('#selectedHelp').text('Click on an antibiotic to remove it from selection.');
+                } else {
+                    $('.empty-selection-message').show();
+                    $('#selectedHelp').text('Select antibiotics from the list on the left.');
+                }
+
+                // Update the save button state
+                if (count > 0) {
+                    $('#saveButton').prop('disabled', false);
+                } else {
+                    $('#saveButton').prop('disabled', true);
+                }
+            }
+
+            // Update the total count
+            function updateTotalCount() {
+                $('#totalCount').text(allAntibiotics.length + ' total');
+            }
+
+            // Render the selected antibiotics list
+            function renderSelectedAntibiotics() {
+                const selectedListElement = $('.selected-antibiotics-list');
+
+                // Clear existing items except the empty message
+                selectedListElement.find('.selected-item').remove();
+
+                if (selectedAntibiotics.size === 0) {
+                    $('.empty-selection-message').show();
+                    return;
+                }
+
+                $('.empty-selection-message').hide();
+
+                // Get all selected antibiotics and sort them
+                const selectedList = allAntibiotics
+                    .filter(antibiotic => selectedAntibiotics.has(antibiotic.id.toString()))
+                    .sort((a, b) => a.name.localeCompare(b.name));
+
+                selectedList.forEach(antibiotic => {
+                    const item = $(`
+                        <div class="selected-item d-flex justify-content-between align-items-center px-3 py-2 border-bottom" data-id="${antibiotic.id}">
+                            <span>${antibiotic.name}</span>
+                            <button type="button" class="btn btn-sm btn-outline-danger remove-btn">
+                                <i class="fas fa-times">Remove</i>
+                            </button>
+                        </div>
+                    `);
+
+                    selectedListElement.append(item);
+                });
+            }
+
+            // Toggle selection of an antibiotic
+            function toggleAntibiotic(id, selected) {
+                if (selected) {
+                    selectedAntibiotics.add(id.toString());
+                } else {
+                    selectedAntibiotics.delete(id.toString());
+                }
+
+                // Update UI
+                updateSelectionCount();
+                renderSelectedAntibiotics();
+
+                // Update checkbox in the antibiotics list
+                $(`#antibiotic_${id}`).prop('checked', selected);
+
+                // Update the badge
+                const badge = $(`.antibiotic-item[data-id="${id}"] .add-badge`);
+                badge.html(selected ? '<i class="fas fa-check"></i>' : '<i class="fas fa-plus"></i>');
+            }
+
+            // Search functionality
+            function searchAntibiotics(term) {
+                term = term.toLowerCase().trim();
+
+                if (term === '') {
+                    // Reset to show all antibiotics
+                    organizeAntibioticGroups(allAntibiotics);
+                    renderAntibioticList();
+                    $('#searchFeedback').text('');
+                    return;
+                }
+
+                // Filter antibiotics based on search term
+                const results = allAntibiotics.filter(antibiotic =>
+                    antibiotic.name.toLowerCase().includes(term)
+                );
+
+                // Organize filtered results
+                organizeAntibioticGroups(results);
+                renderAntibioticList();
+
+                // Show search feedback
+                $('#searchFeedback').text(`Found ${results.length} results for "${term}"`);
+            }
+
+            // Add new antibiotic to the list
+            function addNewAntibiotic(id, name) {
+                // Check if this antibiotic already exists
+                const existingIndex = allAntibiotics.findIndex(a => a.id.toString() === id.toString());
+
+                if (existingIndex === -1) {
+                    // Add to allAntibiotics array
+                    allAntibiotics.push({
+                        id: id,
+                        name: name
+                    });
+
+                    // Select the new antibiotic
+                    selectedAntibiotics.add(id.toString());
+
+                    // Re-organize groups
+                    organizeAntibioticGroups(allAntibiotics);
+
+                    // Update UI
+                    renderAntibioticList();
+                    updateSelectionCount();
+                    updateTotalCount();
+                    renderSelectedAntibiotics();
+
+                    // Show success message
+                    if ($.fn.toast) {
+                        $('.toast-container').append(`
+                            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+                                <div class="toast-header bg-success text-white">
+                                    <strong class="me-auto">Success</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body white-text">
+                                    Added new antibiotic: ${name}
+                                </div>
+                            </div>
+                        `);
+                        $('.toast').toast('show');
+                    } else if (typeof toastr !== 'undefined') {
+                        toastr.success('Added new antibiotic: ' + name);
+                    } else {
+                        alert('Added new antibiotic: ' + name);
+                    }
+                } else {
+                    // Update existing antibiotic if needed
+                    allAntibiotics[existingIndex].name = name;
+
+                    // Select the existing antibiotic
+                    selectedAntibiotics.add(id.toString());
+
+                    // Update UI
+                    renderAntibioticList();
+                    updateSelectionCount();
+                    renderSelectedAntibiotics();
+
+                    // Show info message
+                    if ($.fn.toast) {
+                        $('.toast-container').append(`
+                            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="3000">
+                                <div class="toast-header bg-info text-white">
+                                    <strong class="me-auto">Info</strong>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body white-text">
+                                    Antibiotic already exists: ${name}
+                                </div>
+                            </div>
+                        `);
+                        $('.toast').toast('show');
+                    } else if (typeof toastr !== 'undefined') {
+                        toastr.info('Antibiotic already exists: ' + name);
+                    }
+                }
+
+                // Clear search if active
+                if ($('#antibioticSearch').val().trim() !== '') {
+                    $('#antibioticSearch').val('');
+                    searchAntibiotics('');
+                }
+            }
+
+            // Event: Click on an antibiotic item
+            $(document).on('click', '.antibiotic-item', function(e) {
+                if (!$(e.target).is('input')) {
+                    const id = $(this).data('id');
+                    const checkbox = $(`#antibiotic_${id}`);
+                    checkbox.prop('checked', !checkbox.prop('checked'));
+                    toggleAntibiotic(id, checkbox.prop('checked'));
+                }
+            });
+
+            // Event: Change checkbox state
+            $(document).on('change', '.form-check-input', function() {
+                const id = $(this).val();
+                toggleAntibiotic(id, $(this).prop('checked'));
+            });
+
+            // Event: Click remove button in selected list
+            $(document).on('click', '.remove-btn', function() {
+                const id = $(this).closest('.selected-item').data('id');
+                toggleAntibiotic(id, false);
+            });
+
+            // Event: Search for antibiotics
+            $('#antibioticSearch').on('input', function() {
+                searchAntibiotics($(this).val());
+            });
+
+            // Event: Clear search
+            $('#clearSearchBtn').click(function() {
+                $('#antibioticSearch').val('');
+                searchAntibiotics('');
+            });
+
+            // Event: Clear all selected antibiotics
+            $('#clearAllBtn').click(function() {
+                selectedAntibiotics.clear();
+                $('.form-check-input').prop('checked', false);
+
+                // Update badges
+                $('.add-badge').html('<i class="fas fa-plus"></i>');
+
+                updateSelectionCount();
+                renderSelectedAntibiotics();
+            });
+
+            // Improved autocomplete for new antibiotic field
+            function setupAutocomplete() {
+                $("#newAntibiotic").autocomplete({
+                    source: function(request, response) {
+                        $.ajax({
+                            url: "/Diagnostics/GetAntibiotics",
+                            dataType: "json",
+                            data: {
+                                term: request.term
+                            },
+                            success: function(data) {
+                                response($.map(data, function(item) {
+                                    return {
+                                        label: item.text,
+                                        value: item.text,
+                                        id: item.id
+                                    };
+                                }));
+                            }
+                        });
+                    },
+                    minLength: 2,
+                    select: function(event, ui) {
+                        // When an existing antibiotic is selected from autocomplete
+                        if (ui.item) {
+                            // Add to selected antibiotics
+                            toggleAntibiotic(ui.item.id, true);
+
+                            // Clear the input field
+                            setTimeout(function() {
+                                $("#newAntibiotic").val("");
+                            }, 100);
+
+                            return false;
+                        }
+                    }
+                });
+            }
+
+            // Handle add new antibiotic button with improved logic
+            $('#addNewAntibioticBtn').click(function () {
+                var newAntibiotic = $('#newAntibiotic').val().trim();
+                if (newAntibiotic) {
+                    // Show loading state
+                    const originalBtnHtml = $(this).html();
+                    $(this).prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+
+                    // Save the new antibiotic via AJAX
+                    $.ajax({
+                        url: '/Diagnostics/AddAntibiotic',
+                        type: 'POST',
+                        data: { name: newAntibiotic },
+                        dataType: 'json',
+                        success: function (data) {
+                            // Reset the input field
+                            $('#newAntibiotic').val('');
+
+                            // Add the antibiotic to our list
+                            addNewAntibiotic(data.id, data.name);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error adding antibiotic:', error);
+
+                            // Show error message
+                            if (typeof toastr !== 'undefined') {
+                                toastr.error('Failed to add antibiotic: ' + error);
+                            } else {
+                                alert('Failed to add antibiotic: ' + error);
+                            }
+                        },
+                        complete: function () {
+                            // Reset button state
+                            $('#addNewAntibioticBtn').prop('disabled', false).html(originalBtnHtml);
+                        }
+                    });
+                }
+            });
+
+            // Add new antibiotic on Enter key in the input field
+            $('#newAntibiotic').keypress(function(e) {
+                if (e.which === 13) { // Enter key
+                    e.preventDefault();
+                    $('#addNewAntibioticBtn').click();
+                }
+            });
+
+            // Form validation
+            function setupFormValidation() {
+                if ($.fn.validate) {
+                    $('#antibioticsForm').validate({
+                        errorElement: 'div',
+                        errorClass: 'invalid-feedback',
+                        highlight: function(element) {
+                            $(element).addClass('is-invalid');
+                        },
+                        unhighlight: function(element) {
+                            $(element).removeClass('is-invalid');
+                        },
+                        submitHandler: function(form) {
+                            // Show loading state
+                            $('#saveButton').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Saving...');
+
+                            // Allow form submission
+                            form.submit();
+                        }
+                    });
+                }
+            }
+
+            // Handle form submission
+            $('#antibioticsForm').submit(function(e) {
+                if (selectedAntibiotics.size === 0) {
+                    e.preventDefault();
+
+                    // Show error message
+                    if (typeof toastr !== 'undefined') {
+                        toastr.error('Please select at least one antibiotic');
+                    } else {
+                        alert('Please select at least one antibiotic');
+                    }
+
+                    return false;
+                }
+
+                // Form will submit normally
+                return true;
+            });
+
+            // Add toast container if needed
+            if (!$('.toast-container').length) {
+                $('body').append('<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 5"></div>');
+            }
+
+            // Initialize the page
+            loadAntibiotics();
+            setupAutocomplete();
+            setupFormValidation();
+
+            // Initially disable save button until at least one antibiotic is selected
+            $('#saveButton').prop('disabled', true);
+        });
+    </script>
+
+    <style>
+        .antibiotic-item {
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+            .antibiotic-item:hover {
+                background-color: #f8f9fa;
+            }
+
+            .antibiotic-item .add-badge {
+                visibility: hidden;
+            }
+
+            .antibiotic-item:hover .add-badge {
+                visibility: visible;
+            }
+
+        .selected-item {
+            transition: background-color 0.2s;
+        }
+
+            .selected-item:hover {
+                background-color: #f8f9fa;
+            }
+
+            .selected-item .remove-btn {
+                opacity: 0.5;
+                transition: opacity 0.2s;
+            }
+
+            .selected-item:hover .remove-btn {
+                opacity: 1;
+            }
+
+        .group-header {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        .ui-autocomplete {
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            z-index: 9999 !important;
+        }
+    </style>
+}

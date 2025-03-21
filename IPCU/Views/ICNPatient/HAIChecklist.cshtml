@@ -1,0 +1,72 @@
+﻿@model IPCU.Models.PatientViewModel
+@{
+    ViewData["Title"] = "HAI Checklist";
+}
+<div class="container py-4">
+    <div class="card">
+        <div class="card-header bg-warning text-dark">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">
+                    <i class="fas fa-clipboard-check me-2"></i>HAI Checklist
+                </h4>
+                <div>
+                    <span class="badge bg-danger">HAI Status: YES</span>
+                    <span class="badge bg-dark ms-2">Occurrences: @Model.HaiCount</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="mb-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="mb-3">Patient Information</h5>
+                        <table class="table table-sm">
+                            <tr>
+                                <th style="width: 150px">Hospital Number:</th>
+                                <td>@Model.HospNum</td>
+                            </tr>
+                            <tr>
+                                <th>Patient Name:</th>
+                                <td>@Model.PatientName</td>
+                            </tr>
+                            <tr>
+                                <th>Location:</th>
+                                <td>@Model.AdmLocation - @Model.RoomID</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Select the appropriate infection checklist form below to document the patient's condition.
+                        </div>
+                        <div class="d-grid gap-2">
+                            <a href="@Url.Action("Index", "InfectionChecklist", new { hospNum = Model.HospNum })" class="btn btn-primary">
+                                <i class="fas fa-file-medical me-2"></i>SST Infection Checklist
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-warning">
+                <h5><i class="fas fa-exclamation-triangle me-2"></i>HAI Checklist Implementation Notes</h5>
+                <p>The HAI Checklist functionality includes the following options:</p>
+                <ul>
+                    <li>SST (Skin and Soft Tissue) Infection Documentation</li>
+                    <li>Risk factor assessment</li>
+                    <li>Intervention documentation</li>
+                    <li>Follow-up scheduling</li>
+                    <li>Transmission prevention protocols</li>
+                </ul>
+            </div>
+            <div class="mt-4">
+                <a asp-action="Details" asp-route-id="@Model.IdNum" class="btn btn-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Patient Details
+                </a>
+                <a asp-action="Index" class="btn btn-secondary ms-2">
+                    <i class="fas fa-list me-2"></i>Back to Patient List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

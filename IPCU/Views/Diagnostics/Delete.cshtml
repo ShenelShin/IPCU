@@ -1,0 +1,97 @@
+﻿@model IPCU.Models.Diagnostics
+@{
+    ViewData["Title"] = "Delete Diagnostic";
+}
+
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow border-danger">
+                <div class="card-header bg-danger text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Delete Diagnostic Record</h4>
+                        <span class="badge bg-light text-dark">Patient: @Model.Patient.FirstName @Model.Patient.LastName</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Are you sure you want to delete this diagnostic record? This action cannot be undone.
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <strong>Source Site:</strong>
+                                <p>@(string.IsNullOrEmpty(Model.SourceSite) ? "Not specified" : Model.SourceSite)</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <strong>Hospital Number:</strong>
+                                <p>@Model.HospNum</p>
+                            </div>
+                            <div class="mb-3">
+                                <strong>Diagnostic ID:</strong>
+                                <p>@Model.DiagId</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <strong>Isolate Findings:</strong>
+                        <p class="border rounded p-3 bg-light">@(string.IsNullOrEmpty(Model.IsolateFindingsResult) ? "No findings recorded" : Model.IsolateFindingsResult)</p>
+                    </div>
+
+                    @if (Model.Treatments != null && Model.Treatments.Any())
+                    {
+                        <div class="mb-4">
+                            <strong>Associated Treatments:</strong>
+                            <div class="table-responsive mt-2">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Antibiotic</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var treatment in Model.Treatments)
+                                        {
+                                            <tr>
+                                                <td>@treatment.Antibiotic.Name</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="small text-danger mt-2">
+                                <i class="bi bi-info-circle"></i>
+                                All associated treatments will also be deleted.
+                            </div>
+                        </div>
+                    }
+
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" name="id" value="@Model.DiagId" />
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" asp-route-hospNum="@Model.HospNum" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to List
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Confirm Delete
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

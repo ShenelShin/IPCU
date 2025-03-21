@@ -51,5 +51,8 @@ namespace IPCU.Models
 
         [StringLength(40)]
         public string EmailAddress { get; set; }
+
+        public bool HaiStatus { get; set; } = false; // Default value is false (no)
+        public int HaiCount { get; set; } = 0; // Default value is 0
     }
 }
