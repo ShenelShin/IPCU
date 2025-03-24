@@ -20,6 +20,7 @@ namespace IPCU.Controllers
         }
 
         // GET: Diagnostics
+        // GET: Diagnostics
         public async Task<IActionResult> Index(string hospNum)
         {
             if (string.IsNullOrEmpty(hospNum))
@@ -37,10 +38,19 @@ namespace IPCU.Controllers
                 .Include(d => d.Treatments)
                 .ThenInclude(t => t.Antibiotic)
                 .Where(d => d.HospNum == hospNum)
+                .OrderByDescending(d => d.DateCollection)
                 .ToListAsync();
 
             ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
             ViewBag.HospNum = hospNum;
+
+            // Find the last antibiotic update date
+            var latestTreatment = await _context.DiagnosticsTreatments
+                .Where(dt => diagnostics.Select(d => d.DiagId).Contains(dt.DiagId))
+                .OrderByDescending(dt => dt.Diagnostic.DateCollection)
+                .FirstOrDefaultAsync();
+
+            ViewBag.LastAntibioticUpdate = latestTreatment?.Diagnostic?.DateCollection;
 
             return View(diagnostics);
         }
@@ -71,20 +81,18 @@ namespace IPCU.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DateCollection,SourceSite,IsolateFindingsResult,HospNum")] Diagnostics diagnostics)
+        public async Task<IActionResult> Create([Bind("DateCollection,SourceSite,IsolateFindingsResult,HospNum")] Diagnostics diagnostics, string action)
         {
             // Remove any potential existing errors about Treatments
             if (ModelState.ContainsKey("Treatments"))
             {
                 ModelState.Remove("Treatments");
             }
-
             // Important - Remove Patient validation error if it exists
             if (ModelState.ContainsKey("Patient"))
             {
                 ModelState.Remove("Patient");
             }
-
             if (ModelState.IsValid)
             {
                 try
@@ -94,7 +102,6 @@ namespace IPCU.Controllers
                     {
                         diagnostics.Treatments = new List<DiagnosticsTreatment>();
                     }
-
                     // Find and attach the patient explicitly (optional but can help)
                     var patient = await _context.PatientMasters.FirstOrDefaultAsync(p => p.HospNum == diagnostics.HospNum);
                     if (patient != null)
@@ -102,27 +109,33 @@ namespace IPCU.Controllers
                         // If your model includes the Patient navigation property
                         diagnostics.Patient = patient;
                     }
-
                     _context.Add(diagnostics);
                     Console.WriteLine("About to save changes...");
                     var result = await _context.SaveChangesAsync();
                     Console.WriteLine($"SaveChanges result: {result}");
 
-                    // After successful save, redirect to add antibiotics
-                    return RedirectToAction(nameof(AddAntibiotics), new { id = diagnostics.DiagId });
+                    // Check which button was clicked
+                    if (action == "BackToIndex")
+                    {
+                        // Redirect back to the index if the "Save and Return to List" button was clicked
+                        return RedirectToAction(nameof(Index), new { hospNum = diagnostics.HospNum });
+                    }
+                    else
+                    {
+                        // Default behavior: redirect to add antibiotics
+                        return RedirectToAction(nameof(AddAntibiotics), new { id = diagnostics.DiagId });
+                    }
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Exception type: {ex.GetType().Name}");
                     Console.WriteLine($"Exception message: {ex.Message}");
                     Console.WriteLine($"Stack trace: {ex.StackTrace}");
-
                     if (ex.InnerException != null)
                     {
                         Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
                         ModelState.AddModelError("", $"Inner exception: {ex.InnerException.Message}");
                     }
-
                     ModelState.AddModelError("", $"Unable to save changes: {ex.Message}");
                 }
             }
@@ -136,14 +149,12 @@ namespace IPCU.Controllers
                     }
                 }
             }
-
             // If we got this far, something failed, redisplay form
             ViewBag.PatientName = _context.PatientMasters
                 .Where(p => p.HospNum == diagnostics.HospNum)
                 .Select(p => $"{p.FirstName} {p.LastName}")
                 .FirstOrDefault();
             ViewBag.HospNum = diagnostics.HospNum;
-
             return View(diagnostics);
         }
 
@@ -262,8 +273,7 @@ namespace IPCU.Controllers
                 await _context.SaveChangesAsync();
 
                 // Set a success message in TempData
-                TempData["SuccessMessage"] = "Antibiotics saved successfully";
-
+                TempData["SuccessMessage"] = "Antibiotics updated successfully for the diagnostic record";
                 return RedirectToAction(nameof(Index), new { hospNum });
             }
             catch (Exception ex)
@@ -504,6 +514,45 @@ namespace IPCU.Controllers
             await _context.SaveChangesAsync();
 
             return Json(new { id = antibiotic.AntibioticId, name = antibiotic.Name, exists = false });
+        }
+
+        // GET: Diagnostics/AddAntibioticsToLatest/
+        public async Task<IActionResult> AddAntibioticsToLatest(string hospNum)
+        {
+            if (string.IsNullOrEmpty(hospNum))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var patient = await _context.PatientMasters.FirstOrDefaultAsync(p => p.HospNum == hospNum);
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            // Find the latest diagnostic for this patient
+            var latestDiagnostic = await _context.Diagnostics
+                .Include(d => d.Treatments)
+                .ThenInclude(t => t.Antibiotic)
+                .Where(d => d.HospNum == hospNum)
+                .OrderByDescending(d => d.DateCollection)
+                .FirstOrDefaultAsync();
+
+            if (latestDiagnostic == null)
+            {
+                // No diagnostics found, inform the user
+                TempData["ErrorMessage"] = "No diagnostic records found for this patient. Please create a diagnostic record first.";
+                return RedirectToAction("Details", "Patient", new { hospNum });
+            }
+
+            // Get selected antibiotics IDs
+            var selectedAntibiotics = latestDiagnostic.Treatments?.Select(t => t.AntibioticId).ToArray() ?? new int[0];
+            ViewBag.SelectedAntibiotics = selectedAntibiotics;
+
+            // Set patient name for the view
+            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
+
+            return View("AddAntibiotics", latestDiagnostic);
         }
     }
 }

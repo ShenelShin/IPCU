@@ -2,6 +2,11 @@
 @{
     ViewData["Title"] = "Add Antibiotics";
 }
+<div class="alert alert-info">
+    <p><strong>Diagnostic Date:</strong> @Model.DateCollection?.ToString("yyyy-MM-dd")</p>
+    <p><strong>Source Site:</strong> @Model.SourceSite</p>
+    <p><strong>Isolate Findings:</strong> @Model.IsolateFindingsResult</p>
+</div>
 
 <div class="container-fluid">
     <div class="card shadow">

@@ -53,9 +53,14 @@
                             <a asp-action="Index" asp-route-hospNum="@ViewBag.HospNum" class="btn btn-outline-secondary">
                                 <i class="bi bi-arrow-left"></i> Back to List
                             </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save"></i> Save and Add Antibiotics
-                            </button>
+                            <div>
+                                <button type="submit" class="btn btn-primary" name="action" value="AddAntibiotics">
+                                    <i class="bi bi-save"></i> Save and Add Antibiotics
+                                </button>
+                                <button type="submit" class="btn btn-success ms-2" name="action" value="BackToIndex">
+                                    <i class="bi bi-save"></i> Save and Return to List
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>

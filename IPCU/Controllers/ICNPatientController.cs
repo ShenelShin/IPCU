@@ -117,7 +117,9 @@ namespace IPCU.Controllers
                                      PatientType = m.PatientType,
                                      EmailAddress = m.EmailAddress,
                                      CellNum = m.cellnum,
-                                     AdmissionDuration = EF.Functions.DateDiffDay(p.AdmDate.Value, DateTime.Now)
+                                     AdmissionDuration = EF.Functions.DateDiffDay(p.AdmDate.Value, DateTime.Now),
+                                     VitalSigns = _context.VitalSigns.Where(v => v.HospNum == m.HospNum).ToList()
+
                                  })
                                .FirstOrDefaultAsync();
 

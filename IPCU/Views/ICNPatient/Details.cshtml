@@ -1,70 +1,736 @@
 ﻿@model IPCU.Models.PatientViewModel
 @{
-    ViewData["Title"] = "Patient Details";
+    ViewBag.Title = "Patient Details";
+
+    // Get latest vital signs
+    // Get latest vital signs - more defensive approach
+    var latestVitals = new Dictionary<string, IPCU.Models.VitalSigns>();
+    if (Model.VitalSigns != null && Model.VitalSigns.Any())
+    {
+        latestVitals = Model.VitalSigns
+            .GroupBy(v => v.VitalSign)
+            .Select(g => g.OrderByDescending(v => v.VitalSignDate).FirstOrDefault())
+            .ToDictionary(v => v.VitalSign, v => v);
+    }
+
+    // Helper function to get latest vital value
+    Func<string, string> GetLatestVital = (vitalType) =>
+    {
+        if (latestVitals.TryGetValue(vitalType, out var vital))
+            return vital.VitalSignValue;
+        return "N/A";
+    };
+
+    // Helper function to get latest vital date
+    Func<string, DateTime?> GetLatestVitalDate = (vitalType) =>
+    {
+        if (latestVitals.TryGetValue(vitalType, out var vital))
+            return vital.VitalSignDate;
+        return null;
+    };
 }
-<div class="container-fluid">
-    <h2>Patient Details</h2>
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h4>@Model.PatientName</h4>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2D3E50;
+            --secondary: #1ABC9C;
+            --accent: #3498DB;
+            --light: #ECF0F1;
+            --dark: #34495E;
+            --danger: #E74C3C;
+            --warning: #F39C12;
+            --success: #2ECC71;
+            --text: #2C3E50;
+            --card-radius: 12px;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #F5F7FA;
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+            .header h1 {
+                font-weight: 700;
+                font-size: 28px;
+                margin: 0;
+                color: var(--primary);
+            }
+
+        .patient-card {
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .patient-header {
+            background: linear-gradient(120deg, var(--primary), var(--dark));
+            color: white;
+            padding: 25px 30px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .patient-header h2 {
+                margin: 0;
+                font-size: 24px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+            }
+
+        .patient-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--secondary);
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .patient-status {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .patient-content {
+            padding: 30px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+            .info-section h3 {
+                font-size: 16px;
+                color: var(--primary);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 15px;
+                padding-bottom: 10px;
+                border-bottom: 2px solid var(--light);
+                display: flex;
+                align-items: center;
+            }
+
+                .info-section h3 i {
+                    margin-right: 10px;
+                    color: var(--accent);
+                }
+
+        .info-item {
+            display: flex;
+            margin-bottom: 12px;
+        }
+
+            .info-item .label {
+                width: 40%;
+                font-weight: 500;
+                color: var(--dark);
+            }
+
+            .info-item .value {
+                width: 60%;
+                font-weight: 400;
+            }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .admission-badge {
+            background-color: var(--accent);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .contact-info {
+            background-color: var(--light);
+            border-radius: var(--card-radius);
+            padding: 20px;
+        }
+
+        .action-bar {
+            padding: 20px 30px;
+            border-top: 1px solid var(--light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+
+            .btn i {
+                margin-right: 8px;
+            }
+
+        .btn-back {
+            background-color: var(--light);
+            color: var(--text);
+        }
+
+        .btn-action {
+            background-color: var(--primary);
+            color: white;
+            margin-left: 10px;
+        }
+
+            .btn-action:hover {
+                background-color: var(--dark);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+
+        .btn-vitals {
+            background-color: var(--secondary);
+        }
+
+        .btn-devices {
+            background-color: var(--accent);
+        }
+
+        .btn-diagnostics {
+            background-color: var(--primary);
+        }
+
+        .btn-antibiotics {
+            background-color: var(--warning);
+        }
+
+        .admission-duration {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+        }
+
+            .admission-duration i {
+                margin-right: 8px;
+            }
+
+        /* Quick Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+            .stat-card:hover {
+                transform: translateY(-5px);
+            }
+
+            .stat-card .stat-icon {
+                position: absolute;
+                right: 20px;
+                top: 20px;
+                font-size: 36px;
+                opacity: 0.2;
+                color: var(--accent);
+            }
+
+            .stat-card .stat-title {
+                font-size: 14px;
+                color: var(--dark);
+                margin-bottom: 5px;
+            }
+
+            .stat-card .stat-value {
+                font-size: 24px;
+                font-weight: 700;
+                margin-bottom: 0;
+            }
+
+        .bg-accent {
+            border-left: 4px solid var(--accent);
+        }
+
+        .bg-secondary {
+            border-left: 4px solid var(--secondary);
+        }
+
+        .bg-warning {
+            border-left: 4px solid var(--warning);
+        }
+
+        .bg-danger {
+            border-left: 4px solid var(--danger);
+        }
+
+        .action-bar {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+        }
+
+        /* Vital Signs Specific Styles */
+        .reading-normal {
+            color: var(--success);
+        }
+
+        .reading-warning {
+            color: var(--warning);
+        }
+
+        .reading-danger {
+            color: var(--danger);
+        }
+
+        .vital-timestamp {
+            font-size: 12px;
+            color: var(--dark);
+            opacity: 0.7;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .vitals-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            .vitals-table th, .vitals-table td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid var(--light);
+            }
+
+            .vitals-table th {
+                background-color: var(--primary);
+                color: white;
+            }
+
+            .vitals-table tr:nth-child(even) {
+                background-color: var(--light);
+            }
+
+            .vitals-table tr:hover {
+                background-color: rgba(52, 152, 219, 0.1);
+            }
+
+        .vital-form {
+            background-color: var(--light);
+            border-radius: var(--card-radius);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .btn-submit {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .accordion {
+            margin-top: 20px;
+        }
+
+        .accordion-header {
+            cursor: pointer;
+            padding: 15px;
+            background-color: var(--light);
+            border-radius: 8px;
+            margin-bottom: 5px;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+            .accordion-content.active {
+                max-height: 1000px;
+                padding: 15px;
+            }
+
+        .toggle-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .accordion-header[aria-expanded="true"] .toggle-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Patient Management</h1>
+            <div class="admission-duration">
+                <i class="fas fa-calendar-check"></i>
+                <span id="admissionDuration">@Model.AdmissionDuration days</span>
+            </div>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card bg-accent">
+                <i class="fas fa-lungs stat-icon"></i>
+                <div class="stat-title">Latest RR</div>
+                <div class="stat-value @(int.TryParse(GetLatestVital("RR"), out int rr) && (rr > 25) ? "reading-warning" : "reading-normal")">
+                    @(GetLatestVital("RR") != "N/A" ? GetLatestVital("RR") + " /Min" : "N/A")
                 </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <dl class="row">
-                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.HospNum)</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.HospNum)</dd>
-                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Age)</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Age)</dd>
-                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Sex)</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Sex)</dd>
-                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.CivilStatus)</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.CivilStatus)</dd>
-                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.PatientType)</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.PatientType)</dd>
-                            </dl>
+                @if (GetLatestVitalDate("RR").HasValue)
+                {
+                    <div class="vital-timestamp">@GetLatestVitalDate("RR").Value.ToString("MMM dd, HH:mm")</div>
+                }
+            </div>
+            <div class="stat-card bg-accent">
+                <i class="fas fa-thermometer-half stat-icon"></i>
+                <div class="stat-title">Latest TEMP</div>
+                <div class="stat-value @(float.TryParse(GetLatestVital("TEMP"), out float temp) && (temp > 38 || temp < 36) ? "reading-danger" : "reading-normal")">
+                    @(GetLatestVital("TEMP") != "N/A" ? GetLatestVital("TEMP") + " °C" : "N/A")
+                </div>
+                @if (GetLatestVitalDate("TEMP").HasValue)
+                {
+                    <div class="vital-timestamp">@GetLatestVitalDate("TEMP").Value.ToString("MMM dd, HH:mm")</div>
+                }
+            </div>
+            <div class="stat-card bg-accent">
+                <i class="fas fa-heartbeat stat-icon"></i>
+                <div class="stat-title">Latest WBC</div>
+                <div class="stat-value @(int.TryParse(GetLatestVital("WBC"), out int wbc) && (wbc > 12000 || wbc < 4000) ? "reading-danger" : "reading-normal")">
+                    @(GetLatestVital("WBC") != "N/A" ? GetLatestVital("WBC") + " WBCs" : "N/A")
+                </div>
+                @if (GetLatestVitalDate("WBC").HasValue)
+                {
+                    <div class="vital-timestamp">@GetLatestVitalDate("WBC").Value.ToString("MMM dd, HH:mm")</div>
+                }
+            </div>
+            <div class="stat-card bg-accent">
+                <i class="fas fa-file-medical stat-icon"></i>
+                <div class="stat-title">HAI Count</div>
+                <div class="stat-value">@Model.HaiCount</div>
+            </div>
+        </div>
+
+        <div class="patient-card">
+            <div class="patient-header">
+                <h2>
+                    <div class="patient-avatar">
+                        @Model.PatientName.Substring(0, 1)
+                    </div>
+                    @Model.PatientName
+                </h2>
+                <div class="patient-status">
+                    @Model.PatientType
+                </div>
+            </div>
+
+            <div class="patient-content">
+                <div class="info-grid">
+                    <div class="info-section">
+                        <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+                        <div class="info-item">
+                            <div class="label">Hospital Number</div>
+                            <div class="value highlight">@Model.HospNum</div>
                         </div>
-                        <div class="col-md-6">
-                            <dl class="row">
-                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.AdmLocation)</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.AdmLocation)</dd>
-                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.RoomID)</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.RoomID)</dd>
-                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.AdmType)</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.AdmType)</dd>
-                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.AdmDate)</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.AdmDate)</dd>
-                                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.AdmissionDuration)</dt>
-                                <dd class="col-sm-8">@Html.DisplayFor(model => model.AdmissionDuration) days</dd>
-                            </dl>
+                        <div class="info-item">
+                            <div class="label">Age</div>
+                            <div class="value">@Model.Age years</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Sex</div>
+                            <div class="value">@Model.Sex</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Civil Status</div>
+                            <div class="value">@Model.CivilStatus</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Patient Type</div>
+                            <div class="value">
+                                <span class="admission-badge">@Model.PatientType</span>
+                            </div>
                         </div>
                     </div>
-                    <hr />
-                    <h5>Contact Information</h5>
-                    <dl class="row">
-                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.EmailAddress)</dt>
-                        <dd class="col-sm-10">@Html.DisplayFor(model => model.EmailAddress)</dd>
-                        <dt class="col-sm-2">@Html.DisplayNameFor(model => model.CellNum)</dt>
-                        <dd class="col-sm-10">@Html.DisplayFor(model => model.CellNum)</dd>
-                    </dl>
-                </div>
-                <div class="card-footer d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                    <div>
-                        <a asp-action="VitalSigns" asp-route-id="@Model.IdNum" class="btn btn-primary me-2">
-                            <i class="fas fa-heartbeat me-1"></i> View Vital Signs
-                        </a>
-                        <a asp-action="ConnectedDevices" asp-route-id="@Model.IdNum" class="btn btn-info me-2">
-                            <i class="fas fa-plug me-1"></i> View Connected Devices
-                        </a>
-                        <a asp-controller="Diagnostics" asp-action="Index" asp-route-hospNum="@Model.HospNum" class="btn btn-blue me-2">
-                            <i class="fas fa-microscope me-1"></i> View Diagnostics
-                        </a>
+
+                    <div class="info-section">
+                        <h3><i class="fas fa-hospital-alt"></i> Admission Details</h3>
+                        <div class="info-item">
+                            <div class="label">Location</div>
+                            <div class="value">@Model.AdmLocation</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Room</div>
+                            <div class="value highlight">@Model.RoomID</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Admission Type</div>
+                            <div class="value">@Model.AdmType</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Admission Date</div>
+                            <div class="value">@Model.AdmDate</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="label">Duration</div>
+                            <div class="value">@Model.AdmissionDuration days</div>
+                        </div>
                     </div>
+                </div>
+
+                <div class="info-section">
+                    <h3><i class="fas fa-heartbeat"></i> Vital Signs</h3>
+
+                    <div class="accordion">
+                        <div class="accordion-header" id="vitalsHistoryHeader" aria-expanded="false">
+                            <span>Vital Signs History</span>
+                            <i class="fas fa-chevron-down toggle-icon"></i>
+                        </div>
+                        <div class="accordion-content" id="vitalsHistoryContent">
+                            @if (Model.VitalSigns != null && Model.VitalSigns.Any())
+                            {
+                                <table class="vitals-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Date & Time</th>
+                                            <th>Vital Sign</th>
+                                            <th>Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var vital in Model.VitalSigns.OrderByDescending(v => v.VitalSignDate))
+                                        {
+                                            <tr>
+                                                <td>@vital.VitalSignDate.ToString("MMM dd, yyyy HH:mm")</td>
+                                                <td>
+                                                    @switch (vital.VitalSign)
+                                                    {
+                                                        case "HR":
+                                                            <i class="fas fa-heartbeat">Heart Rate</i>
+                                                            break;
+                                                        case "TEMP":
+                                                            <i class="fas fa-thermometer-half">Temperature</i>
+                                                            break;
+                                                        case "RR":
+                                                            <i class="fas fa-wind">Respiratory Rate</i>
+                                                            break;
+                                                        case "WBC":
+                                                            <i class="fas fa-lungs">WBC</i>
+                                                            break;
+                                                        case "BP":
+                                                            <i class="fas fa-stethoscope">Blood Pressure</i>
+                                                            break;
+                                                        default:
+                                                            @vital.VitalSign
+                                                            break;
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @switch (vital.VitalSign)
+                                                    {
+                                                        case "HR":
+                                                            @(vital.VitalSignValue + " /Min")
+                                                            break;
+                                                        case "TEMP":
+                                                            <span class="@(float.TryParse(vital.VitalSignValue, out float TEMP) && (TEMP > 38 || TEMP < 36) ? "reading-danger" : "reading-normal")">
+                                                                @(vital.VitalSignValue + " °C")
+                                                            </span>
+                                                            break;
+                                                        case "RR":
+                                                            <span class="@(int.TryParse(vital.VitalSignValue, out int RR) && RR > 25 ? "reading-danger" : "reading-normal")">
+                                                                @(vital.VitalSignValue + " /Min")
+                                                            </span>
+                                                            break;
+                                                        case "WBC":
+                                                            bool isAbnormal = false;
+                                                            @if (int.TryParse(vital.VitalSignValue.Replace(" WBCs", "").Trim(), out int WBC))
+                                                                {
+                                                                    isAbnormal = (WBC > 12000 || WBC < 4000);
+                                                                }
+                                                            <span class="@(isAbnormal ? "reading-danger" : "reading-normal")">
+                                                                @(vital.VitalSignValue)
+                                                            </span>
+                                                            break;
+                                                        default:
+                                                            @vital.VitalSignValue
+                                                            break;
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <p>No vital signs recorded yet.</p>
+                            }
+                        </div>
+                    </div>
+
+                <div class="contact-info">
+                    <h3><i class="fas fa-address-card"></i> Contact Information</h3>
+                    <div class="info-item">
+                        <div class="label">Email Address</div>
+                        <div class="value">@Model.EmailAddress</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Phone Number</div>
+                        <div class="value highlight">@Model.CellNum</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <a href="@Url.Action("Index")" class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+                <div class="action-buttons">
+                    <a href="@Url.Action("VitalSigns", new { id = Model.IdNum })" class="btn btn-action btn-vitals">
+                        <i class="fas fa-heartbeat"></i> Vital Signs
+                    </a>
+                    <a href="@Url.Action("ConnectedDevices", new { id = Model.IdNum })" class="btn btn-action btn-devices">
+                        <i class="fas fa-plug"></i> Connected Devices
+                    </a>
+                    <a href="@Url.Action("Index", "Diagnostics", new { hospNum = Model.HospNum })" class="btn btn-action btn-diagnostics">
+                        <i class="fas fa-microscope"></i> Diagnostics
+                    </a>
+                    <a href="@Url.Action("AddAntibioticsToLatest", "Diagnostics", new { hospNum = Model.HospNum })" class="btn btn-action btn-antibiotics">
+                        <i class="fas fa-pills"></i> Add Antibiotics
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    <script>
+        // JavaScript to toggle accordion sections
+        document.addEventListener('DOMContentLoaded', function() {
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+                    // Toggle the current accordion
+                    this.setAttribute('aria-expanded', !isExpanded);
+                    if (isExpanded) {
+                        content.classList.remove('active');
+                    } else {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
