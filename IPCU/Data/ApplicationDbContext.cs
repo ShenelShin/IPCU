@@ -38,6 +38,10 @@ namespace IPCU.Data
         public DbSet<SSTInfectionModel> SSTInfectionModels { get; set; }
         public DbSet<UTIFormModel> UTIModels { get; set; }
 
+        public DbSet<CardiovascularSystemInfection> CardiovascularSystemInfection { get; set; }
+        public DbSet<PediatricVAEChecklist> PediatricVAEChecklist { get; set; }
+
+
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);
