@@ -11,9 +11,7 @@ namespace IPCU.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "EvaluationSummaries");
-
+           
             migrationBuilder.CreateTable(
                 name: "DeviceConnected",
                 columns: table => new

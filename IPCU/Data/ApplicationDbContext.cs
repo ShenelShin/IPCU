@@ -36,7 +36,7 @@ namespace IPCU.Data
         public DbSet<DeviceConnected> DeviceConnected { get; set; }
 
         public DbSet<SSTInfectionModel> SSTInfectionModels { get; set; }
-
+        public DbSet<UTIFormModel> UTIModels { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{

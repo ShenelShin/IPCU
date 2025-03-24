@@ -27,31 +27,31 @@ namespace IPCU.Models
     public string InfectionType { get; set; }
     public string InfectionClassification { get; set; }
 
-    // Infection Details - Burn Infection
-    public bool BurnAppearanceChange { get; set; }
-    public bool BurnOrganismIdentified { get; set; }
-    public string BurnCultureDate { get; set; }
-    public string BurnCultureResults { get; set; }
+        // Infection Details - Burn Infection
+        public bool BurnAppearanceChange { get; set; }
+        public bool BurnOrganismIdentified { get; set; }
+        public string BurnCultureDate { get; set; }
+        public string BurnCultureResults { get; set; }
 
-    // Decubitus Ulcer Infection
-    public bool DecubitusErythema { get; set; }
-    public bool DecubitusTenderness { get; set; }
-    public bool DecubitusSwelling { get; set; }
-    public bool DecubitusOrganismIdentified { get; set; }
-    public string DecubitusCultureDate { get; set; }
-    public string DecubitusCultureResults { get; set; }
+        // Decubitus Ulcer Infection
+        public bool DecubitusErythema { get; set; }
+        public bool DecubitusTenderness { get; set; }
+        public bool DecubitusSwelling { get; set; }
+        public bool DecubitusOrganismIdentified { get; set; }
+        public string DecubitusCultureDate { get; set; }
+        public string DecubitusCultureResults { get; set; }
 
-    // ST-Soft Tissue Infection
-    public bool STOrganismIdentified { get; set; }
-    public bool STDrainage { get; set; }
-    public bool STAbscess { get; set; }
-    public string STCultureDate { get; set; }
-    public string STCultureResults { get; set; }
+        // ST-Soft Tissue Infection
+        public bool STOrganismIdentified { get; set; }
+        public bool STDrainage { get; set; }
+        public bool STAbscess { get; set; }
+        public string STCultureDate { get; set; }
+        public string STCultureResults { get; set; }
 
-    // Skin-Skin Infection
-    public bool SkinPurulentDrainage { get; set; }
-    public bool SkinVesicles { get; set; }
-    public bool SkinPustules { get; set; }
+        // Skin-Skin Infection
+        public bool SkinPurulentDrainage { get; set; }
+        public bool SkinVesicles { get; set; }
+        public bool SkinPustules { get; set; }
         public bool SkinBoils { get; set; }
 
 
@@ -63,9 +63,9 @@ namespace IPCU.Models
 
 
         public bool OrganismIdentifiedFromAspiration { get; set; }
-     public bool MultinucleatedGiantCellsSeen { get; set; }
+        public bool MultinucleatedGiantCellsSeen { get; set; }
         public bool DiagnosticAntibodyTiter { get; set; }
-    public string SkinCultureDate { get; set; }
-    public string SkinCultureResults { get; set; }
-}
+        public string SkinCultureDate { get; set; }
+        public string SkinCultureResults { get; set; }
+    }
 }
