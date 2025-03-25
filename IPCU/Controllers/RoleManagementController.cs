@@ -8,7 +8,6 @@ using IPCU.Models;
 
 namespace IPCU.Controllers
 {
-    [Authorize(Roles = "Admin")] // Restrict access to admins only
     public class RoleManagementController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
