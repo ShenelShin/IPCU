@@ -54,10 +54,14 @@ namespace IPCU.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("HospNum,LastName,FirstName,MiddleName,AccountNum,Sex,BirthDate,CivilStatus,Age,PatientStatus,SeniorCitizenWithID,cellnum,EmpNum,PatientType,EmailAddress")] PatientMaster patientMaster)
+        public async Task<IActionResult> Create([Bind("HospNum,LastName,FirstName,MiddleName,AccountNum,Sex,BirthDate,CivilStatus,Age,PatientStatus,SeniorCitizenWithID,cellnum,EmpNum,PatientType,EmailAddress,HaiStatus,HaiCount")] PatientMaster patientMaster)
         {
             if (ModelState.IsValid)
             {
+                // Set default values for the hidden fields
+                patientMaster.HaiStatus = false;
+                patientMaster.HaiCount = 0;
+
                 _context.Add(patientMaster);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -97,6 +101,9 @@ namespace IPCU.Controllers
             {
                 try
                 {
+                    var existingPatient = await _context.PatientMasters.AsNoTracking()
+                    .FirstOrDefaultAsync(p => p.HospNum == id);
+
                     _context.Update(patientMaster);
                     await _context.SaveChangesAsync();
                 }

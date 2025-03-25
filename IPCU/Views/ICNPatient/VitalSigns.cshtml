@@ -59,8 +59,8 @@
                                             double temp;
                                             if (double.TryParse(vs.VitalSignValue, out temp))
                                             {
-                                                isAbnormal = temp >= 38.0 || temp < 36.0;
-                                                statusText = isAbnormal ? (temp >= 38.0 ? "High" : "Low") : "Normal";
+                                                isAbnormal = temp > 38.0 || temp < 36.0;
+                                                statusText = isAbnormal ? (temp > 38.0 ? "High" : "Low") : "Normal";
                                             }
                                         }
                                         else if (vs.VitalSign.Equals("Respiratory Rate", StringComparison.OrdinalIgnoreCase) ||

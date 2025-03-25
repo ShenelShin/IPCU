@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "ICN Patient List";
 }
-
 <!-- Custom CSS for the dashboard -->
 <style>
     .dashboard-header {
@@ -95,14 +94,42 @@
         border-radius: 20px;
         padding: 4px 12px;
     }
-</style>
 
+    .hai-badge {
+        border-radius: 20px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .hai-status-yes {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .hai-status-no {
+        background-color: #198754;
+        color: white;
+    }
+
+    .btn-hai-action {
+        border-radius: 20px;
+        padding: 4px 12px;
+        margin-left: 5px;
+    }
+
+    .hai-count-badge {
+        background-color: #ffc107;
+        color: #212529;
+        font-weight: bold;
+        margin-left: 5px;
+    }
+</style>
 <div class="container-fluid py-4">
     <div class="dashboard-header">
         <h2 class="mb-1">ICN Patient Monitoring Dashboard</h2>
         <p class="text-muted mb-0">Patients in your assigned areas admitted for 48+ hours</p>
     </div>
-
     @{
         var currentUser = await UserManager.GetUserAsync(User);
         var assignedAreas = currentUser?.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
@@ -169,11 +196,11 @@
             <div class="stats-card">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
-                        <p class="label mb-0">Locations</p>
-                        <h3 class="number mb-0">@Model.Select(p => p.AdmLocation).Distinct().Count()</h3>
+                        <p class="label mb-0">HAI Cases</p>
+                        <h3 class="number mb-0">@Model.Count(p => p.HaiStatus)</h3>
                     </div>
                     <div>
-                        <i class="fas fa-hospital fa-2x text-info opacity-50"></i>
+                        <i class="fas fa-virus fa-2x text-danger opacity-50"></i>
                     </div>
                 </div>
             </div>
@@ -201,6 +228,7 @@
                             <th>Admitted</th>
                             <th>Duration</th>
                             <th>@Html.DisplayNameFor(model => model.Age)/@Html.DisplayNameFor(model => model.Sex)</th>
+                            <th>HAI Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -230,9 +258,33 @@
                                 </td>
                                 <td>@item.Age yrs / @item.Sex</td>
                                 <td>
-                                    <a asp-action="Details" asp-route-id="@item.IdNum" class="btn btn-sm btn-primary btn-view-details">
-                                        <i class="fas fa-eye me-1"></i> View
-                                    </a>
+                                    <span class="hai-badge @(item.HaiStatus ? "hai-status-yes" : "hai-status-no")">
+                                        @(item.HaiStatus ? "YES" : "NO")
+                                    </span>
+                                    @if (item.HaiStatus && item.HaiCount > 0)
+                                    {
+                                        <span class="badge hai-count-badge">@item.HaiCount</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a asp-action="Details" asp-route-id="@item.IdNum" class="btn btn-sm btn-primary btn-view-details">
+                                            <i class="fas fa-eye me-1"></i> View
+                                        </a>
+                                        @if (!item.HaiStatus)
+                                        {
+                                            <button type="button" class="btn btn-sm btn-danger btn-hai-action mark-hai-btn"
+                                                    data-id="@item.IdNum" data-name="@item.PatientName">
+                                                <i class="fas fa-virus me-1"></i> Mark HAI
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="HaiChecklist" asp-route-id="@item.IdNum" class="btn btn-sm btn-warning btn-hai-action">
+                                                <i class="fas fa-clipboard-check me-1"></i> HAI Checklist
+                                            </a>
+                                        }
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -242,10 +294,35 @@
         </div>
     }
 </div>
-
+<!-- HAI Confirmation Modal -->
+<div class="modal fade" id="haiConfirmationModal" tabindex="-1" aria-labelledby="haiConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="haiConfirmationModalLabel">Confirm HAI Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to mark <strong id="patientNameSpan"></strong> as having a Healthcare-Associated Infection (HAI)?</p>
+                <p class="text-danger"><i class="fas fa-exclamation-triangle me-2"></i>This action will trigger infection control protocols and cannot be easily undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="markHaiForm" asp-action="UpdateHaiStatus" method="post">
+                    <input type="hidden" id="patientIdInput" name="id" value="" />
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger">Confirm HAI Status</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
-    <script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+        <script>
         $(document).ready(function() {
             // Initialize DataTables with advanced features
             $('#patientsTable').DataTable({
@@ -255,14 +332,26 @@
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 "language": {
                     "search": "Search patients:",
-                    "lengthMenu": "Show _MENU_ patients",
-                    "info": "Showing _START_ to _END_ of _TOTAL_ patients"
+                    "lengthMenu": "Show MENU patients",
+                    "info": "Showing START to END of TOTAL patients"
                 },
                 "dom": '<"row"<"col-md-6"l><"col-md-6"f>>rtip',
                 "initComplete": function() {
                     // Add a custom class to the search input
                     $('.dataTables_filter input').addClass('form-control-sm');
                 }
+            });
+
+            // Handle HAI confirmation modal
+            $('.mark-hai-btn').click(function() {
+                var patientId = $(this).data('id');
+                var patientName = $(this).data('name');
+
+                $('#patientIdInput').val(patientId);
+                $('#patientNameSpan').text(patientName);
+
+                var modal = new bootstrap.Modal(document.getElementById('haiConfirmationModal'));
+                modal.show();
             });
         });
     </script>
