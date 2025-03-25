@@ -1,0 +1,245 @@
+﻿@model IPCU.Models.PediatricVAEChecklist
+
+@{
+    ViewData["Title"] = "Create Pediatric VAE Checklist";
+}
+
+<h2>Create Pediatric VAE Checklist</h2>
+
+<form asp-action="Submit" method="post">
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto px-2 font-weight-bold">Patient Information</legend>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <label asp-for="Fname"></label>
+                    <input asp-for="Fname" class="form-control" />
+                    <span asp-validation-for="Fname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Mname"></label>
+                    <input asp-for="Mname" class="form-control" />
+                    <span asp-validation-for="Mname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Lname"></label>
+                    <input asp-for="Lname" class="form-control" />
+                    <span asp-validation-for="Lname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="HospitalNumber"></label>
+                    <input asp-for="HospitalNumber" class="form-control" />
+                    <span asp-validation-for="HospitalNumber" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="DateOfBirth"></label>
+                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Age"></label>
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="UnitWardArea"></label>
+                    <input asp-for="UnitWardArea" class="form-control" />
+                    <span asp-validation-for="UnitWardArea" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="MainService"></label>
+                    <input asp-for="MainService" class="form-control" />
+                    <span asp-validation-for="MainService" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="DateOfEvent"></label>
+                    <input asp-for="DateOfEvent" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfEvent" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Investigator"></label>
+                    <input asp-for="Investigator" class="form-control" />
+                    <span asp-validation-for="Investigator" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfAdmission"></label>
+                    <input asp-for="DateOfAdmission" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfAdmission" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Disposition"></label>
+                    <select asp-for="Disposition" class="form-control">
+                        <option value="">-- Select Disposition --</option>
+                        <option>Mortality</option>
+                        <option>Discharged</option>
+                        <option>Still Admitted</option>
+                        <option>Transferred In</option>
+                        <option>Transferred Out</option>
+                    </select>
+                    <span asp-validation-for="Disposition" class="text-danger"></span>
+
+                <div id="dispositionTransferDiv" style="display:none;">
+
+                    <label asp-for="DispositionTransfer"></label>
+                    <input asp-for="DispositionTransfer" class="form-control" />
+                    <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+
+                </div
+                </td>
+                
+            </tr>
+            <tr>
+               
+                <td>
+                    <label asp-for="DispositionDate"></label>
+                    <input asp-for="DispositionDate" type="date" class="form-control" />
+                    <span asp-validation-for="DispositionDate" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfIntubation"></label>
+                    <input asp-for="DateOfIntubation" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfIntubation" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Gender"></label>
+                    <select asp-for="Gender" class="form-control">
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Classification"></label>
+                    <select asp-for="Classification" class="form-control">
+                        <option value="">Select</option>
+                        <option>Pay</option>
+                        <option>Service</option>
+                    </select>
+                    <span asp-validation-for="Classification" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="MDRO"></label>
+                    <select asp-for="MDRO" class="form-control">
+                        <option value="">Select</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    <span asp-validation-for="MDRO" class="text-danger"></span>
+                </td>
+                <td colspan="3">
+                    <label asp-for="TypeClass">Type & Classification</label><br />
+                    <div class="form-check form-check-inline">
+                        <input type="checkbox" class="form-check-input" value="PedVAE" name="TypeClass" />
+                        <label class="form-check-label">PedVAE</label>
+                    </div>
+                    <span asp-validation-for="TypeClass" class="text-danger d-block"></span>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <div id="pedVaeSection" style="display:none;">
+  <fieldset class="border p-3 mb-4">
+    <legend class="w-auto px-2 font-weight-bold text-uppercase">Pediatric Ventilator-Associated Event (PedVAE)</legend>
+
+    <table class="table table-bordered mb-3">
+        <thead>
+            <tr>
+                <th colspan="2" class="text-left">
+                    Baseline period of improvement or stability* on the ventilator
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="width: 5%; vertical-align: middle; text-align:center;">
+                    <input asp-for="FiO2Increase" class="form-check-input" />
+                </td>
+                <td>
+                    <label asp-for="FiO2Increase" class="form-check-label">
+                        Daily minimum FiO2 increase ≥ 0.25 (25 points) for ≥ 2 days,
+                        <strong>OR</strong>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 5%; vertical-align: middle; text-align:center;">
+                    <input asp-for="MAPIncrease" class="form-check-input" />
+                </td>
+                <td>
+                    <label asp-for="MAPIncrease" class="form-check-label">
+                        Daily minimum MAP** values of ≥ 4 cm H<sub>2</sub>O for ≥ 2 days
+                    </label>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <small class="d-block mb-2">
+        *Stability or improvement on the ventilator is defined by ≥2 calendar days of stable or decreasing daily minimum FiO2 or MAP values. The baseline period is defined as the 2 calendar days immediately preceding the first day of increased daily minimum FiO2 or MAP.<br />
+        **Daily minimum MAP is the lowest value documented during the calendar day. For the purposes of surveillance, in patients &lt; 30 days old, daily minimum MAP values of 0-8 cm H2O are considered equal to 8 cm H2O; in patients ≥ 30 days old, daily minimum MAP values of 0-10 cm H2O are considered equal to 10 cm H2O.
+    </small>
+
+    <div class="form-group">
+        <label asp-for="Comments" class="font-weight-bold">Comments/Notes:</label>
+        <textarea asp-for="Comments" class="form-control"></textarea>
+        <span asp-validation-for="Comments" class="text-danger"></span>
+    </div>
+</fieldset>
+</div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            function toggleDispositionTransfer() {
+                var selectedDisposition = $('#Disposition').val();
+                if (selectedDisposition === "Transferred In" || selectedDisposition === "Transferred Out") {
+                    $('#dispositionTransferDiv').show();
+                } else {
+                    $('#dispositionTransferDiv').hide();
+                    $('#DispositionTransfer').val(''); // Optional: Clear the input when hidden
+                }
+            }
+
+            // Initial check
+            toggleDispositionTransfer();
+
+            // On dropdown change
+            $('#Disposition').change(function () {
+                toggleDispositionTransfer();
+            });
+        });
+
+
+
+         $(document).ready(function () {
+            $('input[name="TypeClass"][value="PedVAE"]').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#pedVaeSection').slideDown();
+                } else {
+                    $('#pedVaeSection').slideUp();
+                }
+            });
+
+            // Check on load if already selected (for edit scenario)
+            if ($('input[name="TypeClass"][value="PedVAE"]').is(':checked')) {
+                $('#pedVaeSection').show();
+            }
+        });
+    </script>
+}

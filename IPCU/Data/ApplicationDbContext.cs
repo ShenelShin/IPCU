@@ -38,6 +38,11 @@ namespace IPCU.Data
         public DbSet<DeviceConnected> DeviceConnected { get; set; }
 
         public DbSet<SSTInfectionModel> SSTInfectionModels { get; set; }
+        public DbSet<UTIFormModel> UTIModels { get; set; }
+
+        public DbSet<CardiovascularSystemInfection> CardiovascularSystemInfection { get; set; }
+        public DbSet<PediatricVAEChecklist> PediatricVAEChecklist { get; set; }
+        public DbSet<LaboratoryConfirmedBSI> LaboratoryConfirmedBSI { get; set; }
 
         public DbSet<VentilatorEventChecklist> VentilatorEventChecklists { get; set; }
 

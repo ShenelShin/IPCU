@@ -2,187 +2,170 @@
     ViewData["Title"] = "Home Page";
 }
 
-<!-- Bootstrap & Font Awesome -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<!-- Main Content -->
-<div class="container mt-5 text-center page-content">
-    <h1 class="display-4 text-primary fw-bold">Welcome to IPCU System</h1>
-    <p class="lead">Managing Employee forms and Employee trainings efficiently for the IPCU.</p>
-
-    <!-- First Row -->
-    <div class="row mt-5 justify-content-center">
-        <div class="col-md-3 mb-4">
-            <!-- View Patients Card -->
-            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
-                <div class="card-header bg-primary text-white text-center py-3">
-                    <i class="fas fa-eye fa-2x mb-2"></i>
-                    <h5 class="card-title mb-0">View Patients</h5>
-                </div>
-                <div class="card-body text-center p-4">
-                    <p class="card-text text-muted mb-4">View the list of all registered patients.</p>
-                    <a asp-controller="PatientMasters" asp-action="Index" class="btn btn-primary">
-                        <i class="fas fa-arrow-right mr-1"></i> Master
-                    </a>
-                    <a asp-controller="Patients" asp-action="Index" class="btn btn-primary">
-                        <i class="fas fa-arrow-right mr-1"></i> Patient
-                    </a>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <!-- Training Summary Card -->
-            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
-                <div class="card-header bg-warning text-white text-center py-3">
-                    <i class="fas fa-dumbbell fa-2x mb-2"></i>
-                    <h5 class="card-title mb-0">Training Summary</h5>
-                </div>
-                <div class="card-body text-center p-4">
-                    <p class="card-text text-muted mb-4">View asnwered assesments and create summary reports.</p>
-                    <a asp-controller="Evaluation" asp-action="SummaryReport" class="btn btn-warning text-white">
-                        <i class="fas fa-arrow-right mr-1"></i> Summary
-                    </a>
-                    <a asp-controller="TrainingSummary" asp-action="Reports" class="btn btn-outline-success">
-                        <i class="fa fa-arrow-right"></i> Report
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <!-- Hand Hygiene Card -->
-            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
-                <div class="card-header bg-success text-white text-center py-3">
-                    <i class="fas fa-hands-wash fa-2x mb-2"></i>
-                    <h5 class="card-title mb-0">Hand Hygiene Form</h5>
-                </div>
-                <div class="card-body text-center p-4">
-                    <p class="card-text text-muted mb-4">Track hand hygiene compliance and generate reports.</p>
-                    <div class="d-flex justify-content-between">
-                        <a asp-controller="HandHygieneForms" asp-action="Index" class="btn btn-success flex-grow-1 mr-2">
-                            <i class="fas fa-file-alt mr-1"></i> Open Form
-                        </a>
-                        <a asp-controller="HandHygieneForms" asp-action="MonthlySummary" class="btn btn-outline-success flex-grow-1">
-                            <i class="fas fa-chart-bar mr-1"></i> Summary
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3 mb-4">
-            <!-- Fit Testing Card -->
-            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
-                <div class="card-header bg-purple text-white text-center py-3">
-                    <i class="fas fa-file-medical fa-2x mb-2"></i>
-                    <h5 class="card-title mb-0">Fit Testing Form</h5>
-                </div>
-                <div class="card-body text-center p-4">
-                    <p class="card-text text-muted mb-4">View or fill out the Fit Testing Form connected to the training.</p>
-                    <a asp-controller="FitTestingForm" asp-action="Index" class="btn btn-purple text-white">
-                        <i class="fas fa-arrow-right mr-1"></i> Open Form
-                    </a>
-                    <a asp-controller="FitTestingForm" asp-action="Reports" class="btn btn-outline-success">
-                        <i class="fa fa-arrow-right"></i> Reports
-                    </a>
-                </div>
-            </div>
-        </div>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-gradient">Welcome to IPCU System</h1>
+        <p class="lead text-muted">Efficiently managing Employee Forms & Trainings.</p>
     </div>
 
-    <!-- Second Row -->
-    <div class="row justify-content-center">
-        <div class="col-md-3 mb-4">
-            <!-- Role Management Card -->
-            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
-                <div class="card-header bg-danger text-white text-center py-3">
-                    <i class="fas fa-user-shield fa-2x mb-2"></i>
-                    <h5 class="card-title mb-0">Role Management</h5>
-                </div>
-                <div class="card-body text-center p-4">
-                    <p class="card-text text-muted mb-4">Manage user roles and permissions.</p>
-                    <div class="d-flex justify-content-between">
-                        <a asp-controller="RoleManagement" asp-action="Index" class="btn btn-danger flex-grow-1 mr-2">
-                            <i class="fas fa-users-cog mr-1"></i> Open Roles
-                        </a>
-                        <a asp-controller="RoleManagement" asp-action="UserRoles" class="btn btn-outline-danger flex-grow-1">
-                            <i class="fas fa-user-tag mr-1"></i> Users
-                        </a>
+    <div class="row g-4 justify-content-center">
+        <!-- View Patients -->
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-lg rounded-4">
+                <div class="card-body text-center">
+                    <div class="icon-box bg-primary mb-3">
+                        <i class="fas fa-user-injured fa-2x text-white"></i>
+                    </div>
+                    <h5 class="fw-bold">View Patients</h5>
+                    <p class="text-muted">View all registered patients efficiently.</p>
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Patients" asp-action="Index" class="btn btn-primary">Patient</a>
+                        <a asp-controller="PatientMasters" asp-action="Index" class="btn btn-outline-primary">Master</a>
+                    
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3 mb-4">
-            <!-- User Area Management Card -->
-            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
-                <div class="card-header bg-teal text-white text-center py-3">
-                    <i class="fas fa-map-marker-alt fa-2x mb-2"></i>
-                    <h5 class="card-title mb-0">User Area Management</h5>
-                </div>
-                <div class="card-body text-center p-4">
-                    <p class="card-text text-muted mb-4">Assign and manage user work areas.</p>
-                    <div class="d-flex justify-content-between">
-                        <a asp-controller="UserAreaManagement" asp-action="Index" class="btn btn-teal flex-grow-1 mr-2">
-                            <i class="fas fa-users-cog mr-1"></i> Manage Areas
-                        </a>
-                        <a asp-controller="UserAreaManagement" asp-action="BatchAssignAreas" class="btn btn-outline-teal flex-grow-1">
-                            <i class="fas fa-th-list mr-1"></i> Batch Assign
-                        </a>
+        <!-- Training Summary -->
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-lg rounded-4">
+                <div class="card-body text-center">
+                    <div class="icon-box bg-warning mb-3">
+                        <i class="fas fa-chalkboard-teacher fa-2x text-white"></i>
+                    </div>
+                    <h5 class="fw-bold">Training Summary</h5>
+                    <p class="text-muted">Summarize assessment reports.</p>
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Evaluation" asp-action="SummaryReport" class="btn btn-warning text-white">Summary</a>
+                        <a asp-controller="TrainingSummary" asp-action="Reports" class="btn btn-outline-success">Report</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3 mb-4">
-            <!-- HAI Card -->
-            <div class="card shadow-sm border-0 rounded-lg overflow-hidden custom-card">
-                <div class="card-header bg-indigo text-white text-center py-3">
-                    <i class="fas fa-virus fa-2x mb-3"></i>
-                    <h6 class="card-title mb-0"> Healthcare-Associated Infections</h6>
-                </div>
-                <div class="card-body text-center p-4">
-                    <p class="card-text text-muted mb-4">Manage Healthcare-Associated Infections records and reports.</p>
-                    <div class="d-flex justify-content-between gap-2">
-                        <a asp-controller="DashboardHAI" asp-action="Index" class="btn btn-indigo flex-grow-1">
-                            <i class="fas fa-file-medical-alt mr-1"></i> Open Form
-                        </a>
-                       
+        <!-- Hand Hygiene -->
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-lg rounded-4">
+                <div class="card-body text-center">
+                    <div class="icon-box bg-success mb-3">
+                        <i class="fas fa-hands-wash fa-2x text-white"></i>
+                    </div>
+                    <h5 class="fw-bold">Hand Hygiene</h5>
+                    <p class="text-muted">Track hygiene compliance records.</p>
+                    <div class="d-grid gap-2">
+                        <a asp-controller="HandHygieneForms" asp-action="Index" class="btn btn-success">Open Form</a>
+                        <a asp-controller="HandHygieneForms" asp-action="MonthlySummary" class="btn btn-outline-success">Summary</a>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Add this to the Second Row in document 2 -->
-        <div class="col-md-3 mb-4">
-            <!-- ICN Patient Management Card -->
-            <div class="card shadow-sm border-0 rounded-lg overflow-hidden">
-                <div class="card-header bg-info text-white text-center py-3">
-                    <i class="fas fa-hospital-user fa-2x mb-2"></i>
-                    <h5 class="card-title mb-0">ICN Patient Management</h5>
-                </div>
-                <div class="card-body text-center p-4">
-                    <p class="card-text text-muted mb-4">View patients in your assigned areas admitted for 48+ hours.</p>
-                    <a asp-controller="ICNPatient" asp-action="Index" class="btn btn-info text-white">
-                        <i class="fas fa-arrow-right mr-1"></i> View Patients
-                    </a>
-                    <a asp-controller="ICNPatient" asp-action="Details" class="btn btn-outline-info">
-                        <i class="fas fa-user-md mr-1"></i> Patient Details
-                    </a>
+        <!-- Fit Testing -->
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-lg rounded-4">
+                <div class="card-body text-center">
+                    <div class="icon-box bg-purple mb-3">
+                        <i class="fas fa-mask-face fa-2x text-white"></i>
+                    </div>
+                    <h5 class="fw-bold">Fit Testing Form</h5>
+                    <p class="text-muted">Fill out or view Fit Testing forms.</p>
+                    <div class="d-grid gap-2">
+                        <a asp-controller="FitTestingForm" asp-action="Index" class="btn btn-purple text-white">Open Form</a>
+                        <a asp-controller="FitTestingForm" asp-action="Reports" class="btn btn-outline-success">Reports</a>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- Role Management -->
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-lg rounded-4">
+                <div class="card-body text-center">
+                    <div class="icon-box bg-danger mb-3">
+                        <i class="fas fa-user-shield fa-2x text-white"></i>
+                    </div>
+                    <h5 class="fw-bold">Role Management</h5>
+                    <p class="text-muted">Manage user roles & permissions.</p>
+                    <div class="d-grid gap-2">
+                        <a asp-controller="RoleManagement" asp-action="Index" class="btn btn-danger">Roles</a>
+                        <a asp-controller="RoleManagement" asp-action="UserRoles" class="btn btn-outline-danger">Users</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Area Management -->
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-lg rounded-4">
+                <div class="card-body text-center">
+                    <div class="icon-box bg-teal mb-3">
+                        <i class="fas fa-map-marker-alt fa-2x text-white"></i>
+                    </div>
+                    <h5 class="fw-bold">User Area Management</h5>
+                    <p class="text-muted">Assign & manage user work areas.</p>
+                    <div class="d-grid gap-2">
+                        <a asp-controller="UserAreaManagement" asp-action="Index" class="btn btn-teal">Manage Areas</a>
+                        <a asp-controller="UserAreaManagement" asp-action="BatchAssignAreas" class="btn btn-outline-teal">Batch Assign</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HAI Management -->
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-lg rounded-4">
+                <div class="card-body text-center">
+                    <div class="icon-box bg-indigo mb-3">
+                        <i class="fas fa-virus fa-2x text-white"></i>
+                    </div>
+                    <h5 class="fw-bold">HAI Records</h5>
+                    <p class="text-muted">Manage infection control records.</p>
+                    <div class="d-grid gap-2">
+                        <a asp-controller="DashboardHAI" asp-action="Index" class="btn btn-indigo">Open Form</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ICN Patient Management -->
+        <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-lg rounded-4">
+                <div class="card-body text-center">
+                    <div class="icon-box bg-info mb-3">
+                        <i class="fas fa-hospital-user fa-2x text-white"></i>
+                    </div>
+                    <h5 class="fw-bold">ICN Patient Management</h5>
+                    <p class="text-muted">Track ICN patients efficiently.</p>
+                    <div class="d-grid gap-2">
+                        <a asp-controller="ICNPatient" asp-action="Index" class="btn btn-info text-white">View Patients</a>
+                        <a asp-controller="ICNPatient" asp-action="Details" class="btn btn-outline-info">Patient Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Same style definitions as before -->
-
-
 <style>
+    .text-gradient {
+        background: linear-gradient(to right, #4facfe, #00f2fe);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
     .bg-purple {
         background-color: #6f42c1;
     }
@@ -207,12 +190,6 @@
         color: white;
     }
 
-        .btn-teal:hover {
-            background-color: #1ba87e;
-            border-color: #1ba87e;
-            color: white;
-        }
-
     .btn-outline-teal {
         color: #20c997;
         border-color: #20c997;
@@ -223,97 +200,16 @@
             color: white;
         }
 
-    /* Smooth card hover effect */
-    .custom-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-        .custom-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-    /* Indigo Header Gradient & Hover */
     .bg-indigo {
-        background: linear-gradient(135deg, #6610f2, #520dc2);
-        transition: background 0.3s ease;
+        background-color: #6610f2;
     }
 
-        .bg-indigo:hover {
-            background: linear-gradient(135deg, #520dc2, #3e0a99);
-        }
-
-    /* Indigo button styles (existing) */
     .btn-indigo {
         background-color: #6610f2;
         border-color: #6610f2;
         color: white;
     }
 
-        .btn-indigo:hover {
-            background-color: #520dc2;
-            border-color: #520dc2;
-            color: white;
-        }
 
-    .btn-outline-indigo {
-        color: #6610f2;
-        border-color: #6610f2;
-    }
-
-        .btn-outline-indigo:hover {
-            background-color: #6610f2;
-            color: white;
-        }
-
-    /* Optional: Add slight icon glow on hover */
-    .custom-card .fa-virus:hover {
-        color: #ffdd57;
-        text-shadow: 0 0 10px #ffdd57;
-    }
-
-    @@keyframes bounce {
-        0% {
-            transform: translateY(0);
-        }
-
-        30% {
-            transform: translateY(-10px);
-        }
-
-        50% {
-            transform: translateY(0);
-        }
-
-        70% {
-            transform: translateY(-5px);
-        }
-
-        100% {
-            transform: translateY(0);
-        }
-    }
-
-    .custom-card:hover,
-    .card:hover {
-        animation: bounce 0.6s ease;
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
-    }
-    /* Page Load Animation */
-    .page-content {
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeSlideIn 1s ease forwards;
-    }
-
-    @@keyframes fadeSlideIn {
-        to
-
-    {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    }
 </style>
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

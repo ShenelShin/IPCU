@@ -1,0 +1,380 @@
+﻿@model IPCU.Models.CardiovascularSystemInfection
+
+@{
+    ViewData["Title"] = "Cardiovascular System Infection (CVS) Infection Checklist";
+}
+
+<style>
+    fieldset {
+        border: 2px solid #000;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    legend {
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+    td, th {
+        border: 1px solid #000;
+        padding: 5px;
+        vertical-align: top;
+    }
+
+    label {
+        font-weight: normal;
+    }
+</style>
+
+<h2 style="text-align:center;">@ViewData["Title"]</h2>
+
+<form asp-action="Submit" method="post">
+    <fieldset>
+        <legend>Patient Information</legend>
+        <table>
+            <tr>
+                <td>
+                    <label asp-for="Fname"></label><br />
+                    <input asp-for="Fname" class="form-control" />
+                    <span asp-validation-for="Fname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Mname"></label><br />
+                    <input asp-for="Mname" class="form-control" />
+                    <span asp-validation-for="Mname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Lname"></label><br />
+                    <input asp-for="Lname" class="form-control" />
+                    <span asp-validation-for="Lname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="HospitalNumber"></label><br />
+                    <input asp-for="HospitalNumber" class="form-control" />
+                    <span asp-validation-for="HospitalNumber" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="DateOfBirth"></label><br />
+                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Age"></label><br />
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Gender"></label><br />
+                    <select asp-for="Gender" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Classification"></label><br />
+                    <select asp-for="Classification" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Pay</option>
+                        <option>Service</option>
+                    </select>
+                    <span asp-validation-for="Classification" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="UnitWardArea"></label><br />
+                    <input asp-for="UnitWardArea" class="form-control" />
+                    <span asp-validation-for="UnitWardArea" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="MainService"></label><br />
+                    <input asp-for="MainService" class="form-control" />
+                    <span asp-validation-for="MainService" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfAdmission"></label><br />
+                    <input asp-for="DateOfAdmission" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfAdmission" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfEvent"></label><br />
+                    <input asp-for="DateOfEvent" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfEvent" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Investigator"></label><br />
+                    <input asp-for="Investigator" class="form-control" />
+                    <span asp-validation-for="Investigator" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="MDRO"></label><br />
+                    <select asp-for="MDRO" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    <span asp-validation-for="MDRO" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Disposition"></label><br />
+                    <select asp-for="Disposition" class="form-control" id="DispositionDropdown">
+                        <option value="">--Select--</option>
+                        <option>Mortality</option>
+                        <option>Discharged</option>
+                        <option>Still Admitted</option>
+                        <option>Transferred In</option>
+                        <option>Transferred Out</option>
+                    </select>
+                    <span asp-validation-for="Disposition" class="text-danger"></span>
+                </td>
+                <!-- Disposition Transfer input - initially hidden -->
+      
+           
+                <td>
+                    <label asp-for="DispositionDate"></label><br />
+                    <input asp-for="DispositionDate" type="date" class="form-control" />
+                    <span asp-validation-for="DispositionDate" class="text-danger"></span>
+                </td>
+            </tr>
+        
+       
+                <td id="DispositionTransferRow" style="display:none;" colspan="2">
+                    <label asp-for="DispositionTransfer"></label><br />
+                    <input asp-for="DispositionTransfer" class="form-control" />
+                    <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+                </td>
+           
+                <td colspan="2">
+                    <h4 style="margin-bottom:10px;">Type & Classification</h4>
+
+                    <input type="checkbox" id="VascCheckbox" />
+                    <label for="VascCheckbox">VASC</label>
+
+                    <input type="hidden" asp-for="TypeClass" value="VASC" id="TypeClassHidden" />
+                    <span asp-validation-for="TypeClass" class="text-danger"></span>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <div id="VascSection" style="display:none;">
+    <fieldset>
+        <legend style="text-align:center; font-weight:bold; border:1px solid black; padding:5px;">
+            VASC-ARTERIAL OR VENOUS INFECTION
+        </legend>
+
+        <p><em>Excluding infections involving vascular access devices with organisms identified in the blood</em></p>
+
+        <p>Arterial or venous infection must meet <strong>at least one of the following criteria:</strong></p>
+
+            <!-- FIRST SECTION -->
+            <table>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="OrganismIdentified" asp-for="OrganismIdentified" />
+                        <label> Patient has organism(s) from extracted arteries or veins identified by aculture or non-culture based microbiologic testing method</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="GrossEvidenceOfInfection" asp-for="GrossEvidenceOfInfection" />
+                        <label>
+                            Patient has evidence of arterial or venous infection on gross anatomic or histopathologic exam
+                        </label>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- SECOND SECTION (Initially hidden) -->
+            <div id="SignsSymptomsSection" style="display:none; margin-top:10px;">
+                <p>Patient has <strong>at least one (1)</strong> of the following signs or symptoms:</p>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="Symptom_Fever" asp-for="Symptom_Fever" />
+                            <label>Fever (&gt;38.0°C)</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="Symptom_Pain" asp-for="Symptom_Pain" />
+                            <label>Pain*</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="Symptom_Erythema" asp-for="Symptom_Erythema" />
+                            <label>Erythema*</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="Symptom_HeatAtVascularSite" asp-for="Symptom_HeatAtVascularSite" />
+                            <label>Heat at involved vascular site*</label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+           
+
+            <div id="MoreThan15ColoniesSection" style="display:none; margin-top:10px;">
+                <table>
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="MoreThan15Colonies" asp-for="MoreThan15Colonies" />
+                            <label>More than 15 colonies cultured from intravascular cannula tip using semi quantitative culture method</label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+
+       
+
+
+
+
+                <!-- FOURTH SECTION -->
+                <div id="InfantSignsSection" style="display:none; margin-top:10px;">
+                    <p>Patient <strong>≤1 year of age</strong> has at least one of the following signs or symptoms:</p>
+                    <table style="width:100%;">
+                        <tr>
+                            <td><input type="checkbox" id="Infant_Fever" asp-for="Infant_Fever" /><label>Fever (&gt;38.0°C)</label></td>
+                            <td><input type="checkbox" id="Infant_Hypothermia" asp-for="Infant_Hypothermia" /><label>Hypothermia (&lt;36.0°C)</label></td>
+                            <td><input type="checkbox" id="Infant_Apnea" asp-for="Infant_Apnea" /><label>Apnea*</label></td>
+                            <td><input type="checkbox" id="Infant_Bradycardia" asp-for="Infant_Bradycardia" /><label>Bradycardia*</label></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" id="Infant_Lethargy" asp-for="Infant_Lethargy" /><label>Lethargy*</label></td>
+                            <td><input type="checkbox" id="Infant_Pain" asp-for="Infant_Pain" /><label>Pain*</label></td>
+                            <td><input type="checkbox" id="Infant_Erythema" asp-for="Infant_Erythema" /><label>Erythema*</label></td>
+                            <td><input type="checkbox" id="Infant_HeatAtVascularSite" asp-for="Infant_HeatAtVascularSite" /><label>Heat at involved vascular site*</label></td>
+                        </tr>
+
+            </div>
+                </table>
+            </div>
+
+    <div id="Infant_MoreThan15ColoniesSection" style="display:none; margin-top:10px;">
+        <table>
+            <tr>
+                <td>
+                    <input type="checkbox" id="Infant_MoreThan15Colonies" asp-for="Infant_MoreThan15Colonies" />
+                    <label>More than 15 colonies cultured from intravascular cannula tip using semi quantitative culture method (Infant)</label>
+                </td>
+            </tr>
+        </table>
+    </div>
+            <!-- FIFTH SECTION -->
+            <div id="FinalCultureSection" style="display:none; margin-top:10px; border-top:1px solid black;">
+                <table style="width:100%; margin-top:10px;">
+                    <tr>
+                        <td><strong>Culture date:</strong></td>
+                        <td><input type="date" asp-for="CultureDate" /></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Culture results:</strong></td>
+                        <td><input type="text" asp-for="CultureResults" style="width:100%;" /></td>
+                    </tr>
+                </table>
+            </div>
+
+    <div style="text-align:center;">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-secondary">Reset</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#VascCheckbox').change(function () {
+            if ($(this).is(':checked')) {
+                $('#VascSection').show();
+                $('#TypeClassHidden').val('VASC'); // Set value when checked
+            } else {
+                $('#VascSection').hide();
+                $('#TypeClassHidden').val(''); // Clear value when unchecked
+            }
+        });
+    });
+
+
+      $(document).ready(function () {
+        $('#DispositionDropdown').change(function () {
+            var selected = $(this).val();
+            if (selected === 'Transferred In' || selected === 'Transferred Out') {
+                $('#DispositionTransferRow').show();
+            } else {
+                $('#DispositionTransferRow').hide();
+                $('#DispositionTransferRow input').val('');
+            }
+        });
+
+        // Optionally trigger change on page load to hide/show based on default value
+        $('#DispositionDropdown').trigger('change');
+    });
+
+
+
+           $(document).ready(function () {
+        // FIRST: If either of the first checkboxes is checked, show next section
+        $('#OrganismIdentified, #GrossEvidenceOfInfection').change(function () {
+            if ($('#OrganismIdentified').is(':checked') || $('#GrossEvidenceOfInfection').is(':checked')) {
+                $('#SignsSymptomsSection').show();
+            } else {
+                $('#SignsSymptomsSection').hide();
+                $('#MoreThan15ColoniesSection, #InfantSignsSection, #Infant_MoreThan15ColoniesSection, #FinalCultureSection').hide();
+            }
+        });
+
+        // SECOND: If any symptom checkbox is checked, show MoreThan15ColoniesSection
+        $('#SignsSymptomsSection input[type="checkbox"]').change(function () {
+            if ($('#SignsSymptomsSection input[type="checkbox"]:checked').length > 0) {
+                $('#MoreThan15ColoniesSection').show();
+            } else {
+                $('#MoreThan15ColoniesSection, #InfantSignsSection, #Infant_MoreThan15ColoniesSection, #FinalCultureSection').hide();
+            }
+        });
+
+        // THIRD: If MoreThan15Colonies checked, show InfantSignsSection
+        $('#MoreThan15Colonies').change(function () {
+            if ($(this).is(':checked')) {
+                $('#InfantSignsSection').show();
+            } else {
+                $('#InfantSignsSection, #Infant_MoreThan15ColoniesSection, #FinalCultureSection').hide();
+            }
+        });
+
+        // FOURTH: If any infant symptom checkbox is checked, show Infant_MoreThan15ColoniesSection
+        $('#InfantSignsSection input[type="checkbox"]').change(function () {
+            if ($('#InfantSignsSection input[type="checkbox"]:checked').length > 0) {
+                $('#Infant_MoreThan15ColoniesSection').show();
+            } else {
+                $('#Infant_MoreThan15ColoniesSection, #FinalCultureSection').hide();
+            }
+        });
+
+        // FIFTH: If Infant_MoreThan15Colonies checked, show FinalCultureSection
+        $('#Infant_MoreThan15Colonies').change(function () {
+            if ($(this).is(':checked')) {
+                $('#FinalCultureSection').show();
+            } else {
+                $('#FinalCultureSection').hide();
+            }
+        });
+    });
+</script>

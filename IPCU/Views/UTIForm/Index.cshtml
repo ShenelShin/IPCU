@@ -1,0 +1,592 @@
+﻿@model IPCU.Models.UTIFormModel;
+
+@{
+    ViewBag.Title = "URINARY TRACT INFECTION (UTI) CHECKLIST";
+}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+    fieldset {
+        border: 2px solid #000;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    legend {
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+    td, th {
+        border: 1px solid #000;
+        padding: 5px;
+        vertical-align: top;
+    }
+
+    label {
+        font-weight: normal;
+    }
+</style>
+<h2 style="text-align:center;">URINARY TRACT INFECTION (UTI) CHECKLIST</h2>
+
+
+@using (Html.BeginForm("Submit", "UTIForm", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <fieldset>
+        <legend>Patient Information</legend>
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.Fname) <br />
+                    @Html.TextBoxFor(m => m.Fname, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Fname, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.Mname) <br />
+                    @Html.TextBoxFor(m => m.Mname, new { @class = "form-control" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.Lname) <br />
+                    @Html.TextBoxFor(m => m.Lname, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Lname, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.HospitalNumber) <br />
+                    @Html.TextBoxFor(m => m.HospitalNumber, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.HospitalNumber, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.DateOfBirth) <br />
+                    @Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.Age) <br />
+                    @Html.TextBoxFor(m => m.Age, new { @class = "form-control", type = "number", min = "0" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.UnitWardArea) <br />
+                    @Html.TextBoxFor(m => m.UnitWardArea, new { @class = "form-control" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.MainService) <br />
+                    @Html.TextBoxFor(m => m.MainService, new { @class = "form-control" })
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.DateOfEvent) <br />
+                    @Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.Investigator) <br />
+                    @Html.TextBoxFor(m => m.Investigator, new { @class = "form-control" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.DateOfAdmission) <br />
+                    @Html.TextBoxFor(m => m.DateOfAdmission, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.Disposition) <br />
+                    @Html.DropDownListFor(m => m.Disposition,
+                             new SelectList(new[] { "Mortality", "Discharged", "Still Admitted", "Transferred In", "Transferred Out" }),
+                             "-- Select Disposition --",
+                             new { @class = "form-control", id = "DispositionDropdown" }
+                             )
+                    @Html.ValidationMessageFor(m => m.Disposition, "", new { @class = "text-danger" })
+              
+                        @Html.LabelFor(m => m.DispositionDate) <br />
+                        @Html.TextBoxFor(m => m.DispositionDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.DispositionDate, "", new { @class = "text-danger" })
+                
+
+                    <div id="DispositionTransferContainer" style="display:none; margin-top: 10px;">
+                        @Html.LabelFor(m => m.DispositionTransfer) <br />
+                        @Html.TextBoxFor(m => m.DispositionTransfer, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.DispositionTransfer, "", new { @class = "text-danger" })
+                    </div>
+
+
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.LabelFor(m => m.Gender) <br />
+                    @Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female" }), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.Classification) <br />
+                    @Html.DropDownListFor(m => m.Classification, new SelectList(new[] { "Pay", "Service" }), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Classification, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.MDRO) <br />
+                    @Html.DropDownListFor(m => m.MDRO, new SelectList(new[] { "Yes", "No" }), "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.MDRO, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.TypeClass) <br />
+                    <div>
+                        <input type="checkbox" id="suti1aCheckbox" name="TypeClass" value="SUTI 1A (Catheter)"
+                        @(Model.TypeClass != null && Model.TypeClass.Contains("SUTI 1A (Catheter)") ? "checked" : "") />
+                        <label for="suti1aCheckbox">SUTI 1A (Catheter)</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" id="suti1b-checkbox" name="TypeClass" value="SUTI 1B (Non-Catheter)"
+                        @(Model.TypeClass != null && Model.TypeClass.Contains("SUTI 1B (Non-Catheter)") ? "checked" : "") />
+                        <label for="suti1b-checkbox">SUTI 1B (Non-Catheter)</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" id="suti2-checkbox" name="TypeClass" value="SUTI 2 (Catheter)"
+                        @(Model.TypeClass != null && Model.TypeClass.Contains("SUTI 2 (Catheter)") ? "checked" : "") />
+                        <label>SUTI 2 (Catheter)</label>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" id="abuti-checkbox" name="TypeClass" value="ABUTI"
+                        @(Model.TypeClass != null && Model.TypeClass.Contains("ABUTI") ? "checked" : "") />
+                        <label for="abuti-checkbox">ABUTI </label>
+                    </div>
+
+                    @Html.ValidationMessageFor(m => m.TypeClass, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+
+    <!-- Infection Section -->
+    <div class="catheter-section" id="section-catheter">
+        <fieldset>
+            <legend>SUTI 1A</legend>
+            <p><strong>Patient of any age catheter-associated Urinary Tract Infection (CAUTI).</strong></p>
+            <p>Patient had an indwelling urinary catheter (IUC) that had been in place for more than 2 consecutive days in an inpatient location on the date of event AND was either:</p>
+
+            <!-- Catheter Presence Options -->
+            <div class="form-group">
+                @Html.CheckBox("CatheterPresent", Model.CatheterPresent.GetValueOrDefault(), new { @id = "catheter-present" })
+                <label for="catheter-present">Present for any portion of the calendar day on the date of event</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("CatheterRemovedBeforeEvent", Model.CatheterRemovedBeforeEvent.GetValueOrDefault(), new { @id = "catheter-removed" })
+                <label for="catheter-removed">Removed the day before the date of event</label>
+            </div>
+
+            <hr />
+
+            <!-- Symptoms Checkboxes -->
+            <h4>Symptoms:</h4>
+            <div class="form-group">
+                <div>
+                    @Html.CheckBox("HasFever", Model.HasFever.GetValueOrDefault(), new { @id = "has-fever" })
+                    <label for="has-fever">Fever</label>
+                </div>
+
+                <div>
+                    @Html.CheckBox("HasSuprapubicTenderness", Model.HasSuprapubicTenderness.GetValueOrDefault(), new { @id = "has-suprapubic" })
+                    <label for="has-suprapubic">Suprapubic tenderness</label>
+                </div>
+
+
+                <div>
+                    @Html.CheckBox("HasCostovertebralPain", Model.HasCostovertebralPain.GetValueOrDefault(), new { @id = "has-costovertebral" })
+                    <label for="has-costovertebral">Costovertebral angle pain or tenderness</label>
+                </div>
+
+                <div>
+                    @Html.CheckBox("HasUrinaryUrgency", Model.HasUrinaryUrgency.GetValueOrDefault(), new { @id = "has-urgency" })
+                    <label for="has-urgency">Urinary urgency</label>
+                </div>
+
+                <div>
+                    @Html.CheckBox("HasUrinaryFrequency", Model.HasUrinaryFrequency.GetValueOrDefault(), new { @id = "has-frequency" })
+                    <label for="has-frequency">Urinary frequency</label>
+                </div>
+
+                <div>
+                    @Html.CheckBox("HasDysuria", Model.HasDysuria.GetValueOrDefault(), new { @id = "has-dysuria" })
+                    <label for="has-dysuria">Dysuria</label>
+                </div>
+
+                <div>
+                    @Html.CheckBox("HasUrineCultureWithTwoSpecies", Model.HasUrineCultureWithTwoSpecies.GetValueOrDefault(), new { @id = "has-culture-two-species" })
+                    <label for="has-culture-two-species">Patient has a urine culture with no more than two species of organisms identified, at least one of which is a bacterium of &gt;10<sup>5</sup> CFU/ml</label>
+                </div>
+
+            </div>
+
+            <hr />
+
+            <!-- Culture Details -->
+            <h4>Culture Details:</h4>
+            <table>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.CultureDate, "Culture Date:") <br />
+                        @Html.TextBoxFor(m => m.CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CultureDate, "", new { @class = "text-danger" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.CultureResults, "Culture Results:") <br />
+                        @Html.TextAreaFor(m => m.CultureResults, new { rows = "3", cols = "30", @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.CultureResults, "", new { @class = "text-danger" })
+                    </td>
+                </tr>
+            </table>
+
+        </fieldset>
+    </div>
+
+    <div class="suti1b-section" id="section-suti1b">
+        <fieldset>
+            <legend>SUTI 1B</legend>
+            <p><strong>Patient of any age, non-catheter-associated Urinary Tract Infection (non-CAUTI).</strong></p>
+            <p>One (1) of the following is true: </p>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI1b_HadCatheterLessThan2Days", Model.SUTI1b_HadCatheterLessThan2Days.GetValueOrDefault(), new { @id = "suti1b-catheter-less" })
+                <label for="suti1b-catheter-less">Patient has/had an indwelling urinary catheter, but it has/had not been in place for more than 2 consecutive days in an inpatient location on the date of event, OR</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI1b_NoCatheterInPlace", Model.SUTI1b_NoCatheterInPlace.GetValueOrDefault(), new { @id = "suti1b-no-catheter" })
+                <label for="suti1b-no-catheter">Patient did not have an indwelling urinary catheter in place on the date of event nor day before the date</label>
+            </div>
+
+            <hr />
+
+            <!-- Symptoms Checkboxes -->
+            <h4>Symptoms:</h4>
+            <div class="form-group">
+                @Html.CheckBox("SUTI1b_Fever", Model.SUTI1b_Fever.GetValueOrDefault(), new { @id = "suti1b-fever" })
+                <label for="suti1b-fever">Fever</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI1b_SuprapubicTenderness", Model.SUTI1b_SuprapubicTenderness.GetValueOrDefault(), new { @id = "suti1b-suprapubic" })
+                <label for="suti1b-suprapubic">Suprapubic tenderness</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI1b_CostovertebralPain", Model.SUTI1b_CostovertebralPain.GetValueOrDefault(), new { @id = "suti1b-costovertebral" })
+                <label for="suti1b-costovertebral">Costovertebral angle pain or tenderness</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI1b_UrinaryUrgency", Model.SUTI1b_UrinaryUrgency.GetValueOrDefault(), new { @id = "suti1b-urgency" })
+                <label for="suti1b-urgency">Urinary urgency</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI1b_UrinaryFrequency", Model.SUTI1b_UrinaryFrequency.GetValueOrDefault(), new { @id = "suti1b-frequency" })
+                <label for="suti1b-frequency">Urinary frequency</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI1b_Dysuria", Model.SUTI1b_Dysuria.GetValueOrDefault(), new { @id = "suti1b-dysuria" })
+                <label for="suti1b-dysuria">Dysuria</label>
+            </div>
+
+            <hr />
+
+            <!-- Urine Culture -->
+            <div class="form-group">
+                @Html.CheckBox("SUTI1b_HasValidUrineCulture", Model.SUTI1b_HasValidUrineCulture.GetValueOrDefault(), new { @id = "suti1b-valid-culture" })
+                <label for="suti1b-valid-culture">
+                    Patient has a urine culture with no more than two species of organisms identified, at least one of which is a bacterium of >10<sup>5</sup> CFU/ml
+                </label>
+            </div>
+
+
+            <!-- Culture Details -->
+            <h4>Culture Details:</h4>
+            <table>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.SUTI1b_CultureDate, "Culture Date:") <br />
+                        @Html.TextBoxFor(m => m.SUTI1b_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.SUTI1b_CultureResults, "Culture Results:") <br />
+                        @Html.TextAreaFor(m => m.SUTI1b_CultureResults, new { rows = "3", cols = "30", @class = "form-control" })
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+
+    <div class="infection-section" id="section-suti2">
+        <fieldset>
+            <legend>SUTI 2 - Urinary Tract Infection Checklist</legend>
+            <p><strong>CAUTI or Non-Cauti in patients 1 year of age or less</strong></p>
+            <!-- Age Check -->
+            <div class="form-group">
+                @Html.CheckBox("SUTI2_IsOneYearOrLess", Model.SUTI2_IsOneYearOrLess.GetValueOrDefault(), new { @id = "suti2-is-one-year-or-less" })
+                <label for="suti2-is-one-year-or-less">Patient is ≤ 1 year of age(with or without indwelling urinary catheter)</label>
+            </div>
+
+            <hr />
+
+            <!-- Symptoms -->
+            <h4>Symptoms:</h4>
+            <div class="form-group">
+                @Html.CheckBox("SUTI2_Fever", Model.SUTI2_Fever.GetValueOrDefault(), new { @id = "suti2-fever" })
+                <label for="suti2-fever">Fever (>38°C)</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI2_Hypothermia", Model.SUTI2_Hypothermia.GetValueOrDefault(), new { @id = "suti2-hypothermia" })
+                <label for="suti2-hypothermia">Hypothermia (&lt;36°C core temperature)</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI2_Apnea", Model.SUTI2_Apnea.GetValueOrDefault(), new { @id = "suti2-apnea" })
+                <label for="suti2-apnea">Apnea</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI2_Bradycardia", Model.SUTI2_Bradycardia.GetValueOrDefault(), new { @id = "suti2-bradycardia" })
+                <label for="suti2-bradycardia">Bradycardia</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI2_Lethargy", Model.SUTI2_Lethargy.GetValueOrDefault(), new { @id = "suti2-lethargy" })
+                <label for="suti2-lethargy">Lethargy</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI2_Vomiting", Model.SUTI2_Vomiting.GetValueOrDefault(), new { @id = "suti2-vomiting" })
+                <label for="suti2-vomiting">Vomiting</label>
+            </div>
+
+            <div class="form-group">
+                @Html.CheckBox("SUTI2_SuprapubicTenderness", Model.SUTI2_SuprapubicTenderness.GetValueOrDefault(), new { @id = "suti2-suprapubic" })
+                <label for="suti2-suprapubic">Suprapubic tenderness</label>
+            </div>
+
+            <hr />
+
+            <!-- Urine Culture -->
+            <div class="form-group">
+                @Html.CheckBox("SUTI2_HasValidUrineCulture", Model.SUTI2_HasValidUrineCulture.GetValueOrDefault(), new { @id = "suti2-valid-culture" })
+                <label for="suti2-valid-culture">
+                    Patient has a urine culture with no more than two species of organisms identified, at least one of which is a bacterium of >10<sup>5</sup> CFU/ml
+                </label>
+            </div>
+
+            <!-- Culture Date & Results -->
+            <table>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.SUTI2_CultureDate, "Culture Date:") <br />
+                        @Html.TextBoxFor(m => m.SUTI2_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.SUTI2_CultureResults, "Culture Results:") <br />
+                        @Html.TextAreaFor(m => m.SUTI2_CultureResults, new { rows = "3", cols = "30", @class = "form-control" })
+                    </td>
+                </tr>
+            </table>
+
+        </fieldset>
+    </div>
+
+
+    <div class="abuti-section" id="section-abuti" style="display: none;">
+        <fieldset>
+            <legend>ABUTI - Asymptomatic Bacteremic Urinary Tract Infection</legend>
+
+            <!-- No Symptoms -->
+            <div class="form-group">
+                @Html.CheckBox("ABUTI_NoSymptoms", Model.ABUTI_NoSymptoms.GetValueOrDefault(), new { @id = "abuti-no-symptoms" })
+                <label for="abuti-no-symptoms">Patient with* or without an indwelling urinary catheter has no signs or symptoms of SUTI 1 or 2 according to age.</label>
+            </div>
+
+            <hr />
+
+            <!-- Urine Culture -->
+            <div class="form-group">
+                @Html.CheckBox("ABUTI_ValidUrineCulture", Model.ABUTI_ValidUrineCulture.GetValueOrDefault(), new { @id = "abuti-valid-culture" })
+                <label for="abuti-valid-culture">
+                    Patient has a urines culture with no more than two species of organisms identified, at least one of which is a bacterium of >10<sup>5CFU/ml
+                </label>
+            </div>
+
+            <!-- Organism Identified -->
+            <div class="form-group">
+                @Html.CheckBox("ABUTI_OrganismIdentified", Model.ABUTI_OrganismIdentified.GetValueOrDefault(), new { @id = "abuti-organism-identified" })
+                <label for="abuti-organism-identified">Patient has organism identified** from blood specimen with at least matching bacterium to the bacterium at >100,000 CFU/ml identified in urine specimen OR is eligible for LCBI criterion 2 (without fever) and matching common commensal(s) in the urine.</label>
+            </div>
+
+            <hr />
+            *patient had an IUC in place for more than 2 consecutive days in an inpatient location on the date of ebent, and the IUC was in place on the date of event or the day before. Catheter-associated ABUTI is reportable if CAUTI is in the facility's reporting plan for the location
+            **organisim identified by a culture or non-culture based microbiologic testing method which is performed for purposes of clinical diagnosis or treatment(for example, not Active surveillance Culture/Testing (ASC/AST)
+            <hr />
+
+            <!-- Culture Date & Results -->
+            <table>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.ABUTI_CultureDate, "Culture Date:") <br />
+                        @Html.TextBoxFor(m => m.ABUTI_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.ABUTI_CultureResults, "Culture Results:") <br />
+                        @Html.TextAreaFor(m => m.ABUTI_CultureResults, new { rows = "3", cols = "30", @class = "form-control" })
+                    </td>
+                </tr>
+            </table>
+
+        </fieldset>
+    </div>
+
+
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+}
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            function toggleDispositionTransfer() {
+                var selected = $('#DispositionDropdown').val();
+                if (selected === "Transferred In" || selected === "Transferred Out") {
+                    $('#DispositionTransferContainer').show();
+                } else {
+                    $('#DispositionTransferContainer').hide();
+                    $('#DispositionTransferContainer input').val('');
+                }
+            }
+
+            toggleDispositionTransfer();
+
+            $('#DispositionDropdown').change(function () {
+                toggleDispositionTransfer();
+            });
+        });
+
+
+
+
+
+             document.addEventListener('DOMContentLoaded', function() {
+            var suti1aCheckbox = document.getElementById('suti1aCheckbox');
+            var catheterSection = document.getElementById('section-catheter');
+
+            // Function to toggle the section based on checkbox state
+            function toggleCatheterSection() {
+                if (suti1aCheckbox.checked) {
+                    catheterSection.style.display = 'block';
+                } else {
+                    catheterSection.style.display = 'none';
+                }
+            }
+
+            // Attach event listener to checkbox
+            suti1aCheckbox.addEventListener('change', toggleCatheterSection);
+
+            // Initialize visibility on page load
+            toggleCatheterSection();
+        });
+
+
+
+
+
+        //suti b
+
+                $(document).ready(function() {
+            // Function to toggle section visibility based on checkbox state
+            function toggleSection(checkboxId, sectionId) {
+                if ($(checkboxId).is(':checked')) {
+                    $(sectionId).show();
+                } else {
+                    $(sectionId).hide();
+                }
+            }
+
+            // Initial check to set section visibility on page load
+            toggleSection('#suti1a-checkbox', '#section-suti1a');
+            toggleSection('#suti1b-checkbox', '#section-suti1b');
+
+            // Event listeners for checkbox state changes
+            $('#suti1a-checkbox').change(function() {
+                toggleSection('#suti1a-checkbox', '#section-suti1a');
+            });
+
+            $('#suti1b-checkbox').change(function() {
+                toggleSection('#suti1b-checkbox', '#section-suti1b');
+            });
+        });
+
+
+
+
+        //SUTI 2
+
+
+             $(document).ready(function () {
+            // Function to toggle section visibility based on checkbox state
+            function toggleSection(checkboxId, sectionId) {
+                if ($(checkboxId).is(':checked')) {
+                    $(sectionId).fadeIn();
+                } else {
+                    $(sectionId).fadeOut();
+                }
+            }
+
+            // Initialize visibility based on the current state of checkboxes
+            toggleSection('#suti1b-checkbox', '#section-suti1b');
+            toggleSection('#suti2-checkbox', '#section-suti2');
+
+            // Set up change event listeners for the checkboxes
+            $('#suti1b-checkbox').change(function () {
+                toggleSection('#suti1b-checkbox', '#section-suti1b');
+            });
+
+            $('#suti2-checkbox').change(function () {
+                toggleSection('#suti2-checkbox', '#section-suti2');
+            });
+        });
+
+
+
+         
+        //ABUTI
+            $(document).ready(function () {
+            // Function to toggle the visibility of the ABUTI section
+            function toggleAbutiSection() {
+                if ($('#abuti-checkbox').is(':checked')) {
+                    $('#section-abuti').show();
+                } else {
+                    $('#section-abuti').hide();
+                }
+            }
+
+            // Bind the toggle function to the checkbox change event
+            $('#abuti-checkbox').change(function () {
+                toggleAbutiSection();
+            });
+
+            // Call the toggle function on page load to set the initial state
+            toggleAbutiSection();
+        });
+
+    </script>
+}

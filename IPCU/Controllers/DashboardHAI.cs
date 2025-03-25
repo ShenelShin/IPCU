@@ -8,5 +8,7 @@ namespace IPCU.Controllers
         {
             return View("~/Views/HAI/Dashboard.cshtml");
         }
+
+
     }
 }
