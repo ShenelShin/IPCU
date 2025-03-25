@@ -45,6 +45,9 @@ namespace IPCU.Data
         public DbSet<LaboratoryConfirmedBSI> LaboratoryConfirmedBSI { get; set; }
 
         public DbSet<VentilatorEventChecklist> VentilatorEventChecklists { get; set; }
+        public DbSet<Diagnostics> Diagnostics { get; set; }
+        public DbSet<Antibiotic> Antibiotics { get; set; }
+        public DbSet<DiagnosticsTreatment> DiagnosticsTreatments { get; set; }
 
 
 
