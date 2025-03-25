@@ -12,441 +12,457 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Fname" class="control-label"></label>
-                <input asp-for="Fname" class="form-control" />
-                <span asp-validation-for="Fname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Lname" class="control-label"></label>
-                <input asp-for="Lname" class="form-control" />
-                <span asp-validation-for="Lname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Mname" class="control-label"></label>
-                <input asp-for="Mname" class="form-control" />
-                <span asp-validation-for="Mname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HospitalNumber" class="control-label"></label>
-                <input asp-for="HospitalNumber" class="form-control" />
-                <span asp-validation-for="HospitalNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Age" class="control-label"></label>
-                <input asp-for="Age" class="form-control" />
-                <span asp-validation-for="Age" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UnitWardArea" class="control-label"></label>
-                <input asp-for="UnitWardArea" class="form-control" />
-                <span asp-validation-for="UnitWardArea" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MainService" class="control-label"></label>
-                <input asp-for="MainService" class="form-control" />
-                <span asp-validation-for="MainService" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateOfEvent" class="control-label"></label>
-                <input asp-for="DateOfEvent" class="form-control" />
-                <span asp-validation-for="DateOfEvent" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Investigator" class="control-label"></label>
-                <input asp-for="Investigator" class="form-control" />
-                <span asp-validation-for="Investigator" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateOfAdmission" class="control-label"></label>
-                <input asp-for="DateOfAdmission" class="form-control" />
-                <span asp-validation-for="DateOfAdmission" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Disposition" class="control-label"></label>
-                <input asp-for="Disposition" class="form-control" />
-                <span asp-validation-for="Disposition" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DispositionDate" class="control-label"></label>
-                <input asp-for="DispositionDate" class="form-control" />
-                <span asp-validation-for="DispositionDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DispositionTransfer" class="control-label"></label>
-                <input asp-for="DispositionTransfer" class="form-control" />
-                <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
-                <span asp-validation-for="Gender" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Classification" class="control-label"></label>
-                <input asp-for="Classification" class="form-control" />
-                <span asp-validation-for="Classification" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MDRO" class="control-label"></label>
-                <input asp-for="MDRO" class="form-control" />
-                <span asp-validation-for="MDRO" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MDROOrganism" class="control-label"></label>
-                <input asp-for="MDROOrganism" class="form-control" />
-                <span asp-validation-for="MDROOrganism" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TypeClass" class="control-label"></label>
-                <input asp-for="TypeClass" class="form-control" />
-                <span asp-validation-for="TypeClass" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PNEU_Subclass" class="control-label"></label>
-                <input asp-for="PNEU_Subclass" class="form-control" />
-                <span asp-validation-for="PNEU_Subclass" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PersistentorProgressive" class="control-label"></label>
-                <input asp-for="PersistentorProgressive" class="form-control" />
-                <span asp-validation-for="PersistentorProgressive" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Fever1_1" /> @Html.DisplayNameFor(model => model.Fever1_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Leukopenia1_1" /> @Html.DisplayNameFor(model => model.Leukopenia1_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Leukocytosis1_1" /> @Html.DisplayNameFor(model => model.Leukocytosis1_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Adults70old1_1" /> @Html.DisplayNameFor(model => model.Adults70old1_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="NewPurulentSputum1_1" /> @Html.DisplayNameFor(model => model.NewPurulentSputum1_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WorseningCoughOrDyspnea1_1" /> @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea1_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="RalesOrBronchialBreathSounds1_1" /> @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds1_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WorseningGasExchange1_1" /> @Html.DisplayNameFor(model => model.WorseningGasExchange1_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WorseningGasExchange1_2" /> @Html.DisplayNameFor(model => model.WorseningGasExchange1_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="TemperatureInstability1_2" /> @Html.DisplayNameFor(model => model.TemperatureInstability1_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="LeukopeniaOrLeukocytosis1_2" /> @Html.DisplayNameFor(model => model.LeukopeniaOrLeukocytosis1_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="NewPurulentSputum1_2" /> @Html.DisplayNameFor(model => model.NewPurulentSputum1_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ApneaOrTachypneaOrNasalFlaring1_2" /> @Html.DisplayNameFor(model => model.ApneaOrTachypneaOrNasalFlaring1_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WheezingRalesOrRhonchi1_2" /> @Html.DisplayNameFor(model => model.WheezingRalesOrRhonchi1_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Cough1_2" /> @Html.DisplayNameFor(model => model.Cough1_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="BradycardiaOrTachycardia1_2" /> @Html.DisplayNameFor(model => model.BradycardiaOrTachycardia1_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Fever1_3" /> @Html.DisplayNameFor(model => model.Fever1_3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Leukopenia1_3" /> @Html.DisplayNameFor(model => model.Leukopenia1_3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="NewPurulentSputum1_3" /> @Html.DisplayNameFor(model => model.NewPurulentSputum1_3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="NewWorseningCough1_3" /> @Html.DisplayNameFor(model => model.NewWorseningCough1_3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="RalesorBronchial1_3" /> @Html.DisplayNameFor(model => model.RalesorBronchial1_3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WorseningGas1_3" /> @Html.DisplayNameFor(model => model.WorseningGas1_3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Fever2_1" /> @Html.DisplayNameFor(model => model.Fever2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Leukopenia12_1" /> @Html.DisplayNameFor(model => model.Leukopenia12_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Leukocytosis2_1" /> @Html.DisplayNameFor(model => model.Leukocytosis2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Adults70old2_1" /> @Html.DisplayNameFor(model => model.Adults70old2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="NewPurulentSputum2_1" /> @Html.DisplayNameFor(model => model.NewPurulentSputum2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WorseningCoughOrDyspnea2_1" /> @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="RalesOrBronchialBreathSounds2_1" /> @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WorseningGasExchange2_1" /> @Html.DisplayNameFor(model => model.WorseningGasExchange2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="OrganismIdentifiedFromBlood_2_1" /> @Html.DisplayNameFor(model => model.OrganismIdentifiedFromBlood_2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="PositiveQuantitativeCultureLRT_2_1" /> @Html.DisplayNameFor(model => model.PositiveQuantitativeCultureLRT_2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="BALCellsContainIntracellularBacteria_2_1" /> @Html.DisplayNameFor(model => model.BALCellsContainIntracellularBacteria_2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="PositiveQuantitativeCultureLungTissue_2_1" /> @Html.DisplayNameFor(model => model.PositiveQuantitativeCultureLungTissue_2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="HistopathologicExam2_1" /> @Html.DisplayNameFor(model => model.HistopathologicExam2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="AbscessFormationOrFoci_2_1" /> @Html.DisplayNameFor(model => model.AbscessFormationOrFoci_2_1)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="EvidenceOfFungalInvasion_2_1" /> @Html.DisplayNameFor(model => model.EvidenceOfFungalInvasion_2_1)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="CultureDate2_1" class="control-label"></label>
-                <input asp-for="CultureDate2_1" class="form-control" />
-                <span asp-validation-for="CultureDate2_1" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CultureResults2_1" class="control-label"></label>
-                <input asp-for="CultureResults2_1" class="form-control" />
-                <span asp-validation-for="CultureResults2_1" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Fever2_2" /> @Html.DisplayNameFor(model => model.Fever2_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Leukopenia12_2" /> @Html.DisplayNameFor(model => model.Leukopenia12_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Leukocytosis2_2" /> @Html.DisplayNameFor(model => model.Leukocytosis2_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Adults70old2_2" /> @Html.DisplayNameFor(model => model.Adults70old2_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="NewPurulentSputum2_2" /> @Html.DisplayNameFor(model => model.NewPurulentSputum2_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WorseningCoughOrDyspnea2_2" /> @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea2_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="RalesOrBronchialBreathSounds2_2" /> @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds2_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WorseningGasExchange2_2" /> @Html.DisplayNameFor(model => model.WorseningGasExchange2_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="VirusBordetellaLegionella2_2" /> @Html.DisplayNameFor(model => model.VirusBordetellaLegionella2_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="FourfoldrisePaired2_2" /> @Html.DisplayNameFor(model => model.FourfoldrisePaired2_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="FourfoldriseLegionella2_2" /> @Html.DisplayNameFor(model => model.FourfoldriseLegionella2_2)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="DetectionofLegionella2_2" /> @Html.DisplayNameFor(model => model.DetectionofLegionella2_2)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="CultureDate2_2" class="control-label"></label>
-                <input asp-for="CultureDate2_2" class="form-control" />
-                <span asp-validation-for="CultureDate2_2" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CultureResults2_2" class="control-label"></label>
-                <input asp-for="CultureResults2_2" class="form-control" />
-                <span asp-validation-for="CultureResults2_2" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Fever3" /> @Html.DisplayNameFor(model => model.Fever3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Adults70old3" /> @Html.DisplayNameFor(model => model.Adults70old3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="NewPurulentSputum3" /> @Html.DisplayNameFor(model => model.NewPurulentSputum3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WorseningCoughOrDyspnea3" /> @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="RalesOrBronchialBreathSounds3" /> @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="WorseningGasExchange3" /> @Html.DisplayNameFor(model => model.WorseningGasExchange3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Hemoptysis3" /> @Html.DisplayNameFor(model => model.Hemoptysis3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="PleuriticChestPain3" /> @Html.DisplayNameFor(model => model.PleuriticChestPain3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IdentificationCandida3" /> @Html.DisplayNameFor(model => model.IdentificationCandida3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="EvidenceofFungi3" /> @Html.DisplayNameFor(model => model.EvidenceofFungi3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="DirectMicroscopicExam3" /> @Html.DisplayNameFor(model => model.DirectMicroscopicExam3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="PositiveCultureFungi3" /> @Html.DisplayNameFor(model => model.PositiveCultureFungi3)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="NonCultureDiagnostic3" /> @Html.DisplayNameFor(model => model.NonCultureDiagnostic3)
-                </label>
-            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <label asp-for="Fname" class="control-label"></label>
+                            <input asp-for="Fname" class="form-control" />
+                            <span asp-validation-for="Fname" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="Lname" class="control-label"></label>
+                            <input asp-for="Lname" class="form-control" />
+                            <span asp-validation-for="Lname" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="Mname" class="control-label"></label>
+                            <input asp-for="Mname" class="form-control" />
+                            <span asp-validation-for="Mname" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="HospitalNumber" class="control-label"></label>
+                            <input asp-for="HospitalNumber" class="form-control" />
+                            <span asp-validation-for="HospitalNumber" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label asp-for="DateOfBirth" class="control-label"></label>
+                            <input asp-for="DateOfBirth" class="form-control" />
+                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="Age" class="control-label"></label>
+                            <input asp-for="Age" class="form-control" />
+                            <span asp-validation-for="Age" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="UnitWardArea" class="control-label"></label>
+                            <input asp-for="UnitWardArea" class="form-control" />
+                            <span asp-validation-for="UnitWardArea" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="MainService" class="control-label"></label>
+                            <input asp-for="MainService" class="form-control" />
+                            <span asp-validation-for="MainService" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label asp-for="DateOfEvent" class="control-label"></label>
+                            <input asp-for="DateOfEvent" class="form-control" />
+                            <span asp-validation-for="DateOfEvent" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="Investigator" class="control-label"></label>
+                            <input asp-for="Investigator" class="form-control" />
+                            <span asp-validation-for="Investigator" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="DateOfAdmission" class="control-label"></label>
+                            <input asp-for="DateOfAdmission" class="form-control" />
+                            <span asp-validation-for="DateOfAdmission" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <label asp-for="Disposition" class="control-label"></label>
+                            <select asp-for="Disposition" class="form-control" id="dispositionSelect">
+                                <option value="">Select Disposition</option>
+                                <option value="Mortality">Mortality</option>
+                                <option value="Discharged">Discharged</option>
+                                <option value="Still Admitted">Still Admitted</option>
+                                <option value="Transferred In">Transferred In</option>
+                                <option value="Transferred Out">Transferred Out</option>
+                            </select>
+                            <span asp-validation-for="Disposition" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label asp-for="DispositionDate" class="control-label"></label>
+                            <input asp-for="DispositionDate" type="date" class="form-control" />
+                            <span asp-validation-for="DispositionDate" class="text-danger"></span>
+                        </td>
+
+                        <td>
+                            <label asp-for="Gender" class="control-label"></label>
+                            <select asp-for="Gender" class="form-control">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </td>
+
+                        <td>
+                            <label asp-for="Classification" class="control-label"></label>
+                            <select asp-for="Classification" class="form-control">
+                                <option value="">Select Classification</option>
+                                <option value="Pay">Pay</option>
+                                <option value="Service">Service</option>
+                            </select>
+                            <span asp-validation-for="Classification" class="text-danger"></span>
+                        </td>
+                        <td id="dispositionTransferField" style="display: none;">
+                            <label asp-for="DispositionTransfer" class="control-label"></label>
+                            <input asp-for="DispositionTransfer" class="form-control" />
+                            <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <label asp-for="MDRO" class="control-label"></label>
+                            <select asp-for="MDRO" class="form-control">
+                                <option value="">Select Option</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                            <span asp-validation-for="MDRO" class="text-danger"></span>
+                        </td>
+                        <td colspan="4">
+                            <label asp-for="TypeClass" class="control-label"></label>
+                            <select asp-for="TypeClass" class="form-control" id="TypeClass">
+                                <option value="">Select Option</option>
+                                <option value="PNEU1">PNEU1</option>
+                                <option value="PNEU2">PNEU2</option>
+                                <option value="PNEU3">PNEU3</option>
+                            </select>
+                            <span asp-validation-for="TypeClass" class="text-danger"></span>
+                        </td>
+                        <td colspan="4">
+                            <label asp-for="PNEU_Subclass" class="control-label"></label>
+                            <select asp-for="PNEU_Subclass" class="form-control" id="PNEU_Subclass">
+                            </select>
+                            <span asp-validation-for="PNEU_Subclass" class="text-danger"></span>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <!-- Hidden Form Section -->
+            <!-- Include Bootstrap for Styling -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+
+            <!-- Hidden Form Table -->
+            <div id="pneu1_1_section" style="display: none; margin-top: 20px;">
+                <h5 class="text-primary">PNEU1_1 Details</h5>
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Criteria</th>
+                            <th>Check</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label asp-for="PersistentorProgressive1_1" class="control-label"></label>
+                            </td>
+                            <td>
+                                <select asp-for="PersistentorProgressive1_1" class="form-control">
+                                    <option value="">Select Option</option>
+                                    <option value="Infiltrate">Infiltrate</option>
+                                    <option value="Consolidation">Consolidation</option>
+                                    <option value="Cavitation">Cavitation</option>
+                                    <option value="Pneumatoceles">Pneumatoceles</option>
+                                </select>
+                                <span asp-validation-for="PersistentorProgressive1_1" class="text-danger"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.Fever1_1)</td>
+                            <td><input class="form-check-input" asp-for="Fever1_1" /></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.Leukopenia1_1)</td>
+                            <td><input class="form-check-input" asp-for="Leukopenia1_1" /></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.Leukocytosis1_1)</td>
+                            <td><input class="form-check-input" asp-for="Leukocytosis1_1" /></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.Adults70old1_1)</td>
+                            <td><input class="form-check-input" asp-for="Adults70old1_1" /></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.NewPurulentSputum1_1)</td>
+                            <td><input class="form-check-input" asp-for="NewPurulentSputum1_1" /></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea1_1)</td>
+                            <td><input class="form-check-input" asp-for="WorseningCoughOrDyspnea1_1" /></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds1_1)</td>
+                            <td><input class="form-check-input" asp-for="RalesOrBronchialBreathSounds1_1" /></td>
+                        </tr>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.WorseningGasExchange1_1)</td>
+                            <td><input class="form-check-input" asp-for="WorseningGasExchange1_1" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <!-- PNEU1_2 Form -->
+            <div id="pneu1_2_section" style="display: none; margin-top: 20px;">
+                <h5 class="text-success">PNEU1_2 Details</h5>
+                <div class="mb-3">
+                    <label asp-for="PersistentorProgressive1_2" class="form-label"></label>
+                    <select asp-for="PersistentorProgressive1_2" class="form-control">
+                        <option value="">Select Option</option>
+                        <option value="Infiltrate">Infiltrate</option>
+                        <option value="Consolidation">Consolidation</option>
+                        <option value="Cavitation">Cavitation</option>
+                        <option value="Pneumatoceles">Pneumatoceles</option>
+                    </select>
+                    <span asp-validation-for="PersistentorProgressive1_2" class="text-danger"></span>
+                </div>
+
+                <div class="form-check"><input class="form-check-input" asp-for="WorseningGasExchange1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.WorseningGasExchange1_2)</label></div>
+                <div class="form-check"><input class="form-check-input" asp-for="TemperatureInstability1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.TemperatureInstability1_2)</label></div>
+                <div class="form-check"><input class="form-check-input" asp-for="LeukopeniaOrLeukocytosis1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.LeukopeniaOrLeukocytosis1_2)</label></div>
+                <div class="form-check"><input class="form-check-input" asp-for="NewPurulentSputum1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.NewPurulentSputum1_2)</label></div>
+                <div class="form-check"><input class="form-check-input" asp-for="ApneaOrTachypneaOrNasalFlaring1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.ApneaOrTachypneaOrNasalFlaring1_2)</label></div>
+                <div class="form-check"><input class="form-check-input" asp-for="WheezingRalesOrRhonchi1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.WheezingRalesOrRhonchi1_2)</label></div>
+                <div class="form-check"><input class="form-check-input" asp-for="Cough1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.Cough1_2)</label></div>
+                <div class="form-check"><input class="form-check-input" asp-for="BradycardiaOrTachycardia1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.BradycardiaOrTachycardia1_2)</label></div>
+            </div>
+
+            <table id="pneu1_3_section" class="table table-bordered" style="display: none;">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="text-center">PNEU1_3 Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><label asp-for="PersistentorProgressive1_3" class="form-label"></label></td>
+                        <td>
+                            <select asp-for="PersistentorProgressive1_3" class="form-control">
+                                <option value="">Select Option</option>
+                                <option value="Infiltrate">Infiltrate</option>
+                                <option value="Consolidation">Consolidation</option>
+                                <option value="Cavitation">Cavitation</option>
+                                <option value="Pneumatoceles">Pneumatoceles</option>
+                            </select>
+                            <span asp-validation-for="PersistentorProgressive1_3" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fever</td>
+                        <td><input class="form-check-input" asp-for="Fever1_3" /> @Html.DisplayNameFor(model => model.Fever1_3)</td>
+                    </tr>
+                    <tr>
+                        <td>Leukopenia</td>
+                        <td><input class="form-check-input" asp-for="Leukopenia1_3" /> @Html.DisplayNameFor(model => model.Leukopenia1_3)</td>
+                    </tr>
+                    <tr>
+                        <td>New Purulent Sputum</td>
+                        <td><input class="form-check-input" asp-for="NewPurulentSputum1_3" /> @Html.DisplayNameFor(model => model.NewPurulentSputum1_3)</td>
+                    </tr>
+                    <tr>
+                        <td>New or Worsening Cough</td>
+                        <td><input class="form-check-input" asp-for="NewWorseningCough1_3" /> @Html.DisplayNameFor(model => model.NewWorseningCough1_3)</td>
+                    </tr>
+                    <tr>
+                        <td>Rales or Bronchial Breath Sounds</td>
+                        <td><input class="form-check-input" asp-for="RalesorBronchial1_3" /> @Html.DisplayNameFor(model => model.RalesorBronchial1_3)</td>
+                    </tr>
+                    <tr>
+                        <td>Worsening Gas Exchange</td>
+                        <td><input class="form-check-input" asp-for="WorseningGas1_3" /> @Html.DisplayNameFor(model => model.WorseningGas1_3)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table id="pneu2_1_section" class="table table-bordered" style="display: none;">
+                <thead>
+                    <tr>
+                        <th colspan="2" class="text-center">PNEU2_1 Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><label asp-for="PersistentorProgressive2_1" class="form-label"></label></td>
+                        <td>
+                            <select asp-for="PersistentorProgressive2_1" class="form-control">
+                                <option value="">Select Option</option>
+                                <option value="Infiltrate">Infiltrate</option>
+                                <option value="Consolidation">Consolidation</option>
+                                <option value="Cavitation">Cavitation</option>
+                                <option value="Pneumatoceles">Pneumatoceles</option>
+                            </select>
+                            <span asp-validation-for="PersistentorProgressive2_1" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr><td>Fever</td><td><input class="form-check-input" asp-for="Fever2_1" /> @Html.DisplayNameFor(model => model.Fever2_1)</td></tr>
+                    <tr><td>Leukopenia</td><td><input class="form-check-input" asp-for="Leukopenia12_1" /> @Html.DisplayNameFor(model => model.Leukopenia12_1)</td></tr>
+                    <tr><td>Leukocytosis</td><td><input class="form-check-input" asp-for="Leukocytosis2_1" /> @Html.DisplayNameFor(model => model.Leukocytosis2_1)</td></tr>
+                    <tr><td>Adults ≥ 70 Years</td><td><input class="form-check-input" asp-for="Adults70old2_1" /> @Html.DisplayNameFor(model => model.Adults70old2_1)</td></tr>
+                    <tr><td>New Purulent Sputum</td><td><input class="form-check-input" asp-for="NewPurulentSputum2_1" /> @Html.DisplayNameFor(model => model.NewPurulentSputum2_1)</td></tr>
+                    <tr><td>Worsening Cough/Dyspnea</td><td><input class="form-check-input" asp-for="WorseningCoughOrDyspnea2_1" /> @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea2_1)</td></tr>
+                    <tr><td>Rales or Bronchial Breath Sounds</td><td><input class="form-check-input" asp-for="RalesOrBronchialBreathSounds2_1" /> @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds2_1)</td></tr>
+                    <tr><td>Worsening Gas Exchange</td><td><input class="form-check-input" asp-for="WorseningGasExchange2_1" /> @Html.DisplayNameFor(model => model.WorseningGasExchange2_1)</td></tr>
+                    <tr><td>Organism Identified from Blood</td><td><input class="form-check-input" asp-for="OrganismIdentifiedFromBlood_2_1" /> @Html.DisplayNameFor(model => model.OrganismIdentifiedFromBlood_2_1)</td></tr>
+                    <tr><td>Positive Quantitative Culture (LRT)</td><td><input class="form-check-input" asp-for="PositiveQuantitativeCultureLRT_2_1" /> @Html.DisplayNameFor(model => model.PositiveQuantitativeCultureLRT_2_1)</td></tr>
+                    <tr><td>BAL Cells Contain Intracellular Bacteria</td><td><input class="form-check-input" asp-for="BALCellsContainIntracellularBacteria_2_1" /> @Html.DisplayNameFor(model => model.BALCellsContainIntracellularBacteria_2_1)</td></tr>
+                    <tr><td>Positive Quantitative Culture (Lung Tissue)</td><td><input class="form-check-input" asp-for="PositiveQuantitativeCultureLungTissue_2_1" /> @Html.DisplayNameFor(model => model.PositiveQuantitativeCultureLungTissue_2_1)</td></tr>
+                    <tr><td>Histopathologic Exam</td><td><input class="form-check-input" asp-for="HistopathologicExam2_1" /> @Html.DisplayNameFor(model => model.HistopathologicExam2_1)</td></tr>
+                    <tr><td>Abscess Formation or Foci</td><td><input class="form-check-input" asp-for="AbscessFormationOrFoci_2_1" /> @Html.DisplayNameFor(model => model.AbscessFormationOrFoci_2_1)</td></tr>
+                    <tr><td>Evidence of Fungal Invasion</td><td><input class="form-check-input" asp-for="EvidenceOfFungalInvasion_2_1" /> @Html.DisplayNameFor(model => model.EvidenceOfFungalInvasion_2_1)</td></tr>
+                    <tr>
+                        <td><label asp-for="CultureDate2_1" class="control-label"></label></td>
+                        <td><input asp-for="CultureDate2_1" class="form-control" /><span asp-validation-for="CultureDate2_1" class="text-danger"></span></td>
+                    </tr>
+                    <tr>
+                        <td><label asp-for="CultureResults2_1" class="control-label"></label></td>
+                        <td><input asp-for="CultureResults2_1" class="form-control" /><span asp-validation-for="CultureResults2_1" class="text-danger"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            
+            <table id="pneu2_2_section" class="table table-bordered" style="display: none;">
+                <tr>
+                    <td>
+                        <label asp-for="PersistentorProgressive2_2">Persistent or Progressive:</label>
+                        <select asp-for="PersistentorProgressive2_2" class="form-control">
+                            <option value="">Select Option</option>
+                            <option value="Infiltrate">Infiltrate</option>
+                            <option value="Consolidation">Consolidation</option>
+                            <option value="Cavitation">Cavitation</option>
+                            <option value="Pneumatoceles">Pneumatoceles</option>
+                        </select>
+                        <span asp-validation-for="PersistentorProgressive2_2" class="text-danger"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Fever2_2" /> Fever</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Leukopenia12_2" /> Leukopenia</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Leukocytosis2_2" /> Leukocytosis</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Adults70old2_2" /> Adults ≥ 70 years old</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="NewPurulentSputum2_2" /> New Purulent Sputum</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="WorseningCoughOrDyspnea2_2" /> Worsening Cough or Dyspnea</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="RalesOrBronchialBreathSounds2_2" /> Rales or Bronchial Breath Sounds</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="WorseningGasExchange2_2" /> Worsening Gas Exchange</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="VirusBordetellaLegionella2_2" /> Virus, Bordetella, Legionella</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="FourfoldrisePaired2_2" /> Fourfold Rise in Paired Samples</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="FourfoldriseLegionella2_2" /> Fourfold Rise in Legionella</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="DetectionofLegionella2_2" /> Detection of Legionella</label></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label asp-for="CultureDate2_2">Culture Date:</label>
+                        <input asp-for="CultureDate2_2" class="form-control" />
+                        <span asp-validation-for="CultureDate2_2" class="text-danger"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <label asp-for="CultureResults2_2">Culture Results:</label>
+                        <input asp-for="CultureResults2_2" class="form-control" />
+                        <span asp-validation-for="CultureResults2_2" class="text-danger"></span>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- PNEU3 Table (Hidden by Default) -->
+            <table id="pneu3-table" class="table table-bordered" style="display: none;">
+                <tr>
+                    <td>
+                        <label asp-for="PersistentorProgressive3">Persistent or Progressive:</label>
+                        <select asp-for="PersistentorProgressive3" class="form-control">
+                            <option value="">Select Option</option>
+                            <option value="Infiltrate">Infiltrate</option>
+                            <option value="Consolidation">Consolidation</option>
+                            <option value="Cavitation">Cavitation</option>
+                            <option value="Pneumatoceles">Pneumatoceles</option>
+                        </select>
+                        <span asp-validation-for="PersistentorProgressive3" class="text-danger"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Fever3" /> Fever</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Adults70old3" /> Adults ≥ 70 years old</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="NewPurulentSputum3" /> New Purulent Sputum</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="WorseningCoughOrDyspnea3" /> Worsening Cough or Dyspnea</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="RalesOrBronchialBreathSounds3" /> Rales or Bronchial Breath Sounds</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="WorseningGasExchange3" /> Worsening Gas Exchange</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Hemoptysis3" /> Hemoptysis</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="PleuriticChestPain3" /> Pleuritic Chest Pain</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="IdentificationCandida3" /> Identification of Candida</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="EvidenceofFungi3" /> Evidence of Fungi</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="DirectMicroscopicExam3" /> Direct Microscopic Exam</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="PositiveCultureFungi3" /> Positive Culture for Fungi</label></td>
+                </tr>
+                <tr>
+                    <td><label class="form-check-label"><input class="form-check-input" asp-for="NonCultureDiagnostic3" /> Non-Culture Diagnostic Evidence</label></td>
+                </tr>
+            </table>
+            <input type="hidden" id="hidden_PNEU_Subclass" name="PNEU_Subclass">
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -460,4 +476,135 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const typeClassDropdown = document.getElementById("TypeClass");
+            const pneuSubclassDropdown = document.getElementById("PNEU_Subclass");
+            const pneu3Table = document.getElementById("pneu3-table");
+            const hiddenSubclassInput = document.getElementById("hidden_PNEU_Subclass");
+
+            const subclassOptions = {
+                PNEU1: ["PNEU1_1", "PNEU1_2", "PNEU1_3"],
+                PNEU2: ["PNEU2_1", "PNEU2_2"],
+                PNEU3: [] // No options needed
+            };
+
+            typeClassDropdown.addEventListener("change", function () {
+                const selectedType = this.value;
+                pneuSubclassDropdown.innerHTML = ""; // Reset dropdown
+
+                if (selectedType === "PNEU3") {
+                    // ✅ Set "N/A" as the only option (readonly)
+                    const option = document.createElement("option");
+                    option.value = "N/A";
+                    option.textContent = "N/A";
+                    pneuSubclassDropdown.appendChild(option);
+                    pneuSubclassDropdown.value = "N/A";
+                    pneuSubclassDropdown.readOnly = true; // Keep it enabled for submission
+
+                    // ✅ Ensure hidden input has the correct value
+                    hiddenSubclassInput.value = "N/A";
+
+                    // ✅ Show PNEU3 table and clear previous sections
+                    pneu3Table.style.display = "table";
+                    document.querySelectorAll("#pneu1_1_section, #pneu1_2_section, #pneu1_3_section, #pneu2_1_section, #pneu2_2_section")
+                        .forEach(section => {
+                            section.style.display = "none";
+                            section.querySelectorAll("input, select, textarea").forEach(el => {
+                                if (el.type === "checkbox" || el.type === "radio") {
+                                    el.checked = false;
+                                } else {
+                                    el.value = "";
+                                }
+                            });
+                        });
+
+                } else {
+                    // ✅ Enable dropdown and populate options
+                    pneuSubclassDropdown.readOnly = false;
+                    pneuSubclassDropdown.innerHTML = '<option value="">Select Option</option>';
+                    if (selectedType && subclassOptions[selectedType]) {
+                        subclassOptions[selectedType].forEach(subclass => {
+                            const option = document.createElement("option");
+                            option.value = subclass;
+                            option.textContent = subclass;
+                            pneuSubclassDropdown.appendChild(option);
+                        });
+                    }
+
+                    // ✅ Reset hidden input for other types
+                    hiddenSubclassInput.value = "";
+
+                    // ✅ Hide PNEU3 table when selecting PNEU1 or PNEU2
+                    pneu3Table.style.display = "none";
+                    pneu3Table.querySelectorAll("input, select, textarea").forEach(el => {
+                        if (el.type === "checkbox" || el.type === "radio") {
+                            el.checked = false;
+                        } else {
+                            el.value = "";
+                        }
+                    });
+                }
+            });
+
+            // Ensure correct state on page load
+            if (typeClassDropdown.value === "PNEU3") {
+                pneu3Table.style.display = "table";
+                pneuSubclassDropdown.innerHTML = '<option value="N/A">N/A</option>';
+                pneuSubclassDropdown.value = "N/A";
+                pneuSubclassDropdown.readOnly = true;
+                hiddenSubclassInput.value = "N/A"; // Ensure submission
+            } else {
+                pneu3Table.style.display = "none";
+                pneuSubclassDropdown.readOnly = false;
+                hiddenSubclassInput.value = "";
+            }
+        });
+    </script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#PNEU_Subclass').change(function () {
+                let selectedValue = $(this).val();
+
+                // Hide and reset all subclass sections
+                $('#pneu1_1_section, #pneu1_2_section, #pneu1_3_section, #pneu2_1_section, #pneu2_2_section')
+                    .find('input, select, textarea').val('').prop('checked', false);
+                $('#pneu1_1_section, #pneu1_2_section, #pneu1_3_section, #pneu2_1_section, #pneu2_2_section').hide();
+
+                // Show the selected section
+                if (selectedValue === 'PNEU1_1') {
+                    $('#pneu1_1_section').fadeIn();
+                } else if (selectedValue === 'PNEU1_2') {
+                    $('#pneu1_2_section').fadeIn();
+                } else if (selectedValue === 'PNEU1_3') {
+                    $('#pneu1_3_section').fadeIn();
+                } else if (selectedValue === 'PNEU2_1') {
+                    $('#pneu2_1_section').fadeIn();
+                } else if (selectedValue === 'PNEU2_2') {
+                    $('#pneu2_2_section').fadeIn();
+                }
+            });
+
+            // Ensure correct state on page load
+            let initialValue = $('#PNEU_Subclass').val();
+            if (initialValue === 'PNEU1_1') {
+                $('#pneu1_1_section').show();
+            } else if (initialValue === 'PNEU1_2') {
+                $('#pneu1_2_section').show();
+            } else if (initialValue === 'PNEU1_3') {
+                $('#pneu1_3_section').show();
+            } else if (initialValue === 'PNEU2_1') {
+                $('#pneu2_1_section').show();
+            } else if (initialValue === 'PNEU2_2') {
+                $('#pneu2_2_section').show();
+            }
+        });
+    </script>
+
+
+
 }

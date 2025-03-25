@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250325054519_Pneunolast")]
+    partial class Pneunolast
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -994,22 +997,8 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PersistentorProgressive1_1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PersistentorProgressive1_2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PersistentorProgressive1_3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PersistentorProgressive2_1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PersistentorProgressive2_2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PersistentorProgressive3")
+                    b.Property<string>("PersistentorProgressive")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PleuriticChestPain3")

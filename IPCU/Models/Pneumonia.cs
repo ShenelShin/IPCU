@@ -29,12 +29,11 @@ namespace IPCU.Models
         public string Gender { get; set; } // Male, Femalef
         public string Classification { get; set; } // Pay, Servicef
         public string MDRO { get; set; } // Yes, No
-        public string MDROOrganism { get; set; } // MDRO Organism
         public string TypeClass { get; set; } 
         public string PNEU_Subclass { get; set; } 
 
         // lahat neto meron
-        public string PersistentorProgressive { get; set; }
+        public string? PersistentorProgressive1_1 { get; set; }
 
         // Section PNEU1_1: Additional Symptoms (At least one)
         public bool Fever1_1 { get; set; }
@@ -50,8 +49,11 @@ namespace IPCU.Models
 
 
         // Section PNEU1_2
+        public string? PersistentorProgressive1_2 { get; set; }
+
 
         // Additional Criteria
+
         public bool WorseningGasExchange1_2 { get; set; } 
 
         // At least three (3) required
@@ -61,9 +63,11 @@ namespace IPCU.Models
         public bool ApneaOrTachypneaOrNasalFlaring1_2 { get; set; } 
         public bool WheezingRalesOrRhonchi1_2 { get; set; }
         public bool Cough1_2 { get; set; } 
-        public bool BradycardiaOrTachycardia1_2 { get; set; } 
+        public bool BradycardiaOrTachycardia1_2 { get; set; }
 
         // Section PNEU1_3:
+        public string? PersistentorProgressive1_3 { get; set; }
+
 
         // At least three (3) of the following
         public bool Fever1_3 { get; set; } // Fever (> 38.0℃)
@@ -76,6 +80,7 @@ namespace IPCU.Models
         // =====================
         // Section PNEU2_1
         // =====================
+        public string? PersistentorProgressive2_1 { get; set; }
 
 
         // At least 1 of the following
@@ -109,7 +114,8 @@ namespace IPCU.Models
         // =====================
         // Section PNEU2_2
         // =====================
- 
+
+        public string? PersistentorProgressive2_2 { get; set; }
 
         // At least 1 of the following
         public bool Fever2_2 { get; set; } // Fever (> 38.0℃)
@@ -135,6 +141,8 @@ namespace IPCU.Models
 
 
         // Section PNEU3: 
+        public string? PersistentorProgressive3 { get; set; }
+
         // At least 1 of the following
         public bool Fever3 { get; set; } // Fever (> 38.0℃)
         public bool Adults70old3 { get; set; } // Adults ≥ 70 years old with no other recognized cause
