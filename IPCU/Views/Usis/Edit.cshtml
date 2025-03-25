@@ -1,0 +1,204 @@
+﻿@model IPCU.Models.Usi
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Usi</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Fname" class="control-label"></label>
+                <input asp-for="Fname" class="form-control" />
+                <span asp-validation-for="Fname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lname" class="control-label"></label>
+                <input asp-for="Lname" class="form-control" />
+                <span asp-validation-for="Lname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mname" class="control-label"></label>
+                <input asp-for="Mname" class="form-control" />
+                <span asp-validation-for="Mname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HospitalNumber" class="control-label"></label>
+                <input asp-for="HospitalNumber" class="form-control" />
+                <span asp-validation-for="HospitalNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="control-label"></label>
+                <input asp-for="DateOfBirth" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age" class="control-label"></label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitWardArea" class="control-label"></label>
+                <input asp-for="UnitWardArea" class="form-control" />
+                <span asp-validation-for="UnitWardArea" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainService" class="control-label"></label>
+                <input asp-for="MainService" class="form-control" />
+                <span asp-validation-for="MainService" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfEvent" class="control-label"></label>
+                <input asp-for="DateOfEvent" class="form-control" />
+                <span asp-validation-for="DateOfEvent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Investigator" class="control-label"></label>
+                <input asp-for="Investigator" class="form-control" />
+                <span asp-validation-for="Investigator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfAdmission" class="control-label"></label>
+                <input asp-for="DateOfAdmission" class="form-control" />
+                <span asp-validation-for="DateOfAdmission" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Disposition" class="control-label"></label>
+                <input asp-for="Disposition" class="form-control" />
+                <span asp-validation-for="Disposition" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DispositionDate" class="control-label"></label>
+                <input asp-for="DispositionDate" class="form-control" />
+                <span asp-validation-for="DispositionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DispositionTransfer" class="control-label"></label>
+                <input asp-for="DispositionTransfer" class="form-control" />
+                <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+                <input asp-for="Gender" class="form-control" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Classification" class="control-label"></label>
+                <input asp-for="Classification" class="form-control" />
+                <span asp-validation-for="Classification" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MDRO" class="control-label"></label>
+                <input asp-for="MDRO" class="form-control" />
+                <span asp-validation-for="MDRO" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TypeClass" class="control-label"></label>
+                <input asp-for="TypeClass" class="form-control" />
+                <span asp-validation-for="TypeClass" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PatientOrganism" /> @Html.DisplayNameFor(model => model.PatientOrganism)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PatientAbscess" /> @Html.DisplayNameFor(model => model.PatientAbscess)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Fever1" /> @Html.DisplayNameFor(model => model.Fever1)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="LocalizedPain" /> @Html.DisplayNameFor(model => model.LocalizedPain)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PurulentDrainage" /> @Html.DisplayNameFor(model => model.PurulentDrainage)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Organism" /> @Html.DisplayNameFor(model => model.Organism)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PatienLessthan1year" /> @Html.DisplayNameFor(model => model.PatienLessthan1year)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Fever2" /> @Html.DisplayNameFor(model => model.Fever2)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Hypothermia" /> @Html.DisplayNameFor(model => model.Hypothermia)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Apnea" /> @Html.DisplayNameFor(model => model.Apnea)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Bradycardia" /> @Html.DisplayNameFor(model => model.Bradycardia)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Lethargy" /> @Html.DisplayNameFor(model => model.Lethargy)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Vomiting" /> @Html.DisplayNameFor(model => model.Vomiting)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PurulentDrainage2" /> @Html.DisplayNameFor(model => model.PurulentDrainage2)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Organism2" /> @Html.DisplayNameFor(model => model.Organism2)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="CultureDate" class="control-label"></label>
+                <input asp-for="CultureDate" class="form-control" />
+                <span asp-validation-for="CultureDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CultureResults" class="control-label"></label>
+                <input asp-for="CultureResults" class="form-control" />
+                <span asp-validation-for="CultureResults" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

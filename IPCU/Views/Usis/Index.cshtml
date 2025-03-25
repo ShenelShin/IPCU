@@ -1,0 +1,239 @@
+﻿@model IEnumerable<IPCU.Models.Usi>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HospitalNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitWardArea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainService)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfEvent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Investigator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfAdmission)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Disposition)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DispositionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DispositionTransfer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Classification)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MDRO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeClass)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientOrganism)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientAbscess)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fever1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocalizedPain)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurulentDrainage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Organism)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatienLessthan1year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fever2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hypothermia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Apnea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bradycardia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lethargy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vomiting)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurulentDrainage2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Organism2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CultureDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CultureResults)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HospitalNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitWardArea)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MainService)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfEvent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Investigator)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfAdmission)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Disposition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DispositionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DispositionTransfer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Classification)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MDRO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeClass)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientOrganism)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientAbscess)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fever1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LocalizedPain)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurulentDrainage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Organism)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatienLessthan1year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fever2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hypothermia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apnea)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bradycardia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lethargy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vomiting)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurulentDrainage2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Organism2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CultureDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CultureResults)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
