@@ -1613,37 +1613,6 @@ namespace IPCU.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("VitalSigns", b =>
-                {
-                    b.Property<int>("VitalId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VitalId"));
-
-                    b.Property<string>("HospNum")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<string>("VitalSign")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("VitalSignDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("VitalSignValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("VitalId");
-
-                    b.HasIndex("HospNum");
-
-                    b.ToTable("VitalSigns");
-                });
-
             modelBuilder.Entity("IPCU.Models.DeviceConnected", b =>
                 {
                     b.HasOne("IPCU.Models.PatientMaster", "PatientMaster")
@@ -1706,6 +1675,19 @@ namespace IPCU.Migrations
                     b.Navigation("HandHygieneForm");
                 });
 
+
+
+            modelBuilder.Entity("IPCU.Models.VitalSigns", b =>
+                {
+                    b.HasOne("IPCU.Models.PatientMaster", "PatientMaster")
+                        .WithMany()
+                        .HasForeignKey("HospNum")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PatientMaster");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1757,17 +1739,6 @@ namespace IPCU.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VitalSigns", b =>
-                {
-                    b.HasOne("IPCU.Models.PatientMaster", "PatientMaster")
-                        .WithMany()
-                        .HasForeignKey("HospNum")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PatientMaster");
-                });
-
             modelBuilder.Entity("IPCU.Models.Diagnostics", b =>
                 {
                     b.Navigation("Treatments");
@@ -1776,6 +1747,16 @@ namespace IPCU.Migrations
             modelBuilder.Entity("IPCU.Models.HandHygieneForm", b =>
                 {
                     b.Navigation("Activities");
+                });
+
+            modelBuilder.Entity("IPCU.Models.SSIInfection", b =>
+                {
+                    b.Navigation("Questions");
+                });
+
+            modelBuilder.Entity("IPCU.Models.SSIQuestionType", b =>
+                {
+                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }
