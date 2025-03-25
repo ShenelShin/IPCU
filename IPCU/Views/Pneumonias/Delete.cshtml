@@ -1,0 +1,543 @@
+﻿@model IPCU.Models.Pneumonia
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Pneumonia</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Mname)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Mname)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HospitalNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HospitalNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Age)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UnitWardArea)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UnitWardArea)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MainService)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MainService)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfEvent)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfEvent)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Investigator)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Investigator)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateOfAdmission)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateOfAdmission)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Disposition)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Disposition)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DispositionDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DispositionDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DispositionTransfer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DispositionTransfer)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Classification)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Classification)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MDRO)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MDRO)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MDROOrganism)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MDROOrganism)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TypeClass)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TypeClass)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PNEU_Subclass)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PNEU_Subclass)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PersistentorProgressive)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PersistentorProgressive)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fever1_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fever1_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Leukopenia1_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Leukopenia1_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Leukocytosis1_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Leukocytosis1_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Adults70old1_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Adults70old1_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NewPurulentSputum1_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NewPurulentSputum1_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea1_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorseningCoughOrDyspnea1_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds1_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RalesOrBronchialBreathSounds1_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorseningGasExchange1_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorseningGasExchange1_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorseningGasExchange1_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorseningGasExchange1_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TemperatureInstability1_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TemperatureInstability1_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LeukopeniaOrLeukocytosis1_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LeukopeniaOrLeukocytosis1_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NewPurulentSputum1_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NewPurulentSputum1_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ApneaOrTachypneaOrNasalFlaring1_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ApneaOrTachypneaOrNasalFlaring1_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WheezingRalesOrRhonchi1_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WheezingRalesOrRhonchi1_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cough1_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cough1_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BradycardiaOrTachycardia1_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BradycardiaOrTachycardia1_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fever1_3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fever1_3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Leukopenia1_3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Leukopenia1_3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NewPurulentSputum1_3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NewPurulentSputum1_3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NewWorseningCough1_3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NewWorseningCough1_3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RalesorBronchial1_3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RalesorBronchial1_3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorseningGas1_3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorseningGas1_3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fever2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fever2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Leukopenia12_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Leukopenia12_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Leukocytosis2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Leukocytosis2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Adults70old2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Adults70old2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NewPurulentSputum2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NewPurulentSputum2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorseningCoughOrDyspnea2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RalesOrBronchialBreathSounds2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorseningGasExchange2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorseningGasExchange2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OrganismIdentifiedFromBlood_2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OrganismIdentifiedFromBlood_2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PositiveQuantitativeCultureLRT_2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PositiveQuantitativeCultureLRT_2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.BALCellsContainIntracellularBacteria_2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.BALCellsContainIntracellularBacteria_2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PositiveQuantitativeCultureLungTissue_2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PositiveQuantitativeCultureLungTissue_2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HistopathologicExam2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HistopathologicExam2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AbscessFormationOrFoci_2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AbscessFormationOrFoci_2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EvidenceOfFungalInvasion_2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EvidenceOfFungalInvasion_2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CultureDate2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CultureDate2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CultureResults2_1)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CultureResults2_1)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fever2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fever2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Leukopenia12_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Leukopenia12_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Leukocytosis2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Leukocytosis2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Adults70old2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Adults70old2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NewPurulentSputum2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NewPurulentSputum2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorseningCoughOrDyspnea2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RalesOrBronchialBreathSounds2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorseningGasExchange2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorseningGasExchange2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.VirusBordetellaLegionella2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.VirusBordetellaLegionella2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FourfoldrisePaired2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FourfoldrisePaired2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FourfoldriseLegionella2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FourfoldriseLegionella2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DetectionofLegionella2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DetectionofLegionella2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CultureDate2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CultureDate2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CultureResults2_2)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CultureResults2_2)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Fever3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Fever3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Adults70old3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Adults70old3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NewPurulentSputum3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NewPurulentSputum3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorseningCoughOrDyspnea3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RalesOrBronchialBreathSounds3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorseningGasExchange3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorseningGasExchange3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hemoptysis3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hemoptysis3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PleuriticChestPain3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PleuriticChestPain3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdentificationCandida3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdentificationCandida3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EvidenceofFungi3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EvidenceofFungi3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DirectMicroscopicExam3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DirectMicroscopicExam3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PositiveCultureFungi3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PositiveCultureFungi3)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NonCultureDiagnostic3)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NonCultureDiagnostic3)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

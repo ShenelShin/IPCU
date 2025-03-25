@@ -1,0 +1,551 @@
+﻿@model IEnumerable<IPCU.Models.Pneumonia>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Lname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Mname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HospitalNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitWardArea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MainService)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfEvent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Investigator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfAdmission)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Disposition)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DispositionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DispositionTransfer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Classification)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MDRO)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MDROOrganism)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TypeClass)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PNEU_Subclass)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PersistentorProgressive)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fever1_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leukopenia1_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leukocytosis1_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adults70old1_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewPurulentSputum1_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea1_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds1_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorseningGasExchange1_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorseningGasExchange1_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TemperatureInstability1_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeukopeniaOrLeukocytosis1_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewPurulentSputum1_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ApneaOrTachypneaOrNasalFlaring1_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WheezingRalesOrRhonchi1_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cough1_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BradycardiaOrTachycardia1_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fever1_3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leukopenia1_3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewPurulentSputum1_3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewWorseningCough1_3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RalesorBronchial1_3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorseningGas1_3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fever2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leukopenia12_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leukocytosis2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adults70old2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewPurulentSputum2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorseningGasExchange2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrganismIdentifiedFromBlood_2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PositiveQuantitativeCultureLRT_2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BALCellsContainIntracellularBacteria_2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PositiveQuantitativeCultureLungTissue_2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HistopathologicExam2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AbscessFormationOrFoci_2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EvidenceOfFungalInvasion_2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CultureDate2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CultureResults2_1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fever2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leukopenia12_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Leukocytosis2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adults70old2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewPurulentSputum2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorseningGasExchange2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VirusBordetellaLegionella2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FourfoldrisePaired2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FourfoldriseLegionella2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DetectionofLegionella2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CultureDate2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CultureResults2_2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fever3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adults70old3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NewPurulentSputum3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorseningGasExchange3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hemoptysis3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PleuriticChestPain3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdentificationCandida3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EvidenceofFungi3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DirectMicroscopicExam3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PositiveCultureFungi3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NonCultureDiagnostic3)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HospitalNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitWardArea)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MainService)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfEvent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Investigator)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfAdmission)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Disposition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DispositionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DispositionTransfer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Classification)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MDRO)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MDROOrganism)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TypeClass)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PNEU_Subclass)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PersistentorProgressive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fever1_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Leukopenia1_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Leukocytosis1_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adults70old1_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewPurulentSputum1_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorseningCoughOrDyspnea1_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RalesOrBronchialBreathSounds1_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorseningGasExchange1_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorseningGasExchange1_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TemperatureInstability1_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeukopeniaOrLeukocytosis1_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewPurulentSputum1_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApneaOrTachypneaOrNasalFlaring1_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WheezingRalesOrRhonchi1_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cough1_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BradycardiaOrTachycardia1_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fever1_3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Leukopenia1_3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewPurulentSputum1_3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewWorseningCough1_3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RalesorBronchial1_3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorseningGas1_3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fever2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Leukopenia12_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Leukocytosis2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adults70old2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewPurulentSputum2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorseningCoughOrDyspnea2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RalesOrBronchialBreathSounds2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorseningGasExchange2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrganismIdentifiedFromBlood_2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PositiveQuantitativeCultureLRT_2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BALCellsContainIntracellularBacteria_2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PositiveQuantitativeCultureLungTissue_2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HistopathologicExam2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AbscessFormationOrFoci_2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EvidenceOfFungalInvasion_2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CultureDate2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CultureResults2_1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fever2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Leukopenia12_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Leukocytosis2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adults70old2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewPurulentSputum2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorseningCoughOrDyspnea2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RalesOrBronchialBreathSounds2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorseningGasExchange2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VirusBordetellaLegionella2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FourfoldrisePaired2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FourfoldriseLegionella2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DetectionofLegionella2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CultureDate2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CultureResults2_2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fever3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adults70old3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NewPurulentSputum3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorseningCoughOrDyspnea3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RalesOrBronchialBreathSounds3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorseningGasExchange3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hemoptysis3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PleuriticChestPain3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdentificationCandida3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EvidenceofFungi3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DirectMicroscopicExam3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PositiveCultureFungi3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NonCultureDiagnostic3)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

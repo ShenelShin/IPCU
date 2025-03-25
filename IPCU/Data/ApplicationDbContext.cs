@@ -29,6 +29,8 @@ namespace IPCU.Data
         public DbSet<TrainingSummary> TrainingSummaries { get; set; }
         public DbSet<EvaluationViewModel> Evaluations { get; set; }
         public DbSet<TrainingEvaluation> TrainingEvaluations { get; set; } // ✅ Ensure this is present
+        public DbSet<Pneumonia> Pneumonias { get; set; }
+        public DbSet<Usi> Usi { get; set; }
 
         public DbSet<Patient> Patients { get; set; }
         public DbSet<PatientMaster> PatientMasters { get; set; }
