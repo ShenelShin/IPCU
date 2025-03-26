@@ -2,77 +2,345 @@
 @{
     ViewData["Title"] = "HAI Checklist";
 }
-<div class="container py-4">
-    <div class="card">
-        <div class="card-header bg-warning text-dark">
+
+<div class="container-fluid py-4">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-gradient-primary text-white py-3">
             <div class="d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">
-                    <i class="fas fa-clipboard-check me-2"></i>HAI Checklist
-                </h4>
-                <div>
-                    <span class="badge bg-danger">HAI Status: YES</span>
-                    <span class="badge bg-dark ms-2">Occurrences: @Model.HaiCount</span>
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle bg-white p-2 me-3">
+                        <i class="fas fa-clipboard-check text-primary fa-lg"></i>
+                    </div>
+                    <h4 class="mb-0">HAI Checklist</h4>
+                </div>
+                <div class="d-flex gap-2">
+                    <div class="badge bg-danger px-3 py-2">
+                        <i class="fas fa-exclamation-circle me-1"></i>
+                        HAI Status: Active
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="card-body">
-            <div class="mb-4">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h5 class="mb-3">Patient Information</h5>
-                        <table class="table table-sm">
-                            <tr>
-                                <th style="width: 150px">Hospital Number:</th>
-                                <td>@Model.HospNum</td>
-                            </tr>
-                            <tr>
-                                <th>Patient Name:</th>
-                                <td>@Model.PatientName</td>
-                            </tr>
-                            <tr>
-                                <th>Location:</th>
-                                <td>@Model.AdmLocation - @Model.RoomID</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Select the appropriate infection checklist form below to document the patient's condition.
-                        </div>
-                        <div class="d-grid gap-2">
-                            <a href="@Url.Action("Index", "InfectionChecklist", new { hospNum = Model.HospNum })" class="btn btn-primary">
-                                <i class="fas fa-file-medical me-2"></i>SST Infection Checklist
-                            </a>
+
+        <div class="card-body p-4">
+            <div class="row g-4">
+                <!-- Patient Info Card -->
+                <div class="col-md-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                    <i class="fas fa-user text-primary"></i>
+                                </div>
+                                <h5 class="mb-0">Patient Information</h5>
+                            </div>
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item border-0 px-0">
+                                    <small class="text-muted d-block">Hospital Number</small>
+                                    <strong>@Model.HospNum</strong>
+                                </div>
+                                <div class="list-group-item border-0 px-0">
+                                    <small class="text-muted d-block">Patient Name</small>
+                                    <strong>@Model.PatientName</strong>
+                                </div>
+                                <div class="list-group-item border-0 px-0">
+                                    <small class="text-muted d-block">Location</small>
+                                    <strong>@Model.AdmLocation - @Model.RoomID</strong>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-8">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                                    <i class="fas fa-file-medical text-success"></i>
+                                </div>
+                                <h5 class="mb-0">Infection Checklists</h5>
+                            </div>
+
+                            <div class="row g-3">
+                                <!-- SST Infection -->
+                                <div class="col-md-6">
+                                    <a href="@Url.Action("Index", "InfectionChecklist", new { hospNum = Model.HospNum })"
+                                       class="card h-100 border-0 shadow-sm hover-shadow text-decoration-none">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                                    <i class="fas fa-hand-paper text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 text-primary">SST</h6>
+                                                    <small class="text-muted">SKIN AND SOFT TISSUE INFECTION</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- Pediatric VAE -->
+                                <div class="col-md-6">
+                                    <a href="@Url.Action("Index", "PediatricVAEChecklist", new { hospNum = Model.HospNum })"
+                                       class="card h-100 border-0 shadow-sm hover-shadow text-decoration-none">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                                    <i class="fas fa-lungs text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 text-primary">PVAE</h6>
+                                                    <small class="text-muted">PEDIATRIC VENTILATOR-ASSOCIATED EVENT</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- CVS Infection -->
+                                <div class="col-md-6">
+                                    <a href="@Url.Action("Index", "CardiovascularSystemInfection", new { hospNum = Model.HospNum })"
+                                       class="card h-100 border-0 shadow-sm hover-shadow text-decoration-none">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                                    <i class="fas fa-heartbeat text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 text-primary">CVS</h6>
+                                                    <small class="text-muted">CARDIOVASCULAR SYSTEM INFECTION</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- LCBI -->
+                                <div class="col-md-6">
+                                    <a href="@Url.Action("Index", "LaboratoryConfirmedBloodstreamInfection", new { hospNum = Model.HospNum })"
+                                       class="card h-100 border-0 shadow-sm hover-shadow text-decoration-none">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                                    <i class="fas fa-vial text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 text-primary">LCBI</h6>
+                                                    <small class="text-muted">LABORATORY CONFIRMED BLOODSTREAM INFECTION</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- UTI -->
+                                <div class="col-md-6">
+                                    <a href="@Url.Action("Index", "UTIForm", new { hospNum = Model.HospNum })"
+                                       class="card h-100 border-0 shadow-sm hover-shadow text-decoration-none">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                                    <i class="fas fa-kidneys text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 text-primary">UTI</h6>
+                                                    <small class="text-muted">URINARY TRACT INFECTION</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- USI -->
+                                <div class="col-md-6">
+                                    <a href="@Url.Action("Index", "Usis", new { hospNum = Model.HospNum })"
+                                       class="card h-100 border-0 shadow-sm hover-shadow text-decoration-none">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                                    <i class="fas fa-toilet text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 text-primary">USI</h6>
+                                                    <small class="text-muted">URINARY SYSTEM INFECTION</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- VAE -->
+                                <div class="col-md-6">
+                                    <a href="@Url.Action("Index", "VentilatorEventChecklist", new { hospNum = Model.HospNum })"
+                                       class="card h-100 border-0 shadow-sm hover-shadow text-decoration-none">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                                    <i class="fas fa-wind text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 text-primary">VAE</h6>
+                                                    <small class="text-muted">VENTILATOR-ASSOCIATED EVENT</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- Pneumonia -->
+                                <div class="col-md-6">
+                                    <a href="@Url.Action("Index", "Pneumonias", new { hospNum = Model.HospNum })"
+                                       class="card h-100 border-0 shadow-sm hover-shadow text-decoration-none">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center">
+                                                <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                                    <i class="fas fa-lungs-virus text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-1 text-primary">PNEU</h6>
+                                                    <small class="text-muted">PNEUMONIA</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Pending Forms -->
+            <div class="card mt-4 border-0 shadow-sm bg-warning bg-opacity-10">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rounded-circle bg-warning bg-opacity-25 p-2 me-3">
+                            <i class="fas fa-clock text-warning"></i>
+                        </div>
+                        <h5 class="mb-0 text-warning">Pending Forms</h5>
+                    </div>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><i class="fas fa-hourglass-half text-warning me-2"></i>GASTROINTESTINAL SYSTEM INFECTION (GI)</li>
+                        <li><i class="fas fa-hourglass-half text-warning me-2"></i>SURGICAL SITE INFECTION (SSI)</li>
+                    </ul>
+                </div>
             </div>
-            <div class="alert alert-warning">
-                <h5><i class="fas fa-exclamation-triangle me-2"></i>HAI Checklist</h5>
-                <p>Waiting sa forms</p>
-                <ul>
-                    <li> CARDIOVASCULAR SYSTEM INFECTION(CVS) INFECTION </li>
-                    <li> GASTROINTESTINAL SYSTEMINFECTION (GI) INFECTION </li>
-                    <li> LABORATORY CONFIRMED BLOODSTREAM INFECTION(LCBI) </li>
-                    <li> PEDIATRIC VENTILATOR-ASSOCIATED EVENT (VAE) </li>
-                    <li> PNEUMONIA(PNEU) </li>
-                    <li> SURGICAL SITE INFECTION(SSI) </li>
-                    <li> SKINANDSOFTTISSUE(SST) INFECTION </li>
-                    <li> URINARY SYSTEM INFECTION(USI) </li>
-                    <li> SURGICAL SITE INFECTION(SSI) </li>
-                    <li> URINARY TRACT INFECTION(UTI) </li>
-                    <li> VENTILATOR-ASSOCIATED EVENT(VAE) </li>
-                </ul>
-            </div>
-            <div class="mt-4">
+
+            <!-- Navigation Buttons -->
+            <div class="d-flex gap-2 mt-4">
                 <a asp-action="Details" asp-route-id="@Model.IdNum" class="btn btn-primary">
                     <i class="fas fa-arrow-left me-2"></i>Back to Patient Details
                 </a>
-                <a asp-action="Index" class="btn btn-secondary ms-2">
+                <a asp-action="Index" class="btn btn-outline-secondary">
                     <i class="fas fa-list me-2"></i>Back to Patient List
                 </a>
             </div>
         </div>
     </div>
 </div>
+
+    <style>
+        body {
+            background: #f8f9fe;
+        }
+
+        .container-fluid {
+            background: linear-gradient(180deg, rgba(78, 115, 223, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+        }
+
+        .bg-gradient-primary {
+            background: linear-gradient(45deg, #4e73df, #2e59d9);
+            box-shadow: 0 4px 20px rgba(46, 89, 217, 0.2);
+        }
+
+        .card {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .hover-shadow:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+            box-shadow: 0 1rem 3rem rgba(78, 115, 223, 0.2) !important;
+            background: linear-gradient(45deg, #ffffff, #f8f9ff);
+        }
+
+        .rounded-circle {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge.bg-danger {
+            background: linear-gradient(45deg, #e74a3b, #c23321) !important;
+            box-shadow: 0 4px 12px rgba(231, 74, 59, 0.2);
+        }
+
+        .text-primary {
+            color: #4e73df !important;
+        }
+
+        .bg-primary.bg-opacity-10 {
+            background: linear-gradient(45deg, rgba(78, 115, 223, 0.1), rgba(46, 89, 217, 0.1)) !important;
+        }
+
+        /* Glass effect for patient info card */
+        .col-md-4 .card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Enhanced checklist cards */
+        .col-md-6 .card {
+            border: 1px solid rgba(78, 115, 223, 0.1);
+        }
+
+            .col-md-6 .card:hover {
+                border-color: #4e73df;
+                background: linear-gradient(135deg, #ffffff, #f8f9ff);
+            }
+
+        /* Glowing effect for icons */
+        .rounded-circle i {
+            filter: drop-shadow(0 0 8px rgba(78, 115, 223, 0.3));
+        }
+
+        /* Enhanced pending forms section */
+        .bg-warning.bg-opacity-10 {
+            background: linear-gradient(135deg, rgba(246, 194, 62, 0.1), rgba(246, 194, 62, 0.05)) !important;
+            border-left: 4px solid #f6c23e;
+        }
+
+        /* Custom button styles */
+        .btn-primary {
+            background: linear-gradient(45deg, #4e73df, #2e59d9);
+            border: none;
+            box-shadow: 0 4px 12px rgba(78, 115, 223, 0.2);
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 16px rgba(78, 115, 223, 0.3);
+            }
+
+        .btn-outline-secondary {
+            border: 2px solid #858796;
+            background: transparent;
+        }
+
+            .btn-outline-secondary:hover {
+                background: #858796;
+                transform: translateY(-2px);
+            }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+    </style>

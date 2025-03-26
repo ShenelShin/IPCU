@@ -1,71 +1,81 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IPCU.Models;
 using IPCU.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 namespace IPCU.Controllers
 {
     public class InfectionChecklistController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+
 
         // Inject DbContext via constructor
-        public InfectionChecklistController(ApplicationDbContext context)
+        public InfectionChecklistController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
-        public ActionResult Index(string hospNum)
+        public async Task<IActionResult> Index(string hospNum)
         {
             var model = new SSTInfectionModel();
 
-            // If hospital number is provided, pre-fill patient info
+            // Get current user's name for investigator
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser != null)
+            {
+                model.Investigator = $"{currentUser.FirstName} {currentUser.Initial} {currentUser.LastName}".Trim();
+            }
+
             if (!string.IsNullOrEmpty(hospNum))
             {
-                // Get patient data from database
-                var patientMaster = _context.PatientMasters
-                    .FirstOrDefault(p => p.HospNum == hospNum);
+                // Get patient info where HospNum matches
+                var patientInfo = await (from pm in _context.PatientMasters
+                                         join p in _context.Patients
+                                         on pm.HospNum equals p.HospNum
+                                         where pm.HospNum == hospNum
+                                         select new
+                                         {
+                                             PatientMaster = pm,
+                                             Patients = p
+                                         }).FirstOrDefaultAsync();
 
-                if (patientMaster != null)
+                if (patientInfo != null)
                 {
-                    // Pre-fill the model with patient data
-                    model.HospitalNumber = hospNum;
-                    model.Fname = patientMaster.FirstName;
-                    model.Mname = patientMaster.MiddleName;
-                    model.Lname = patientMaster.LastName;
-                    model.Gender = patientMaster.Sex;
-
-                    // string to int putangina
-                    if (int.TryParse(patientMaster.Age, out int ageValue))
-                    {
-                        model.Age = ageValue;
-                    }
-                    else
-                    {
-                        // Handle the case where Age is not a valid integer
-                        model.Age = 0; // or some other default value
-                    }
-
-
+                    model.HospitalNumber = patientInfo.PatientMaster.HospNum;
+                    model.Gender = patientInfo.PatientMaster.Sex == "M" ? "Male" : "Female";
+                    model.Fname = patientInfo.PatientMaster.FirstName;
+                    model.Mname = patientInfo.PatientMaster.MiddleName;
+                    model.Lname = patientInfo.PatientMaster.LastName;
                     // null kasi bdate ko fuck goddamit
-                    if (patientMaster.BirthDate.HasValue)
+                    if (patientInfo.PatientMaster.BirthDate.HasValue)
                     {
-                        model.DateOfBirth = patientMaster.BirthDate.Value;
+                        model.DateOfBirth = patientInfo.PatientMaster.BirthDate.Value;
                     }
                     else
                     {
                         // null shit
-                        model.DateOfBirth = DateTime.MinValue; 
+                        model.DateOfBirth = DateTime.MinValue;
                     }
+                    model.UnitWardArea = patientInfo.Patients.AdmLocation;
 
-                    // You could also query for other relevant patient information
-                    var patient = _context.Patients
-                        .FirstOrDefault(p => p.HospNum == hospNum);
-
-                    if (patient != null)
+                    // null kasi bdate ko fuck goddamit
+                    if (patientInfo.Patients.AdmDate.HasValue)
                     {
-                        model.UnitWardArea = patient.AdmLocation;
-
-                        // Pre-fill other fields as needed
+                        model.DateOfBirth = patientInfo.Patients.AdmDate.Value;
                     }
+                    else
+                    {
+                        // null shit
+                        model.DateOfAdmission = DateTime.MinValue;
+                    }
+                    model.Age = int.Parse(patientInfo.Patients.Age);
+
+
+                    // Add other fields you want to auto-fill
                 }
             }
 
