@@ -7,22 +7,95 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IPCU.Data;
 using IPCU.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IPCU.Controllers
 {
     public class UsisController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UsisController(ApplicationDbContext context)
+
+        public UsisController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: Usis
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string hospNum)
         {
-            return View(await _context.Usi.ToListAsync());
+            var model = new Usi();
+
+            // Get current user's name for investigator
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser != null)
+            {
+                model.Investigator = $"{currentUser.FirstName} {currentUser.Initial} {currentUser.LastName}".Trim();
+            }
+
+            if (!string.IsNullOrEmpty(hospNum))
+            {
+                // Get patient info where HospNum matches
+                var patientInfo = await (from pm in _context.PatientMasters
+                                         join p in _context.Patients
+                                         on pm.HospNum equals p.HospNum
+                                         where pm.HospNum == hospNum
+                                         select new
+                                         {
+                                             PatientMaster = pm,
+                                             Patients = p
+                                         }).FirstOrDefaultAsync();
+
+                if (patientInfo != null)
+                {
+                    if (int.TryParse(patientInfo.PatientMaster.HospNum, out int hospitalNumber))
+                    {
+                        model.HospitalNumber = hospitalNumber;
+                    }
+                    else
+                    {
+                        // Handle the case where HospNum is not a valid integer
+                        // You could set a default value or handle the error
+                        model.HospitalNumber = 0; // or another appropriate default value
+                        ModelState.AddModelError("HospitalNumber", "Invalid hospital number format");
+                    }
+                    model.Gender = patientInfo.PatientMaster.Sex == "M" ? "Male" : "Female";
+                    model.Fname = patientInfo.PatientMaster.FirstName;
+                    model.Mname = patientInfo.PatientMaster.MiddleName;
+                    model.Lname = patientInfo.PatientMaster.LastName;
+                    // null kasi bdate ko fuck goddamit
+                    if (patientInfo.PatientMaster.BirthDate.HasValue)
+                    {
+                        model.DateOfBirth = patientInfo.PatientMaster.BirthDate.Value;
+                    }
+                    else
+                    {
+                        // null shit
+                        model.DateOfBirth = DateTime.MinValue;
+                    }
+                    model.UnitWardArea = patientInfo.Patients.AdmLocation;
+
+                    // null kasi bdate ko fuck goddamit
+                    if (patientInfo.Patients.AdmDate.HasValue)
+                    {
+                        model.DateOfBirth = patientInfo.Patients.AdmDate.Value;
+                    }
+                    else
+                    {
+                        // null shit
+                        model.DateOfAdmission = DateTime.MinValue;
+                    }
+                    model.Age = int.Parse(patientInfo.Patients.Age);
+
+
+                    // Add other fields you want to auto-fill
+                }
+            }
+
+            return View("Create", model);
         }
 
         // GET: Usis/Details/5
