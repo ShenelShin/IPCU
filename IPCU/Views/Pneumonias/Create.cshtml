@@ -90,7 +90,7 @@
                     <input asp-for="DispositionTransfer" class="form-control" />
                     <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
 
-                </div
+                </div>
                 </td>
                 
             </tr>
@@ -129,36 +129,32 @@
                     </select>
                     <span asp-validation-for="MDRO" class="text-danger"></span>
                 </td>
-            </tr>       
+            </tr>
             <tr>
-             <td colspan="2">
-                            <label asp-for="TypeClass" class="control-label"></label>
-                            <select asp-for="TypeClass" class="form-control" id="TypeClass">
-                                <option value="">Select Option</option>
-                                <option value="PNEU1">PNEU1</option>
-                                <option value="PNEU2">PNEU2</option>
-                                <option value="PNEU3">PNEU3</option>
-                            </select>
-                            <span asp-validation-for="TypeClass" class="text-danger"></span>
-                        </td>
-                        <td colspan="4">
-                            <label asp-for="PNEU_Subclass" class="control-label"></label>
-                            <select asp-for="PNEU_Subclass" class="form-control" id="PNEU_Subclass">
-                            </select>
-                            <span asp-validation-for="PNEU_Subclass" class="text-danger"></span>
-                        </td>
-                    </tr>
-
+                <td colspan="2">
+                    <label asp-for="TypeClass" class="control-label"></label>
+                    <select asp-for="TypeClass" class="form-control" id="TypeClass">
+                        <option value="">Select Option</option>
+                        <option value="PNEU1">PNEU1</option>
+                        <option value="PNEU2">PNEU2</option>
+                        <option value="PNEU3">PNEU3</option>
+                    </select>
+                    <span asp-validation-for="TypeClass" class="text-danger"></span>
+                </td>
+                <td colspan="4">
+                    <label asp-for="PNEU_Subclass" class="control-label"></label>
+                    <select asp-for="PNEU_Subclass" class="form-control" id="PNEU_Subclass">
+                        <option value="">Select Subclass</option>
+                    </select>
+                    <span asp-validation-for="PNEU_Subclass" class="text-danger"></span>
+                </td>
+            </tr>
             
         </table>
     </fieldset>
-            <!-- Hidden Form Section -->
-            <!-- Include Bootstrap for Styling -->
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-
 
             <!-- Hidden Form Table -->
-            <div id="pneu1_1_section" style="display: none; margin-top: 20px;">
+    <div id="pneu1_1_section" class="table-section" style="display: none; margin-top: 20px;">
                 <h5 class="text-primary">PNEU1_1 Details</h5>
                 <table class="table table-bordered table-striped">
                     <thead class="table-dark">
@@ -221,8 +217,8 @@
 
 
             <!-- PNEU1_2 Form -->
-            <div id="pneu1_2_section" style="display: none; margin-top: 20px;">
-                <h5 class="text-success">PNEU1_2 Details</h5>
+    <div id="pneu1_2_section" class="table-section" style="display: none; margin-top: 20px;">
+        <h5 class="text-success">PNEU1_2 Details</h5>
                 <div class="mb-3">
                     <label asp-for="PersistentorProgressive1_2" class="form-label"></label>
                     <select asp-for="PersistentorProgressive1_2" class="form-control">
@@ -245,8 +241,9 @@
                 <div class="form-check"><input class="form-check-input" asp-for="BradycardiaOrTachycardia1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.BradycardiaOrTachycardia1_2)</label></div>
             </div>
 
-            <table id="pneu1_3_section" class="table table-bordered" style="display: none;">
-                <thead>
+    <div id="pneu1_3_section" class="table-section" style="display: none;">
+        <table class="table table-bordered">
+            <thead>
                     <tr>
                         <th colspan="2" class="text-center">PNEU1_3 Details</th>
                     </tr>
@@ -291,8 +288,10 @@
                     </tr>
                 </tbody>
             </table>
+</div>
+    <div id="pneu2_1_section" class="table-section" style="display: none;">
 
-            <table id="pneu2_1_section" class="table table-bordered" style="display: none;">
+            <table  class="table table-bordered">
                 <thead>
                     <tr>
                         <th colspan="2" class="text-center">PNEU2_1 Details</th>
@@ -337,9 +336,11 @@
                     </tr>
                 </tbody>
             </table>
+    </div>
 
-            
-            <table id="pneu2_2_section" class="table table-bordered" style="display: none;">
+    <div id="pneu2_2_section" class="table-section" style="display: none;">
+
+            <table class="table table-bordered">
                 <tr>
                     <td>
                         <label asp-for="PersistentorProgressive2_2">Persistent or Progressive:</label>
@@ -407,9 +408,11 @@
                     </td>
                 </tr>
             </table>
+    </div>
 
+    <div id="pneu3_section" class="table-section" style="display: none;">
             <!-- PNEU3 Table (Hidden by Default) -->
-            <table id="pneu3-table" class="table table-bordered" style="display: none;">
+            <table class="table table-bordered">
                 <tr>
                     <td>
                         <label asp-for="PersistentorProgressive3">Persistent or Progressive:</label>
@@ -463,15 +466,14 @@
                     <td><label class="form-check-label"><input class="form-check-input" asp-for="NonCultureDiagnostic3" /> Non-Culture Diagnostic Evidence</label></td>
                 </tr>
             </table>
-            <input type="hidden" id="hidden_PNEU_Subclass" name="PNEU_Subclass">
+    </div>
+
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-</div>
-
+ 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
@@ -480,133 +482,87 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const typeClassDropdown = document.getElementById("TypeClass");
-            const pneuSubclassDropdown = document.getElementById("PNEU_Subclass");
-            const pneu3Table = document.getElementById("pneu3-table");
-            const hiddenSubclassInput = document.getElementById("hidden_PNEU_Subclass");
-
-            const subclassOptions = {
-                PNEU1: ["PNEU1_1", "PNEU1_2", "PNEU1_3"],
-                PNEU2: ["PNEU2_1", "PNEU2_2"],
-                PNEU3: [] // No options needed
+            const subclassMapping = {
+                "PNEU1": ["pneu1_1", "pneu1_2", "pneu1_3"],
+                "PNEU2": ["pneu2_1", "pneu2_2"],
+                "PNEU3": [] // No subclasses, show table directly
             };
 
-            typeClassDropdown.addEventListener("change", function () {
-                const selectedType = this.value;
-                pneuSubclassDropdown.innerHTML = ""; // Reset dropdown
+            const typeClassSelect = document.getElementById("TypeClass");
+            const subclassSelect = document.getElementById("PNEU_Subclass");
 
-                if (selectedType === "PNEU3") {
-                    // ✅ Set "N/A" as the only option (readonly)
-                    const option = document.createElement("option");
-                    option.value = "N/A";
-                    option.textContent = "N/A";
-                    pneuSubclassDropdown.appendChild(option);
-                    pneuSubclassDropdown.value = "N/A";
-                    pneuSubclassDropdown.readOnly = true; // Keep it enabled for submission
+            // Function to hide all tables and clear their input fields
+            function hideAllTables() {
+                document.querySelectorAll(".table-section").forEach(table => {
+                    table.style.display = "none";
+                    clearTableInputs(table); // Clear input fields
+                });
+            }
 
-                    // ✅ Ensure hidden input has the correct value
-                    hiddenSubclassInput.value = "N/A";
-
-                    // ✅ Show PNEU3 table and clear previous sections
-                    pneu3Table.style.display = "table";
-                    document.querySelectorAll("#pneu1_1_section, #pneu1_2_section, #pneu1_3_section, #pneu2_1_section, #pneu2_2_section")
-                        .forEach(section => {
-                            section.style.display = "none";
-                            section.querySelectorAll("input, select, textarea").forEach(el => {
-                                if (el.type === "checkbox" || el.type === "radio") {
-                                    el.checked = false;
-                                } else {
-                                    el.value = "";
-                                }
-                            });
-                        });
-
-                } else {
-                    // ✅ Enable dropdown and populate options
-                    pneuSubclassDropdown.readOnly = false;
-                    pneuSubclassDropdown.innerHTML = '<option value="">Select Option</option>';
-                    if (selectedType && subclassOptions[selectedType]) {
-                        subclassOptions[selectedType].forEach(subclass => {
-                            const option = document.createElement("option");
-                            option.value = subclass;
-                            option.textContent = subclass;
-                            pneuSubclassDropdown.appendChild(option);
-                        });
+            // Function to clear input fields in a table
+            function clearTableInputs(table) {
+                table.querySelectorAll("input, select, textarea").forEach(input => {
+                    if (input.type === "checkbox" || input.type === "radio") {
+                        input.checked = false;
+                    } else {
+                        input.value = "";
                     }
+                });
+            }
 
-                    // ✅ Reset hidden input for other types
-                    hiddenSubclassInput.value = "";
+            // Function to reset subclass dropdown
+            function resetSubclassDropdown() {
+                subclassSelect.innerHTML = '<option value="">Select Subclass</option>';
+                subclassSelect.disabled = true;
+            }
 
-                    // ✅ Hide PNEU3 table when selecting PNEU1 or PNEU2
-                    pneu3Table.style.display = "none";
-                    pneu3Table.querySelectorAll("input, select, textarea").forEach(el => {
-                        if (el.type === "checkbox" || el.type === "radio") {
-                            el.checked = false;
-                        } else {
-                            el.value = "";
-                        }
+            // Hide all tables initially
+            hideAllTables();
+            resetSubclassDropdown();
+
+            // When TypeClass is changed
+            typeClassSelect.addEventListener("change", function () {
+                hideAllTables(); // Hide and clear currently visible tables
+                resetSubclassDropdown(); // Reset subclass dropdown
+
+                const selectedType = this.value;
+
+                // If PNEU3 is selected, show its table immediately and hide the subclass dropdown
+                if (selectedType === "PNEU3") {
+                    subclassSelect.style.display = "none"; // Hide subclass dropdown
+                    const table = document.getElementById("pneu3_section");
+                    if (table) table.style.display = "table"; // Show PNEU3 table
+                    return; // Stop further execution
+                }
+
+                // For other types, reset and show subclass dropdown if applicable
+                subclassSelect.style.display = "block";
+                if (selectedType && subclassMapping[selectedType].length > 0) {
+                    subclassSelect.disabled = false;
+                    subclassMapping[selectedType].forEach(subclass => {
+                        const option = document.createElement("option");
+                        option.value = subclass;
+                        option.textContent = subclass.toUpperCase();
+                        subclassSelect.appendChild(option);
                     });
                 }
             });
 
-            // Ensure correct state on page load
-            if (typeClassDropdown.value === "PNEU3") {
-                pneu3Table.style.display = "table";
-                pneuSubclassDropdown.innerHTML = '<option value="N/A">N/A</option>';
-                pneuSubclassDropdown.value = "N/A";
-                pneuSubclassDropdown.readOnly = true;
-                hiddenSubclassInput.value = "N/A"; // Ensure submission
-            } else {
-                pneu3Table.style.display = "none";
-                pneuSubclassDropdown.readOnly = false;
-                hiddenSubclassInput.value = "";
-            }
-        });
-    </script>
+            // When Subclass is changed
+            subclassSelect.addEventListener("change", function () {
+                hideAllTables(); // Hide and clear all tables before showing a new one
+                const selectedSubclass = this.value;
 
-
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#PNEU_Subclass').change(function () {
-                let selectedValue = $(this).val();
-
-                // Hide and reset all subclass sections
-                $('#pneu1_1_section, #pneu1_2_section, #pneu1_3_section, #pneu2_1_section, #pneu2_2_section')
-                    .find('input, select, textarea').val('').prop('checked', false);
-                $('#pneu1_1_section, #pneu1_2_section, #pneu1_3_section, #pneu2_1_section, #pneu2_2_section').hide();
-
-                // Show the selected section
-                if (selectedValue === 'PNEU1_1') {
-                    $('#pneu1_1_section').fadeIn();
-                } else if (selectedValue === 'PNEU1_2') {
-                    $('#pneu1_2_section').fadeIn();
-                } else if (selectedValue === 'PNEU1_3') {
-                    $('#pneu1_3_section').fadeIn();
-                } else if (selectedValue === 'PNEU2_1') {
-                    $('#pneu2_1_section').fadeIn();
-                } else if (selectedValue === 'PNEU2_2') {
-                    $('#pneu2_2_section').fadeIn();
+                if (selectedSubclass) {
+                    const table = document.getElementById(`${selectedSubclass}_section`);
+                    if (table) {
+                        table.style.display = table.tagName === "TABLE" ? "table" : "block"; // Correct display property
+                    }
                 }
             });
-
-            // Ensure correct state on page load
-            let initialValue = $('#PNEU_Subclass').val();
-            if (initialValue === 'PNEU1_1') {
-                $('#pneu1_1_section').show();
-            } else if (initialValue === 'PNEU1_2') {
-                $('#pneu1_2_section').show();
-            } else if (initialValue === 'PNEU1_3') {
-                $('#pneu1_3_section').show();
-            } else if (initialValue === 'PNEU2_1') {
-                $('#pneu2_1_section').show();
-            } else if (initialValue === 'PNEU2_2') {
-                $('#pneu2_2_section').show();
-            }
         });
-    </script>
 
+    </script>
 
 
 }

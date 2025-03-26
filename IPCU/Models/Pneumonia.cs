@@ -11,7 +11,7 @@ namespace IPCU.Models
         public string Fname { get; set; } // First Name
         public string Lname { get; set; } // Last Name
         public string Mname { get; set; } // Middle Name
-        public int HospitalNumber { get; set; } // Foreign Key to Hospital Records
+        public string HospitalNumber { get; set; } // Foreign Key to Hospital Records
         public DateTime DateOfBirth { get; set; } // Date of Birth
         public int Age { get; set; } // Age
         public string UnitWardArea { get; set; } // Unit/Ward/Area
@@ -30,7 +30,7 @@ namespace IPCU.Models
         public string Classification { get; set; } // Pay, Servicef
         public string MDRO { get; set; } // Yes, No
         public string TypeClass { get; set; } 
-        public string PNEU_Subclass { get; set; } 
+        public string? PNEU_Subclass { get; set; } 
 
         // lahat neto meron
         public string? PersistentorProgressive1_1 { get; set; }
