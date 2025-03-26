@@ -39,8 +39,6 @@ namespace IPCU.Data
 
         public DbSet<VentilatorEventChecklist> VentilatorEventChecklists { get; set; }
 
-
-
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);
