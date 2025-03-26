@@ -155,140 +155,246 @@
 
             <!-- Hidden Form Table -->
     <div id="pneu1_1_section" class="table-section" style="display: none; margin-top: 20px;">
-                <h5 class="text-primary">PNEU1_1 Details</h5>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Criteria</th>
-                            <th>Check</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <label asp-for="PersistentorProgressive1_1" class="control-label"></label>
-                            </td>
-                            <td>
-                                <select asp-for="PersistentorProgressive1_1" class="form-control">
-                                    <option value="">Select Option</option>
-                                    <option value="Infiltrate">Infiltrate</option>
-                                    <option value="Consolidation">Consolidation</option>
-                                    <option value="Cavitation">Cavitation</option>
-                                    <option value="Pneumatoceles">Pneumatoceles</option>
-                                </select>
-                                <span asp-validation-for="PersistentorProgressive1_1" class="text-danger"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayNameFor(model => model.Fever1_1)</td>
-                            <td><input class="form-check-input" asp-for="Fever1_1" /></td>
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayNameFor(model => model.Leukopenia1_1)</td>
-                            <td><input class="form-check-input" asp-for="Leukopenia1_1" /></td>
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayNameFor(model => model.Leukocytosis1_1)</td>
-                            <td><input class="form-check-input" asp-for="Leukocytosis1_1" /></td>
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayNameFor(model => model.Adults70old1_1)</td>
-                            <td><input class="form-check-input" asp-for="Adults70old1_1" /></td>
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayNameFor(model => model.NewPurulentSputum1_1)</td>
-                            <td><input class="form-check-input" asp-for="NewPurulentSputum1_1" /></td>
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea1_1)</td>
-                            <td><input class="form-check-input" asp-for="WorseningCoughOrDyspnea1_1" /></td>
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds1_1)</td>
-                            <td><input class="form-check-input" asp-for="RalesOrBronchialBreathSounds1_1" /></td>
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayNameFor(model => model.WorseningGasExchange1_1)</td>
-                            <td><input class="form-check-input" asp-for="WorseningGasExchange1_1" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <table class="table table-bordered">
+            <thead class="table-grey">
+                <tr>
+                    <th style="text-align: center; background-color: #f8f9fa;">PNU1 Details</th>
+                </tr>
+                <tr>
+                    <th>
+                        <strong>Any patient, any age group,</strong>
+                        has one of the following found in <strong>two or more</strong> chest imaging test results
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- First Step -->
+                <tr id="step1">
+                    <td>
+                        <label>
+                            Either <strong>new and persistent OR progressive and persistent:</strong>
+                        </label>
+                        <div>
+                            <label><input type="radio" asp-for="PersistentorProgressive1_1" value="Infiltrate"> Infiltrate</label><br>
+                            <label><input type="radio" asp-for="PersistentorProgressive1_1" value="Consolidation"> Consolidation</label><br>
+                            <label><input type="radio" asp-for="PersistentorProgressive1_1" value="Cavitation"> Cavitation</label><br>
+                            <label><input type="radio" asp-for="PersistentorProgressive1_1" value="Pneumatoceles"> Pneumatoceles, ≤1 year old</label>
+                        </div>
+                        <span asp-validation-for="PersistentorProgressive1_1" class="text-danger"></span>
+                    </td>
+                </tr>
+
+                <!-- Second Step (Initially Hidden) -->
+                <tr id="step2" style="display: none;">
+                    <td>
+                        <label><strong>AND, at least one (1) of the following:</strong></label>
+                        <div>
+                            <input class="form-check-input requirement" asp-for="Fever1_1" />
+                            <span>Fever (> 38.0°C)</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input requirement" asp-for="Leukopenia1_1" />
+                            <span>Leukopenia (≤ 4,000 WBC/mm³)</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input requirement" asp-for="Leukocytosis1_1" />
+                            <span>Leukocytosis (≥ 12,000 WBC/mm³)</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input requirement" asp-for="Adults70old1_1" />
+                            <span>Adults ≥ 70 years old, altered mental status with no other recognized cause</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Third Step (Initially Hidden) -->
+                <tr id="step3" style="display: none;">
+                    <td>
+                        <label><strong>AND, at least two (2) of the following:</strong></label>
+                        <div>
+                            <input class="form-check-input final-requirement" asp-for="NewPurulentSputum1_1" />
+                            <span>New onset of purulent sputum or change in character of sputum</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input final-requirement" asp-for="WorseningCoughOrDyspnea1_1" />
+                            <span>New onset or worsening cough, or dyspnea, or tachypnea</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input final-requirement" asp-for="RalesOrBronchialBreathSounds1_1" />
+                            <span>Rales or bronchial breath sounds</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input final-requirement" asp-for="WorseningGasExchange1_1" />
+                            <span>Worsening gas exchange, increased oxygen requirements, or ventilator demand</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+  </div>
 
 
             <!-- PNEU1_2 Form -->
     <div id="pneu1_2_section" class="table-section" style="display: none; margin-top: 20px;">
-        <h5 class="text-success">PNEU1_2 Details</h5>
-                <div class="mb-3">
-                    <label asp-for="PersistentorProgressive1_2" class="form-label"></label>
-                    <select asp-for="PersistentorProgressive1_2" class="form-control">
-                        <option value="">Select Option</option>
-                        <option value="Infiltrate">Infiltrate</option>
-                        <option value="Consolidation">Consolidation</option>
-                        <option value="Cavitation">Cavitation</option>
-                        <option value="Pneumatoceles">Pneumatoceles</option>
-                    </select>
-                    <span asp-validation-for="PersistentorProgressive1_2" class="text-danger"></span>
-                </div>
+        <table class="table table-bordered">
+            <thead class="table-grey">
+                <tr>
+                    <th style="text-align: center; background-color: #f8f9fa;">PNU1 Details</th>
+                </tr>
+                <tr>
+                    <th>
+                        <strong>Alternative criteria,</strong> for infants
+                        <strong>≤ 1 year old,</strong> has one of the following found in
+                        <strong> two or more</strong> chest imaging test results
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- First Step -->
+                <tr id="step1_2">
+                    <td>
+                        <label>
+                            Either <strong>new and persistent OR progressive and persistent:</strong>
+                        </label>
+                        <div>
+                            <label><input type="radio" asp-for="PersistentorProgressive1_2" value="Infiltrate"> Infiltrate</label><br>
+                            <label><input type="radio" asp-for="PersistentorProgressive1_2" value="Consolidation"> Consolidation</label><br>
+                            <label><input type="radio" asp-for="PersistentorProgressive1_2" value="Cavitation"> Cavitation</label><br>
+                            <label><input type="radio" asp-for="PersistentorProgressive1_2" value="Pneumatoceles"> Pneumatoceles, ≤1 year old</label>
+                        </div>
+                        <span asp-validation-for="PersistentorProgressive1_2" class="text-danger"></span>
+                    </td>
+                </tr>
 
-                <div class="form-check"><input class="form-check-input" asp-for="WorseningGasExchange1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.WorseningGasExchange1_2)</label></div>
-                <div class="form-check"><input class="form-check-input" asp-for="TemperatureInstability1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.TemperatureInstability1_2)</label></div>
-                <div class="form-check"><input class="form-check-input" asp-for="LeukopeniaOrLeukocytosis1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.LeukopeniaOrLeukocytosis1_2)</label></div>
-                <div class="form-check"><input class="form-check-input" asp-for="NewPurulentSputum1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.NewPurulentSputum1_2)</label></div>
-                <div class="form-check"><input class="form-check-input" asp-for="ApneaOrTachypneaOrNasalFlaring1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.ApneaOrTachypneaOrNasalFlaring1_2)</label></div>
-                <div class="form-check"><input class="form-check-input" asp-for="WheezingRalesOrRhonchi1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.WheezingRalesOrRhonchi1_2)</label></div>
-                <div class="form-check"><input class="form-check-input" asp-for="Cough1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.Cough1_2)</label></div>
-                <div class="form-check"><input class="form-check-input" asp-for="BradycardiaOrTachycardia1_2" /><label class="form-check-label">@Html.DisplayNameFor(model => model.BradycardiaOrTachycardia1_2)</label></div>
-            </div>
+                <!-- Second Step (Initially Hidden) -->
+                <tr id="step2_2" style="display: none;">
+                    <td>
+                        <label><strong>AND</strong></label>
+                        <div>
+                            <input class="form-check-input requirement_2" asp-for="WorseningGasExchange1_2" />
+                            <span>Worsening gas exchange</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Third Step (Initially Hidden) -->
+                <tr id="step3_2" style="display: none;">
+                    <td>
+                        <label><strong>AND, at least three (3) of the following:</strong></label>
+                        <div>
+                            <input class="form-check-input final-requirement_2" asp-for="TemperatureInstability1_2" />
+                            <span>Temperature instability</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input final-requirement_2" asp-for="LeukopeniaOrLeukocytosis1_2" />
+                            <span>
+                                Leukopenia (≤ 4000 WBC/mm³) or
+                                leukocytosis (≥ 15,000 WBC/mm³) and left shift (≥ 10% band forms)
+                            </span>
+                        </div>
+                        <div>
+                            <input class="form-check-input final-requirement_2" asp-for="NewPurulentSputum1_2" />
+                            <span>
+                                New onset of purulent sputum or change
+                                in character of sputum, or increased
+                                respiratory secretions, or suctioning
+                                requirements
+                            </span>
+                        </div>
+                        <div>
+                            <input class="form-check-input final-requirement_2" asp-for="ApneaOrTachypneaOrNasalFlaring1_2" />
+                            <span>
+                                Apnea, tachypnea, nasal flaring with
+                                retraction of chest wall, or with grunting
+                            </span>
+                        </div>
+                        <div>
+                            <input class="form-check-input final-requirement_2" asp-for="WheezingRalesOrRhonchi1_2" />
+                            <span>Wheezing, rales, or rhonchi</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input final-requirement_2" asp-for="Cough1_2" />
+                            <span>Cough</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input final-requirement_2" asp-for="BradycardiaOrTachycardia1_2" />
+                            <span>Bradycardia (&lt;100) or tachycardia (&gt;170)</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <div id="pneu1_3_section" class="table-section" style="display: none;">
+
         <table class="table table-bordered">
-            <thead>
-                    <tr>
-                        <th colspan="2" class="text-center">PNEU1_3 Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><label asp-for="PersistentorProgressive1_3" class="form-label"></label></td>
-                        <td>
-                            <select asp-for="PersistentorProgressive1_3" class="form-control">
-                                <option value="">Select Option</option>
-                                <option value="Infiltrate">Infiltrate</option>
-                                <option value="Consolidation">Consolidation</option>
-                                <option value="Cavitation">Cavitation</option>
-                                <option value="Pneumatoceles">Pneumatoceles</option>
-                            </select>
-                            <span asp-validation-for="PersistentorProgressive1_3" class="text-danger"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Fever</td>
-                        <td><input class="form-check-input" asp-for="Fever1_3" /> @Html.DisplayNameFor(model => model.Fever1_3)</td>
-                    </tr>
-                    <tr>
-                        <td>Leukopenia</td>
-                        <td><input class="form-check-input" asp-for="Leukopenia1_3" /> @Html.DisplayNameFor(model => model.Leukopenia1_3)</td>
-                    </tr>
-                    <tr>
-                        <td>New Purulent Sputum</td>
-                        <td><input class="form-check-input" asp-for="NewPurulentSputum1_3" /> @Html.DisplayNameFor(model => model.NewPurulentSputum1_3)</td>
-                    </tr>
-                    <tr>
-                        <td>New or Worsening Cough</td>
-                        <td><input class="form-check-input" asp-for="NewWorseningCough1_3" /> @Html.DisplayNameFor(model => model.NewWorseningCough1_3)</td>
-                    </tr>
-                    <tr>
-                        <td>Rales or Bronchial Breath Sounds</td>
-                        <td><input class="form-check-input" asp-for="RalesorBronchial1_3" /> @Html.DisplayNameFor(model => model.RalesorBronchial1_3)</td>
-                    </tr>
-                    <tr>
-                        <td>Worsening Gas Exchange</td>
-                        <td><input class="form-check-input" asp-for="WorseningGas1_3" /> @Html.DisplayNameFor(model => model.WorseningGas1_3)</td>
-                    </tr>
-                </tbody>
-            </table>
-</div>
+            <thead class="table-grey">
+                <tr>
+                    <th style="text-align: center; background-color: #f8f9fa;">PNU1_3 Details</th>
+                </tr>
+                <tr>
+                    <th>
+                        <strong>Alternative criteria,</strong> for child <strong>>1 year oldor ≤12years old,</strong> has one of the following found in <strong> two or more</strong> chest imaging test results
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <label>
+                            Either <strong>new and persistent OR progressive and persistent:</strong>
+                        </label>
+                        <div>
+                            <label><input type="radio" asp-for="PersistentorProgressive1_3" value="Infiltrate"> Infiltrate</label><br>
+                            <label><input type="radio" asp-for="PersistentorProgressive1_3" value="Consolidation"> Consolidation</label><br>
+                            <label><input type="radio" asp-for="PersistentorProgressive1_3" value="Cavitation"> Cavitation</label><br>
+                        </div>
+                        <span asp-validation-for="PersistentorProgressive1_3" class="text-danger"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    <label><strong>AND, at least three (3) of the following:</strong></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div>
+                            <input class="form-check-input" asp-for="Fever1_3" />
+                            <span>Fever (> 38°C) or hypothermia (<36°C)</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input" asp-for="Leukopenia1_3" />
+                            <span>
+                                Leukopenia (≤ 4000 WBC/mm3
+                                ) or
+                                leukocytosis (≥ 15,000 WBC/mm3
+                                )
+                            </span>
+                        </div>
+                        <div>
+                            <input class="form-check-input" asp-for="NewPurulentSputum1_3" />
+                            <span>New onset of purulent sputumor changein character of sputum, or increasedrespiratory secretions, or suctioningrequirements</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input" asp-for="NewWorseningCough1_3" />
+                            <span>New onset or worsening cough, or dyspnea, or apnea, or tachypnea</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input" asp-for="RalesorBronchial1_3" />
+                            <span>Rales or bronchial breath sounds</span>
+                        </div>
+                        <div>
+                            <input class="form-check-input" asp-for="WorseningGas1_3" />
+                            <span>Worsening gas exchange, increasedoxygen requirements, or ventilator demand</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <div id="pneu2_1_section" class="table-section" style="display: none;">
 
             <table  class="table table-bordered">
@@ -301,13 +407,13 @@
                     <tr>
                         <td><label asp-for="PersistentorProgressive2_1" class="form-label"></label></td>
                         <td>
-                            <select asp-for="PersistentorProgressive2_1" class="form-control">
-                                <option value="">Select Option</option>
-                                <option value="Infiltrate">Infiltrate</option>
-                                <option value="Consolidation">Consolidation</option>
-                                <option value="Cavitation">Cavitation</option>
-                                <option value="Pneumatoceles">Pneumatoceles</option>
-                            </select>
+                        <div>
+                            <label><input type="radio" name="PersistentorProgressive2_1" value="Infiltrate"> Infiltrate</label><br>
+                            <label><input type="radio" name="PersistentorProgressive2_1" value="Consolidation"> Consolidation</label><br>
+                            <label><input type="radio" name="PersistentorProgressive2_1" value="Cavitation"> Cavitation</label><br>
+                            <label><input type="radio" name="PersistentorProgressive2_1" value="Pneumatoceles"> Pneumatoceles</label>
+                        </div>
+
                             <span asp-validation-for="PersistentorProgressive2_1" class="text-danger"></span>
                         </td>
                     </tr>
@@ -344,13 +450,13 @@
                 <tr>
                     <td>
                         <label asp-for="PersistentorProgressive2_2">Persistent or Progressive:</label>
-                        <select asp-for="PersistentorProgressive2_2" class="form-control">
-                            <option value="">Select Option</option>
-                            <option value="Infiltrate">Infiltrate</option>
-                            <option value="Consolidation">Consolidation</option>
-                            <option value="Cavitation">Cavitation</option>
-                            <option value="Pneumatoceles">Pneumatoceles</option>
-                        </select>
+                    <div>
+                        <label><input type="radio" name="PersistentorProgressive2_2" value="Infiltrate"> Infiltrate</label><br>
+                        <label><input type="radio" name="PersistentorProgressive2_2" value="Consolidation"> Consolidation</label><br>
+                        <label><input type="radio" name="PersistentorProgressive2_2" value="Cavitation"> Cavitation</label><br>
+                        <label><input type="radio" name="PersistentorProgressive2_2" value="Pneumatoceles"> Pneumatoceles</label>
+                    </div>
+
                         <span asp-validation-for="PersistentorProgressive2_2" class="text-danger"></span>
                     </td>
                 </tr>
@@ -416,13 +522,13 @@
                 <tr>
                     <td>
                         <label asp-for="PersistentorProgressive3">Persistent or Progressive:</label>
-                        <select asp-for="PersistentorProgressive3" class="form-control">
-                            <option value="">Select Option</option>
-                            <option value="Infiltrate">Infiltrate</option>
-                            <option value="Consolidation">Consolidation</option>
-                            <option value="Cavitation">Cavitation</option>
-                            <option value="Pneumatoceles">Pneumatoceles</option>
-                        </select>
+                    <div>
+                        <label><input type="radio" name="PersistentorProgressive3" value="Infiltrate"> Infiltrate</label><br>
+                        <label><input type="radio" name="PersistentorProgressive3" value="Consolidation"> Consolidation</label><br>
+                        <label><input type="radio" name="PersistentorProgressive3" value="Cavitation"> Cavitation</label><br>
+                        <label><input type="radio" name="PersistentorProgressive3" value="Pneumatoceles"> Pneumatoceles</label>
+                    </div>
+
                         <span asp-validation-for="PersistentorProgressive3" class="text-danger"></span>
                     </td>
                 </tr>
@@ -564,5 +670,55 @@
 
     </script>
 
+    <!--PARA SA DYNAMIC NG PNEU1_1-->
 
+    <!-- jQuery for Dynamic Behavior -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Step 1: Show the second row when a radio button is selected
+            $('input[name="PersistentorProgressive1_1"]').change(function() {
+                $('#step2').fadeIn();
+            });
+
+            // Step 2: Show the third row when at least one checkbox is checked
+            $('.requirement').change(function() {
+                if ($('.requirement:checked').length > 0) {
+                    $('#step3').fadeIn();
+                } else {
+                    $('#step3').fadeOut(); // Hide if no checkboxes are selected
+                }
+            });
+
+            // Step 3: Ensure at least 2 checkboxes are checked in the last step
+            $('.final-requirement').change(function() {
+                if ($('.final-requirement:checked').length >= 2) {
+                }
+            });
+        });
+    </script>
+    <!--pnu1_2-->
+    <script>
+        $(document).ready(function() {
+            // Step 1: Show the second row when a radio button is selected
+            $('input[name="PersistentorProgressive1_2"]').change(function() {
+                $('#step2_2').fadeIn();
+            });
+
+            // Step 2: Show the third row when the requirement is met
+            $('.requirement_2').change(function() {
+                if ($('.requirement_2:checked').length > 0) {
+                    $('#step3_2').fadeIn();
+                } else {
+                    $('#step3_2').fadeOut();
+                }
+            });
+
+            // Step 3: Ensure at least 3 checkboxes are checked in the last step
+            $('.final-requirement_2').change(function() {
+                if ($('.final-requirement_2:checked').length >= 3) {
+                }
+            });
+        });
+    </script>
 }
