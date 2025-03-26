@@ -49,8 +49,6 @@ namespace IPCU.Data
         public DbSet<Antibiotic> Antibiotics { get; set; }
         public DbSet<DiagnosticsTreatment> DiagnosticsTreatments { get; set; }
 
-
-
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);
