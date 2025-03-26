@@ -1,111 +1,149 @@
-﻿<div class="col-md-3 mb-4">
-    <!-- SST Infection Checklist Card -->
-    <div class="card shadow-sm border-0 rounded-lg overflow-hidden custom-card">
-        <div class="card-header bg-info text-white text-center py-3">
-            <i class="fas fa-clipboard-check fa-2x mb-3"></i>
-            <h5 class="card-title mb-0">SST Infection Checklist</h5>
+﻿<div class="container">
+    <div class="row">
+        <!-- SST Infection Checklist -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-0 rounded-lg custom-card h-100">
+                <div class="card-header bg-info text-white text-center py-3">
+                    <i class="fas fa-clipboard-check fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">SST Infection Checklist</h5>
+                </div>
+                <div class="card-body text-center p-4 d-flex flex-column">
+                    <p class="card-text text-muted flex-grow-1">Manage and review the SST Infection Checklist forms efficiently.</p>
+                    <a asp-controller="InfectionChecklist" asp-action="Index" class="btn btn-info text-white">
+                        <i class="fas fa-arrow-right mr-2"></i> Open Form
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="card-body text-center p-4">
-            <p class="card-text text-muted mb-4">Manage and review the SST Infection Checklist forms efficiently.</p>
-            <a asp-controller="InfectionChecklist" asp-action="Index" class="btn btn-info text-white d-flex align-items-center justify-content-center">
-                <i class="fas fa-arrow-right mr-2"></i> Open Form
-            </a>
+
+        <!-- UTI Infection Checklist -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-0 rounded-lg custom-card h-100">
+                <div class="card-header bg-warning text-white text-center py-3">
+                    <i class="fas fa-notes-medical fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">UTI Infection Checklist</h5>
+                </div>
+                <div class="card-body text-center p-4 d-flex flex-column">
+                    <p class="card-text text-muted flex-grow-1">Manage and review the Urinary Tract Infection Checklist forms efficiently.</p>
+                    <a asp-controller="UTIForm" asp-action="Index" class="btn btn-warning text-white">
+                        <i class="fas fa-arrow-right mr-2"></i> Open Form
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- CVS Infection Checklist -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-0 rounded-lg custom-card h-100">
+                <div class="card-header bg-danger text-white text-center py-3">
+                    <i class="fas fa-heartbeat fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">CVS Infection Checklist</h5>
+                </div>
+                <div class="card-body text-center p-4 d-flex flex-column">
+                    <p class="card-text text-muted flex-grow-1">Manage and review the Cardiovascular System Infection Checklist forms efficiently.</p>
+                    <a asp-controller="CardiovascularSystemInfection" asp-action="Index" class="btn btn-danger text-white">
+                        <i class="fas fa-arrow-right mr-2"></i> Open Form
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pediatric VAE Checklist -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-0 rounded-lg custom-card h-100">
+                <div class="card-header bg-success text-white text-center py-3">
+                    <i class="fas fa-lungs fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">Pediatric VAE Checklist</h5>
+                </div>
+                <div class="card-body text-center p-4 d-flex flex-column">
+                    <p class="card-text text-muted flex-grow-1">Manage and review the Pediatric Ventilator-Associated Event Checklist forms efficiently.</p>
+                    <a asp-controller="PediatricVAEChecklist" asp-action="Index" class="btn btn-success text-white">
+                        <i class="fas fa-arrow-right mr-2"></i> Open Form
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Laboratory Confirmed Bloodstream Infection Checklist -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-0 rounded-lg custom-card h-100">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <i class="fas fa-vial fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">Laboratory Confirmed Bloodstream Infection</h5>
+                </div>
+                <div class="card-body text-center p-4 d-flex flex-column">
+                    <p class="card-text text-muted flex-grow-1">Manage and review the Laboratory Confirmed Bloodstream Infection Checklist forms efficiently.</p>
+                    <a asp-controller="LaboratoryConfirmedBloodstreamInfection" asp-action="Index" class="btn btn-primary text-white">
+                        <i class="fas fa-arrow-right mr-2"></i> Open Form
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pneumonia Checklist Card -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-0 rounded-lg custom-card h-100">
+                <div class="card-header bg-dark text-white text-center py-3">
+                    <i class="fas fa-lungs-virus fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">Pneumonia Checklist</h5>
+                </div>
+                <div class="card-body text-center p-4 d-flex flex-column">
+                    <p class="card-text text-muted flex-grow-1">Create and manage Pneumonia checklist records efficiently.</p>
+                    <a asp-controller="Pneumonias" asp-action="Create" class="btn btn-dark text-white">
+                        <i class="fas fa-plus-circle mr-2"></i> Create Form
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- USIS Create Checklist -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm border-0 rounded-lg custom-card h-100">
+                <div class="card-header bg-secondary text-white text-center py-3">
+                    <i class="fas fa-user-plus fa-2x mb-2"></i>
+                    <h5 class="card-title mb-0">USIS Create Checklist</h5>
+                </div>
+                <div class="card-body text-center p-4 d-flex flex-column">
+                    <p class="card-text text-muted flex-grow-1">Create and manage USIS records efficiently.</p>
+                    <a asp-controller="Usis" asp-action="Create" class="btn btn-secondary text-white">
+                        <i class="fas fa-plus-circle mr-2"></i> Create Form
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="col-md-3 mb-4">
-    <!-- UTI Infection Checklist Card -->
-    <div class="card shadow-sm border-0 rounded-lg overflow-hidden custom-card">
-        <div class="card-header bg-warning text-white text-center py-3">
-            <i class="fas fa-notes-medical fa-2x mb-3"></i>
-            <h5 class="card-title mb-0">UTI Infection Checklist</h5>
-        </div>
-        <div class="card-body text-center p-4">
-            <p class="card-text text-muted mb-4">Manage and review the Urinary Tract Infection Checklist forms efficiently.</p>
-            <a asp-controller="UTIForm" asp-action="Index" class="btn btn-warning text-white d-flex align-items-center justify-content-center">
-                <i class="fas fa-arrow-right mr-2"></i> Open Form
-            </a>
-        </div>
-    </div>
-</div>
-
-<div class="col-md-3 mb-4">
-    <!-- CVS Infection Checklist Card -->
-    <div class="card shadow-sm border-0 rounded-lg overflow-hidden custom-card">
-        <div class="card-header bg-danger text-white text-center py-3">
-            <i class="fas fa-heartbeat fa-2x mb-3"></i>
-            <h5 class="card-title mb-0">CVS Infection Checklist</h5>
-        </div>
-        <div class="card-body text-center p-4">
-            <p class="card-text text-muted mb-4">Manage and review the Cardiovascular System Infection Checklist forms efficiently.</p>
-            <a asp-controller="CardiovascularSystemInfection" asp-action="Index" class="btn btn-danger text-white d-flex align-items-center justify-content-center">
-                <i class="fas fa-arrow-right mr-2"></i> Open Form
-            </a>
-        </div>
-    </div>
-</div>
-<div class="col-md-3 mb-4">
-    <!-- Pediatric VAE Checklist Card -->
-    <div class="card shadow-sm border-0 rounded-lg overflow-hidden custom-card">
-        <div class="card-header bg-success text-white text-center py-3">
-            <i class="fas fa-lungs fa-2x mb-3"></i>
-            <h5 class="card-title mb-0">Pediatric VAE Checklist</h5>
-        </div>
-        <div class="card-body text-center p-4">
-            <p class="card-text text-muted mb-4">Manage and review the Pediatric Ventilator-Associated Event Checklist forms efficiently.</p>
-            <a asp-controller="PediatricVAEChecklist" asp-action="Index" class="btn btn-success text-white d-flex align-items-center justify-content-center">
-                <i class="fas fa-arrow-right mr-2"></i> Open Form
-            </a>
-        </div>
-    </div>
-</div>
-
-<div class="col-md-3 mb-4">
-    <!-- Laboratory Confirmed Bloodstream Infection Checklist Card -->
-    <div class="card shadow-sm border-0 rounded-lg overflow-hidden custom-card">
-        <div class="card-header bg-primary text-white text-center py-3">
-            <i class="fas fa-vial fa-2x mb-3"></i>
-            <h5 class="card-title mb-0">Laboratory Confirmed Bloodstream Infection Checklist</h5>
-        </div>
-        <div class="card-body text-center p-4">
-            <p class="card-text text-muted mb-4">Manage and review the Laboratory Confirmed Bloodstream Infection Checklist forms efficiently.</p>
-            <a asp-controller="LaboratoryConfirmedBloodstreamInfection" asp-action="Index" class="btn btn-primary text-white d-flex align-items-center justify-content-center">
-                <i class="fas fa-arrow-right mr-2"></i> Open Form
-            </a>
-        </div>
-    </div>
-</div>
+<!-- Styles -->
 <style>
-    .bg-info {
-        background-color: #17a2b8 !important;
+    .custom-card {
+        transition: transform 0.2s ease-in-out;
     }
 
-    .btn-info {
-        background-color: #17a2b8;
-        border-color: #17a2b8;
-        color: white;
-    }
-
-        .btn-info:hover {
-            background-color: #138496;
-            border-color: #138496;
-            color: white;
+        .custom-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
-    .bg-warning {
-        background-color: #f0ad4e !important;
+    .btn {
+        font-weight: bold;
     }
 
-    .btn-warning {
-        background-color: #f0ad4e;
-        border-color: #f0ad4e;
-        color: white;
+    .bg-info, .bg-warning, .bg-danger, .bg-success, .bg-primary, .bg-secondary {
+        border-radius: 8px 8px 0 0;
     }
 
-        .btn-warning:hover {
-            background-color: #ec971f;
-            border-color: #ec971f;
-            color: white;
-        }
+    .btn:hover {
+        filter: brightness(90%);
+    }
+
+    @@media (max-width: 768px) {
+        .col-md-6
+
+    {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    }
 </style>
