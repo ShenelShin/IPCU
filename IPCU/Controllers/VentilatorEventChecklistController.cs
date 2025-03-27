@@ -63,16 +63,8 @@ namespace IPCU.Controllers
                     model.FName = patientInfo.PatientMaster.FirstName;
                     model.MName = patientInfo.PatientMaster.MiddleName;
                     model.LName = patientInfo.PatientMaster.LastName;
-                    // null kasi bdate ko fuck goddamit
-                    if (patientInfo.PatientMaster.BirthDate.HasValue)
-                    {
-                        model.DateOfBirth = patientInfo.PatientMaster.BirthDate.Value;
-                    }
-                    else
-                    {
-                        // null shit
-                        model.DateOfBirth = DateTime.MinValue;
-                    }
+                    model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
+
                     model.UwArea = patientInfo.Patients.AdmLocation;
 
                     // null kasi bdate ko fuck goddamit
