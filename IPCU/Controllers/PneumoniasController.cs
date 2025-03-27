@@ -49,7 +49,7 @@ namespace IPCU.Controllers
                                              Patients = p
                                          }).FirstOrDefaultAsync();
 
-                if (patientInfo != null)
+              /*  if (patientInfo != null)
                 {
                     model.HospitalNumber = patientInfo.PatientMaster.HospNum;
                     model.Gender = patientInfo.PatientMaster.Sex == "M" ? "Male" : "Female";
@@ -82,7 +82,7 @@ namespace IPCU.Controllers
 
 
                     // Add other fields you want to auto-fill
-                }
+                }*/
             }
 
             return View("Create", model);
