@@ -439,6 +439,43 @@
                         <label asp-for="MeetsSpecificOrganSpaceInfectionCriteria">
                             Meets at least one criterion for a specific organ/space infection site (see back for details)
                         </label>
+                        <div>
+                            <input type="checkbox" id="BURNCheckbox" name="Subclass" value="BURN"
+                                   onclick="document.getElementById('BURNTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="BURNCheckbox">BURN</label>
+
+                            <input type="checkbox" id="CDICheckbox" name="Subclass" value="CDI"
+                                   onclick="document.getElementById('CDITable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="CDICheckbox">CDI</label>
+
+                            <input type="checkbox" id="DECUCheckbox" name="Subclass" value="DECU"
+                                   onclick="document.getElementById('DECUTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="DECUCheckbox">DECU</label>
+
+                            <input type="checkbox" id="GECheckbox" name="Subclass" value="GE"
+                                   onclick="document.getElementById('GETable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="GECheckbox">GE</label>
+
+                            <input type="checkbox" id="GITCheckbox" name="Subclass" value="GIT"
+                                   onclick="document.getElementById('GITTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="GITCheckbox">GIT</label>
+
+                            <input type="checkbox" id="IABCheckbox" name="Subclass" value="IAB"
+                                   onclick="document.getElementById('IABTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="IABCheckbox">IAB</label>
+
+                            <input type="checkbox" id="OREPCheckbox" name="Subclass" value="OREP"
+                                   onclick="document.getElementById('OREPTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="OREPCheckbox">OREP</label>
+
+                            <input type="checkbox" id="SSICheckbox" name="Subclass" value="SSI"
+                                   onclick="document.getElementById('SSITable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="SSICheckbox">SSI</label>
+
+                            <input type="checkbox" id="STCheckbox" name="Subclass" value="ST"
+                                   onclick="document.getElementById('STTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="STCheckbox">ST</label>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -456,6 +493,369 @@
                     </td>
                 </tr>
             </table>
+            <!-- Tables -->
+            <div id="tablesContainer">
+                <div id="BURNTable" style="display: none;">
+                    <table>
+                        <tr><th>BURN-Burn infection</th></tr>
+                        <tr>
+                            <td>
+                                <input asp-for="BURN_PatientChange" type="checkbox" />
+                                <span>
+                                    Patient has a change in burn wound appearance or character*, such as rapid eschar separation, or dark
+                                    brown, black, or violaceous discoloration of the eschar, <strong>AND</strong> organism(s) identified from blood by a culture or non-culture based microbiologic testing
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="CDITable" style="display: none;">
+                    <table>
+                        <tr><th>CDI- Clostridioides difficile Infection</th></tr>
+                        <tr>
+                            <td>
+                                <div>
+                                <label>At least <strong>one (1)</strong> of the following:</label>
+                                </div>
+                                <div>
+                                <input asp-for="CDI_Positve" type="checkbox" />
+                                <span>
+                                        Positive test for toxin-producing C. difficile on an
+                                        unformed stool specimen (conforms to the shape of the
+                                        container)
+                                </span>
+                                </div>
+                                <div>
+                                <input asp-for="CDI_Patient" type="checkbox" />
+                                <span>
+                                        Patient has evidence of pseudomembranous colitis on
+                                        gross anatomic (includes endoscopic exams) or histopathologic exam
+                                </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="DECUTable" style="display: none;">
+                    <table>
+                        <tr><th>DECU-Decubitus ulcer infection (also known as pressureinjury infection), including both superficial anddeepinfections</th></tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <input asp-for="DECU_Patienthastwo" type="checkbox" />
+                                    <span>
+                                        Patient has at least two of the following signs or symptoms: erythema*, tenderness*, or swelling of
+                                        decubitus wound edges*, <strong>AND</strong> organism(s) identifiedfrom needle aspiration of fluid or biopsy of tissuefromulcer margin by a culture or non-culture based microbiologic testing
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="GETable" style="display: none;">
+                    <table>
+                        <tr><th>GE-Gastroenteritis (excluding C. difficile infections)</th></tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <label>At least <strong>one (1)</strong> of the following:</label>
+                                </div>
+                                <div>
+                                    <input asp-for="GE_PatientAcute" type="checkbox" />
+                                    <span>
+                                        Patient has an acute onset of diarrhea (liquid stools
+                                        for > 12 hours) and no likely noninfectious cause 
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="GE_PatientAtleastTwo" type="checkbox" />
+                                    <span>
+                                        Patient has <strong>at least two</strong> of the following signs or symptoms: nausea*, vomiting*, abdominal pain*, fever
+                                        (>38.0°C), or headache* <strong>AND at least one</strong> of the
+                                        following:
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GE_EntericIdentified" type="checkbox" />
+                                    <span>
+                                        an enteric pathogen is identified from stool or rectal swab by a culture or non-culture based microbiologic testing
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <div style="margin-bottom: 5px;">
+                                        <input asp-for="GE_EntericDetected" type="checkbox" />
+                                        <span>
+                                            an enteric pathogen is detected by microscopy on stool
+                                        </span>
+                                        <input asp-for="GE_Diagnostic" type="checkbox" />
+                                        <span>
+                                            diagnostic single antibody titer (IgM) or 4-fold increase in paired sera (IgG) for organism
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="GITTable" style="display: none;">
+                    <table>
+                        <tr>
+                            <th>
+                                GIT-Gastrointestinal tract infection (esophagus, stomach, small and large bowel, and rectum) excluding
+                                gastroenteritis, appendicitis, and C. difficile infection
+                            </th>
+                        </tr>
+                        <tr>
+                         <td>
+                            <div>
+                                <label>1. At least <strong>one (1)</strong> of the following:</label>
+                            </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_AnAbscess" type="checkbox" />
+                                <span>
+                                        An abscess or other evidence of gastrointestinal tract
+                                        infection on gross anatomic or histopathologic exam
+                                </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_AbscessGastrointestinal" type="checkbox" />
+                                <span>
+                                        Abscess or other evidence of gastrointestinal tract
+                                        infection on gross anatomic or histopathologic exam
+                                        <strong>AND</strong> organism(s) identified from blood by a culture or non-culture based microbiologic testing
+                                </span>
+                                </div>
+
+                                <div>
+                                    <label>
+                                        2. Patient has <strong>at least two</strong> of the following signs or symptoms: fever (>38.0°C), nausea*, vomiting*, pain* or
+                                        tenderness*, odynophagia*, or dysphagia*; <strong>AND at least one</strong> of the following:
+                                    </label>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_OrganismIdentifiedDrainage" type="checkbox" />
+                                    <span>
+                                        organism(s) identified from drainage or tissue obtained during an invasive procedure or from
+                                        drainage from an aseptically-placed drain
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_OrganismSeen" type="checkbox" />
+                                    <span>
+                                        organism(s) seen on Gram stain or fungal elements
+                                        seen on KOH stain or multinucleated giant cells seen on microscopic examination of drainage or tissue obtained during an invasive procedure or from an
+                                        aseptically-placed drain
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_OrganismIdentifiedBloody" type="checkbox" />
+                                    <span>
+                                        organism(s) identified from blood by a culture or non-culture based microbiologic testing <strong>AND</strong> imaging
+                                        test evidence definitive for gastrointestinal infection
+                                        (for example, endoscopic exam, MRI, CT scan)
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_ImagingTest" type="checkbox" />
+                                    <span>
+                                        imaging test evidence definitive for gastrointestinal
+                                        infection (for example, endoscopic exam, MRI, CT
+                                        scan)
+                                    </span>
+                                </div>
+                          </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="IABTable" style="display: none;">
+                    <table>
+                        <tr>
+                            <th>
+                                IAB-Intraabdominal infection, not specified elsewhere,
+                                including gallbladder, bile ducts, liver (excluding viral
+                                hepatitis), spleen, pancreas, peritoneum, retroperitoneal, subphrenic or subdiaphragmatic space, or other intraabdominal tissue or area not specifiedelsewhere
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>
+                                </div>
+                                <div>
+                                    <input asp-for="IAB_PatientOrganism" type="checkbox" />
+                                    <span>
+                                        Patient has organism(s) identified froman abscessorfrom 
+                                        purulent material from intraabdominal spacebyaculture
+                                        or non-culture based microbiologic testingmethod
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="IAB_PatientAtleastOne" type="checkbox" />
+                                    <span>
+                                        Abscess or other evidence of gastrointestinal tract
+                                        infection on gross anatomic or histopathologic exam
+                                        <strong>AND</strong> organism(s) identified from blood by a culture or non-culture based microbiologic testing
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="IAB_PatientAtleastTwo" type="checkbox" />
+                                    <span>
+                                        Patient has <strong>at least one</strong> of the following: abscess or other evidence of intraabdominal
+                                        infection on gross anatomic or histopathologic exam, <strong>OR</strong> abscess or otherevidence of intraabdominal
+                                        infection on gross anatomicor histopathologic exam <strong>AND</strong> organism(s)
+                                        identifiedfromblood by a culture or non-culture based microbiologictesting method
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="IAB_OrganismSeen" type="checkbox" />
+                                    <span>
+                                        organism(s) seen on Gram stain and/or identifiedfrom intraabdominal fluid or tissue obtainedduringinvasive procedure or from an aseptically-placeddrain in the intraabdominal space 
+                                        (for example, closed suction drainage system, open drain, T-tubedrain, CT guided drainage)
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="IAB_OrganismIdentified" type="checkbox" />
+                                    <span>
+                                        organism(s) identified from blood by a cultureornon-culture based microbiologic testing methodwhich is performed for purposes of clinical diagnosisor treatment, 
+                                        <strong>AND</strong> imaging test evidence definitivefor infection (for example, ultrasound, CT scan, MRI, ERCP, radiolabel scans [gallium, technetium, etc.] oron abdominal x-ray)
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="OREPTable" style="display: none;">
+                    <table>
+                        <tr>
+                            <th>
+                                OREP- Deep pelvic tissue infection or other infection of the male or female reproductive tract (for example, epididymis, testes, prostate, vagina, ovaries, uterus)
+                                including chorioamnionitis, but excluding vaginitis, endometritis or vaginal cuff infections
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <label>At least <strong>one (1)</strong> of the following:</label>
+                                </div>
+                                <div>
+                                    <input asp-for="OREP_PatientOrganism" type="checkbox" />
+                                    <span>
+                                        Patient has organism(s) identified from tissue or fluid
+                                        from affected site (excludes urine and vaginal swabs) by a
+                                        culture or non-culture based microbiologic testing method
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="OREP_PatientAbscess" type="checkbox" />
+                                    <span>
+                                        Patient has an abscess or other evidence of infection of affected site on gross anatomic or histopathologic exam
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="OREP_PatientSuspected" type="checkbox" />
+                                    <span>
+                                        Patient has suspected infection of one of the listed
+                                        OREP sites and <strong>two</strong> of the following localized signs or symptoms: fever (>38.0°C), nausea*, vomiting*, pain or
+                                        tenderness*, or dysuria*, <strong>AND at least one</strong> of the
+                                        following:
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="OREP_OrganismIdentified" type="checkbox" />
+                                    <span>
+                                        organism(s) identified from blood by a culture or non-culture based microbiologic testing method which is performed for purposes of clinical diagnosis or treatment
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="OREP_Physician" type="checkbox" />
+                                    <span>
+                                        physician initiates antimicrobial therapy within two
+                                        days of onset or worsening of symptoms
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="SSITable" style="display: none;">
+                    <table>
+                        <tr><th>SKIN-Skin infection (skin and/or subcutaneous) excluding decubitus ulcers, burns, and infections at vascular access sites</th></tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <input asp-for="SSI_AtleastOne" type="checkbox" />
+                                    <span>
+                                        At least <strong>one (1)</strong> of the following: purulent drainage, pustules, vesicles, boils (excluding acne)
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="SSI_PatientAtleastTwo" type="checkbox" />
+                                    <span>
+                                        Patient has <strong>at least two</strong> of the following localized signs
+                                        or symptoms: pain* or tenderness*, swelling*, erythema*, or heat*, <strong>AND at least one</strong> of the following:
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="SSI_Organism" type="checkbox" />
+                                    <span>
+                                        organism(s) identified from aspirate or drainage
+                                        from affected site by a culture or non-culture based
+                                        testing method
+                                    </span>
+                                    <input asp-for="SSI_Multinucleated" type="checkbox" />
+                                    <span>
+                                        multinucleated giant cells seen on microscopic examination of affected tissue
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="SSI_Diagnostic" type="checkbox" />
+                                    <span>
+                                        diagnostic single antibody titer (IgM) or 4-fold
+                                        increase in paired sera (IgG) for organism
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="STTable" style="display: none;">
+                    <table>
+                        <tr>
+                            <th>
+                                ST-Soft tissue infection (muscle and/or fascia [for example, necrotizing fasciitis, infectious gangrene, necrotizing cellulitis, infectious myositis, lymphadenitis,
+                                lymphangitis, or parotitis]) excluding decubitus ulcers, burns, and infections at vascular access sites
+                            </th>
+                        </tr>
+                        <tr><td>
+                                <div>
+                                    <label>At least <strong>one (1)</strong> of the following:</label>
+                                </div>
+                                <div>
+                                    <input asp-for="ST_PatientOrganism" type="checkbox" />
+                                    <span>
+                                        Patient has organism(s) identified fromtissue or drainage from affected site by a culture or nonculturebased microbiologic testing
+                                    </span>
+                                    <input asp-for="ST_PatienPurulent" type="checkbox" />
+                                    <span>
+                                        Patient has purulent drainage at affected site
+                                    </span>
+                                    <input asp-for="ST_Abscess" type="checkbox" />
+                                    <span>
+                                        Patient has an abscess or other evidence of infectionon gross anatomic or histopathologic exam
+                                    </span>
+                                </div>
+                            </td>
+                       </tr>
+                    </table>
+                </div>
+            </div>
         </fieldset>
     </div>
 </form>
@@ -509,5 +909,25 @@
 
         // Initialize visibility on page load
         toggleOSSection();
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll("input[type='checkbox'][name='Subclass']");
+        
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", function () {
+                const tableId = this.id.replace("Checkbox", "Table");
+                const tableDiv = document.getElementById(tableId);
+
+                if (this.checked) {
+                    tableDiv.classList.remove("hidden"); // Show table
+                } else {
+                    tableDiv.classList.add("hidden"); // Hide table
+                    // Clear input values inside the table
+                    tableDiv.querySelectorAll("input").forEach(input => input.value = "");
+                }
+            });
+        });
     });
 </script>

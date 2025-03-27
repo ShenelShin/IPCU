@@ -139,5 +139,59 @@ namespace IPCU.Models
 
 
 
+
+        //Table for Burn
+        public string? Subclass { get; set; }
+        public bool BURN_PatientChange { get; set; }
+
+        //Table for CDI
+        public bool CDI_Positve { get; set; }
+        public bool CDI_Patient { get; set; }
+
+        //Table for DECU	
+        public bool DECU_Patienthastwo { get; set; }
+
+        //Table for GE
+        public bool GE_PatientAcute { get; set; }
+        public bool GE_PatientAtleastTwo { get; set; }
+        public bool GE_EntericIdentified { get; set; }
+        public bool GE_EntericDetected { get; set; }
+        public bool GE_Diagnostic { get; set; }
+
+
+        //Table for GIT
+        public bool GIT_AnAbscess { get; set; }
+        public bool GIT_AbscessGastrointestinal { get; set; }
+        public bool GIT_OrganismIdentifiedDrainage { get; set; }
+        public bool GIT_OrganismSeen { get; set; }
+        public bool GIT_OrganismIdentifiedBloody { get; set; }
+        public bool GIT_ImagingTest { get; set; }
+
+        //Table for IAB
+        public bool IAB_PatientOrganism { get; set; }
+        public bool IAB_PatientAtleastOne { get; set; }
+        public bool IAB_PatientAtleastTwo { get; set; }
+        public bool IAB_OrganismSeen { get; set; }
+        public bool IAB_OrganismIdentified { get; set; }
+
+        //Table for OREP
+        public bool OREP_PatientOrganism { get; set; }
+        public bool OREP_PatientAbscess { get; set; }
+        public bool OREP_PatientSuspected { get; set; }
+        public bool OREP_OrganismIdentified { get; set; }
+        public bool OREP_Physician { get; set; }
+
+        //Table for SSI
+        public bool SSI_AtleastOne { get; set; }
+        public bool SSI_PatientAtleastTwo { get; set; }
+        public bool SSI_Organism { get; set; }
+        public bool SSI_Multinucleated { get; set; }
+        public bool SSI_Diagnostic { get; set; }
+
+        //Table for ST	
+        public bool ST_PatientOrganism { get; set; }
+        public bool ST_PatienPurulent { get; set; }
+        public bool ST_Abscess { get; set; }
+
     }
 }
