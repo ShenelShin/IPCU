@@ -27,7 +27,7 @@ namespace IPCU.Models
         public string Sex { get; set; }
 
         [Column(TypeName = "date")]
-        public DateTime? BirthDate { get; set; }
+        public DateTime BirthDate { get; set; }
 
         [StringLength(1)]
         public string CivilStatus { get; set; }
