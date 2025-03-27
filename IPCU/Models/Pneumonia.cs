@@ -159,6 +159,7 @@ namespace IPCU.Models
         public bool DirectMicroscopicExam3 { get; set; }
         public bool PositiveCultureFungi3 { get; set; }
         public bool NonCultureDiagnostic3 { get; set; }
+        public bool LaboratoryCriteria3 { get; set; }
 
 
     }

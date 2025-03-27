@@ -213,7 +213,12 @@
                         <label><strong>AND, at least two (2) of the following:</strong></label>
                         <div>
                             <input class="form-check-input final-requirement" asp-for="NewPurulentSputum1_1" />
-                            <span>New onset of purulent sputum or change in character of sputum</span>
+                            <span>
+                                New onset of purulent sputum or change
+                                in character of sputum, or increased
+                                respiratory secretions, or suctioning
+                                requirements
+                            </span>
                         </div>
                         <div>
                             <input class="form-check-input final-requirement" asp-for="WorseningCoughOrDyspnea1_1" />
@@ -327,7 +332,6 @@
     </div>
 
     <div id="pneu1_3_section" class="table-section" style="display: none;">
-
         <table class="table table-bordered">
             <thead class="table-grey">
                 <tr>
@@ -335,12 +339,13 @@
                 </tr>
                 <tr>
                     <th>
-                        <strong>Alternative criteria,</strong> for child <strong>>1 year oldor ≤12years old,</strong> has one of the following found in <strong> two or more</strong> chest imaging test results
+                        <strong>Alternative criteria,</strong> for child <strong>>1 year old or ≤12 years old,</strong> has one of the following found in <strong>two or more</strong> chest imaging test results
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <!-- First Step -->
+                <tr id="step1_3">
                     <td>
                         <label>
                             Either <strong>new and persistent OR progressive and persistent:</strong>
@@ -353,41 +358,36 @@
                         <span asp-validation-for="PersistentorProgressive1_3" class="text-danger"></span>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                    <label><strong>AND, at least three (3) of the following:</strong></label>
-                    </td>
-                </tr>
-                <tr>
+
+                <!-- Second Step (Initially Hidden) -->
+                <tr id="step2_3" style="display: none;">
                     <td>
                         <div>
-                            <input class="form-check-input" asp-for="Fever1_3" />
+                            <label><strong>AND, at least three (3) of the following:</strong></label>
+                        </div>
+                        <div>
+                            <input class="form-check-input final-requirement_3" asp-for="Fever1_3" />
                             <span>Fever (> 38°C) or hypothermia (<36°C)</span>
                         </div>
                         <div>
-                            <input class="form-check-input" asp-for="Leukopenia1_3" />
-                            <span>
-                                Leukopenia (≤ 4000 WBC/mm3
-                                ) or
-                                leukocytosis (≥ 15,000 WBC/mm3
-                                )
-                            </span>
+                            <input class="form-check-input final-requirement_3" asp-for="Leukopenia1_3" />
+                            <span>Leukopenia (≤ 4000 WBC/mm3) or leukocytosis (≥ 15,000 WBC/mm3)</span>
                         </div>
                         <div>
-                            <input class="form-check-input" asp-for="NewPurulentSputum1_3" />
-                            <span>New onset of purulent sputumor changein character of sputum, or increasedrespiratory secretions, or suctioningrequirements</span>
+                            <input class="form-check-input final-requirement_3" asp-for="NewPurulentSputum1_3" />
+                            <span>New onset of purulent sputum or change in character of sputum, or increased respiratory secretions, or suctioning requirements</span>
                         </div>
                         <div>
-                            <input class="form-check-input" asp-for="NewWorseningCough1_3" />
+                            <input class="form-check-input final-requirement_3" asp-for="NewWorseningCough1_3" />
                             <span>New onset or worsening cough, or dyspnea, or apnea, or tachypnea</span>
                         </div>
                         <div>
-                            <input class="form-check-input" asp-for="RalesorBronchial1_3" />
+                            <input class="form-check-input final-requirement_3" asp-for="RalesorBronchial1_3" />
                             <span>Rales or bronchial breath sounds</span>
                         </div>
                         <div>
-                            <input class="form-check-input" asp-for="WorseningGas1_3" />
-                            <span>Worsening gas exchange, increasedoxygen requirements, or ventilator demand</span>
+                            <input class="form-check-input final-requirement_3" asp-for="WorseningGas1_3" />
+                            <span>Worsening gas exchange, increased oxygen requirements, or ventilator demand</span>
                         </div>
                     </td>
                 </tr>
@@ -395,183 +395,389 @@
         </table>
     </div>
 
-    <div id="pneu2_1_section" class="table-section" style="display: none;">
-
-            <table  class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th colspan="2" class="text-center">PNEU2_1 Details</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><label asp-for="PersistentorProgressive2_1" class="form-label"></label></td>
-                        <td>
+    <!-- PNEU2_1 Form -->
+    <div id="pneu2_1_section" class="table-section" style="display: none; margin-top: 20px;">
+        <table class="table table-bordered">
+            <thead class="table-grey">
+                <tr>
+                    <th style="text-align: center; background-color: #f8f9fa;">PNU1 Details</th>
+                </tr>
+                <tr>
+                    <th>For Pneumonia with Common Bacterial or Filamentous Fungal Pathogens</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Step 1 -->
+                <tr id="step1_1_1">
+                    <td>
+                        <label>Either <strong>new and persistent OR progressive and persistent:</strong></label>
                         <div>
-                            <label><input type="radio" name="PersistentorProgressive2_1" value="Infiltrate"> Infiltrate</label><br>
-                            <label><input type="radio" name="PersistentorProgressive2_1" value="Consolidation"> Consolidation</label><br>
-                            <label><input type="radio" name="PersistentorProgressive2_1" value="Cavitation"> Cavitation</label><br>
-                            <label><input type="radio" name="PersistentorProgressive2_1" value="Pneumatoceles"> Pneumatoceles</label>
+                            <label><input asp-for="PersistentorProgressive2_1" type="radio" value="Infiltrate"> Infiltrate</label><br>
+                            <label><input asp-for="PersistentorProgressive2_1" type="radio" value="Consolidation"> Consolidation</label><br>
+                            <label><input asp-for="PersistentorProgressive2_1" type="radio" value="Cavitation"> Cavitation</label><br>
+                            <label><input asp-for="PersistentorProgressive2_1" type="radio" value="Pneumatoceles"> Pneumatoceles</label><br>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Step 2 (Initially Hidden) -->
+                <tr id="step2_1_1" style="display: none;">
+                    <td>
+                        <label><strong>AND, at least one (1) of the following:</strong></label>
+                        <div>
+                            <input asp-for="Fever2_1" class="form-check-input requirement_3_1" type="checkbox">
+                            <span>Fever (> 38.0°C)</span>
+                        </div>
+                        <div>
+                            <input asp-for="Leukopenia12_1" class="form-check-input requirement_3_1" type="checkbox">
+                            <span>Leukopenia (≤ 4,000 WBC/mm³)</span>
+                        </div>
+                        <div>
+                            <input asp-for="Leukocytosis2_1" class="form-check-input requirement_3_1" type="checkbox">
+                            <span>Leukocytosis (≥ 12,000 WBC/mm³)</span>
+                        </div>
+                        <div>
+                            <input asp-for="Adults70old2_1" class="form-check-input requirement_3_1" type="checkbox">
+                            <span>Adults ≥ 70 years old, altered mental status with no other recognized cause</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Step 3 (Initially Hidden) -->
+                <tr id="step3_1_1" style="display: none;">
+                    <td>
+                        <label><strong>AND, at least one (1) of the following:</strong></label>
+                        <div>
+                            <input asp-for="NewPurulentSputum2_1" class="form-check-input final-requirement_3_1" type="checkbox">
+                            <span>New onset of purulent sputum or change in character of sputum, or increased respiratory secretions, or suctioning requirements</span>
+                        </div>
+                        <div>
+                            <input asp-for="WorseningCoughOrDyspnea2_1" class="form-check-input final-requirement_3_1" type="checkbox">
+                            <span>New onset or worsening cough, dyspnea, or tachypnea</span>
+                        </div>
+                        <div>
+                            <input asp-for="RalesOrBronchialBreathSounds2_1" class="form-check-input final-requirement_3_1" type="checkbox">
+                            <span>Rales or bronchial breath sounds</span>
+                        </div>
+                        <div>
+                            <input asp-for="WorseningGasExchange2_1" class="form-check-input final-requirement_3_1" type="checkbox">
+                            <span>Worsening gas exchange or increased oxygen requirements, or ventilator demand</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Step 4 (Initially Hidden) -->
+                <tr id="step4_1_1" style="display: none;">
+                    <td>
+                        <label><strong>AND, at least one (1) of the following:</strong></label>
+                        <div>
+                            <input asp-for="OrganismIdentifiedFromBlood_2_1" class="form-check-input" type="checkbox">
+                            <span>Organism identified from blood</span>
+                        </div>
+                        <div>
+                            <input asp-for="PositiveQuantitativeCultureLRT_2_1" class="form-check-input" type="checkbox">
+                            <span>
+                                Positive quantitative culture or corresponding semi-quantitative culture
+                                result from minimally-contaminated LRT
+                                specimen (specifically BAL, protected
+                                specimen brushing, or endotracheal aspirate)
+                            </span>
+                        </div>
+                        <div>
+                            <input asp-for="BALCellsContainIntracellularBacteria_2_1" class="form-check-input" type="checkbox">
+                            <span>
+                                ≥5% BAL-obtained cells contain
+                                intracellular bacteria on direct microscopic exam (for example: Gram’s stain)
+                            </span>
+                        </div>
+                        <div>
+                            <input asp-for="PositiveQuantitativeCultureLungTissue_2_1" class="form-check-input" type="checkbox">
+                            <span>
+                                Positive quantitative culture or corresponding semi-quantitative culture
+                                result of lung tissue
+                            </span>
+                        </div>
+                        <div>
+                            <input asp-for="HistopathologicExam2_1" class="form-check-input" type="checkbox">
+                            <span>Histopathologic exam shows at least one of the following evidences of pneumonia:</span>
+                        </div>
+                        <div style="margin-left: 20px;">
+                            <input class="form-check-input" asp-for="AbscessFormationOrFoci_2_1" />
+                            <span>
+                                Abscess formation or foci of consolidation with intense PMN
+                                accumulation in bronchioles and alveoli
+                            </span>
+                        </div>
+                        <div style="margin-left: 20px;">
+                            <input class="form-check-input" asp-for="EvidenceOfFungalInvasion_2_1" />
+                            <span>
+                                Evidence of lung parenchyma invasion
+                                by fungal hyphae or pseudohyphae
+                            </span>
                         </div>
 
-                            <span asp-validation-for="PersistentorProgressive2_1" class="text-danger"></span>
-                        </td>
-                    </tr>
-                    <tr><td>Fever</td><td><input class="form-check-input" asp-for="Fever2_1" /> @Html.DisplayNameFor(model => model.Fever2_1)</td></tr>
-                    <tr><td>Leukopenia</td><td><input class="form-check-input" asp-for="Leukopenia12_1" /> @Html.DisplayNameFor(model => model.Leukopenia12_1)</td></tr>
-                    <tr><td>Leukocytosis</td><td><input class="form-check-input" asp-for="Leukocytosis2_1" /> @Html.DisplayNameFor(model => model.Leukocytosis2_1)</td></tr>
-                    <tr><td>Adults ≥ 70 Years</td><td><input class="form-check-input" asp-for="Adults70old2_1" /> @Html.DisplayNameFor(model => model.Adults70old2_1)</td></tr>
-                    <tr><td>New Purulent Sputum</td><td><input class="form-check-input" asp-for="NewPurulentSputum2_1" /> @Html.DisplayNameFor(model => model.NewPurulentSputum2_1)</td></tr>
-                    <tr><td>Worsening Cough/Dyspnea</td><td><input class="form-check-input" asp-for="WorseningCoughOrDyspnea2_1" /> @Html.DisplayNameFor(model => model.WorseningCoughOrDyspnea2_1)</td></tr>
-                    <tr><td>Rales or Bronchial Breath Sounds</td><td><input class="form-check-input" asp-for="RalesOrBronchialBreathSounds2_1" /> @Html.DisplayNameFor(model => model.RalesOrBronchialBreathSounds2_1)</td></tr>
-                    <tr><td>Worsening Gas Exchange</td><td><input class="form-check-input" asp-for="WorseningGasExchange2_1" /> @Html.DisplayNameFor(model => model.WorseningGasExchange2_1)</td></tr>
-                    <tr><td>Organism Identified from Blood</td><td><input class="form-check-input" asp-for="OrganismIdentifiedFromBlood_2_1" /> @Html.DisplayNameFor(model => model.OrganismIdentifiedFromBlood_2_1)</td></tr>
-                    <tr><td>Positive Quantitative Culture (LRT)</td><td><input class="form-check-input" asp-for="PositiveQuantitativeCultureLRT_2_1" /> @Html.DisplayNameFor(model => model.PositiveQuantitativeCultureLRT_2_1)</td></tr>
-                    <tr><td>BAL Cells Contain Intracellular Bacteria</td><td><input class="form-check-input" asp-for="BALCellsContainIntracellularBacteria_2_1" /> @Html.DisplayNameFor(model => model.BALCellsContainIntracellularBacteria_2_1)</td></tr>
-                    <tr><td>Positive Quantitative Culture (Lung Tissue)</td><td><input class="form-check-input" asp-for="PositiveQuantitativeCultureLungTissue_2_1" /> @Html.DisplayNameFor(model => model.PositiveQuantitativeCultureLungTissue_2_1)</td></tr>
-                    <tr><td>Histopathologic Exam</td><td><input class="form-check-input" asp-for="HistopathologicExam2_1" /> @Html.DisplayNameFor(model => model.HistopathologicExam2_1)</td></tr>
-                    <tr><td>Abscess Formation or Foci</td><td><input class="form-check-input" asp-for="AbscessFormationOrFoci_2_1" /> @Html.DisplayNameFor(model => model.AbscessFormationOrFoci_2_1)</td></tr>
-                    <tr><td>Evidence of Fungal Invasion</td><td><input class="form-check-input" asp-for="EvidenceOfFungalInvasion_2_1" /> @Html.DisplayNameFor(model => model.EvidenceOfFungalInvasion_2_1)</td></tr>
-                    <tr>
-                        <td><label asp-for="CultureDate2_1" class="control-label"></label></td>
-                        <td><input asp-for="CultureDate2_1" class="form-control" /><span asp-validation-for="CultureDate2_1" class="text-danger"></span></td>
-                    </tr>
-                    <tr>
-                        <td><label asp-for="CultureResults2_1" class="control-label"></label></td>
-                        <td><input asp-for="CultureResults2_1" class="form-control" /><span asp-validation-for="CultureResults2_1" class="text-danger"></span></td>
-                    </tr>
-                </tbody>
-            </table>
+                    </td>
+                </tr>
+
+                <!-- Culture Details -->
+                <tr>
+                    <td>
+                        <span><strong>Culture date:</strong></span>
+                        <input asp-for="CultureDate2_1" type="date" class="form-control" />
+                        <span><strong>Culture results:</strong></span>
+                        <input asp-for="CultureResults2_1" class="form-control" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
+
     <div id="pneu2_2_section" class="table-section" style="display: none;">
-
-            <table class="table table-bordered">
+        <table class="table table-bordered">
+            <thead class="table-grey">
                 <tr>
+                    <th style="text-align: center; background-color: #f8f9fa;">PNU1 Details</th>
+                </tr>
+                <tr>
+                    <th>
+                        For Viral, Legionella, and other Bacterial Pneumonias with Definitive Laboratory Findings
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Step 1 -->
+                <tr id="step1_2_2">
                     <td>
-                        <label asp-for="PersistentorProgressive2_2">Persistent or Progressive:</label>
-                    <div>
-                        <label><input type="radio" name="PersistentorProgressive2_2" value="Infiltrate"> Infiltrate</label><br>
-                        <label><input type="radio" name="PersistentorProgressive2_2" value="Consolidation"> Consolidation</label><br>
-                        <label><input type="radio" name="PersistentorProgressive2_2" value="Cavitation"> Cavitation</label><br>
-                        <label><input type="radio" name="PersistentorProgressive2_2" value="Pneumatoceles"> Pneumatoceles</label>
-                    </div>
-
-                        <span asp-validation-for="PersistentorProgressive2_2" class="text-danger"></span>
+                        <label>Either <strong>new and persistent OR progressive and persistent:</strong></label>
+                        <div>
+                            <label><input asp-for="PersistentorProgressive2_2" type="radio" value="Infiltrate"> Infiltrate</label><br>
+                            <label><input asp-for="PersistentorProgressive2_2" type="radio" value="Consolidation"> Consolidation</label><br>
+                            <label><input asp-for="PersistentorProgressive2_2" type="radio" value="Cavitation"> Cavitation</label><br>
+                            <label><input asp-for="PersistentorProgressive2_2" type="radio" value="Pneumatoceles"> Pneumatoceles</label><br>
+                        </div>
                     </td>
                 </tr>
 
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Fever2_2" /> Fever</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Leukopenia12_2" /> Leukopenia</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Leukocytosis2_2" /> Leukocytosis</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Adults70old2_2" /> Adults ≥ 70 years old</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="NewPurulentSputum2_2" /> New Purulent Sputum</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="WorseningCoughOrDyspnea2_2" /> Worsening Cough or Dyspnea</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="RalesOrBronchialBreathSounds2_2" /> Rales or Bronchial Breath Sounds</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="WorseningGasExchange2_2" /> Worsening Gas Exchange</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="VirusBordetellaLegionella2_2" /> Virus, Bordetella, Legionella</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="FourfoldrisePaired2_2" /> Fourfold Rise in Paired Samples</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="FourfoldriseLegionella2_2" /> Fourfold Rise in Legionella</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="DetectionofLegionella2_2" /> Detection of Legionella</label></td>
-                </tr>
-
-                <tr>
+                <!-- Step 2 (Initially Hidden) -->
+                <tr id="step2_2_2" style="display: none;">
                     <td>
-                        <label asp-for="CultureDate2_2">Culture Date:</label>
-                        <input asp-for="CultureDate2_2" class="form-control" />
-                        <span asp-validation-for="CultureDate2_2" class="text-danger"></span>
+                        <label><strong>AND, at least one (1) of the following:</strong></label>
+                        <div>
+                            <input asp-for="Fever2_1" class="form-check-input requirement_2_2" type="checkbox">
+                            <span>Fever (> 38.0°C)</span>
+                        </div>
+                        <div>
+                            <input asp-for="Leukopenia12_1" class="form-check-input requirement_2_2" type="checkbox">
+                            <span>Leukopenia (≤ 4,000 WBC/mm³)</span>
+                        </div>
+                        <div>
+                            <input asp-for="Leukocytosis2_1" class="form-check-input requirement_2_2" type="checkbox">
+                            <span>Leukocytosis (≥ 12,000 WBC/mm³)</span>
+                        </div>
+                        <div>
+                            <input asp-for="Adults70old2_1" class="form-check-input requirement_2_2" type="checkbox">
+                            <span>Adults ≥ 70 years old, altered mental status with no other recognized cause</span>
+                        </div>
                     </td>
                 </tr>
 
-                <tr>
+                <!-- Step 3 (Initially Hidden) -->
+                <tr id="step3_2_2" style="display: none;">
                     <td>
-                        <label asp-for="CultureResults2_2">Culture Results:</label>
+                        <label><strong>AND, at least one (1) of the following:</strong></label>
+                        <div>
+                            <input asp-for="NewPurulentSputum2_2" class="form-check-input final-requirement_2_2" type="checkbox">
+                            <span>
+                                New onset of purulent sputum or change
+                                in character of sputum, or increased
+                                respiratory secretions, or suctioning
+                                requirements
+                            </span>
+                        </div>
+                        <div>
+                            <input asp-for="WorseningCoughOrDyspnea2_2" class="form-check-input final-requirement_2_2" type="checkbox">
+                            <span>New onset or worsening cough, dyspnea, or tachypnea</span>
+                        </div>
+                        <div>
+                            <input asp-for="RalesOrBronchialBreathSounds2_2" class="form-check-input final-requirement_2_2" type="checkbox">
+                            <span>Rales or bronchial breath sounds</span>
+                        </div>
+                        <div>
+                            <input asp-for="WorseningGasExchange2_2" class="form-check-input final-requirement_2_2" type="checkbox">
+                            <span>Worsening gas exchange or increased oxygen requirements</span>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Step 4 (Initially Hidden) -->
+                <tr id="step4_2_2" style="display: none;">
+                    <td>
+                        <label><strong>AND, at least one (1) of the following:</strong></label>
+                        <div>
+                            <input asp-for="VirusBordetellaLegionella2_2" class="form-check-input" type="checkbox">
+                            <span>
+                                Virus, Bordetella, Legionella, Chlamydia, or Mycoplasma identified from respiratory
+                                secretions or tissue by a culture or non-culture based microbiologic testing method which is performed for purposes of clinical
+                                diagnosis or treatment
+                            </span>
+                        </div>
+                        <div>
+                            <input asp-for="FourfoldrisePaired2_2" class="form-check-input" type="checkbox">
+                            <span>Fourfold rise in paired sera (IgG) for pathogen</span>
+                        </div>
+                        <div>
+                            <input asp-for="FourfoldriseLegionella2_2" class="form-check-input" type="checkbox">
+                            <span>
+                                Fourfold rise in Legionella pneumophila serogroup 1 antibody titer to ≥ 1:128 in
+                                paired acute and convalescent sera by indirect IFA
+                            </span>
+                        </div>
+                        <div>
+                            <input asp-for="DetectionofLegionella2_2" class="form-check-input" type="checkbox">
+                            <span>
+                                Detection of Legionella pneumophila serogroup 1 antigens in urine by RIA or EIA
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Culture Details (Always Visible) -->
+                <tr id="culture_details_2_2">
+                    <td>
+                        <span><strong>Culture date:</strong></span>
+                        <input asp-for="CultureDate2_2" type="date" class="form-control" />
+                        <span>Culture results:</span>
                         <input asp-for="CultureResults2_2" class="form-control" />
-                        <span asp-validation-for="CultureResults2_2" class="text-danger"></span>
                     </td>
                 </tr>
-            </table>
+            </tbody>
+        </table>
     </div>
 
     <div id="pneu3_section" class="table-section" style="display: none;">
-            <!-- PNEU3 Table (Hidden by Default) -->
-            <table class="table table-bordered">
+        <table class="table table-bordered">
+            <thead class="table-grey">
+                <tr>
+                    <th style="text-align: center; background-color: #f8f9fa;">PNU1 Details</th>
+                </tr>
+                <tr>
+                    <th>
+                        Specific Site Algorithms for Pneumonia inImmunocompromised Patients
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Step 1 -->
                 <tr>
                     <td>
-                        <label asp-for="PersistentorProgressive3">Persistent or Progressive:</label>
-                    <div>
-                        <label><input type="radio" name="PersistentorProgressive3" value="Infiltrate"> Infiltrate</label><br>
-                        <label><input type="radio" name="PersistentorProgressive3" value="Consolidation"> Consolidation</label><br>
-                        <label><input type="radio" name="PersistentorProgressive3" value="Cavitation"> Cavitation</label><br>
-                        <label><input type="radio" name="PersistentorProgressive3" value="Pneumatoceles"> Pneumatoceles</label>
-                    </div>
-
-                        <span asp-validation-for="PersistentorProgressive3" class="text-danger"></span>
+                        <label>Either <strong>new and persistent OR progressive and persistent:</strong></label>
+                        <div>
+                            <label><input asp-for="PersistentorProgressive3" type="radio" value="Infiltrate"> Infiltrate</label><br>
+                            <label><input asp-for="PersistentorProgressive3" type="radio" value="Consolidation"> Consolidation</label><br>
+                            <label><input asp-for="PersistentorProgressive3" type="radio" value="Cavitation"> Cavitation</label><br>
+                            <label><input asp-for="PersistentorProgressive3" type="radio" value="Pneumatoceles"> Pneumatoceles</label><br>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Step 2 (Initially Hidden) -->
+                <tr id="step2_3_3" style="display: none;">
+                    <td>
+                        <label><strong>AND, patient is immunocompromised*</strong></label>
+                        <label><strong>AND, at least one (1) of the following:</strong></label>
+                        <div>
+                            <input asp-for="Fever3" type="checkbox">
+                            <span>Fever (> 38.0°C)</span>
+                        </div>
+                        <div>
+                            <input asp-for="Adults70old3" type="checkbox">
+                            <span>
+                                Adults ≥ 70 years old, alteredmental status with no other recognized cause 
+                                New onset of purulent sputumor changein character of sputum, 
+                                or increased respiratory secretions, or suctioning requirements
+                            </span>
+                        </div>
+                        <div>
+                            <input asp-for="NewPurulentSputum3" type="checkbox">
+                            <span>New onset of purulent sputumor changein character of sputum, or increasedrespiratory secretions, or suctioningrequirements</span>
+                        </div>
+                        <div>
+                            <input asp-for="WorseningCoughOrDyspnea3" type="checkbox">
+                            <span>New onset or worsening cough, or dyspnea, or tachypnea</span>
+                        </div>
+                        <div>
+                            <input asp-for="RalesOrBronchialBreathSounds3" type="checkbox">
+                            <span>Rales or bronchial breath sounds</span>
+                        </div>
+                        <div>
+                            <input asp-for="WorseningGasExchange3" type="checkbox">
+                            <span>Worsening gas exchange, increasedoxygen requirements, or ventilator demand</span>
+                        </div>
+                        <div>
+                            <input asp-for="Hemoptysis3" type="checkbox">
+                            <span>Hemoptysis</span>
+                        </div>
+                        <div>
+                            <input asp-for="PleuriticChestPain3" type="checkbox">
+                            <span>Pleuritic chest pain</span>
+                        </div>
+                    </td>
+                </tr>
+                <!-- Step 3 (Initially Hidden) -->
+                <tr id="step3_3_3" style="display: none;">
+                    <td>
+                        <label><strong>AND, at least one (1) of the following:</strong></label>
+                        <div>
+                            <input asp-for="IdentificationCandida3" type="checkbox">
+                            <span>Fever (> 38.0°C)</span>
+                        </div>
+                        <div>
+                            <input asp-for="EvidenceofFungi3" type="checkbox">
+                            <span>Leukopenia (≤ 4,000 WBC/mm³)</span>
+                        </div>
+                        <!---->
+                        <div>
+                            <input asp-for="DirectMicroscopicExam3" type="checkbox">
+                            <span>Leukocytosis (≥ 12,000 WBC/mm³)</span>
+                        </div>
+                        <div>
+                            <input asp-for="PositiveCultureFungi3" type="checkbox">
+                            <span>Adults ≥ 70 years old, altered mental status with no other recognized cause</span>
+                        </div>
+                        <div>
+                            <input asp-for="NonCultureDiagnostic3" type="checkbox">
+                            <span>Adults ≥ 70 years old, altered mental status with no other recognized cause</span>
+                        </div>
                     </td>
                 </tr>
                 <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Fever3" /> Fever</label></td>
+                    <td>
+                        <label><strong>OR,</strong>any of the following from:</label>
+                        <div>
+                            <input asp-for="LaboratoryCriteria3" type="checkbox">
+                            <span>Laboratory criteria defined under PNU2</span>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Adults70old3" /> Adults ≥ 70 years old</label></td>
+                    <td>
+                        <label><strong>*Immunocompromised patients include only:</strong></label>
+                        <ul>
+                            <li>
+                                Those with neutropenia defined as absoluteneutrophil count or total white bloodcell count (WBC <500 /mm3)
+                            </li>
+                            <li>Those with leukemia, lymphoma or whoareHIV positive with CD4 count <200</li>
+                            <li>Those who have undergone splenectomy</li>
+                            <li>Those who have a history of solidorganorhematopoietic stemcell transplant</li>
+                            <li>Those on cytotoxic chemotherapy</li>
+                            <li>Those on enteral or parenteral administeredsteroids (exclude inhaled and topical steroids) daily for >14 consecutive daysonthe date of event</li>
+
+                        </ul>
+
+                    </td>
                 </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="NewPurulentSputum3" /> New Purulent Sputum</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="WorseningCoughOrDyspnea3" /> Worsening Cough or Dyspnea</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="RalesOrBronchialBreathSounds3" /> Rales or Bronchial Breath Sounds</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="WorseningGasExchange3" /> Worsening Gas Exchange</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="Hemoptysis3" /> Hemoptysis</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="PleuriticChestPain3" /> Pleuritic Chest Pain</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="IdentificationCandida3" /> Identification of Candida</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="EvidenceofFungi3" /> Evidence of Fungi</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="DirectMicroscopicExam3" /> Direct Microscopic Exam</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="PositiveCultureFungi3" /> Positive Culture for Fungi</label></td>
-                </tr>
-                <tr>
-                    <td><label class="form-check-label"><input class="form-check-input" asp-for="NonCultureDiagnostic3" /> Non-Culture Diagnostic Evidence</label></td>
-                </tr>
-            </table>
+            </tbody>
+        </table>
     </div>
 
 
@@ -717,6 +923,95 @@
             // Step 3: Ensure at least 3 checkboxes are checked in the last step
             $('.final-requirement_2').change(function() {
                 if ($('.final-requirement_2:checked').length >= 3) {
+                }
+            });
+        });
+    </script>
+
+    <!--pnu1_3-->
+    <script>
+        $(document).ready(function() {
+            // Step 1: Show the second row when a radio button is selected
+            $('input[name="PersistentorProgressive1_3"]').change(function() {
+                $('#step2_3').fadeIn();
+            });
+
+            // Step 2: Show the third row when at least 3 checkboxes are checked
+            $('.final-requirement_3').change(function() {
+                if ($('.final-requirement_3:checked').length >= 3) {
+                    $('#step3_3').fadeIn();
+                } else {
+                    $('#step3_3').fadeOut();
+                }
+            });
+        });
+    </script>
+
+    <script>
+                $(document).ready(function () {
+            // Step 1: Show Step 2 when a radio button is selected (PNEU2_1)
+            $('input[name="PersistentorProgressive2_1"]').change(function () {
+                $('#step2_1_1').fadeIn();
+            });
+
+            // Step 2: Show Step 3 when at least one checkbox (Step 2) is checked (PNEU2_1)
+            $('.requirement_3_1').change(function () {
+                if ($('.requirement_3_1:checked').length > 0) {
+                    $('#step3_1_1').fadeIn();
+                } else {
+                    $('#step3_1_1').fadeOut();
+                }
+            });
+
+            // Step 3: Show Step 4 when at least one checkbox (Step 3) is checked (PNEU2_1)
+            $('.final-requirement_3_1').change(function () {
+                if ($('.final-requirement_3_1:checked').length > 0) {
+                    $('#step4_1_1').fadeIn();
+                } else {
+                    $('#step4_1_1').fadeOut();
+                }
+            });
+
+            // Step 1: Show Step 2 when a radio button is selected (PNEU2_2)
+            $('input[name="PersistentorProgressive2_2"]').change(function () {
+                $('#step2_2_2').fadeIn();
+            });
+
+            // Step 2: Show Step 3 when at least one checkbox (Step 2) is checked (PNEU2_2)
+            $('.requirement_2_2').change(function () {
+                if ($('.requirement_2_2:checked').length > 0) {
+                    $('#step3_2_2').fadeIn();
+                } else {
+                    $('#step3_2_2').fadeOut();
+                }
+            });
+
+            // Step 3: Show Step 4 when at least one checkbox (Step 3) is checked (PNEU2_2)
+            $('.final-requirement_2_2').change(function () {
+                if ($('.final-requirement_2_2:checked').length > 0) {
+                    $('#step4_2_2').fadeIn();
+                } else {
+                    $('#step4_2_2').fadeOut();
+                }
+            });
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Step 1: Show step 2 when a radio button is selected
+            $('input[name="PersistentorProgressive3"]').change(function () {
+                $('#step2_3_3').fadeIn();
+            });
+
+            // Step 2: Show step 3 when at least one checkbox is selected
+            $('.requirement_3_3').change(function () {
+                if ($('.requirement_3_3:checked').length > 0) {
+                    $('#step3_3_3').fadeIn();
+                    $('#step3_3_3').next('tr').fadeIn(); // Show the next row
+
+                } else {
+                    $('#step3_3_3').fadeOut();
                 }
             });
         });
