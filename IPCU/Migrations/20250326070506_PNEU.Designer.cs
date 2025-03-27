@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250326070506_PNEU")]
+    partial class PNEU
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1250,6 +1253,7 @@ namespace IPCU.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DispositionTransfer")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("FiO2Increase")
@@ -1433,9 +1437,6 @@ namespace IPCU.Migrations
                     b.Property<string>("Investigator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("LaboratoryCriteria3")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("Leukocytosis1_1")
                         .HasColumnType("bit");

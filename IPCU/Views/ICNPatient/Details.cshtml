@@ -467,6 +467,72 @@
         .accordion-header[aria-expanded="true"] .toggle-icon {
             transform: rotate(180deg);
         }
+
+        .infection-forms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .infection-form-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--warning);
+        }
+
+            .infection-form-card.submitted {
+                border-left-color: var(--success);
+            }
+
+            .infection-form-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            }
+
+        .form-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+        }
+
+        .form-info {
+            flex: 1;
+        }
+
+            .form-info h6 {
+                margin: 0;
+                font-size: 14px;
+                font-weight: 600;
+            }
+
+        .form-status {
+            font-size: 12px;
+            color: var(--text);
+            opacity: 0.7;
+        }
+
+        .btn-view {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-start {
+            background: var(--warning);
+            color: white;
+        }
+
     </style>
 </head>
 <body>
@@ -688,6 +754,52 @@
                     </div>
                 </div>
             </div>
+
+                <div class="info-section">
+                    <h3><i class="fas fa-virus"></i> Infection Forms</h3>
+                    <div class="infection-forms-grid">
+                        @{
+                            var forms = new[]
+                            {
+                        (Title: "Skin and Soft Tissue", Icon: "fa-hand-paper", Controller: "InfectionChecklist",
+                        Status: Model.InfectionForms?.SSTForm != null),
+                        (Title: "Pediatric VAE", Icon: "fa-lungs", Controller: "PediatricVAEChecklist",
+                        Status: Model.InfectionForms?.PVAEForm != null),
+                        (Title: "Cardiovascular System", Icon: "fa-heartbeat", Controller: "CardiovascularSystemInfection",
+                        Status: Model.InfectionForms?.CardiovascularForm != null),
+                        (Title: "Bloodstream Infection", Icon: "fa-vial", Controller: "LaboratoryConfirmedBloodstreamInfection",
+                        Status: Model.InfectionForms?.LCBIForm != null),
+                        (Title: "Urinary Tract Infection", Icon: "fa-kidneys", Controller: "UTIForm",
+                        Status: Model.InfectionForms?.UTIForm != null),
+                        (Title: "Urinary System Infection", Icon: "fa-toilet", Controller: "Usis",
+                        Status: Model.InfectionForms?.USIForm != null),
+                        (Title: "Ventilator Event", Icon: "fa-wind", Controller: "VentilatorEventChecklist",
+                        Status: Model.InfectionForms?.VAEForm != null),
+                        (Title: "Pneumonia", Icon: "fa-lungs-virus", Controller: "Pneumonias",
+                        Status: Model.InfectionForms?.PneumoniaForm != null)
+                        };
+                        }
+
+                        @foreach (var form in forms)
+                        {
+                            <div class="infection-form-card @(form.Status ? "submitted" : "")">
+                                <div class="form-icon">
+                                    <i class="fas @form.Icon"></i>
+                                </div>
+                                <div class="form-info">
+                                    <h6>@form.Title</h6>
+                                    <span class="form-status">@(form.Status ? "Submitted" : "Not Started")</span>
+                                </div>
+                                <a href="@Url.Action("Index", form.Controller, new { hospNum = Model.HospNum })"
+                                   class="btn btn-sm @(form.Status ? "btn-view" : "btn-start")">
+                                    <i class="fas @(form.Status ? "fa-eye" : "fa-plus")"></i>
+                                    @(form.Status ? "View" : "Start")
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
 
             <div class="action-bar">
                 <a href="@Url.Action("Index")" class="btn btn-back">
