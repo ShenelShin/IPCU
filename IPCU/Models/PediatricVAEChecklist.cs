@@ -57,7 +57,7 @@ namespace IPCU.Models
         public DateTime? DispositionDate { get; set; }
 
         [Display(Name = "Disposition Transfer")]
-        public string DispositionTransfer { get; set; }
+        public string? DispositionTransfer { get; set; }
 
         [Required]
         public string Gender { get; set; } // Male / Female
