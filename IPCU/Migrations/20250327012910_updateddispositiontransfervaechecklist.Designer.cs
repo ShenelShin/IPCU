@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250327012910_updateddispositiontransfervaechecklist")]
+    partial class updateddispositiontransfervaechecklist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1423,9 +1426,8 @@ namespace IPCU.Migrations
                     b.Property<bool>("HistopathologicExam2_1")
                         .HasColumnType("bit");
 
-                    b.Property<string>("HospitalNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("HospitalNumber")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IdentificationCandida3")
                         .HasColumnType("bit");
@@ -1433,9 +1435,6 @@ namespace IPCU.Migrations
                     b.Property<string>("Investigator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("LaboratoryCriteria3")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("Leukocytosis1_1")
                         .HasColumnType("bit");
@@ -1505,6 +1504,7 @@ namespace IPCU.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("PNEU_Subclass")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PersistentorProgressive1_1")
