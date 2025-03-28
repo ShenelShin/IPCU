@@ -89,23 +89,63 @@ namespace IPCU.Controllers
             return View("Create", model);
         }
 
-        // GET: Usis/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> PatientIndex(string hospNum)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(hospNum))
             {
                 return NotFound();
             }
 
-            var usi = await _context.Usi
-                .FirstOrDefaultAsync(m => m.Id == id);
+            // Convert hospNum to int
+            if (!int.TryParse(hospNum, out int hospitalNumber))
+            {
+                return BadRequest("Invalid hospital number format.");
+            }
+
+            // Query all USI records where HospitalNumber matches
+            var usiRecords = await _context.Usi
+                .Where(u => u.HospitalNumber == hospitalNumber)
+                .ToListAsync();
+
+            if (!usiRecords.Any())
+            {
+                return NotFound("No USI records found for this hospital number.");
+            }
+
+            // Create the ViewModel
+            var model = new PatientUsiViewModel
+            {
+                FullName = $"{usiRecords.First().Fname} {usiRecords.First().Mname} {usiRecords.First().Lname}".Trim(),
+                HospitalNumber = usiRecords.First().HospitalNumber.ToString(),
+                DateOfBirth = usiRecords.First().DateOfBirth,
+                Age = usiRecords.First().Age,
+                UnitWardArea = usiRecords.First().UnitWardArea,
+                Investigator = usiRecords.First().Investigator,
+                DateOfAdmission = usiRecords.First().DateOfAdmission,
+                Gender = usiRecords.First().Gender,
+                UsiRecords = usiRecords
+            };
+
+            return View("Index", model);
+        }
+
+
+
+
+        // GET: Usis/Details/5
+        public async Task<IActionResult> Details(int id)
+        {
+            var usi = await _context.Usi.FindAsync(id);
+
             if (usi == null)
             {
-                return NotFound();
+                return NotFound($"No record found for ID {id}");
             }
 
             return View(usi);
         }
+
+
 
         // GET: Usis/Create
         public IActionResult Create()

@@ -790,7 +790,7 @@
                                     <h6>@form.Title</h6>
                                     <span class="form-status">@(form.Status ? "Submitted" : "Not Started")</span>
                                 </div>
-                                <a href="@Url.Action("Index", form.Controller, new { hospNum = Model.HospNum })"
+                                <a href="@Url.Action("PatientIndex", form.Controller, new { hospNum = Model.HospNum })"
                                    class="btn btn-sm @(form.Status ? "btn-view" : "btn-start")">
                                     <i class="fas @(form.Status ? "fa-eye" : "fa-plus")"></i>
                                     @(form.Status ? "View" : "Start")
