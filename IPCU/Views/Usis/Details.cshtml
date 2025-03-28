@@ -75,15 +75,19 @@
                 Localized pain or tenderness*, AND at least one of the following:
             </div>
 
-            <div>
-                <input type="checkbox" @(Model.PurulentDrainage ? "checked" : "") disabled>
-                Purulent drainage from affected site
-            </div>
-
-            <div>
-                <input type="checkbox" @(Model.Organism ? "checked" : "") disabled>
-                Organism(s) identified from blood by a culture or non-culture-based microbiologic testing method, AND imaging test evidence definitive for infection (for example, ultrasound, CT scan, MRI, or radiolabel scan [gallium, technetium]), which if equivocal is supported by clinical correlation, specifically, physician documentation of antimicrobial treatment for urinary system infection
+                <div style="margin-left: 20px;">
+                    <input type="checkbox" @(Model.PurulentDrainage ? "checked" : "") disabled>
+                    Purulent drainage from affected site
                 </div>
+
+                <div style="margin-left: 20px;">
+                    <input type="checkbox" @(Model.Organism ? "checked" : "") disabled>
+                    Organism(s) identified from blood by a culture or non-culture-based microbiologic testing method,
+                    AND imaging test evidence definitive for infection (for example, ultrasound, CT scan, MRI, or
+                    radiolabel scan [gallium, technetium]), which if equivocal is supported by clinical correlation,
+                    specifically, physician documentation of antimicrobial treatment for urinary system infection.
+                </div>
+
             </td>
         </tr>
     </tbody>
@@ -92,7 +96,7 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th colspan="2">Group 3: Select at least one</th>
+            <th colspan="2">Patient ≤1year of age has at least one of the following signs or symptoms:</th>
         </tr>
     </thead>
     <tbody>
@@ -117,21 +121,28 @@
                 <div><input type="checkbox" @(Model.Lethargy ? "checked" : "") disabled>Lethargy</div>
 
                 <div><input type="checkbox" @(Model.Vomiting ? "checked" : "") disabled>Vomiting</div>
-
-                <div>
-                <input type="checkbox" @(Model.PurulentDrainage2 ? "checked" : "") disabled>                                Purulent drainage from affected site
+        </tr>
+        <tr>
+            <th colspan="2">AND at least one of the following:</th>
+        </tr>
+        <tr>
+            <td>
+            <div>
+                <input type="checkbox" @(Model.PurulentDrainage2 ? "checked" : "") disabled>                                
+                Purulent drainage from affected site
             </div>
 
                 <div>
                 <input type="checkbox" @(Model.Organism2 ? "checked" : "") disabled> Organism(s) identified from blood by a culture or non-culture based microbiologic testing method, AND imaging test evidencedefinitive for infection (for example, ultrasound, CT scan, magnetic resonance imaging [MRI], or radiolabel scan [gallium, technetium]), which if equivocal is supported by clinical correlation, specifically, physician documentation of antimicrobial
                 treatment for urinary system infection
             </div>
+            </td>
         </tr>
         <tr>
-            <td>Culture Date: @Model.CultureDate?.ToShortDateString()</td>
+            <td><b>Culture Date: </b> @Model.CultureDate?.ToShortDateString()</td>
         </tr>
         <tr>
-            <td>Culture Results: @Model.CultureResults</td>
+            <td><b>Culture Results: </b>@Model.CultureResults</td>
         </tr>
     </tbody>
 </table>
