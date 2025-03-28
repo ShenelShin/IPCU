@@ -200,6 +200,7 @@
                             <label asp-for="InvolvesOnlySkinAndSubcutaneousTissue">Involves only skin and subcutaneous tissue of the incision</label>
                         </td>
                     </tr>
+                    <div id="additionalCriteria" style="display: none; margin-left: 20px;">
                     <tr>
                         <td colspan="2">
                             <strong>AND, at least one of the following:</strong>
@@ -272,6 +273,8 @@
                             </em>
                         </td>
                     </tr>
+                    </div>
+                  <div id="cultureSection" style="display: none; margin-top: 20px;">
                     <tr>
                         <td><strong>Culture date:</strong></td>
                         <td>
@@ -286,6 +289,7 @@
                             <span asp-validation-for="CultureResults" class="text-danger"></span>
                         </td>
                     </tr>
+                   </div>
                 </table>
             </fieldset>
         </td>
@@ -460,6 +464,9 @@
     </div>
 </form>
 <script>
+
+
+
     function toggleSIP_SIS() {
         var sipChecked = document.getElementById("SIPCheckbox").checked;
         var sisChecked = document.getElementById("SISCheckbox").checked;
@@ -510,4 +517,6 @@
         // Initialize visibility on page load
         toggleOSSection();
     });
+
+
 </script>
