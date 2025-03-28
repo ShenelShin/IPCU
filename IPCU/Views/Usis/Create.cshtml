@@ -152,19 +152,20 @@
                 <tbody id="group1">
                     <tr>
                         <td>
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group1" type="checkbox" asp-for="PatientOrganism" />
                                 Patient has organism(s) identified from fluid (not urine) or tissue from affected site by a culture or non-culture basedmicrobiologic testing method, which is performed for purposes of clinical diagnosis or treatment
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                    <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group1" type="checkbox" asp-for="PatientAbscess" />
                                 Patient has an abscess or other evidence of infection on gross anatomical exam, during invasive procedure, or onhistopathologic exam
                             </label>
-                        </td>
+                        </div>
+                </td>
                     </tr>
                 </tbody>
             </table>
@@ -178,38 +179,33 @@
                 <tbody>
                     <tr>
                         <td>
+                <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group2" type="checkbox" asp-for="Fever1" />
                                 Fever (>38.0°C)
                             </label>
-                        </td>
-                    </tr>
-                    <!-- Parent Checkbox -->
-                    <tr>
-                        <td>
+                        </div>
+
+                <tdivd>
                             <label class="form-check-label">
                                 <input class="form-check-input group2" type="checkbox" asp-for="LocalizedPain" />
                                 Localized pain or tenderness*, AND at least one of the following:
                             </label>
-                        </td>
-                    </tr>
-
-                    <!-- Child Checkboxes -->
-                    <tr>
-                        <td>
+                        </tdivd>
+                <div>
                             <label class="form-check-label indent-child">
                                 <input class="form-check-input group2" type="checkbox" asp-for="PurulentDrainage" />
                                 Purulent drainage from affected site
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                <div>
                             <label class="form-check-label indent-child">
                                 <input class="form-check-input group2" type="checkbox" asp-for="Organism" />
                                 Organism(s) identified from blood by a culture or non-culture-based microbiologic testing method, AND imaging test evidence definitive for infection (for example, ultrasound, CT scan, MRI, or radiolabel scan [gallium, technetium]), which if equivocal is supported by clinical correlation, specifically, physician documentation of antimicrobial treatment for urinary system infection
                             </label>
-                        </td>
+                        </div>
+                </td>
                     </tr>
                 </tbody>
             </table>
@@ -223,91 +219,86 @@
                 <tbody>
                     <tr>
                         <td>
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group3" type="checkbox" asp-for="PatienLessthan1year" />
                                 Patient ≤1year of age has at least one of the following signs or symptoms:
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group3" type="checkbox" asp-for="Fever2" />
                                 Fever (>38.0°C)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group3" type="checkbox" asp-for="Hypothermia" />
                                 Hypothermia (>36.0°C)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" asp-for="Apnea" />
                                 @Html.DisplayNameFor(model => model.Apnea)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" asp-for="Bradycardia" />
                                 @Html.DisplayNameFor(model => model.Bradycardia)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" asp-for="Lethargy" />
                                 @Html.DisplayNameFor(model => model.Lethargy)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+            
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" asp-for="Vomiting" />
                                 @Html.DisplayNameFor(model => model.Vomiting)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+              
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" asp-for="PurulentDrainage2" />
                                 Purulent drainage from affected site
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+            
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" asp-for="Organism2" />
                                 Organism(s) identified from blood by a culture or non-culture based microbiologic testing method, AND imaging test evidencedefinitive for infection (for example, ultrasound, CT scan, magnetic resonance imaging [MRI], or radiolabel scan [gallium, technetium]), which if equivocal is supported by clinical correlation, specifically, physician documentation of antimicrobial
                                 treatment for urinary system infection
                             </label>
+                        </div>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>
+            </tr>
+            <tr>
+                <td>
+                        <div>
                             <label asp-for="CultureDate" class="control-label"></label>
                             <input asp-for="CultureDate" class="form-control" />
                             <span asp-validation-for="CultureDate" class="text-danger"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+           
+                        <div>
                             <label asp-for="CultureResults" class="control-label"></label>
                             <input asp-for="CultureResults" class="form-control" />
                             <span asp-validation-for="CultureResults" class="text-danger"></span>
-                        </td>
-                    </tr>
+                        </div>
+                </td>
+            </tr>
+                    
                 </tbody>
             </table>
 
