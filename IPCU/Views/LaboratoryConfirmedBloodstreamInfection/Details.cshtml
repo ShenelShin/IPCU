@@ -1,0 +1,50 @@
+﻿@model IPCU.Models.LaboratoryConfirmedBSI
+
+@{
+    ViewData["Title"] = "Patient Details";
+}
+
+<h2>Patient Details</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Full Name:</th>
+        <td>@($"{Model.Lname}, {Model.Fname} {Model.Mname}")</td>
+    </tr>
+    <tr>
+        <th>Hospital Number:</th>
+        <td>@Model.HospitalNumber</td>
+    </tr>
+    <tr>
+        <th>Date of Birth:</th>
+        <td>@Model.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+    </tr>
+    <tr>
+        <th>Age:</th>
+        <td>@Model.Age</td>
+    </tr>
+    <tr>
+        <th>Unit/Ward Area:</th>
+        <td>@Model.UnitWardArea</td>
+    </tr>
+    <tr>
+        <th>Main Service:</th>
+        <td>@Model.MainService</td>
+    </tr>
+    <tr>
+        <th>Date of Event:</th>
+        <td>@Model.DateOfEvent?.ToString("yyyy-MM-dd")</td>
+    </tr>
+    <tr>
+        <th>Investigator:</th>
+        <td>@Model.Investigator</td>
+    </tr>
+    <tr>
+        <th>Date of Admission:</th>
+        <td>@Model.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
+    </tr>
+</table>
+
+<a asp-action="PatientIndex" class="btn btn-primary">Back to List</a>
+
+}
