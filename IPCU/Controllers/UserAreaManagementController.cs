@@ -9,7 +9,6 @@ using IPCU.Models;
 
 namespace IPCU.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class UserAreaManagementController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;

@@ -11,7 +11,6 @@ using IPCU.Data;
 
 namespace IPCU.Controllers
 {
-    [Authorize(Roles = "ICN, Admin")]
     public class ICNPatientController : Controller
     {
         private readonly ApplicationDbContext _context;
