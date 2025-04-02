@@ -39,7 +39,7 @@
 
                         <div class="mb-3">
                             <label asp-for="DeviceType" class="form-label"></label>
-                            <select asp-for="DeviceType" class="form-select">
+                            <select asp-for="DeviceType" class="form-select" id="deviceTypeSelect">
                                 <option value="">-- Select Device Type --</option>
                                 <option value="CL">Central Line (CL)</option>
                                 <option value="IUC">Indwelling Urinary Catheter (IUC)</option>
@@ -51,6 +51,14 @@
                                 <option value="TRACH">Tracheostomy (TRACH)</option>
                             </select>
                             <span asp-validation-for="DeviceType" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3" id="deviceClassDiv" style="display:none;">
+                            <label asp-for="DeviceClass" class="form-label"></label>
+                            <select asp-for="DeviceClass" class="form-select" id="deviceClassSelect">
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                            <span asp-validation-for="DeviceClass" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
@@ -81,4 +89,64 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        $(document).ready(function() {
+            // Handle device type changes
+            $('#deviceTypeSelect').change(function() {
+                var deviceType = $(this).val();
+                var deviceClassDiv = $('#deviceClassDiv');
+                var deviceClassSelect = $('#deviceClassSelect');
+
+                // Clear previous options
+                deviceClassSelect.empty();
+
+                if (deviceType === 'CL') {
+                    // Show device class field and populate with CL options
+                    deviceClassDiv.show();
+                    deviceClassSelect.append('<option value="">-- Select Class --</option>');
+                    deviceClassSelect.append('<option value="Non-HD">Non-HD</option>');
+                    deviceClassSelect.append('<option value="HD">HD</option>');
+                    // Add required attribute
+                    deviceClassSelect.prop('required', true);
+                }
+                else if (deviceType === 'IUC') {
+                    // Show device class field and populate with IUC options
+                    deviceClassDiv.show();
+                    deviceClassSelect.append('<option value="">-- Select Class --</option>');
+                    deviceClassSelect.append('<option value="Non-KT">Non-KT</option>');
+                    deviceClassSelect.append('<option value="KT">KT</option>');
+                    // Add required attribute
+                    deviceClassSelect.prop('required', true);
+                }
+                else {
+                    // Hide device class for other device types
+                    deviceClassDiv.hide();
+                    // Remove required attribute and clear value
+                    deviceClassSelect.prop('required', false);
+                    deviceClassSelect.val('');
+                }
+            });
+
+            // Trigger change on page load
+            $('#deviceTypeSelect').trigger('change');
+
+            // Form validation
+            $('form').submit(function(e) {
+                var deviceType = $('#deviceTypeSelect').val();
+                var deviceClass = $('#deviceClassSelect').val();
+
+                // Only validate if it's a CL or IUC device
+                if ((deviceType === 'CL' || deviceType === 'IUC') && !deviceClass) {
+                    e.preventDefault();
+                    // Show error message
+                    if (!$('#deviceClassError').length) {
+                        $('#deviceClassSelect').after('<span id="deviceClassError" class="text-danger">The Device Class field is required for this device type.</span>');
+                    }
+                    return false;
+                } else {
+                    $('#deviceClassError').remove();
+                }
+            });
+        });
+    </script>
 }

@@ -15,6 +15,9 @@ namespace IPCU.Models
         [StringLength(40)]
         public string DeviceType { get; set; } // CL, IUC, MV
 
+        [StringLength(20)]
+        public string? DeviceClass { get; set; }
+
         [Column(TypeName = "date")]
         public DateTime DeviceInsert { get; set; }
 

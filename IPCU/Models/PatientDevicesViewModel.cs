@@ -20,11 +20,14 @@ namespace IPCU.Models
         public string RoomID { get; set; }
         public string PatientName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please select a device type")]
         [Display(Name = "Device Type")]
         public string DeviceType { get; set; }
 
-        [Required]
+        [Display(Name = "Device Class")]
+        public string? DeviceClass { get; set; }
+
+        [Required(ErrorMessage = "Please enter the insertion date")]
         [Display(Name = "Insertion Date")]
         [DataType(DataType.Date)]
         public DateTime DeviceInsert { get; set; }
@@ -47,11 +50,14 @@ namespace IPCU.Models
         [Display(Name = "Device Type")]
         public string DeviceType { get; set; }
 
+        [Display(Name = "Device Class")]
+        public string DeviceClass { get; set; }
+
         [Display(Name = "Insertion Date")]
         [DataType(DataType.Date)]
         public DateTime DeviceInsert { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Please enter the removal date")]
         [Display(Name = "Removal Date")]
         [DataType(DataType.Date)]
         public DateTime DeviceRemove { get; set; }

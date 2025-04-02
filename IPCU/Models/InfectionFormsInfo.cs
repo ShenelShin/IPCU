@@ -10,5 +10,7 @@
         public Pneumonia? PneumoniaForm { get; set; }
         public Usi? USIForm { get; set; }
         public VentilatorEventChecklist? VAEForm { get; set; }
+        public GIInfectionChecklist? GIInfectionForm { get; set; }
+        public SurgicalSiteInfectionChecklist? SSIForm { get; set; }
     }
 }

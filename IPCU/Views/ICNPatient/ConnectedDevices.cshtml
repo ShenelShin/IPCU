@@ -1,6 +1,6 @@
 ﻿@model IPCU.Models.PatientDevicesViewModel
 @{
-    ViewData["Title"] = "Patient Devices";
+    ViewData["Title"] = "Connected Devices";
 }
 
 <div class="container-fluid">
@@ -25,10 +25,10 @@
     <div class="row mb-3">
         <div class="col-md-12">
             <a asp-action="AddConnectedDevice" asp-route-id="@Model.Patient.IdNum" class="btn btn-primary">
-                <i class="fas fa-plus me-1"></i> Add Device
+                <i class="bi bi-plus-circle"></i> Add Device
             </a>
             <a asp-action="Details" asp-route-id="@Model.Patient.IdNum" class="btn btn-secondary">
-                Back to Patient Details
+                <i class="bi bi-arrow-left"></i> Back to Patient
             </a>
         </div>
     </div>
@@ -37,63 +37,66 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Current and Previous Devices</h5>
+                    <h5>Connected Devices</h5>
                 </div>
                 <div class="card-body">
-                    @if (Model.ConnectedDevices == null || !Model.ConnectedDevices.Any())
+                    @if (Model.ConnectedDevices != null && Model.ConnectedDevices.Any())
                     {
-                            <p class="alert alert-info">No devices have been recorded for this patient.</p>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Device Type</th>
+                                        <th>Device Class</th>
+                                        <th>Insertion Date</th>
+                                        <th>Removal Date</th>
+                                        <th>Duration (days)</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var device in Model.ConnectedDevices)
+                                    {
+                                        <tr>
+                                            <td>@device.DeviceType</td>
+                                            <td>@(string.IsNullOrEmpty(device.DeviceClass) ? "N/A" : device.DeviceClass)</td>
+                                            <td>@device.DeviceInsert.ToString("MM/dd/yyyy")</td>
+                                            <td>
+                                                @if (device.DeviceRemove.HasValue)
+                                                {
+                                                    @device.DeviceRemove.Value.ToString("MM/dd/yyyy")
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-success">Active</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @{
+                                                    var endDate = device.DeviceRemove ?? DateTime.Now;
+                                                    var duration = (endDate - device.DeviceInsert).Days;
+                                                }
+                                                @duration
+                                            </td>
+                                            <td>
+                                                @if (!device.DeviceRemove.HasValue)
+                                                {
+                                                    <a asp-action="UpdateConnectedDevice" asp-route-id="@Model.Patient.IdNum" asp-route-deviceId="@device.DeviceId" class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil"></i> Update
+                                                    </a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                     }
                     else
                     {
-                            <div class="table-responsive">
-                                <table class="table table-striped table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Device Type</th>
-                                            <th>Insertion Date</th>
-                                            <th>Removal Date</th>
-                                            <th>Duration (days)</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach (var device in Model.ConnectedDevices)
-                                    {
-                                        var duration = device.DeviceRemove.HasValue
-                                            ? (device.DeviceRemove.Value - device.DeviceInsert).Days
-                                            : (DateTime.Now - device.DeviceInsert).Days;
-
-                                        var status = device.DeviceRemove.HasValue ? "Removed" : "Active";
-                                        var statusClass = device.DeviceRemove.HasValue ? "badge bg-secondary" : "badge bg-success";
-
-                                                <tr>
-                                                    <td>@device.DeviceType</td>
-                                                    <td>@device.DeviceInsert.ToShortDateString()</td>
-                                                    <td>
-                                                @(device.DeviceRemove.HasValue ? device.DeviceRemove.Value.ToShortDateString() : "-")
-                                                    </td>
-                                                    <td>@duration</td>
-                                                    <td>
-                                                        <span class="@statusClass">@status</span>
-                                                    </td>
-                                                    <td>
-                                                @if (!device.DeviceRemove.HasValue)
-                                                {
-                                                                <a asp-action="UpdateConnectedDevice" 
-                                                                   asp-route-id="@Model.Patient.IdNum" 
-                                                                   asp-route-deviceId="@device.DeviceId" 
-                                                                   class="btn btn-sm btn-warning">
-                                                                    <i class="fas fa-edit me-1"></i> Update
-                                                                </a>
-                                                }
-                                                    </td>
-                                                </tr>
-                                    }
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="alert alert-info">
+                            No connected devices found for this patient.
+                        </div>
                     }
                 </div>
             </div>

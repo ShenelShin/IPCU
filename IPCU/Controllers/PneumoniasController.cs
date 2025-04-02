@@ -49,40 +49,22 @@ namespace IPCU.Controllers
                                              Patients = p
                                          }).FirstOrDefaultAsync();
 
-              /*  if (patientInfo != null)
-                {
-                    model.HospitalNumber = patientInfo.PatientMaster.HospNum;
-                    model.Gender = patientInfo.PatientMaster.Sex == "M" ? "Male" : "Female";
-                    model.Fname = patientInfo.PatientMaster.FirstName;
-                    model.Mname = patientInfo.PatientMaster.MiddleName;
-                    model.Lname = patientInfo.PatientMaster.LastName;
-                    // null kasi bdate ko fuck goddamit
-                    if (patientInfo.PatientMaster.BirthDate.HasValue)
-                    {
-                        model.DateOfBirth = patientInfo.PatientMaster.BirthDate.Value;
-                    }
-                    else
-                    {
-                        // null shit
-                        model.DateOfBirth = DateTime.MinValue;
-                    }
-                    model.UnitWardArea = patientInfo.Patients.AdmLocation;
+                if (patientInfo != null)
+                  {
+                      model.HospitalNumber = patientInfo.PatientMaster.HospNum;
+                      model.Gender = patientInfo.PatientMaster.Sex == "M" ? "Male" : "Female";
+                      model.Fname = patientInfo.PatientMaster.FirstName;
+                      model.Mname = patientInfo.PatientMaster.MiddleName;
+                      model.Lname = patientInfo.PatientMaster.LastName;
+                    model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
 
-                    // null kasi bdate ko fuck goddamit
-                    if (patientInfo.Patients.AdmDate.HasValue)
-                    {
-                        model.DateOfBirth = patientInfo.Patients.AdmDate.Value;
-                    }
-                    else
-                    {
-                        // null shit
-                        model.DateOfAdmission = DateTime.MinValue;
-                    }
-                    model.Age = int.Parse(patientInfo.Patients.Age);
+                      model.UnitWardArea = patientInfo.Patients.AdmLocation;
+                    model.DateOfAdmission = patientInfo.Patients.AdmDate.Value;
+                      model.Age = int.Parse(patientInfo.Patients.Age);
 
 
-                    // Add other fields you want to auto-fill
-                }*/
+                      // Add other fields you want to auto-fill
+                  }
             }
 
             return View("Create", model);
