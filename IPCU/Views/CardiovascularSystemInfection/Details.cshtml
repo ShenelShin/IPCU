@@ -8,41 +8,172 @@
 
 <table class="table table-bordered">
     <tr>
-        <th>Full Name:</th>
-        <td>@($"{Model.Lname}, {Model.Fname} {Model.Mname}")</td>
+        <td>First Name: @Model.Fname</td>
+        <td>Middle Name: @Model.Mname</td>
+        <td>Last Name: @Model.Lname</td>
+        <td>Hospital Number: @Model.HospitalNumber</td>
     </tr>
+
     <tr>
-        <th>Hospital Number:</th>
-        <td>@Model.HospitalNumber</td>
+        <td>Date of Birth: @(Model.DateOfBirth?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+        <td>Age: @Model.Age</td>
+        <td>Unit/Ward Area: @Model.UnitWardArea</td>
+        <td>Main Service: @Model.MainService</td>
     </tr>
+    
     <tr>
-        <th>Date of Birth:</th>
-        <td>@Model.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+        <td>Date of Event: @Model.DateOfEvent?.ToString("yyyy-MM-dd")</td>
+        <td>Investigator: @Model.Investigator</td>
+        <td>Date of Admission: @Model.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
+        <td>Disposition: @Model.Disposition</td>
     </tr>
+
     <tr>
-        <th>Age:</th>
-        <td>@Model.Age</td>
+        <td>Disposition Date: @Model.DispositionDate</td>
+        <td>Gender: @Model.Gender</td>
+        <td>Classification: @Model.Classification</td>
+        <td>MDRO: @Model.MDRO</td>
     </tr>
-    <tr>
-        <th>Unit/Ward Area:</th>
-        <td>@Model.UnitWardArea</td>
-    </tr>
-    <tr>
-        <th>Main Service:</th>
-        <td>@Model.MainService</td>
-    </tr>
-    <tr>
-        <th>Date of Event:</th>
-        <td>@Model.DateOfEvent?.ToString("yyyy-MM-dd")</td>
-    </tr>
-    <tr>
-        <th>Investigator:</th>
-        <td>@Model.Investigator</td>
-    </tr>
-    <tr>
-        <th>Date of Admission:</th>
-        <td>@Model.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
-    </tr>
+    @if (!string.IsNullOrEmpty(Model.DispositionTransfer))
+    {
+        <tr>
+            <td colspan="4">Disposition Transfer: @Model.DispositionTransfer</td>
+        </tr>
+    }
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="2">Arterial or venous infection must meet at least one of the following criteria:</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <input type="checkbox" @(Model.OrganismIdentified ? "checked" : "") disabled>
+                        Patient has organism(s) from extracted arteries or veins identified by a culture or non-culture based microbiologic testing method
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.GrossEvidenceOfInfection ? "checked" : "") disabled>
+                        Patient has evidence of arterial or venous infection on gross anatomic or histopathologic exam
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="2">Patient has at least one (1) of the following signs or symptoms: </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <input type="checkbox" @(Model.Symptom_Fever ? "checked" : "") disabled>
+                        Fever (>38.0°C)
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.Symptom_Pain ? "checked" : "") disabled>
+                        Pain*
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.Symptom_Erythema ? "checked" : "") disabled>
+                        Erythema*
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.Symptom_HeatAtVascularSite ? "checked" : "") disabled>
+                        Heat at involved vascular site*
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="2">AND</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <input type="checkbox" @(Model.MoreThan15Colonies ? "checked" : "") disabled>
+                        More than 15 colonies cultured from intravascular cannula tip using semiquantitative culture method
+                    </div>                  
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="2">Patient ≤1 year of age has at least one of the following signs or symptoms: </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div>
+                        <input type="checkbox" @(Model.Infant_Fever ? "checked" : "") disabled>
+                        Fever (>38.0°C)
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.Infant_Hypothermia ? "checked" : "") disabled>
+                        Hypothermia (<36.0°C)
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.Infant_Apnea ? "checked" : "") disabled>
+                        Apnea*
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.Infant_Bradycardia ? "checked" : "") disabled>
+                        Bradycardia*
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.Infant_Lethargy ? "checked" : "") disabled>
+                        Lethargy*
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.Infant_Pain ? "checked" : "") disabled>
+                        Pain*
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.Infant_Erythema ? "checked" : "") disabled>
+                        Erythema*
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.Infant_HeatAtVascularSite ? "checked" : "") disabled>
+                        Heat at involved vascular site*, AND*
+                    </div>
+                    <div>
+                        <input type="checkbox" @(Model.Infant_MoreThan15Colonies ? "checked" : "") disabled>
+                        More than 15 colonies cultured from intravascular cannula tip using semi quantitative culture method
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <td><b>Culture Date: </b> @Model.CultureDate.ToShortDateString()</td>
+            </tr>
+            <tr>
+                <td><b>Culture Results: </b>@Model.CultureResults</td>
+            </tr>
+        </tbody>
+    </table>
+
+    
 </table>
 
 <a asp-action="PatientIndex" class="btn btn-primary">Back to List</a>
