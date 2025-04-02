@@ -19,7 +19,7 @@ namespace IPCU.Models
 
 
         [Required]
-        public int HospNum { get; set; }
+        public string HospNum { get; set; }
 
 
         [Required]

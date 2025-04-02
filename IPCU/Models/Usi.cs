@@ -7,7 +7,7 @@
         public string Fname { get; set; } // First Name
         public string Lname { get; set; } // Last Name
         public string Mname { get; set; } // Middle Name
-        public int HospitalNumber { get; set; } // Foreign Key to Hospital Records
+        public string HospitalNumber { get; set; } // Foreign Key to Hospital Records
         public DateTime DateOfBirth { get; set; } // Date of Birth
         public int Age { get; set; } // Age
         public string UnitWardArea { get; set; } // Unit/Ward/Area

@@ -129,12 +129,12 @@ namespace IPCU.Controllers
                                              .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
                                          UTIForm = _context.UTIModels
                                              .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         //PneumoniaForm = _context.Pneumonias
-                                         //    .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         //USIForm = _context.Usi
-                                         //    .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         //VAEForm = _context.VentilatorEventChecklists
-                                         //    .FirstOrDefault(f => f.HospNum == p.HospNum)
+                                         PneumoniaForm = _context.Pneumonias
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
+                                         USIForm = _context.Usi
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
+                                         VAEForm = _context.VentilatorEventChecklists
+                                             .FirstOrDefault(f => f.HospNum == p.HospNum)
                                      }
                                  })
                                 .FirstOrDefaultAsync();

@@ -48,17 +48,7 @@ namespace IPCU.Controllers
 
                 if (patientInfo != null)
                 {
-                    if (int.TryParse(patientInfo.PatientMaster.HospNum, out int hospitalNumber))
-                    {
-                        model.HospNum = hospitalNumber;
-                    }
-                    else
-                    {
-                        // Handle the case where HospNum is not a valid integer
-                        // You could set a default value or handle the error
-                        model.HospNum = 0; // or another appropriate default value
-                        ModelState.AddModelError("HospitalNumber", "Invalid hospital number format");
-                    }
+                    model.HospNum = patientInfo.PatientMaster.HospNum;
                     model.Gender = patientInfo.PatientMaster.Sex == "M" ? "Male" : "Female";
                     model.FName = patientInfo.PatientMaster.FirstName;
                     model.MName = patientInfo.PatientMaster.MiddleName;
