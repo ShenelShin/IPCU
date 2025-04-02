@@ -76,5 +76,32 @@ namespace IPCU.Controllers
 
             return View("Index", model);
         }
+
+        // Get all Pediatric VAE checklist submissions
+        public IActionResult PatientIndex()
+        {
+            var model = _context.PediatricVAEChecklist.ToList();
+            return View("table", model);
+        }
+
+
+
+        // Action to display the details of a specific checklist item
+        public async Task<IActionResult> Details(int id)
+        {
+            var checklist = await _context.PediatricVAEChecklist
+                                          .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (checklist == null)
+            {
+                return NotFound();
+            }
+
+            return View(checklist);
+        }
+
+
+
+
     }
 }
