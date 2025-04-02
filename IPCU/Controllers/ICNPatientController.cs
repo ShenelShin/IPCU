@@ -11,7 +11,6 @@ using IPCU.Data;
 
 namespace IPCU.Controllers
 {
-    [Authorize(Roles = "ICN, Admin")]
     public class ICNPatientController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -78,7 +77,6 @@ namespace IPCU.Controllers
             return View(patients);
         }
 
-        // GET: Show details of a specific patient
         public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -86,7 +84,6 @@ namespace IPCU.Controllers
                 return NotFound();
             }
 
-            // Get the current logged-in user to check assigned areas
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
@@ -95,7 +92,7 @@ namespace IPCU.Controllers
 
             var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
 
-            // Get the patient details
+            // Get the patient details with all related infection forms
             var patient = await (from p in _context.Patients
                                  join m in _context.PatientMasters on p.HospNum equals m.HospNum
                                  where p.IdNum == id &&
@@ -118,21 +115,57 @@ namespace IPCU.Controllers
                                      EmailAddress = m.EmailAddress,
                                      CellNum = m.cellnum,
                                      AdmissionDuration = EF.Functions.DateDiffDay(p.AdmDate.Value, DateTime.Now),
-                                     VitalSigns = _context.VitalSigns.Where(v => v.HospNum == m.HospNum).ToList()
-
+                                     VitalSigns = _context.VitalSigns.Where(v => v.HospNum == m.HospNum).ToList(),
+                                     InfectionForms = new InfectionFormsInfo
+                                     {
+                                         CardiovascularForm = _context.CardiovascularSystemInfection
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
+                                         SSTForm = _context.SSTInfectionModels
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
+                                         LCBIForm = _context.LaboratoryConfirmedBSI
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
+                                         PVAEForm = _context.PediatricVAEChecklist
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
+                                         UTIForm = _context.UTIModels
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
+                                         PneumoniaForm = _context.Pneumonias
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
+                                         USIForm = _context.Usi
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
+                                         VAEForm = _context.VentilatorEventChecklists
+                                             .FirstOrDefault(f => f.HospNum == p.HospNum)
+                                     }
                                  })
-                               .FirstOrDefaultAsync();
+                                .FirstOrDefaultAsync();
 
             if (patient == null)
             {
                 return NotFound();
             }
 
-            // Format the patient name after the database query
+            // Format the patient name
             patient.PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}";
+
+            // Update HAI count based on existing forms
+            patient.HaiCount = CountHaiForms(patient.InfectionForms);
 
             return View(patient);
         }
+
+        private int CountHaiForms(InfectionFormsInfo forms)
+        {
+            int count = 0;
+            if (forms.CardiovascularForm != null) count++;
+            if (forms.SSTForm != null) count++;
+            if (forms.LCBIForm != null) count++;
+            if (forms.PVAEForm != null) count++;
+            if (forms.UTIForm != null) count++;
+            if (forms.PneumoniaForm != null) count++;
+            if (forms.USIForm != null) count++;
+            if (forms.VAEForm != null) count++;
+            return count;
+        }
+
 
         // GET: Show vital signs for a specific patient
         public async Task<IActionResult> VitalSigns(string id)

@@ -7,41 +7,130 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IPCU.Data;
 using IPCU.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IPCU.Controllers
 {
     public class UsisController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UsisController(ApplicationDbContext context)
+
+        public UsisController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
         // GET: Usis
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string hospNum)
         {
-            return View(await _context.Usi.ToListAsync());
+            var model = new Usi();
+
+            // Get current user's name for investigator
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser != null)
+            {
+                model.Investigator = $"{currentUser.FirstName} {currentUser.Initial} {currentUser.LastName}".Trim();
+            }
+
+            if (!string.IsNullOrEmpty(hospNum))
+            {
+                // Get patient info where HospNum matches
+                var patientInfo = await (from pm in _context.PatientMasters
+                                         join p in _context.Patients
+                                         on pm.HospNum equals p.HospNum
+                                         where pm.HospNum == hospNum
+                                         select new
+                                         {
+                                             PatientMaster = pm,
+                                             Patients = p
+                                         }).FirstOrDefaultAsync();
+
+                if (patientInfo != null)
+                {
+                    model.HospitalNumber = patientInfo.PatientMaster.HospNum;
+                    model.Gender = patientInfo.PatientMaster.Sex == "M" ? "Male" : "Female";
+                    model.Fname = patientInfo.PatientMaster.FirstName;
+                    model.Mname = patientInfo.PatientMaster.MiddleName;
+                    model.Lname = patientInfo.PatientMaster.LastName;
+                    model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
+                    model.UnitWardArea = patientInfo.Patients.AdmLocation;
+
+                    // null kasi bdate ko fuck goddamit
+                    if (patientInfo.Patients.AdmDate.HasValue)
+                    {
+                        model.DateOfBirth = patientInfo.Patients.AdmDate.Value;
+                    }
+                    else
+                    {
+                        // null shit
+                        model.DateOfAdmission = DateTime.MinValue;
+                    }
+                    model.Age = int.Parse(patientInfo.Patients.Age);
+
+
+                    // Add other fields you want to auto-fill
+                }
+            }
+
+            return View("Create", model);
         }
 
-        // GET: Usis/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> PatientIndex(string hospNum)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(hospNum))
             {
                 return NotFound();
             }
 
-            var usi = await _context.Usi
-                .FirstOrDefaultAsync(m => m.Id == id);
+            // Query all USI records where HospitalNumber matches
+            var usiRecords = await _context.Usi
+                .Where(u => u.HospitalNumber == hospNum) // Assuming HospitalNumber is a string
+                .ToListAsync();
+
+
+            if (!usiRecords.Any())
+            {
+                return NotFound("No USI records found for this hospital number.");
+            }
+
+            // Create the ViewModel
+            var model = new PatientUsiViewModel
+            {
+                FullName = $"{usiRecords.First().Fname} {usiRecords.First().Mname} {usiRecords.First().Lname}".Trim(),
+                HospitalNumber = usiRecords.First().HospitalNumber.ToString(),
+                DateOfBirth = usiRecords.First().DateOfBirth,
+                Age = usiRecords.First().Age,
+                UnitWardArea = usiRecords.First().UnitWardArea,
+                Investigator = usiRecords.First().Investigator,
+                DateOfAdmission = usiRecords.First().DateOfAdmission,
+                Gender = usiRecords.First().Gender,
+                UsiRecords = usiRecords
+            };
+
+            return View("Index", model);
+        }
+
+
+
+
+        // GET: Usis/Details/5
+        public async Task<IActionResult> Details(int id)
+        {
+            var usi = await _context.Usi.FindAsync(id);
+
             if (usi == null)
             {
-                return NotFound();
+                return NotFound($"No record found for ID {id}");
             }
 
             return View(usi);
         }
+
+
 
         // GET: Usis/Create
         public IActionResult Create()

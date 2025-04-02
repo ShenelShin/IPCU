@@ -52,6 +52,8 @@ namespace IPCU.Models
 
         public ICollection<VitalSigns> VitalSigns { get; set; }
 
+        public InfectionFormsInfo? InfectionForms { get; set; }
+
         public PatientViewModel()
         {
             VitalSigns = new List<VitalSigns>();

@@ -13,132 +13,131 @@
 
 <h4>Usi</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <td>
-                            <label asp-for="Fname" class="control-label"></label>
-                            <input asp-for="Fname" class="form-control" />
-                            <span asp-validation-for="Fname" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <label asp-for="Lname" class="control-label"></label>
-                            <input asp-for="Lname" class="form-control" />
-                            <span asp-validation-for="Lname" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <label asp-for="Mname" class="control-label"></label>
-                            <input asp-for="Mname" class="form-control" />
-                            <span asp-validation-for="Mname" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <label asp-for="HospitalNumber" class="control-label"></label>
-                            <input asp-for="HospitalNumber" class="form-control" />
-                            <span asp-validation-for="HospitalNumber" class="text-danger"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label asp-for="DateOfBirth" class="control-label"></label>
-                            <input asp-for="DateOfBirth" class="form-control" />
-                            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <label asp-for="Age" class="control-label"></label>
-                            <input asp-for="Age" class="form-control" />
-                            <span asp-validation-for="Age" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <label asp-for="UnitWardArea" class="control-label"></label>
-                            <input asp-for="UnitWardArea" class="form-control" />
-                            <span asp-validation-for="UnitWardArea" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <label asp-for="MainService" class="control-label"></label>
-                            <input asp-for="MainService" class="form-control" />
-                            <span asp-validation-for="MainService" class="text-danger"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label asp-for="DateOfEvent" class="control-label"></label>
-                            <input asp-for="DateOfEvent" class="form-control" />
-                            <span asp-validation-for="DateOfEvent" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <label asp-for="Investigator" class="control-label"></label>
-                            <input asp-for="Investigator" class="form-control" />
-                            <span asp-validation-for="Investigator" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <label asp-for="DateOfAdmission" class="control-label"></label>
-                            <input asp-for="DateOfAdmission" class="form-control" />
-                            <span asp-validation-for="DateOfAdmission" class="text-danger"></span>
-                        </td>
-                        <td>
-                            <label asp-for="Disposition" class="control-label"></label>
-                            <select asp-for="Disposition" class="form-control" id="dispositionSelect">
-                                <option value="">Select Disposition</option>
-                                <option value="Mortality">Mortality</option>
-                                <option value="Discharged">Discharged</option>
-                                <option value="Still Admitted">Still Admitted</option>
-                                <option value="Transferred In">Transferred In</option>
-                                <option value="Transferred Out">Transferred Out</option>
-                            </select>
-                            <span asp-validation-for="Disposition" class="text-danger"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label asp-for="DispositionDate" class="control-label"></label>
-                            <input asp-for="DispositionDate" type="date" class="form-control" />
-                            <span asp-validation-for="DispositionDate" class="text-danger"></span>
-                        </td>
+<form asp-action="Create" method="post">
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto px-2 font-weight-bold">Patient Information</legend>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <label asp-for="Fname"></label>
+                    <input asp-for="Fname" class="form-control" />
+                    <span asp-validation-for="Fname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Mname"></label>
+                    <input asp-for="Mname" class="form-control" />
+                    <span asp-validation-for="Mname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Lname"></label>
+                    <input asp-for="Lname" class="form-control" />
+                    <span asp-validation-for="Lname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="HospitalNumber"></label>
+                    <input asp-for="HospitalNumber" class="form-control" />
+                    <span asp-validation-for="HospitalNumber" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="DateOfBirth"></label>
+                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Age"></label>
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="UnitWardArea"></label>
+                    <input asp-for="UnitWardArea" class="form-control" />
+                    <span asp-validation-for="UnitWardArea" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="MainService"></label>
+                    <input asp-for="MainService" class="form-control" />
+                    <span asp-validation-for="MainService" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="DateOfEvent"></label>
+                    <input asp-for="DateOfEvent" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfEvent" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Investigator"></label>
+                    <input asp-for="Investigator" class="form-control" />
+                    <span asp-validation-for="Investigator" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfAdmission"></label>
+                    <input asp-for="DateOfAdmission" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfAdmission" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Disposition"></label>
+                    <select asp-for="Disposition" class="form-control">
+                        <option value="">-- Select Disposition --</option>
+                        <option>Mortality</option>
+                        <option>Discharged</option>
+                        <option>Still Admitted</option>
+                        <option>Transferred In</option>
+                        <option>Transferred Out</option>
+                    </select>
+                    <span asp-validation-for="Disposition" class="text-danger"></span>
 
-                        <td>
-                            <label asp-for="Gender" class="control-label"></label>
-                            <select asp-for="Gender" class="form-control">
-                                <option value="">Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                            <span asp-validation-for="Gender" class="text-danger"></span>
-                        </td>
+                <div id="dispositionTransferDiv" style="display:none;">
 
-                        <td>
-                            <label asp-for="Classification" class="control-label"></label>
-                            <select asp-for="Classification" class="form-control">
-                                <option value="">Select Classification</option>
-                                <option value="Pay">Pay</option>
-                                <option value="Service">Service</option>
-                            </select>
-                            <span asp-validation-for="Classification" class="text-danger"></span>
-                        </td>
-                        <td id="dispositionTransferField" style="display: none;">
-                            <label asp-for="DispositionTransfer" class="control-label"></label>
-                            <input asp-for="DispositionTransfer" class="form-control" />
-                            <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
-                        </td>
+                    <label asp-for="DispositionTransfer"></label>
+                    <input asp-for="DispositionTransfer" class="form-control" />
+                    <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
 
-                    </tr>
-                    <tr>
-                        <td colspan="4">
-                            <label asp-for="MDRO" class="control-label"></label>
-                            <select asp-for="MDRO" class="form-control">
-                                <option value="">Select Option</option>
-                                <option value="Yes">Yes</option>
-                                <option value="No">No</option>
-                            </select>
-                            <span asp-validation-for="MDRO" class="text-danger"></span>
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
+                </div>
+                </td>
+                
+            </tr>
+            <tr>
+               
+                <td>
+                    <label asp-for="DispositionDate"></label>
+                    <input asp-for="DispositionDate" type="date" class="form-control" />
+                    <span asp-validation-for="DispositionDate" class="text-danger"></span>
+                </td>
+              
+                <td>
+                    <label asp-for="Gender"></label>
+                    <select asp-for="Gender" class="form-control">
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Classification"></label>
+                    <select asp-for="Classification" class="form-control">
+                        <option value="">Select</option>
+                        <option>Pay</option>
+                        <option>Service</option>
+                    </select>
+                    <span asp-validation-for="Classification" class="text-danger"></span>
+                </td>
+                    <td>
+                    <label asp-for="MDRO"></label>
+                    <select asp-for="MDRO" class="form-control">
+                        <option value="">Select</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    <span asp-validation-for="MDRO" class="text-danger"></span>
+                </td>
+            </tr>         
+            
+        </table>
+    </fieldset>
 
 
             <!-- Hidden field to ensure TypeClass is always submitted -->
@@ -153,19 +152,20 @@
                 <tbody id="group1">
                     <tr>
                         <td>
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group1" type="checkbox" asp-for="PatientOrganism" />
                                 Patient has organism(s) identified from fluid (not urine) or tissue from affected site by a culture or non-culture basedmicrobiologic testing method, which is performed for purposes of clinical diagnosis or treatment
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                    <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group1" type="checkbox" asp-for="PatientAbscess" />
                                 Patient has an abscess or other evidence of infection on gross anatomical exam, during invasive procedure, or onhistopathologic exam
                             </label>
-                        </td>
+                        </div>
+                </td>
                     </tr>
                 </tbody>
             </table>
@@ -179,38 +179,33 @@
                 <tbody>
                     <tr>
                         <td>
+                <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group2" type="checkbox" asp-for="Fever1" />
                                 Fever (>38.0°C)
                             </label>
-                        </td>
-                    </tr>
-                    <!-- Parent Checkbox -->
-                    <tr>
-                        <td>
+                        </div>
+
+                <tdivd>
                             <label class="form-check-label">
                                 <input class="form-check-input group2" type="checkbox" asp-for="LocalizedPain" />
                                 Localized pain or tenderness*, AND at least one of the following:
                             </label>
-                        </td>
-                    </tr>
-
-                    <!-- Child Checkboxes -->
-                    <tr>
-                        <td>
+                        </tdivd>
+                <div>
                             <label class="form-check-label indent-child">
                                 <input class="form-check-input group2" type="checkbox" asp-for="PurulentDrainage" />
                                 Purulent drainage from affected site
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                <div>
                             <label class="form-check-label indent-child">
                                 <input class="form-check-input group2" type="checkbox" asp-for="Organism" />
                                 Organism(s) identified from blood by a culture or non-culture-based microbiologic testing method, AND imaging test evidence definitive for infection (for example, ultrasound, CT scan, MRI, or radiolabel scan [gallium, technetium]), which if equivocal is supported by clinical correlation, specifically, physician documentation of antimicrobial treatment for urinary system infection
                             </label>
-                        </td>
+                        </div>
+                </td>
                     </tr>
                 </tbody>
             </table>
@@ -218,97 +213,98 @@
             <table class="table table-bordered" style="display: none;" id="group3">
                 <thead>
                     <tr>
-                        <th colspan="2">Group 3: Select at least one</th>
-                    </tr>
+                <th colspan="2">Patient has one (1) of the following signs or symptoms:</th>
+            </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group3" type="checkbox" asp-for="PatienLessthan1year" />
                                 Patient ≤1year of age has at least one of the following signs or symptoms:
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group3" type="checkbox" asp-for="Fever2" />
                                 Fever (>38.0°C)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                <div>
                             <label class="form-check-label">
                                 <input class="form-check-input group3" type="checkbox" asp-for="Hypothermia" />
                                 Hypothermia (>36.0°C)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" asp-for="Apnea" />
                                 @Html.DisplayNameFor(model => model.Apnea)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" asp-for="Bradycardia" />
                                 @Html.DisplayNameFor(model => model.Bradycardia)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" asp-for="Lethargy" />
                                 @Html.DisplayNameFor(model => model.Lethargy)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+            
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" asp-for="Vomiting" />
                                 @Html.DisplayNameFor(model => model.Vomiting)
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" asp-for="PurulentDrainage2" />
-                                Purulent drainage from affected site
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+              
+                </td>
+                        </tr>
+            <tr>
+                <th colspan="2">Patient has one (1) of the following signs or symptoms:</th>
+            </tr>
+            <tr>
+                <td>
+                    <div>
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" asp-for="PurulentDrainage2" />
+                            Purulent drainage from affected site
+                        </label>
+                    </div>
+                        <div>
                             <label class="form-check-label">
                                 <input class="form-check-input" type="checkbox" asp-for="Organism2" />
                                 Organism(s) identified from blood by a culture or non-culture based microbiologic testing method, AND imaging test evidencedefinitive for infection (for example, ultrasound, CT scan, magnetic resonance imaging [MRI], or radiolabel scan [gallium, technetium]), which if equivocal is supported by clinical correlation, specifically, physician documentation of antimicrobial
                                 treatment for urinary system infection
                             </label>
+                        </div>
                         </td>
-                    </tr>
-                    <tr>
-                        <td>
+            </tr>
+            <tr>
+                <td>
+                        <div>
                             <label asp-for="CultureDate" class="control-label"></label>
                             <input asp-for="CultureDate" class="form-control" />
                             <span asp-validation-for="CultureDate" class="text-danger"></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
+                        </div>
+           
+                        <div>
                             <label asp-for="CultureResults" class="control-label"></label>
                             <input asp-for="CultureResults" class="form-control" />
                             <span asp-validation-for="CultureResults" class="text-danger"></span>
-                        </td>
-                    </tr>
+                        </div>
+                </td>
+            </tr>
+                    
                 </tbody>
             </table>
 
@@ -316,8 +312,7 @@
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-</div>
+ 
 
 <div>
     <a asp-action="Index">Back to List</a>

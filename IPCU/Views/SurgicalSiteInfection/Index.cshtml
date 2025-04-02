@@ -1,0 +1,933 @@
+﻿@model IPCU.Models.SurgicalSiteInfectionChecklist
+
+@{
+    ViewData["Title"] = "SURGICAL SITE INFECTION (SSI) CHECKLIST";
+}
+
+<style>
+    fieldset {
+        border: 2px solid #000;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    legend {
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+    td, th {
+        border: 1px solid #000;
+        padding: 5px;
+        vertical-align: top;
+    }
+
+    label {
+        font-weight: normal;
+    }
+</style>
+
+<h2 style="text-align:center;">@ViewData["Title"]</h2>
+
+<form asp-action="Submit" method="post">
+    <fieldset>
+        <legend>Patient Information</legend>
+        <table>
+            <tr>
+                <td>
+                    <label asp-for="Fname"></label><br />
+                    <input asp-for="Fname" class="form-control" />
+                    <span asp-validation-for="Fname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Mname"></label><br />
+                    <input asp-for="Mname" class="form-control" />
+                    <span asp-validation-for="Mname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Lname"></label><br />
+                    <input asp-for="Lname" class="form-control" />
+                    <span asp-validation-for="Lname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="HospitalNumber"></label><br />
+                    <input asp-for="HospitalNumber" class="form-control" />
+                    <span asp-validation-for="HospitalNumber" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="DateOfBirth"></label><br />
+                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Age"></label><br />
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Gender"></label><br />
+                    <select asp-for="Gender" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Classification"></label><br />
+                    <select asp-for="Classification" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Pay</option>
+                        <option>Service</option>
+                    </select>
+                    <span asp-validation-for="Classification" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="UnitWardArea"></label><br />
+                    <input asp-for="UnitWardArea" class="form-control" />
+                    <span asp-validation-for="UnitWardArea" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="MainService"></label><br />
+                    <input asp-for="MainService" class="form-control" />
+                    <span asp-validation-for="MainService" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfAdmission"></label><br />
+                    <input asp-for="DateOfAdmission" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfAdmission" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfEvent"></label><br />
+                    <input asp-for="DateOfEvent" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfEvent" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Investigator"></label><br />
+                    <input asp-for="Investigator" class="form-control" />
+                    <span asp-validation-for="Investigator" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="MDRO"></label><br />
+                    <select asp-for="MDRO" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    <span asp-validation-for="MDRO" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Disposition"></label><br />
+                    <select asp-for="Disposition" class="form-control" id="DispositionDropdown">
+                        <option value="">--Select--</option>
+                        <option>Mortality</option>
+                        <option>Discharged</option>
+                        <option>Still Admitted</option>
+                        <option>Transferred In</option>
+                        <option>Transferred Out</option>
+                    </select>
+                    <span asp-validation-for="Disposition" class="text-danger"></span>
+                </td>
+                <!-- Disposition Transfer input - initially hidden -->
+
+
+                <td>
+                    <label asp-for="DispositionDate"></label><br />
+                    <input asp-for="DispositionDate" type="date" class="form-control" />
+                    <span asp-validation-for="DispositionDate" class="text-danger"></span>
+                </td>
+            </tr>
+
+
+            <td id="DispositionTransferRow" style="display:none;" colspan="2">
+                <label asp-for="DispositionTransfer"></label><br />
+                <input asp-for="DispositionTransfer" class="form-control" />
+                <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+            </td>
+
+            <td colspan="2">
+                <h4 style="margin-bottom:10px;">Type & Classification</h4>
+
+                <input type="checkbox" id="SIPCheckbox" name="TypeClass" value="SIP" onchange="toggleSIP_SIS()" />
+                <label for="SIPCheckbox">SIP</label>
+
+                <input type="checkbox" id="SISCheckbox" name="TypeClass" value="SIS" onchange="toggleSIP_SIS()" />
+                <label for="SISCheckbox">SIS</label>
+
+                <input type="checkbox" id="DIPCheckbox" name="TypeClass" value="DIP" />
+                <label for="DIPCheckbox">DIP</label>
+
+                <input type="checkbox" id="DISCheckbox" name="TypeClass" value="DIS" />
+                <label for="DISCheckbox">DIS</label>
+
+                <input type="checkbox" id="OSCheckbox" name="TypeClass" value="OS" />
+                <label for="OSCheckbox">O/S, specify:</label>
+                <input type="text" id="OSSpecify" name="OSSpecify" style="margin-left: 5px;" />
+
+
+                <input type="hidden" asp-for="TypeClass" id="TypeClassHidden" />
+                <span asp-validation-for="TypeClass" class="text-danger"></span>
+            </td>
+
+            </tr>
+        </table>
+    </fieldset>
+
+    <div id="SIP_SIS_Section" style="display: none;">
+        <td colspan="2">
+            <fieldset>
+                <legend><strong>Superficial Incisional SSI (SIP, SIS)*</strong></legend>
+                <table>
+                    <tr>
+                        <td colspan="2">
+                            <strong>Date of event occurs <u>within 30 days</u></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input asp-for="InvolvesOnlySkinAndSubcutaneousTissue" type="checkbox" />
+                            <label asp-for="InvolvesOnlySkinAndSubcutaneousTissue">Involves only skin and subcutaneous tissue of the incision</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <strong>AND, at least one of the following:</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input asp-for="PurulentDrainage" type="checkbox" />
+                            <label asp-for="PurulentDrainage">Purulent drainage from the superficial incision</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input asp-for="OrganismsIdentified" type="checkbox" />
+                            <label asp-for="OrganismsIdentified">Organisms identified from an aseptically-obtained specimen from the superficial incision or subcutaneous tissue by a culture or non-culture-based microbiologic testing method</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input asp-for="SuperficialIncisionOpened" type="checkbox" />
+                            <label asp-for="SuperficialIncisionOpened">A superficial incision that is deliberately opened by a surgeon, physician, <strong>AND</strong></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px;">
+                            <input asp-for="NoCulturePerformed" type="checkbox" />
+                            <label asp-for="NoCulturePerformed">Culture or non-culture-based testing of the superficial incision or subcutaneous tissue is not performed, <strong>AND</strong></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 20px;">
+                            <input asp-for="PatientHasSymptoms" type="checkbox" />
+                            <label asp-for="PatientHasSymptoms">Patient has <strong>at least one</strong> of the following signs or symptoms:</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 40px;">
+                            <input asp-for="LocalizedPainOrTenderness" type="checkbox" />
+                            <label asp-for="LocalizedPainOrTenderness">Localized pain or tenderness</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 40px;">
+                            <input asp-for="LocalizedSwelling" type="checkbox" />
+                            <label asp-for="LocalizedSwelling">Localized swelling</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 40px;">
+                            <input asp-for="Erythema" type="checkbox" />
+                            <label asp-for="Erythema">Erythema</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 40px;">
+                            <input asp-for="Heat" type="checkbox" />
+                            <label asp-for="Heat">Heat</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input asp-for="DiagnosisByPhysician" type="checkbox" />
+                            <label asp-for="DiagnosisByPhysician">Diagnosis of a superficial incisional SSI by a physician</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <em>
+                                *Superficial incisional SSIs are monitored for a 30-day period for all procedure types; Secondary incisional SSIs are monitored for a 30-day period regardless of the surveillance period for the primary site.
+                            </em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Culture date:</strong></td>
+                        <td>
+                            <input asp-for="CultureDate" type="date" class="form-control" />
+                            <span asp-validation-for="CultureDate" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Culture results:</strong></td>
+                        <td>
+                            <textarea asp-for="CultureResults" class="form-control"></textarea>
+                            <span asp-validation-for="CultureResults" class="text-danger"></span>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </td>
+    </div>
+
+
+    <!-- Deep Incisional SSI (DIP, DIS) Section (Initially Hidden) -->
+    <div id="DIP_DIS_Section" style="display: none;">
+        <fieldset>
+            <legend><strong>Deep Incisional SSI (DIP, DIS)</strong></legend>
+            <table>
+                <tr>
+                    <td colspan="2"><strong>Date of event occurs <u>within 30 or 90 days</u></strong></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>AND</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input asp-for="InvolvesDeepSoftTissues" type="checkbox" />
+                        <label asp-for="InvolvesDeepSoftTissues">Involves deep soft tissues of the incision (for example, fascial and muscle layers)</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><strong>AND, at least one of the following:</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input asp-for="IDSTPurulentDrainage" type="checkbox" />
+                        <label asp-for="IDSTPurulentDrainage">Purulent drainage from the deep incision</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input asp-for="DeepIncisionOpenedOrDehisces" type="checkbox" />
+                        <label asp-for="DeepIncisionOpenedOrDehisces">A deep incision that is deliberately opened or aspirated by a surgeon, physician, or spontaneously dehisces</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input asp-for="IDSTSuperficialIncisionOpened" type="checkbox" />
+                        <label asp-for="IDSTSuperficialIncisionOpened">A superficial incision that is deliberately opened by a surgeon, physician, <strong>AND</strong></label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 20px;">
+                        <input asp-for="IDSTOrganismsIdentified" type="checkbox" />
+                        <label asp-for="IDSTOrganismsIdentified">
+                            Organism(s) identified from the deep soft tissues of the incision by a culture or nonculture-based microbiologic testing,
+                            or culture or non-culture-based microbiologic testing method is not performed.
+                            A culture or non-culture base test from the deep soft tissues of the incision that has a negative finding does not meet this criterion, <strong>AND</strong>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input asp-for="IDSTPatientHasSymptoms" type="checkbox" />
+                        <label asp-for="IDSTPatientHasSymptoms"><strong>Patient has at least one</strong> of the following signs or symptoms:</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 40px;">
+                        <input asp-for="Fever" type="checkbox" />
+                        <label asp-for="Fever">Fever (>38°C)</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-left: 40px;">
+                        <input asp-for="IDSTLocalizedPainOrTenderness" type="checkbox" />
+                        <label asp-for="IDSTLocalizedPainOrTenderness">Localized pain or tenderness</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <input asp-for="AbscessOrEvidenceOfInfection" type="checkbox" />
+                        <label asp-for="AbscessOrEvidenceOfInfection">An abscess or other evidence of infection involving the deep incision detected on gross anatomical exam, histopathologic exam, or imaging test</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Culture date:</strong></td>
+                    <td>
+                        <input asp-for="IDSTCultureDate" type="date" class="form-control" />
+                        <span asp-validation-for="IDSTCultureDate" class="text-danger"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Culture results:</strong></td>
+                    <td>
+                        <textarea asp-for="IDSTCultureResults" class="form-control"></textarea>
+                        <span asp-validation-for="IDSTCultureResults" class="text-danger"></span>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+
+    <div id="OSSection" style="display: none;">
+        <fieldset style="border: 2px solid black; padding: 10px; width: 100%;">
+            <legend style="font-weight: bold; background-color: black; color: white; padding: 5px;">Organ/Space SSI (O/S)</legend>
+
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+                <tr>
+                    <td colspan="2" style="border-bottom: 1px solid black; padding: 5px;">
+                        <strong>Date of event occurs <u>within 30 or 90 days</u></strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="border-bottom: 1px solid black; padding: 5px;"><strong>AND</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding: 5px;">
+                        <input asp-for="InvolvesDeeperThanFascialOrMuscleLayers" type="checkbox" />
+                        <label asp-for="InvolvesDeeperThanFascialOrMuscleLayers">
+                            Involves any part of the anatomy deeper than the fascial or muscle layers that was opened or manipulated during surgery
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="border-bottom: 1px solid black; padding: 5px;"><strong>AND, at least one of the following:</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding: 5px;">
+                        <input asp-for="OSPurulentDrainage" type="checkbox" />
+                        <label asp-for="OSPurulentDrainage">
+                            Purulent drainage from a drain placed in the organ/space (e.g., closed suction drainage system, open drain, T-tube drain, CT-guided drainage)
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding: 5px;">
+                        <input asp-for="OSOrganismsIdentified" type="checkbox" />
+                        <label asp-for="OSOrganismsIdentified">
+                            Organisms identified from fluid or tissue in the organ/space by a culture or non-culture based microbiologic testing method
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding: 5px;">
+                        <input asp-for="OSAbscessOrEvidenceOfInfection" type="checkbox" />
+                        <label asp-for="OSAbscessOrEvidenceOfInfection">
+                            An abscess or other evidence of infection involving the organ/space detected on gross anatomical exam, histopathologic exam, or imaging test
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="border-bottom: 1px solid black; padding: 5px;"><strong>AND</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding: 5px;">
+                        <input asp-for="MeetsSpecificOrganSpaceInfectionCriteria" type="checkbox" />
+                        <label asp-for="MeetsSpecificOrganSpaceInfectionCriteria">
+                            Meets at least one criterion for a specific organ/space infection site (see back for details)
+                        </label>
+                        <div>
+                            <input type="checkbox" id="BURNCheckbox" name="Subclass" value="BURN"
+                                   onclick="document.getElementById('BURNTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="BURNCheckbox">BURN</label>
+
+                            <input type="checkbox" id="CDICheckbox" name="Subclass" value="CDI"
+                                   onclick="document.getElementById('CDITable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="CDICheckbox">CDI</label>
+
+                            <input type="checkbox" id="DECUCheckbox" name="Subclass" value="DECU"
+                                   onclick="document.getElementById('DECUTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="DECUCheckbox">DECU</label>
+
+                            <input type="checkbox" id="GECheckbox" name="Subclass" value="GE"
+                                   onclick="document.getElementById('GETable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="GECheckbox">GE</label>
+
+                            <input type="checkbox" id="GITCheckbox" name="Subclass" value="GIT"
+                                   onclick="document.getElementById('GITTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="GITCheckbox">GIT</label>
+
+                            <input type="checkbox" id="IABCheckbox" name="Subclass" value="IAB"
+                                   onclick="document.getElementById('IABTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="IABCheckbox">IAB</label>
+
+                            <input type="checkbox" id="OREPCheckbox" name="Subclass" value="OREP"
+                                   onclick="document.getElementById('OREPTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="OREPCheckbox">OREP</label>
+
+                            <input type="checkbox" id="SSICheckbox" name="Subclass" value="SSI"
+                                   onclick="document.getElementById('SSITable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="SSICheckbox">SSI</label>
+
+                            <input type="checkbox" id="STCheckbox" name="Subclass" value="ST"
+                                   onclick="document.getElementById('STTable').style.display = this.checked ? 'block' : 'none';" />
+                            <label for="STCheckbox">ST</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border-top: 1px solid black; padding: 5px;"><strong>Culture date:</strong></td>
+                    <td style="border-top: 1px solid black; padding: 5px;">
+                        <input asp-for="OSCultureDate" type="date" class="form-control" />
+                        <span asp-validation-for="OSCultureDate" class="text-danger"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border-bottom: 1px solid black; padding: 5px;"><strong>Culture results:</strong></td>
+                    <td style="border-bottom: 1px solid black; padding: 5px;">
+                        <textarea asp-for="OSCultureResults" class="form-control"></textarea>
+                        <span asp-validation-for="OSCultureResults" class="text-danger"></span>
+                    </td>
+                </tr>
+            </table>
+            <!-- Tables -->
+            <div id="tablesContainer">
+                <div id="BURNTable" style="display: none;">
+                    <table>
+                        <tr><th>BURN-Burn infection</th></tr>
+                        <tr>
+                            <td>
+                                <input asp-for="BURN_PatientChange" type="checkbox" />
+                                <span>
+                                    Patient has a change in burn wound appearance or character*, such as rapid eschar separation, or dark
+                                    brown, black, or violaceous discoloration of the eschar, <strong>AND</strong> organism(s) identified from blood by a culture or non-culture based microbiologic testing
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="CDITable" style="display: none;">
+                    <table>
+                        <tr><th>CDI- Clostridioides difficile Infection</th></tr>
+                        <tr>
+                            <td>
+                                <div>
+                                <label>At least <strong>one (1)</strong> of the following:</label>
+                                </div>
+                                <div>
+                                <input asp-for="CDI_Positve" type="checkbox" />
+                                <span>
+                                        Positive test for toxin-producing C. difficile on an
+                                        unformed stool specimen (conforms to the shape of the
+                                        container)
+                                </span>
+                                </div>
+                                <div>
+                                <input asp-for="CDI_Patient" type="checkbox" />
+                                <span>
+                                        Patient has evidence of pseudomembranous colitis on
+                                        gross anatomic (includes endoscopic exams) or histopathologic exam
+                                </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="DECUTable" style="display: none;">
+                    <table>
+                        <tr><th>DECU-Decubitus ulcer infection (also known as pressureinjury infection), including both superficial anddeepinfections</th></tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <input asp-for="DECU_Patienthastwo" type="checkbox" />
+                                    <span>
+                                        Patient has at least two of the following signs or symptoms: erythema*, tenderness*, or swelling of
+                                        decubitus wound edges*, <strong>AND</strong> organism(s) identifiedfrom needle aspiration of fluid or biopsy of tissuefromulcer margin by a culture or non-culture based microbiologic testing
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="GETable" style="display: none;">
+                    <table>
+                        <tr><th>GE-Gastroenteritis (excluding C. difficile infections)</th></tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <label>At least <strong>one (1)</strong> of the following:</label>
+                                </div>
+                                <div>
+                                    <input asp-for="GE_PatientAcute" type="checkbox" />
+                                    <span>
+                                        Patient has an acute onset of diarrhea (liquid stools
+                                        for > 12 hours) and no likely noninfectious cause 
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="GE_PatientAtleastTwo" type="checkbox" />
+                                    <span>
+                                        Patient has <strong>at least two</strong> of the following signs or symptoms: nausea*, vomiting*, abdominal pain*, fever
+                                        (>38.0°C), or headache* <strong>AND at least one</strong> of the
+                                        following:
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GE_EntericIdentified" type="checkbox" />
+                                    <span>
+                                        an enteric pathogen is identified from stool or rectal swab by a culture or non-culture based microbiologic testing
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <div style="margin-bottom: 5px;">
+                                        <input asp-for="GE_EntericDetected" type="checkbox" />
+                                        <span>
+                                            an enteric pathogen is detected by microscopy on stool
+                                        </span>
+                                        <input asp-for="GE_Diagnostic" type="checkbox" />
+                                        <span>
+                                            diagnostic single antibody titer (IgM) or 4-fold increase in paired sera (IgG) for organism
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="GITTable" style="display: none;">
+                    <table>
+                        <tr>
+                            <th>
+                                GIT-Gastrointestinal tract infection (esophagus, stomach, small and large bowel, and rectum) excluding
+                                gastroenteritis, appendicitis, and C. difficile infection
+                            </th>
+                        </tr>
+                        <tr>
+                         <td>
+                            <div>
+                                <label>1. At least <strong>one (1)</strong> of the following:</label>
+                            </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_AnAbscess" type="checkbox" />
+                                <span>
+                                        An abscess or other evidence of gastrointestinal tract
+                                        infection on gross anatomic or histopathologic exam
+                                </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_AbscessGastrointestinal" type="checkbox" />
+                                <span>
+                                        Abscess or other evidence of gastrointestinal tract
+                                        infection on gross anatomic or histopathologic exam
+                                        <strong>AND</strong> organism(s) identified from blood by a culture or non-culture based microbiologic testing
+                                </span>
+                                </div>
+
+                                <div>
+                                    <label>
+                                        2. Patient has <strong>at least two</strong> of the following signs or symptoms: fever (>38.0°C), nausea*, vomiting*, pain* or
+                                        tenderness*, odynophagia*, or dysphagia*; <strong>AND at least one</strong> of the following:
+                                    </label>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_OrganismIdentifiedDrainage" type="checkbox" />
+                                    <span>
+                                        organism(s) identified from drainage or tissue obtained during an invasive procedure or from
+                                        drainage from an aseptically-placed drain
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_OrganismSeen" type="checkbox" />
+                                    <span>
+                                        organism(s) seen on Gram stain or fungal elements
+                                        seen on KOH stain or multinucleated giant cells seen on microscopic examination of drainage or tissue obtained during an invasive procedure or from an
+                                        aseptically-placed drain
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_OrganismIdentifiedBloody" type="checkbox" />
+                                    <span>
+                                        organism(s) identified from blood by a culture or non-culture based microbiologic testing <strong>AND</strong> imaging
+                                        test evidence definitive for gastrointestinal infection
+                                        (for example, endoscopic exam, MRI, CT scan)
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="GIT_ImagingTest" type="checkbox" />
+                                    <span>
+                                        imaging test evidence definitive for gastrointestinal
+                                        infection (for example, endoscopic exam, MRI, CT
+                                        scan)
+                                    </span>
+                                </div>
+                          </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="IABTable" style="display: none;">
+                    <table>
+                        <tr>
+                            <th>
+                                IAB-Intraabdominal infection, not specified elsewhere,
+                                including gallbladder, bile ducts, liver (excluding viral
+                                hepatitis), spleen, pancreas, peritoneum, retroperitoneal, subphrenic or subdiaphragmatic space, or other intraabdominal tissue or area not specifiedelsewhere
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>
+                                </div>
+                                <div>
+                                    <input asp-for="IAB_PatientOrganism" type="checkbox" />
+                                    <span>
+                                        Patient has organism(s) identified froman abscessorfrom 
+                                        purulent material from intraabdominal spacebyaculture
+                                        or non-culture based microbiologic testingmethod
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="IAB_PatientAtleastOne" type="checkbox" />
+                                    <span>
+                                        Abscess or other evidence of gastrointestinal tract
+                                        infection on gross anatomic or histopathologic exam
+                                        <strong>AND</strong> organism(s) identified from blood by a culture or non-culture based microbiologic testing
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="IAB_PatientAtleastTwo" type="checkbox" />
+                                    <span>
+                                        Patient has <strong>at least one</strong> of the following: abscess or other evidence of intraabdominal
+                                        infection on gross anatomic or histopathologic exam, <strong>OR</strong> abscess or otherevidence of intraabdominal
+                                        infection on gross anatomicor histopathologic exam <strong>AND</strong> organism(s)
+                                        identifiedfromblood by a culture or non-culture based microbiologictesting method
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="IAB_OrganismSeen" type="checkbox" />
+                                    <span>
+                                        organism(s) seen on Gram stain and/or identifiedfrom intraabdominal fluid or tissue obtainedduringinvasive procedure or from an aseptically-placeddrain in the intraabdominal space 
+                                        (for example, closed suction drainage system, open drain, T-tubedrain, CT guided drainage)
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="IAB_OrganismIdentified" type="checkbox" />
+                                    <span>
+                                        organism(s) identified from blood by a cultureornon-culture based microbiologic testing methodwhich is performed for purposes of clinical diagnosisor treatment, 
+                                        <strong>AND</strong> imaging test evidence definitivefor infection (for example, ultrasound, CT scan, MRI, ERCP, radiolabel scans [gallium, technetium, etc.] oron abdominal x-ray)
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="OREPTable" style="display: none;">
+                    <table>
+                        <tr>
+                            <th>
+                                OREP- Deep pelvic tissue infection or other infection of the male or female reproductive tract (for example, epididymis, testes, prostate, vagina, ovaries, uterus)
+                                including chorioamnionitis, but excluding vaginitis, endometritis or vaginal cuff infections
+                            </th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <label>At least <strong>one (1)</strong> of the following:</label>
+                                </div>
+                                <div>
+                                    <input asp-for="OREP_PatientOrganism" type="checkbox" />
+                                    <span>
+                                        Patient has organism(s) identified from tissue or fluid
+                                        from affected site (excludes urine and vaginal swabs) by a
+                                        culture or non-culture based microbiologic testing method
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="OREP_PatientAbscess" type="checkbox" />
+                                    <span>
+                                        Patient has an abscess or other evidence of infection of affected site on gross anatomic or histopathologic exam
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="OREP_PatientSuspected" type="checkbox" />
+                                    <span>
+                                        Patient has suspected infection of one of the listed
+                                        OREP sites and <strong>two</strong> of the following localized signs or symptoms: fever (>38.0°C), nausea*, vomiting*, pain or
+                                        tenderness*, or dysuria*, <strong>AND at least one</strong> of the
+                                        following:
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="OREP_OrganismIdentified" type="checkbox" />
+                                    <span>
+                                        organism(s) identified from blood by a culture or non-culture based microbiologic testing method which is performed for purposes of clinical diagnosis or treatment
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="OREP_Physician" type="checkbox" />
+                                    <span>
+                                        physician initiates antimicrobial therapy within two
+                                        days of onset or worsening of symptoms
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="SSITable" style="display: none;">
+                    <table>
+                        <tr><th>SKIN-Skin infection (skin and/or subcutaneous) excluding decubitus ulcers, burns, and infections at vascular access sites</th></tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <input asp-for="SSI_AtleastOne" type="checkbox" />
+                                    <span>
+                                        At least <strong>one (1)</strong> of the following: purulent drainage, pustules, vesicles, boils (excluding acne)
+                                    </span>
+                                </div>
+                                <div>
+                                    <input asp-for="SSI_PatientAtleastTwo" type="checkbox" />
+                                    <span>
+                                        Patient has <strong>at least two</strong> of the following localized signs
+                                        or symptoms: pain* or tenderness*, swelling*, erythema*, or heat*, <strong>AND at least one</strong> of the following:
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="SSI_Organism" type="checkbox" />
+                                    <span>
+                                        organism(s) identified from aspirate or drainage
+                                        from affected site by a culture or non-culture based
+                                        testing method
+                                    </span>
+                                    <input asp-for="SSI_Multinucleated" type="checkbox" />
+                                    <span>
+                                        multinucleated giant cells seen on microscopic examination of affected tissue
+                                    </span>
+                                </div>
+                                <div style="margin-left: 20px;">
+                                    <input asp-for="SSI_Diagnostic" type="checkbox" />
+                                    <span>
+                                        diagnostic single antibody titer (IgM) or 4-fold
+                                        increase in paired sera (IgG) for organism
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div id="STTable" style="display: none;">
+                    <table>
+                        <tr>
+                            <th>
+                                ST-Soft tissue infection (muscle and/or fascia [for example, necrotizing fasciitis, infectious gangrene, necrotizing cellulitis, infectious myositis, lymphadenitis,
+                                lymphangitis, or parotitis]) excluding decubitus ulcers, burns, and infections at vascular access sites
+                            </th>
+                        </tr>
+                        <tr><td>
+                                <div>
+                                    <label>At least <strong>one (1)</strong> of the following:</label>
+                                </div>
+                                <div>
+                                    <input asp-for="ST_PatientOrganism" type="checkbox" />
+                                    <span>
+                                        Patient has organism(s) identified fromtissue or drainage from affected site by a culture or nonculturebased microbiologic testing
+                                    </span>
+                                    <input asp-for="ST_PatienPurulent" type="checkbox" />
+                                    <span>
+                                        Patient has purulent drainage at affected site
+                                    </span>
+                                    <input asp-for="ST_Abscess" type="checkbox" />
+                                    <span>
+                                        Patient has an abscess or other evidence of infectionon gross anatomic or histopathologic exam
+                                    </span>
+                                </div>
+                            </td>
+                       </tr>
+                    </table>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</form>
+<script>
+    function toggleSIP_SIS() {
+        var sipChecked = document.getElementById("SIPCheckbox").checked;
+        var sisChecked = document.getElementById("SISCheckbox").checked;
+        var section = document.getElementById("SIP_SIS_Section");
+
+        if (sipChecked || sisChecked) {
+            section.style.display = "block";  // Show section
+        } else {
+            section.style.display = "none";  // Hide section
+        }
+    }
+
+    // Ensure the function runs when checkboxes are clicked
+    document.getElementById("SIPCheckbox").addEventListener("change", toggleSIP_SIS);
+    document.getElementById("SISCheckbox").addEventListener("change", toggleSIP_SIS);
+
+
+     document.addEventListener("DOMContentLoaded", function () {
+        const dipCheckbox = document.getElementById("DIPCheckbox");
+        const disCheckbox = document.getElementById("DISCheckbox");
+        const dipDisSection = document.getElementById("DIP_DIS_Section");
+
+        function toggleDipDisSection() {
+            if (dipCheckbox.checked || disCheckbox.checked) {
+                dipDisSection.style.display = "block";
+            } else {
+                dipDisSection.style.display = "none";
+            }
+        }
+
+        // Add event listeners
+        dipCheckbox.addEventListener("change", toggleDipDisSection);
+        disCheckbox.addEventListener("change", toggleDipDisSection);
+    });
+
+     document.addEventListener('DOMContentLoaded', function () {
+        var osCheckbox = document.getElementById('OSCheckbox');
+        var osSection = document.getElementById('OSSection');
+
+        // Function to toggle the visibility of OSSection
+        function toggleOSSection() {
+            osSection.style.display = osCheckbox.checked ? 'block' : 'none';
+        }
+
+        // Attach event listener to checkbox
+        osCheckbox.addEventListener('change', toggleOSSection);
+
+        // Initialize visibility on page load
+        toggleOSSection();
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll("input[type='checkbox'][name='Subclass']");
+        
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", function () {
+                const tableId = this.id.replace("Checkbox", "Table");
+                const tableDiv = document.getElementById(tableId);
+
+                if (this.checked) {
+                    tableDiv.classList.remove("hidden"); // Show table
+                } else {
+                    tableDiv.classList.add("hidden"); // Hide table
+                    // Clear input values inside the table
+                    tableDiv.querySelectorAll("input").forEach(input => input.value = "");
+                }
+            });
+        });
+    });
+</script>

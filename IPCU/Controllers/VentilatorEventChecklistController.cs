@@ -5,21 +5,76 @@ using Microsoft.AspNetCore.Mvc;
 using IPCU.Data;
 using IPCU.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace IPCU.Controllers
 {
     public class VentilatorEventChecklistController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public VentilatorEventChecklistController(ApplicationDbContext context)
+
+        public VentilatorEventChecklistController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string hospNum)
         {
-            return View();
+            var model = new VentilatorEventChecklist();
+
+            // Get current user's name for investigator
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser != null)
+            {
+                model.NameOfInvestigator = $"{currentUser.FirstName} {currentUser.Initial} {currentUser.LastName}".Trim();
+            }
+
+            if (!string.IsNullOrEmpty(hospNum))
+            {
+                // Get patient info where HospNum matches
+                var patientInfo = await (from pm in _context.PatientMasters
+                                         join p in _context.Patients
+                                         on pm.HospNum equals p.HospNum
+                                         where pm.HospNum == hospNum
+                                         select new
+                                         {
+                                             PatientMaster = pm,
+                                             Patients = p
+                                         }).FirstOrDefaultAsync();
+
+                if (patientInfo != null)
+                {
+                    model.HospNum = patientInfo.PatientMaster.HospNum;
+                    model.Gender = patientInfo.PatientMaster.Sex == "M" ? "Male" : "Female";
+                    model.FName = patientInfo.PatientMaster.FirstName;
+                    model.MName = patientInfo.PatientMaster.MiddleName;
+                    model.LName = patientInfo.PatientMaster.LastName;
+                    model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
+
+                    model.UwArea = patientInfo.Patients.AdmLocation;
+
+                    // null kasi bdate ko fuck goddamit
+                    if (patientInfo.Patients.AdmDate.HasValue)
+                    {
+                        model.DateOfBirth = patientInfo.Patients.AdmDate.Value;
+                    }
+                    else
+                    {
+                        // null shit
+                        model.DateOfAdmission = DateTime.MinValue;
+                    }
+                    model.Age = int.Parse(patientInfo.Patients.Age);
+
+
+                    // Add other fields you want to auto-fill
+                }
+            }
+
+            return View(model);
         }
 
         [HttpPost]

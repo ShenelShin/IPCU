@@ -1,228 +1,150 @@
 ﻿@model IPCU.Models.Usi
 
-@{
-    ViewData["Title"] = "Details";
-}
+<h2>Patient Details</h2>
 
-<h1>Details</h1>
+<table class="table table-bordered">
+    <tr>
+        <td>First Name: @Model.Fname</td>
+        <td>Middle Name: @Model.Mname</td>
+        <td>Last Name: @Model.Lname</td>
+        <td>Hospital Number: @Model.HospitalNumber</td>
+    </tr>
+    <tr>
+        <td>Date of Birth: @Model.DateOfBirth.ToShortDateString()</td>
+        <td>Age: @Model.Age</td>
+        <td>Unit/Ward/Area: @Model.UnitWardArea</td>
+        <td>Main Service: @Model.MainService</td>
+    </tr>
+    <tr>
+        <td>Date of Event: @Model.DateOfEvent.ToShortDateString()</td>
+        <td>Investigator: @Model.Investigator</td>
+        <td>Date of Admission: @Model.DateOfAdmission.ToShortDateString()</td>
+        <td>Disposition: @Model.Disposition</td>
+    </tr>
+    <tr>
+        <td>Disposition Date: @Model.DispositionDate.ToShortDateString()</td>
+        <td>Gender: @Model.Gender</td>
+        <td>Classification: @Model.Classification</td>
+        <td>MDRO: @Model.MDRO</td>
+    </tr>
+    @if (!string.IsNullOrEmpty(Model.DispositionTransfer))
+    {
+        <tr>
+            <td colspan="4">Disposition Transfer: @Model.DispositionTransfer</td>
+        </tr>
+    }
+</table>
 
-<div>
-    <h4>Usi</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Mname)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Mname)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HospitalNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HospitalNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfBirth)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfBirth)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Age)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Age)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UnitWardArea)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UnitWardArea)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MainService)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MainService)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfEvent)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfEvent)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Investigator)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Investigator)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateOfAdmission)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateOfAdmission)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Disposition)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Disposition)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DispositionDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DispositionDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DispositionTransfer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DispositionTransfer)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Classification)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Classification)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MDRO)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.MDRO)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TypeClass)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TypeClass)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientOrganism)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientOrganism)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientAbscess)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientAbscess)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fever1)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fever1)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LocalizedPain)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LocalizedPain)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PurulentDrainage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PurulentDrainage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Organism)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Organism)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatienLessthan1year)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatienLessthan1year)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fever2)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fever2)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hypothermia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hypothermia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Apnea)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Apnea)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Bradycardia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Bradycardia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lethargy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lethargy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vomiting)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vomiting)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PurulentDrainage2)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PurulentDrainage2)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Organism2)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Organism2)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CultureDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CultureDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CultureResults)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CultureResults)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th colspan="2">At least one (1) of the following criteria:</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <div>
+                <input type="checkbox" @(Model.PatientOrganism ? "checked" : "") disabled>
+                Patient has organism(s) identified from fluid (not urine) or tissue from affected site by a culture or non-culture basedmicrobiologic testing method, which is performed for purposes of clinical diagnosis or treatment
+                </div>
+                <div>
+                <input type="checkbox" @(Model.PatientAbscess ? "checked" : "") disabled>
+                 Patient has an abscess or other evidence of infection on gross anatomical exam, during invasive procedure, or onhistopathologic exam
+                </div>
+             </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th colspan="2">Patient has one (1) of the following signs or symptoms:</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+            <div>
+                <input type="checkbox" @(Model.Fever1 ? "checked" : "") disabled>
+                    Fever (>38.0°C)
+                </div>
+
+            <div><input type="checkbox" @(Model.LocalizedPain ? "checked" : "") disabled>
+                Localized pain or tenderness*, AND at least one of the following:
+            </div>
+
+                <div style="margin-left: 20px;">
+                    <input type="checkbox" @(Model.PurulentDrainage ? "checked" : "") disabled>
+                    Purulent drainage from affected site
+                </div>
+
+                <div style="margin-left: 20px;">
+                    <input type="checkbox" @(Model.Organism ? "checked" : "") disabled>
+                    Organism(s) identified from blood by a culture or non-culture-based microbiologic testing method,
+                    AND imaging test evidence definitive for infection (for example, ultrasound, CT scan, MRI, or
+                    radiolabel scan [gallium, technetium]), which if equivocal is supported by clinical correlation,
+                    specifically, physician documentation of antimicrobial treatment for urinary system infection.
+                </div>
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th colspan="2">Patient ≤1year of age has at least one of the following signs or symptoms:</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+            <div>
+                <input type="checkbox" @(Model.PatienLessthan1year ? "checked" : "") disabled>
+                Patient ≤1year of age has at least one of the following signs or symptoms:
+            </div>
+        
+            <div>
+                <input type="checkbox" @(Model.Fever2 ? "checked" : "") disabled>
+                Fever (>38.0°C)
+            </div>
+ 
+            <div><input type="checkbox" @(Model.Hypothermia ? "checked" : "") disabled>Hypothermia (>36.0°C): </div>
+  
+            <div><input type="checkbox" @(Model.Apnea ? "checked" : "") disabled>Apnea</div>
+
+                <div><input type="checkbox" @(Model.Bradycardia ? "checked" : "") disabled>Bradycardia</div>
+
+                <div><input type="checkbox" @(Model.Lethargy ? "checked" : "") disabled>Lethargy</div>
+
+                <div><input type="checkbox" @(Model.Vomiting ? "checked" : "") disabled>Vomiting</div>
+        </tr>
+        <tr>
+            <th colspan="2">AND at least one of the following:</th>
+        </tr>
+        <tr>
+            <td>
+            <div>
+                <input type="checkbox" @(Model.PurulentDrainage2 ? "checked" : "") disabled>                                
+                Purulent drainage from affected site
+            </div>
+
+                <div>
+                <input type="checkbox" @(Model.Organism2 ? "checked" : "") disabled> Organism(s) identified from blood by a culture or non-culture based microbiologic testing method, AND imaging test evidencedefinitive for infection (for example, ultrasound, CT scan, magnetic resonance imaging [MRI], or radiolabel scan [gallium, technetium]), which if equivocal is supported by clinical correlation, specifically, physician documentation of antimicrobial
+                treatment for urinary system infection
+            </div>
+            </td>
+        </tr>
+        <tr>
+            <td><b>Culture Date: </b> @Model.CultureDate?.ToShortDateString()</td>
+        </tr>
+        <tr>
+            <td><b>Culture Results: </b>@Model.CultureResults</td>
+        </tr>
+    </tbody>
+</table>
+
+<a href="@Url.Action("Index", "Usis")" class="btn btn-secondary">Back to List</a>
