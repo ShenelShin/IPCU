@@ -1,0 +1,101 @@
+﻿@model IPCU.Models.PediatricVAEChecklist
+
+@{
+    ViewData["Title"] = "Pediatric VAE Checklist Details";
+}
+
+<h2>Pediatric VAE Checklist Details</h2>
+
+<fieldset class="border p-3 mb-4">
+    <legend class="w-auto px-2 font-weight-bold">Patient Information</legend>
+    <table class="table table-bordered">
+        <tr>
+            <td><strong>First Name:</strong> @Model.Fname</td>
+            <td><strong>Middle Name:</strong> @Model.Mname</td>
+            <td><strong>Last Name:</strong> @Model.Lname</td>
+            <td><strong>Hospital Number:</strong> @Model.HospitalNumber</td>
+        </tr>
+        <tr>
+            <td><strong>Date of Birth:</strong> @Model.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+            <td><strong>Age:</strong> @Model.Age</td>
+            <td><strong>Unit/Ward Area:</strong> @Model.UnitWardArea</td>
+            <td><strong>Main Service:</strong> @Model.MainService</td>
+        </tr>
+        <tr>
+            <td><strong>Date of Event:</strong> @Model.DateOfEvent?.ToString("yyyy-MM-dd")</td>
+            <td><strong>Investigator:</strong> @Model.Investigator</td>
+            <td><strong>Date of Admission:</strong> @Model.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
+            <td><strong>Disposition:</strong> @Model.Disposition</td>
+        </tr>
+        <tr>
+            <td><strong>Disposition Transfer:</strong> @Model.DispositionTransfer</td>
+            <td><strong>Disposition Date:</strong> @Model.DispositionDate?.ToString("yyyy-MM-dd")</td>
+            <td><strong>Date of Intubation:</strong> @Model.DateOfIntubation?.ToString("yyyy-MM-dd")</td>
+            <td><strong>Gender:</strong> @Model.Gender</td>
+        </tr>
+        <tr>
+            <td><strong>Classification:</strong> @Model.Classification</td>
+            <td><strong>MDRO:</strong> @Model.MDRO</td>
+            <td colspan="2"><strong>Type & Classification:</strong> @Model.TypeClass</td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <strong>PedVAE Submitted:</strong>
+                @if (Model.TypeClass.Contains("PedVAE"))
+                {
+                    <span class="text-success">✅ Yes</span>
+                }
+                else
+                {
+                    <span class="text-danger">❌ No</span>
+                }
+            </td>
+        </tr>
+    </table>
+</fieldset>
+
+@if (Model.TypeClass.Contains("PedVAE"))
+{
+    <fieldset class="border p-3 mb-4">
+        <legend class="w-auto px-2 font-weight-bold text-uppercase">Pediatric Ventilator-Associated Event (PedVAE)</legend>
+
+        <table class="table table-bordered mb-3">
+            <thead>
+                <tr>
+                    <th colspan="2" class="text-left">
+                        Baseline period of improvement or stability* on the ventilator
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 5%; vertical-align: middle; text-align:center;">
+                        <input asp-for="FiO2Increase" class="form-check-input" disabled="disabled" />
+                    </td>
+                    <td>
+                        <strong>Daily minimum FiO2 increase ≥ 0.25 for ≥ 2 days, OR</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; vertical-align: middle; text-align:center;">
+                        <input asp-for="MAPIncrease" class="form-check-input" disabled="disabled" />
+                    </td>
+                    <td>
+                        <strong>Daily minimum MAP values of ≥ 4 cm H2O for ≥ 2 days</strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <small class="d-block mb-2">
+            *Stability or improvement on the ventilator is defined by ≥2 calendar days of stable or decreasing daily minimum FiO2 or MAP values. The baseline period is defined as the 2 calendar days immediately preceding the first day of increased daily minimum FiO2 or MAP.<br />
+        </small>
+
+        <div class="form-group">
+            <label class="font-weight-bold">Comments/Notes:</label>
+            <p>@Model.Comments</p>
+        </div>
+    </fieldset>
+}
+
+<a href="@Url.Action("Index")" class="btn btn-secondary">Back to List</a>
