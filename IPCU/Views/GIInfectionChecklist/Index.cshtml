@@ -1,0 +1,551 @@
+﻿@model IPCU.Models.GIInfectionChecklist
+
+@{
+    ViewData["Title"] = "Gastrointestinal (GI) Infection Checklist";
+}
+
+<div class="container mt-4">
+    <div class="border rounded p-4 shadow-sm bg-light">
+    <div class="text-center">
+        <h2 class="fw-bold">NATIONAL KIDNEY AND TRANSPLANT INSTITUTE</h2>
+        <h4 class="fw-semibold">INFECTION PREVENTION AND CONTROL UNIT</h4>
+        <h3 class="fw-bold text-primary">GASTROINTESTINAL SYSTEM INFECTION (GI) CHECKLIST</h3>
+    </div>
+
+    <form asp-action="Submit" method="post">
+
+            <!-- Patient Info Section -->
+            <h5 class="fw-bold text-secondary">Patient Information</h5>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="fw-bold">Name of Patient:</label>
+                    <div class="d-flex gap-2">
+                        <input asp-for="LName" class="form-control" placeholder="Last Name" required />
+                        <input asp-for="FName" class="form-control" placeholder="First Name" required />
+                        <input asp-for="MName" class="form-control" placeholder="Middle Name" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label class="fw-bold">Hospital Number:</label>
+                    <input asp-for="HospNum" class="form-control" required />
+                </div>
+            </div>
+
+            <div class="row g-3 mt-2">
+                <div class="col-md-3">
+                    <label class="fw-bold">Date of Birth:</label>
+                    <input asp-for="DateOfBirth" class="form-control" type="date" required />
+                </div>
+                <div class="col-md-2">
+                    <label class="fw-bold">Age:</label>
+                    <input asp-for="Age" class="form-control" required />
+                </div>
+                <div class="col-md-3">
+                    <label class="fw-bold">Sex/Gender:</label>
+                    <select asp-for="Gender" class="form-select">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Hospital & Admission Details -->
+            <h5 class="fw-bold text-secondary mt-4">Hospital & Admission Details</h5>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="fw-bold">Unit/Ward/Area:</label>
+                    <input asp-for="UnitWardArea" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label class="fw-bold">Main Service:</label>
+                    <input asp-for="MainService" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label class="fw-bold">Date of Admission:</label>
+                    <input asp-for="DateOfAdmission" class="form-control" type="date" required />
+                </div>
+            </div>
+
+            <!-- Disposition Section -->
+            <h5 class="fw-bold text-secondary mt-4">Disposition</h5>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label>Disposition:</label>
+                    <select asp-for="Disposition" id="dispositionDropdown" class="form-control" onchange="toggleDispositionTransferField()">
+                        <option value="">-- Select Disposition --</option>
+                        <option value="Transferred In">Transferred In</option>
+                        <option value="Transferred Out">Transferred Out</option>
+                        <option value="Mortality">Mortality</option>
+                        <option value="Discharged">Discharged</option>
+                        <option value="Still admitted">Still admitted</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="fw-bold">Disposition Date:</label>
+                    <input asp-for="DispositionDate" class="form-control" type="date" />
+                </div>
+                <!-- Disposition Area Dropdown (Hidden Initially) -->
+                <div id="dispositionAreaField" class="col-md-4" style="display: none;">
+                    <label>Disposition Transfer:</label>
+                    <select asp-for="DispositionArea" class="form-control">
+                        <!-- Add asp-for binding -->
+                        <option value="">Select an area</option>
+                        <option value="2A">2A</option>
+                        <option value="2B">2B</option>
+                        <option value="2C">2C</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Event Details -->
+            <h5 class="fw-bold text-secondary mt-4">Event Details</h5>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="fw-bold">Date of Event (DOE):</label>
+                    <input asp-for="DateOfEvent" class="form-control" type="date" />
+                </div>
+                <div class="col-md-4">
+                    <label class="fw-bold">Name of Investigator:</label>
+                    <input asp-for="NameOfInvestigator" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                    <label class="fw-bold">MDRO:</label>
+                    <select asp-for="MDRO" class="form-select">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Classification -->
+            <h5 class="fw-bold text-secondary mt-4">Classification</h5>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="fw-bold">Classification:</label>
+                    <select asp-for="Classification" class="form-select" id="classificationDropdown">
+                        <option value="Pay">Pay</option>
+                        <option value="Service">Service</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="fw-bold d-block mb-2">Type Classification:</label>
+                    <div class="p-3 d-flex flex-wrap gap-3">
+                        <div class="form-check form-check-inline">
+                            <input asp-for="TypeClassification" class="form-check-input typeCheckbox" type="checkbox" value="CDI" id="cdi">
+                            <label class="form-check-label fw-semibold" for="cdi">CDI</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input asp-for="TypeClassification" class="form-check-input typeCheckbox" type="checkbox" value="GE" id="ge">
+                            <label class="form-check-label fw-semibold" for="ge">GE</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input asp-for="TypeClassification" class="form-check-input typeCheckbox" type="checkbox" value="IAB" id="iab">
+                            <label class="form-check-label fw-semibold" for="iab">IAB</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input asp-for="TypeClassification" class="form-check-input typeCheckbox" type="checkbox" value="GIT" id="git">
+                            <label class="form-check-label fw-semibold" for="git">GIT</label>
+                        </div>                    
+                    </div>
+                </div>
+            </div>
+
+            <!-- CDI Section -->
+            <div id="cdi-box" style="display: none; border: 1px solid #000; padding: 10px; margin-bottom: 10px;">
+                <h5>CDI - CLOSTRIDIOIDES DIFFICILE INFECTION</h5>
+                <p>At least one (1) of the following criteria:</p>
+                <input asp-for="CDItoxin" type="checkbox" id="CDItoxin">
+                <label for="CDItoxin">Positive test for toxin-producing <i>C. difficile</i> on an unformed stool specimen</label><br>
+                <input asp-for="CDIpseudomembranous" type="checkbox" id="CDIpseudomembranous">
+                <label for="CDIpseudomembranous">Evidence of pseudomembranous colitis</label>
+            </div>
+
+            <!-- GE Section -->
+            <div id="ge-box" style="display: none; border: 1px solid #000; padding: 10px; margin-bottom: 10px;">
+                <h5>GE - GASTROENTERITIS</h5>
+                <p>At least one (1) of the following criteria:</p>
+                <input asp-for="GEdiarrhea" type="checkbox" id="GEdiarrhea">
+                <label for="GEdiarrhea">Acute onset of diarrhea with no likely noninfectious cause</label>
+
+                <p>Patient has at least two of the following:</p>
+                <input asp-for="GENausea" type="checkbox" id="GENausea">
+                <label for="GENausea">Nausea</label><br>
+                <input asp-for="GEVomiting" type="checkbox" id="GEVomiting">
+                <label for="GEVomiting">Vomiting</label><br>
+                <input asp-for="GENAbdominal" type="checkbox" id="GENAbdominal">
+                <label for="GENAbdominal">Abdominal pain</label><br>
+                <input asp-for="GENFever" type="checkbox" id="GENFever">
+                <label for="GENFever">Fever (&gt;38.0°C)</label><br>
+                <input asp-for="GENHeadache" type="checkbox" id="GENHeadache">
+                <label for="GENHeadache">Headache</label>
+
+                <p>AND at least one of the following:</p>
+                <input asp-for="GENpenteric1" type="checkbox" id="GENpenteric1">
+                <label for="GENpenteric1">Enteric pathogen identified from stool</label><br>
+                <input asp-for="GENenteric2" type="checkbox" id="GENenteric2">
+                <label for="GENenteric2">Enteric pathogen detected by microscopy</label><br>
+                <input asp-for="GENantibody" type="checkbox" id="GENantibody">
+                <label for="GENantibody">Diagnostic single antibody titer</label>
+            </div>
+
+            <!-- IAB -  INTRAABDOMINAL INFECTION -->
+            <div id="iab-box" style="display: none; border: 1px solid black; padding: 10px; margin-bottom: 10px;">
+                <h5 style="text-align: center; text-transform: uppercase; border-bottom: 1px solid black; padding-bottom: 5px;">
+                    IAB - INTRAABDOMINAL INFECTION
+                </h5>
+
+                <p><i>Not specified elsewhere, including gallbladder, bile ducts, liver (excluding viral hepatitis), spleen, pancreas, peritoneum, retroperitoneal, subphrenic or subdiaphragmatic space, or other intraabdominal tissue or area not specified elsewhere</i></p>
+
+                <p><b>At least one (1) of the following criteria:</b></p>
+                <label><input asp-for="IABorganism" type="checkbox"> Patient has organism(s) identified from an abscess or from purulent material from intraabdominal space by a culture or non-culture based microbiologic testing method</label>
+
+                <p><b>At least one (1) of the following criteria:</b></p>
+                <label>
+                    <input asp-for="IABAbscess1" type="checkbox"> Abscess or other evidence of intraabdominal infection on
+                    gross anatomic or histopathologic exam
+                </label>
+                <label>
+                    <input asp-for="IABAbscess2" type="checkbox"> Abscess or other evidence of intraabdominal infection on
+                    gross anatomic or histopathologic exam, <b>AND</b> organism(s)
+                    identified from blood by a culture or non-culture based
+                    microbiologic testing method
+                </label>
+
+                <p><b>At least two (2) of the following criteria:</b></p>
+                <div style="display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 600px;">
+                    <div style="width: 45%;">
+                        <label><input asp-for="IABFever" type="checkbox"> Fever (>38.0°C)</label><br>
+                        <label><input asp-for="IABNausea" type="checkbox"> Nausea*</label><br>
+                        <label><input asp-for="IABVomiting" type="checkbox"> Vomiting*</label><br>
+                    </div>
+                    <div style="width: 45%;">
+                        <label><input asp-for="IABAbdominal" type="checkbox"> Abdominal pain or tenderness*</label><br>
+                        <label><input asp-for="IABtransaminase" type="checkbox"> Elevated transaminase level(s)*</label><br>
+                        <label><input asp-for="IABJaundice" type="checkbox"> Jaundice*</label><br>
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px;">
+                    <p><b>AND at least one of the following:</b></p>
+                    <div style="display: block;">
+                        <label style="display: block;"><input asp-for="IABOrgintraabdominal" type="checkbox"> Organism(s) seen on Gram stain or identified from intraabdominal fluid/tissue</label>
+                        <label style="display: block;"><input asp-for="IABmicrobiologic" type="checkbox"> Organism(s) identified from blood with definitive imaging test evidence</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GIT - GASTROINTESTINAL TRACT INFECTION -->
+            <div class="border rounded shadow-sm p-3 bg-white mb-4" id="git-box" style="display: none;">
+                <h5 class="text-center fw-bold bg-light text-uppercase py-2 border-bottom">
+                    GIT - GASTROINTESTINAL TRACT INFECTION
+                </h5>
+
+                <p class="fw-bold">At least one (1) of the following criteria:</p>
+                <div class="form-check ps-3 mb-2">
+                    <input asp-for="GITAbscess1" class="form-check-input" type="checkbox" id="GITAbscess1">
+                    <label class="form-check-label" for="GITAbscess1">
+                        Abscess or other evidence of gastrointestinal infection on gross anatomic or histopathologic exam
+                    </label>
+                </div>
+
+                <div class="form-check ps-3 mb-2">
+                    <input asp-for="GITAbscess2" class="form-check-input" type="checkbox" id="GITAbscess2">
+                    <label class="form-check-label" for="GITAbscess2">
+                        Abscess or other evidence of gastrointestinal infection on gross anatomic or histopathologic exam, <b>AND</b> organism(s) identified from blood by a culture or non-culture based microbiologic testing method
+                    </label>
+                </div>
+
+                <div class="form-check ps-3 mb-2">
+                    <input asp-for="GITblood" class="form-check-input" type="checkbox" id="GITblood">
+                    <label class="form-check-label" for="GITblood">
+                        Organism(s) identified from blood by a culture or non
+                        culture based microbiologic testing method
+                    </label>
+                </div>
+
+                <p class="fw-bold">At least two (2) of the following criteria:</p>
+                <div class="row ps-3">
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input asp-for="GITFEVER" class="form-check-input" type="checkbox" id="GITFEVER">
+                            <label class="form-check-label" for="GITFEVER">Fever (&gt;38.0°C)</label>
+                        </div>
+                        <div class="form-check">
+                            <input asp-for="GITNausea" class="form-check-input" type="checkbox" id="GITNausea">
+                            <label class="form-check-label" for="GITNausea">Nausea</label>
+                        </div>
+                        <div class="form-check">
+                            <input asp-for="GITVomiting" class="form-check-input" type="checkbox" id="GITVomiting">
+                            <label class="form-check-label" for="GITVomiting">Vomiting</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-check">
+                            <input asp-for="GITPainTend" class="form-check-input" type="checkbox" id="GITPainTend">
+                            <label class="form-check-label" for="GITPainTend">Abdominal pain or tenderness</label>
+                        </div>
+                        <div class="form-check">
+                            <input asp-for="GITOdynophagia" class="form-check-input" type="checkbox" id="GITOdynophagia">
+                            <label class="form-check-label" for="GITOdynophagia">Odynophagia (painful swallowing)</label>
+                        </div>
+                        <div class="form-check">
+                            <input asp-for="GITDysphagia" class="form-check-input" type="checkbox" id="GITDysphagia">
+                            <label class="form-check-label" for="GITDysphagia">Dysphagia (difficulty swallowing)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="fw-bold">AND at least one of the following:</p>
+
+                <div class="form-check ps-3 mb-2">
+                    <input asp-for="GITDrain" class="form-check-input" type="checkbox" id="GITDrain">
+                    <label class="form-check-label" for="GITDrain">
+                        Organism(s) identified from drainage or tissue
+                    </label>
+                </div>
+
+                <div class="form-check ps-3 mb-2">
+                    <input asp-for="GITGram" class="form-check-input" type="checkbox" id="GITGram">
+                    <label class="form-check-label" for="GITGram">
+                        Organism(s) seen on Gram stain or fungal elements seen on
+                        KOH stain or multinucleated giant cells
+                    </label>
+                </div>
+
+                <div class="form-check ps-3">
+                    <input asp-for="GITmicrobiologic" class="form-check-input" type="checkbox" id="GITmicrobiologic">
+                    <label class="form-check-label" for="GITmicrobiologic">
+                        Organism(s) identified from blood by a culture or non
+                        culture based microbiologic testing method, <b>AND</b> imaging test
+                        evidence definitive for gastrointestinal infection
+                    </label>
+                </div>
+
+                <div class="form-check ps-3">
+                    <input asp-for="GITgastrointestinal" class="form-check-input" type="checkbox" id="GITgastrointestinal">
+                    <label class="form-check-label" for="GITgastrointestinal">
+                        Imaging test evidence definitive for gastrointestinal
+                        infection (for example, endoscopic exam, MRI, CT scan)
+                    </label>
+                </div>
+            </div>
+
+
+
+            <!-- Submit Button -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-lg btn-primary px-5 shadow-sm">Submit</button>
+            </div>
+
+        </>
+    </form>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+        
+    function toggleDispositionTransferField() {
+        // Get the dropdown and the field to be shown/hidden
+        const dispositionDropdown = document.getElementById("dispositionDropdown");
+        const dispositionAreaField = document.getElementById("dispositionAreaField");
+
+        // Show the field only if "Transferred In" or "Transferred Out" is selected
+        if (dispositionDropdown.value === "Transferred In" || dispositionDropdown.value === "Transferred Out") {
+            dispositionAreaField.style.display = "block";
+        } else {
+            dispositionAreaField.style.display = "none";
+        }
+    }
+
+        document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll(".typeCheckbox");
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", function () {
+                const boxId = this.value.toLowerCase() + "-box"; // Match checkbox value to div ID
+                const box = document.getElementById(boxId);
+
+                if (this.checked) {
+                    box.style.display = "block"; // Show box
+                } else {
+                    box.style.display = "none"; // Hide box
+                }
+            });
+        });
+    });
+
+        document.addEventListener("DOMContentLoaded", function () {
+        let geDiarrhea = document.getElementById("GEdiarrhea");
+
+        let symptomCheckboxes = document.querySelectorAll("#ge-box input[type='checkbox']:not(#GEdiarrhea):not(#GENpenteric1):not(#GENenteric2):not(#GENantibody)");
+        let entericCheckboxes = document.querySelectorAll("#GENpenteric1, #GENenteric2, #GENantibody");
+
+        function toggleSymptomCheckboxes() {
+            let checkedSymptoms = Array.from(symptomCheckboxes).filter(cb => cb.checked).length;
+            entericCheckboxes.forEach(cb => {
+                cb.disabled = checkedSymptoms < 2;
+                if (checkedSymptoms < 2) {
+                    cb.checked = false; // Uncheck if disabled
+                }
+            });
+        }
+
+        function toggleDependentCheckboxes() {
+            symptomCheckboxes.forEach(cb => {
+                cb.disabled = !geDiarrhea.checked;
+                if (!geDiarrhea.checked) {
+                    cb.checked = false;
+                }
+            });
+            toggleSymptomCheckboxes(); // Update enteric checkboxes state
+        }
+
+        geDiarrhea.addEventListener("change", toggleDependentCheckboxes);
+        symptomCheckboxes.forEach(cb => cb.addEventListener("change", toggleSymptomCheckboxes));
+
+        toggleDependentCheckboxes(); // Run initially to set the correct state
+    });
+
+            document.addEventListener("DOMContentLoaded", function () {
+        // Get the checkboxes
+        const iabOrganism = document.querySelector('input[name="IABorganism"]');
+        const iabAbscess1 = document.querySelector('input[name="IABAbscess1"]');
+        const iabAbscess2 = document.querySelector('input[name="IABAbscess2"]');
+        const iabCriteriaCheckboxes = document.querySelectorAll('input[name="IABFever"], input[name="IABNausea"], input[name="IABVomiting"], input[name="IABAbdominal"], input[name="IABtransaminase"], input[name="IABJaundice"]');
+        const iabFinalCheckBoxes = document.querySelectorAll('input[name="IABOrgintraabdominal"], input[name="IABmicrobiologic"]');
+
+        // Function to toggle the abscess checkboxes based on IABorganism
+        function toggleAbscessCheckboxes() {
+            const isChecked = iabOrganism.checked;
+            iabAbscess1.disabled = !isChecked;
+            iabAbscess2.disabled = !isChecked;
+
+            if (!isChecked) {
+                iabAbscess1.checked = false;
+                iabAbscess2.checked = false;
+                toggleCriteriaCheckboxes(); // Ensure criteria checkboxes are disabled
+            }
+        }
+
+        // Function to toggle the criteria checkboxes based on IABAbscess1 or IABAbscess2
+        function toggleCriteriaCheckboxes() {
+            const isAbscessChecked = iabAbscess1.checked || iabAbscess2.checked;
+            iabCriteriaCheckboxes.forEach(checkbox => {
+                checkbox.disabled = !isAbscessChecked;
+                if (!isAbscessChecked) checkbox.checked = false; // Uncheck if disabled
+            });
+
+            // Also check if at least two criteria are checked
+            toggleFinalCheckboxes();
+        }
+
+        // Function to enable the final checkboxes if at least two criteria checkboxes are selected
+        function toggleFinalCheckboxes() {
+            const checkedCriteria = Array.from(iabCriteriaCheckboxes).filter(checkbox => checkbox.checked).length;
+            const enableFinal = checkedCriteria >= 2;
+
+            iabFinalCheckBoxes.forEach(checkbox => {
+                checkbox.disabled = !enableFinal;
+                if (!enableFinal) checkbox.checked = false; // Uncheck if disabled
+            });
+        }
+
+        // Initial check on page load
+        toggleAbscessCheckboxes();
+        toggleCriteriaCheckboxes();
+        toggleFinalCheckboxes();
+
+        // Add event listeners
+        iabOrganism.addEventListener("change", toggleAbscessCheckboxes);
+        iabAbscess1.addEventListener("change", toggleCriteriaCheckboxes);
+        iabAbscess2.addEventListener("change", toggleCriteriaCheckboxes);
+        iabCriteriaCheckboxes.forEach(checkbox => checkbox.addEventListener("change", toggleFinalCheckboxes));
+    });
+
+            document.addEventListener("DOMContentLoaded", function () {
+        // Get the trigger checkboxes
+        const triggerCheckboxes = [
+            document.getElementById("GITAbscess1"),
+            document.getElementById("GITAbscess2"),
+            document.getElementById("GITblood")
+        ];
+
+        // Get the first dependent checkboxes (At least 2 required)
+        const dependentCheckboxes = [
+            document.getElementById("GITFEVER"),
+            document.getElementById("GITNausea"),
+            document.getElementById("GITVomiting"),
+            document.getElementById("GITPainTend"),
+            document.getElementById("GITOdynophagia"),
+            document.getElementById("GITDysphagia")
+        ];
+
+        // Get the second dependent checkboxes (At least 1 required)
+        const finalDependentCheckboxes = [
+            document.getElementById("GITDrain"),
+            document.getElementById("GITGram"),
+            document.getElementById("GITmicrobiologic"),
+            document.getElementById("GITgastrointestinal")
+        ];
+
+        function updateCheckboxState() {
+            // Check if at least one trigger checkbox is checked
+            const isAnyTriggerChecked = triggerCheckboxes.some(checkbox => checkbox.checked);
+
+            // Enable or disable the first dependent group
+            dependentCheckboxes.forEach(checkbox => {
+                checkbox.disabled = !isAnyTriggerChecked;
+                if (!isAnyTriggerChecked) checkbox.checked = false; // Uncheck if disabled
+            });
+
+            // Call second update function in case of changes
+            updateFinalCheckboxState();
+        }
+
+        function updateFinalCheckboxState() {
+            // Count checked checkboxes from the first dependent group
+            const checkedCount = dependentCheckboxes.filter(checkbox => checkbox.checked).length;
+
+            // Enable the final dependent checkboxes only if at least 2 checkboxes from the first group are checked
+            finalDependentCheckboxes.forEach(checkbox => {
+                checkbox.disabled = checkedCount < 2;
+                if (checkedCount < 2) checkbox.checked = false; // Uncheck if disabled
+            });
+        }
+
+        // Initially disable dependent checkboxes
+        updateCheckboxState();
+        updateFinalCheckboxState();
+
+        // Attach event listeners to trigger checkboxes
+        triggerCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", updateCheckboxState);
+        });
+
+        // Attach event listeners to dependent checkboxes for second condition
+        dependentCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener("change", updateFinalCheckboxState);
+        });
+    });
+
+
+</script>
+
+<style>
+    /* Smooth fade-in and slide-down animation */
+    .hidden {
+        opacity: 0;
+        transform: translateY(-15px);
+        max-height: 0;
+        overflow: hidden;
+        transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease;
+    }
+
+    .visible {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 100px; /* Adjust height based on content */
+    }
+</style>
