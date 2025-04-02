@@ -737,5 +737,8 @@ namespace IPCU.Controllers
             // Return the HAI checklist view (which you'll create later)
             return View(patientInfo);
         }
+
+
+
     }
 }

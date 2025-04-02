@@ -790,8 +790,9 @@
                                     <h6>@form.Title</h6>
                                     <span class="form-status">@(form.Status ? "Submitted" : "Not Started")</span>
                                 </div>
-                                <a href="@Url.Action("PatientIndex", form.Controller, new { hospNum = Model.HospNum })"
-                                   class="btn btn-sm @(form.Status ? "btn-view" : "btn-start")">
+                                <a href="@(form.Status ? Url.Action("PatientIndex", form.Controller, new { hospNum = Model.HospNum }) : "#")"
+                                   class="btn btn-sm @(form.Status ? "btn-view" : "btn-start")"
+                                   onclick="checkRecords('@form.Controller', @(form.Status.ToString().ToLower()))">
                                     <i class="fas @(form.Status ? "fa-eye" : "fa-plus")"></i>
                                     @(form.Status ? "View" : "Start")
                                 </a>
@@ -799,6 +800,56 @@
                         }
                     </div>
                 </div>
+
+
+
+                <!-- Modal -->
+                <div class="modal fade" id="noRecordsModal" tabindex="-1" aria-labelledby="noRecordsModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="noRecordsModalLabel">No Records Found</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                No Pediatric VAE Records
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <!-- Modal for InfectionChecklist -->
+                <div class="modal fade" id="infectionChecklistModal" tabindex="-1" aria-labelledby="infectionChecklistModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="infectionChecklistModalLabel">Infection Checklist</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="closeModal()">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- This will change dynamically -->
+                                No Infection Checklist Records Found
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+
+
+
+
 
 
             <div class="action-bar">
@@ -822,7 +873,7 @@
             </div>
         </div>
     </div>
-
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // JavaScript to toggle accordion sections
         document.addEventListener('DOMContentLoaded', function() {
@@ -843,6 +894,32 @@
                 });
             });
         });
+
+
+                         function checkRecords(controller, hasRecords) {
+                if (hasRecords) {
+                    window.location.href = '@Url.Action("PatientIndex", "PediatricVAEChecklist")'.replace("PediatricVAEChecklist", controller) + '?hospNum=@Model.HospNum';
+                } else if (controller === "PediatricVAEChecklist") {
+                    $("#noRecordsModal").modal("show");
+                }
+            }
+
+             function closeModal() {
+        $("#noRecordsModal").modal("hide");
+    }
+
+
+                             function checkRecords(controller, hasRecords) {
+                        if (hasRecords) {
+                                            window.location.href = '@Url.Action("PatientIndex", "InfectionChecklist")'.replace("InfectionChecklist", controller) + '?hospNum=@Model.HospNum';
+                                } else if (controller === "InfectionChecklist") {
+                                    $("#infectionChecklistModal").modal("show");
+                        }
+                    }
+
+                     function closeModal() {
+                        $("#infectionChecklistModal").modal("hide");
+            }
     </script>
 </body>
 </html>
