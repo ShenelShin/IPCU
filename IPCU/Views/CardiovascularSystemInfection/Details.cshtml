@@ -1,4 +1,4 @@
-﻿@model IPCU.Models.Pneumonia
+﻿@model IPCU.Models.CardiovascularSystemInfection
 
 @{
     ViewData["Title"] = "Patient Details";
@@ -17,7 +17,7 @@
     </tr>
     <tr>
         <th>Date of Birth:</th>
-        <td>@Model.DateOfBirth.ToString("yyyy-MM-dd")</td>
+        <td>@Model.DateOfBirth?.ToString("yyyy-MM-dd")</td>
     </tr>
     <tr>
         <th>Age:</th>
@@ -33,7 +33,7 @@
     </tr>
     <tr>
         <th>Date of Event:</th>
-        <td>@Model.DateOfEvent.ToString("yyyy-MM-dd")</td>
+        <td>@Model.DateOfEvent?.ToString("yyyy-MM-dd")</td>
     </tr>
     <tr>
         <th>Investigator:</th>
@@ -41,7 +41,7 @@
     </tr>
     <tr>
         <th>Date of Admission:</th>
-        <td>@Model.DateOfAdmission.ToString("yyyy-MM-dd")</td>
+        <td>@Model.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
     </tr>
 </table>
 

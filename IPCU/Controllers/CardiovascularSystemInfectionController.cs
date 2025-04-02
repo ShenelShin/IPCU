@@ -62,6 +62,38 @@ namespace IPCU.Controllers
 
             return View(model);
         }
+        public async Task<IActionResult> PatientIndex(string hospNum)
+        {
+            if (string.IsNullOrEmpty(hospNum))
+            {
+                return NotFound("Hospital Number is required.");
+            }
+
+            var patients = await _context.CardiovascularSystemInfection
+                                         .Where(p => p.HospitalNumber == hospNum)
+                                         .ToListAsync();
+
+            return View(patients);
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var patient = await _context.CardiovascularSystemInfection
+                                        .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            return View(patient);
+        }
+
 
         // Submit the form
         [HttpPost]

@@ -88,6 +88,20 @@ namespace IPCU.Controllers
             return View("Create", model);
         }
 
+        public async Task<IActionResult> PatientIndex(string hospNum)
+        {
+            if (string.IsNullOrEmpty(hospNum))
+            {
+                return NotFound("Hospital Number is required.");
+            }
+
+            var patients = await _context.Pneumonias
+                                         .Where(p => p.HospitalNumber == hospNum)
+                                         .ToListAsync();
+
+            return View(patients);
+        }
+
         // GET: Pneumonias/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -96,14 +110,15 @@ namespace IPCU.Controllers
                 return NotFound();
             }
 
-            var pneumonia = await _context.Pneumonias
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pneumonia == null)
+            var patient = await _context.Pneumonias
+                                        .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (patient == null)
             {
                 return NotFound();
             }
 
-            return View(pneumonia);
+            return View(patient);
         }
 
         // GET: Pneumonias/Create
