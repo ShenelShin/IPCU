@@ -110,6 +110,9 @@ namespace IPCU.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Concatenate checkbox values before saving
+                model.InfectionType = string.Join(",", Request.Form["InfectionType"]);
+
                 // Add the infection record to database
                 _context.SSTInfectionModels.Add(model);
 
@@ -134,5 +137,6 @@ namespace IPCU.Controllers
             }
             return View("Index", model);
         }
+
     }
 }
