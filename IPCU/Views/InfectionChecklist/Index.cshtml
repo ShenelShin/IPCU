@@ -129,8 +129,11 @@
         <div id="burn-culture-section" style="display: none;">
             <table>
                 <tr>
-                    <td>@Html.LabelFor(m => m.BurnCultureDate, "Culture date:") <br />@Html.TextBoxFor(m => m.BurnCultureDate)</td>
-                    <td>@Html.LabelFor(m => m.BurnCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.BurnCultureResults)</td>
+                        <td>
+                            @Html.LabelFor(m => m.BurnCultureDate, "Culture date:") <br />
+                            @Html.TextBoxFor(m => m.BurnCultureDate, new { @class = "form-control", type = "date" })
+                        </td>
+                        <td>@Html.LabelFor(m => m.BurnCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.BurnCultureResults)</td>
                 </tr>
             </table>
         </div>
@@ -172,8 +175,11 @@
         <div id="decubitus-culture-section" style="display: none;">
             <table>
                 <tr>
-                    <td>@Html.LabelFor(m => m.DecubitusCultureDate, "Culture date:") <br />@Html.TextBoxFor(m => m.DecubitusCultureDate)</td>
-                    <td>@Html.LabelFor(m => m.DecubitusCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.DecubitusCultureResults)</td>
+                        <td>
+                            @Html.LabelFor(m => m.DecubitusCultureDate, "Culture date:") <br />
+                            @Html.TextBoxFor(m => m.DecubitusCultureDate, new { @class = "form-control", type = "date" })
+                        </td>
+                        <td>@Html.LabelFor(m => m.DecubitusCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.DecubitusCultureResults)</td>
                 </tr>
             </table>
         </div>
@@ -213,8 +219,8 @@
                 <tr>
                     <td>
                         @Html.LabelFor(m => m.STCultureDate, "Culture date:") <br />
-                        @Html.TextBoxFor(m => m.STCultureDate)
-                    </td>
+                            @Html.TextBoxFor(m => m.STCultureDate, new { @class = "form-control", type = "date" })
+                        </td>
                     <td>
                         @Html.LabelFor(m => m.STCultureResults, "Culture results:") <br />
                         @Html.TextAreaFor(m => m.STCultureResults)
@@ -267,8 +273,11 @@
         </div>
         <table>
             <tr>
-                <td>@Html.LabelFor(m => m.SkinCultureDate, "Culture date:") <br />@Html.TextBoxFor(m => m.SkinCultureDate)</td>
-                <td>@Html.LabelFor(m => m.SkinCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.SkinCultureResults)</td>
+                    <td>
+                        @Html.LabelFor(m => m.SkinCultureDate, "Culture date:") <br />
+                        @Html.TextBoxFor(m => m.SkinCultureDate, new { @class = "form-control", type = "date" })
+                    </td>
+                    <td>@Html.LabelFor(m => m.SkinCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.SkinCultureResults)</td>
             </tr>
         </table>
     </fieldset>

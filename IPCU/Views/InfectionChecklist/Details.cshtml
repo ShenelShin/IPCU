@@ -1,50 +1,446 @@
 ﻿@model IPCU.Models.SSTInfectionModel
 
 @{
-    ViewData["Title"] = "Patient Details";
+    ViewBag.Title = "SST Infection Checklist";
 }
 
-<h2>Patient Details</h2>
+<style>
+    fieldset {
+        border: 2px solid #000;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
 
-<table class="table table-bordered">
-    <tr>
-        <th>Full Name:</th>
-        <td>@($"{Model.Lname}, {Model.Fname} {Model.Mname}")</td>
-    </tr>
-    <tr>
-        <th>Hospital Number:</th>
-        <td>@Model.HospitalNumber</td>
-    </tr>
-    <tr>
-        <th>Date of Birth:</th>
-        <td>@Model.DateOfBirth.ToString("yyyy-MM-dd")</td>
-    </tr>
-    <tr>
-        <th>Age:</th>
-        <td>@Model.Age</td>
-    </tr>
-    <tr>
-        <th>Unit/Ward Area:</th>
-        <td>@Model.UnitWardArea</td>
-    </tr>
-    <tr>
-        <th>Main Service:</th>
-        <td>@Model.MainService</td>
-    </tr>
-    <tr>
-        <th>Date of Event:</th>
-        <td>@Model.DateOfEvent.ToString("yyyy-MM-dd")</td>
-    </tr>
-    <tr>
-        <th>Investigator:</th>
-        <td>@Model.Investigator</td>
-    </tr>
-    <tr>
-        <th>Date of Admission:</th>
-        <td>@Model.DateOfAdmission.ToString("yyyy-MM-dd")</td>
-    </tr>
-</table>
+    legend {
+        font-weight: bold;
+    }
 
-<a asp-action="PatientIndex" class="btn btn-primary">Back to List</a>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
 
+    td, th {
+        border: 1px solid #000;
+        padding: 5px;
+        vertical-align: top;
+    }
+
+    label {
+        font-weight: normal;
+    }
+</style>
+
+<h2 style="text-align:center;">SST Infection Checklist Form</h2>
+
+@using (Html.BeginForm("Submit", "InfectionChecklist", FormMethod.Post))
+{
+    <fieldset>
+        <legend>Patient Information</legend>
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.Fname, "First Name") <br />@Html.TextBoxFor(m => m.Fname)</td>
+                <td>@Html.LabelFor(m => m.Mname, "Middle Name") <br />@Html.TextBoxFor(m => m.Mname)</td>
+                <td>@Html.LabelFor(m => m.Lname, "Last Name") <br />@Html.TextBoxFor(m => m.Lname)</td>
+                <td>@Html.LabelFor(m => m.HospitalNumber) <br />@Html.TextBoxFor(m => m.HospitalNumber)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.DateOfBirth) <br />@Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}", new { type = "date" })</td>
+                <td>@Html.LabelFor(m => m.Age) <br />@Html.TextBoxFor(m => m.Age)</td>
+                <td>@Html.LabelFor(m => m.UnitWardArea) <br />@Html.TextBoxFor(m => m.UnitWardArea)</td>
+                <td>@Html.LabelFor(m => m.MainService) <br />@Html.TextBoxFor(m => m.MainService)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.DateOfEvent) <br />@Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}", new { type = "date" })</td>
+                <td>@Html.LabelFor(m => m.Investigator) <br />@Html.TextBoxFor(m => m.Investigator)</td>
+                <td>@Html.LabelFor(m => m.DateOfAdmission) <br />@Html.TextBoxFor(m => m.DateOfAdmission, "{0:yyyy-MM-dd}", new { type = "date" })</td>
+                <td>@Html.LabelFor(m => m.Disposition) <br />@Html.TextBoxFor(m => m.Disposition)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Gender) <br />@Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female" }))</td>
+                <td>@Html.LabelFor(m => m.Classification) <br />@Html.DropDownListFor(m => m.Classification, new SelectList(new[] { "Pay", "Service" }))</td>
+                <td>@Html.LabelFor(m => m.MDRO) <br />@Html.CheckBoxFor(m => m.MDRO) Yes</td>
+                <td>
+                    @Html.LabelFor(m => m.InfectionType) <br />
+                    <table>
+                        <tr>
+                            <td>
+                                <div>
+                                    <input type="checkbox" name="InfectionType" value="BURN"
+                                    @(Model.InfectionType != null && Model.InfectionType.Contains("BURN") ? "checked" : "") />
+                                    <label>BURN</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="InfectionType" value="DECU"
+                                    @(Model.InfectionType != null && Model.InfectionType.Contains("DECU") ? "checked" : "") />
+                                    <label>DECU</label>
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <input type="checkbox" name="InfectionType" value="ST"
+                                    @(Model.InfectionType != null && Model.InfectionType.Contains("ST") ? "checked" : "") />
+                                    <label>ST</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" name="InfectionType" value="SKIN"
+                                    @(Model.InfectionType != null && Model.InfectionType.Contains("SKIN") ? "checked" : "") />
+                                    <label>SKIN</label>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+
+
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.InfectionClassification) <br />@Html.TextBoxFor(m => m.InfectionClassification)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+
+
+    <!-- BURN Infection Section -->
+    <div class="infection-section" id="section-burn">
+        <fieldset>
+            <legend>BURN - BURN INFECTION</legend>
+
+            <!-- First Checkbox -->
+            <div>
+                @Html.CheckBoxFor(m => m.BurnAppearanceChange, new { @id = "burn-appearance-change" })
+                @Html.Label("Patient has a change in burn wound appearance or character, such as rapid eschar separation, or dark brown, black, or violaceous discoloration of the eschar")
+            </div>
+
+            <!-- Hidden AND + Organism Checkbox -->
+            <div id="burn-and-section" style="display: none;">
+                <p><strong>AND</strong></p>
+                <div>
+                    @Html.CheckBoxFor(m => m.BurnOrganismIdentified, new { @id = "burn-organism-identified" })
+                    @Html.Label("Organism(s) identified from blood by a culture or non-culture based microbiologic testing method")
+                </div>
+            </div>
+
+            <!-- Hidden Culture Date + Result Section -->
+            <div id="burn-culture-section" style="display: none;">
+                <table>
+                    <tr>
+                        <td>@Html.LabelFor(m => m.BurnCultureDate, "Culture date:") <br />@Html.TextBoxFor(m => m.BurnCultureDate)</td>
+                        <td>@Html.LabelFor(m => m.BurnCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.BurnCultureResults)</td>
+                    </tr>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+
+    <!-- DECU Section -->
+    <div class="infection-section" id="section-decu">
+        <fieldset>
+            <legend>DECU - DECUBITUS ULCER INFECTION</legend>
+
+            <p><em>Also known as pressure injury infection, including both superficial and deep infections</em></p>
+
+            <p><strong>At least two (2) of the following localized signs or symptoms:</strong></p>
+
+            <div>
+                @Html.CheckBoxFor(m => m.DecubitusErythema, new { @class = "decubitus-symptom" })
+                @Html.Label("Erythema*")
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.DecubitusTenderness, new { @class = "decubitus-symptom" })
+                @Html.Label("Tenderness*")
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.DecubitusSwelling, new { @class = "decubitus-symptom" })
+                @Html.Label("Swelling of decubitus wound edges*")
+            </div>
+
+            <!-- Hidden AND Section -->
+            <div id="decubitus-and-section" style="display: none;">
+                <p><strong>AND</strong></p>
+                <div>
+                    @Html.CheckBoxFor(m => m.DecubitusOrganismIdentified, new { @id = "decubitus-organism" })
+                    @Html.Label("Organism(s) identified from blood by a culture or non-culture based microbiologic testing method")
+                </div>
+            </div>
+
+            <!-- Hidden Culture Table Section -->
+            <div id="decubitus-culture-section" style="display: none;">
+                <table>
+                    <tr>
+                        <td>@Html.LabelFor(m => m.DecubitusCultureDate, "Culture date:") <br />@Html.TextBoxFor(m => m.DecubitusCultureDate)</td>
+                        <td>@Html.LabelFor(m => m.DecubitusCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.DecubitusCultureResults)</td>
+                    </tr>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+
+    <!-- ST-Soft Tissue Infection -->
+    <div class="infection-section" id="section-st">
+        <fieldset>
+            <legend>ST - Soft Tissue Infection</legend>
+            <p>
+                <em>
+                    For muscle and/or fascia
+                    [for example, necrotizing fasciitis, infectious gangrene, necrotizing cellulitis, infectious myositis, lymphadenitis, lymphangitis, or parotitis]
+                    excluding decubitus ulcers, burns, and infections at vascular access sites (see VASC)
+                </em>
+            </p>
+
+            <p><strong>At least one (1) of the following criteria:</strong></p>
+
+            <div>
+                @Html.CheckBoxFor(m => m.STOrganismIdentified, new { @class = "st-trigger-checkbox" })
+                @Html.Label("Organism(s) identified from tissue or drainage from affected site by culture/non-culture based microbiologic testing method")
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.STDrainage, new { @class = "st-trigger-checkbox" })
+                @Html.Label("Purulent drainage at affected site")
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.STAbscess, new { @class = "st-trigger-checkbox" })
+                @Html.Label("Patient has an abscess or other evidence of infection on gross anatomic or histopathologic exam")
+            </div>
+
+            <!-- Hidden Culture Table Section -->
+            <div id="st-culture-section" style="display: none;">
+                <table>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.STCultureDate, "Culture date:") <br />
+                            @Html.TextBoxFor(m => m.STCultureDate)
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.STCultureResults, "Culture results:") <br />
+                            @Html.TextAreaFor(m => m.STCultureResults)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+    <!-- SKIN Infection -->
+    <div class="infection-section" id="section-skin">
+        <fieldset>
+            <legend>SKIN - SKIN INFECTION</legend>
+            <p><em>For skin and/or subcutaneous, excluding decubitus ulcers, burns, and infections at vascular access sites</em></p>
+
+            <p><strong>At least one (1) of the following criteria:</strong></p>
+
+            <div>
+                @Html.CheckBoxFor(m => m.SkinPurulentDrainage, new { @class = "trigger-checkbox" })
+                @Html.Label("Purulent drainage")
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.SkinVesicles, new { @class = "trigger-checkbox" })
+                @Html.Label("Vesicles")
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.SkinPustules, new { @class = "trigger-checkbox" })
+                @Html.Label("Pustules")
+            </div>
+            <div>
+                @Html.CheckBoxFor(m => m.SkinBoils, new { @class = "trigger-checkbox" })
+                @Html.Label("Boils (excluding acne)")
+            </div>
+
+            <!-- Localized Symptoms -->
+            <div id="localized-symptoms-section" style="display: none;">
+                <p><strong>At least two (2) of localized signs/symptoms:</strong></p>
+                <div>@Html.CheckBoxFor(m => m.LocalizedPainTenderness, new { @class = "localized-checkbox" }) @Html.Label("Pain* or tenderness*")</div>
+                <div>@Html.CheckBoxFor(m => m.LocalizedSwelling, new { @class = "localized-checkbox" }) @Html.Label("Swelling*")</div>
+                <div>@Html.CheckBoxFor(m => m.LocalizedErythema, new { @class = "localized-checkbox" }) @Html.Label("Erythema*")</div>
+                <div>@Html.CheckBoxFor(m => m.LocalizedHeat, new { @class = "localized-checkbox" }) @Html.Label("Heat*")</div>
+
+                <!-- AND Section -->
+                <div id="and-section" style="display: none;">
+                    <p><strong>AND at least one (1) of:</strong></p>
+                    <div>@Html.CheckBoxFor(m => m.OrganismIdentifiedFromAspiration) @Html.Label("Organism(s) identified from aspirate or drainage from affected site by a culture or non-culture based testing method")</div>
+                    <div>@Html.CheckBoxFor(m => m.MultinucleatedGiantCellsSeen) @Html.Label("Multinucleated giant cells seen on microscopic examination of affected tissue")</div>
+                    <div>@Html.CheckBoxFor(m => m.DiagnosticAntibodyTiter) @Html.Label("Diagnostic single antibody titer (IgM) or 4-fold increase in paired sera (IgG) for organism")</div>
+                </div>
+            </div>
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.SkinCultureDate, "Culture date:") <br />@Html.TextBoxFor(m => m.SkinCultureDate)</td>
+                    <td>@Html.LabelFor(m => m.SkinCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.SkinCultureResults)</td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+    <button type="submit">Submit</button>
+}
+
+
+
+@if (TempData["Success"] != null)
+{
+    <p style="color:green;">@TempData["Success"]</p>
+}
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function checkTriggerCheckboxes() {
+            let anyChecked = $('.trigger-checkbox').is(':checked');
+            if (anyChecked) {
+                $('#localized-symptoms-section').slideDown();
+            } else {
+                $('#localized-symptoms-section').slideUp();
+                $('#and-section').slideUp(); // Also hide AND section if main criteria unchecked
+                $('.localized-checkbox').prop('checked', false); // Uncheck localized checkboxes
+            }
+        }
+
+        function checkLocalizedCheckboxes() {
+            let checkedCount = $('.localized-checkbox:checked').length;
+            if (checkedCount >= 2) {
+                $('#and-section').slideDown();
+            } else {
+                $('#and-section').slideUp();
+            }
+        }
+
+        $(document).ready(function () {
+            // Initial checks in case of pre-checked values
+            checkTriggerCheckboxes();
+            checkLocalizedCheckboxes();
+
+            // Event handler for first group
+            $('.trigger-checkbox').change(function () {
+                checkTriggerCheckboxes();
+            });
+
+            // Event handler for localized symptoms checkboxes
+            $('.localized-checkbox').change(function () {
+                checkLocalizedCheckboxes();
+            });
+        });
+
+
+        //Soft Tissue
+
+        function checkSTTriggerCheckboxes() {
+            let anyChecked = $('.st-trigger-checkbox').is(':checked');
+            if (anyChecked) {
+                $('#st-culture-section').slideDown();
+            } else {
+                $('#st-culture-section').slideUp();
+            }
+        }
+
+        $(document).ready(function () {
+            checkSTTriggerCheckboxes(); // Initial check (in case pre-checked)
+
+            $('.st-trigger-checkbox').change(function () {
+                checkSTTriggerCheckboxes();
+            });
+        });
+
+
+        //decu
+         function checkDecubitusSymptoms() {
+            let checkedCount = $('.decubitus-symptom:checked').length;
+            if (checkedCount >= 2) {
+                $('#decubitus-and-section').slideDown();
+            } else {
+                $('#decubitus-and-section').slideUp();
+                $('#decubitus-culture-section').slideUp();
+                $('#decubitus-organism').prop('checked', false);
+            }
+        }
+
+        $(document).ready(function () {
+            // Initial check (in case pre-filled)
+            checkDecubitusSymptoms();
+
+            // Checkboxes change event
+            $('.decubitus-symptom').change(function () {
+                checkDecubitusSymptoms();
+            });
+
+            // Organism checkbox event
+            $('#decubitus-organism').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#decubitus-culture-section').slideDown();
+                } else {
+                    $('#decubitus-culture-section').slideUp();
+                }
+            });
+        });
+
+        //burn
+         $(document).ready(function () {
+
+            // Check if BurnAppearanceChange is checked on load (pre-fill cases)
+            if ($('#burn-appearance-change').is(':checked')) {
+                $('#burn-and-section').show();
+            }
+
+            // Check if BurnOrganismIdentified is checked on load
+            if ($('#burn-organism-identified').is(':checked')) {
+                $('#burn-culture-section').show();
+            }
+
+            // First checkbox event
+            $('#burn-appearance-change').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#burn-and-section').slideDown();
+                } else {
+                    $('#burn-and-section').slideUp();
+                    $('#burn-organism-identified').prop('checked', false);
+                    $('#burn-culture-section').slideUp();
+                }
+            });
+
+            // Second checkbox event
+            $('#burn-organism-identified').change(function () {
+                if ($(this).is(':checked')) {
+                    $('#burn-culture-section').slideDown();
+                } else {
+                    $('#burn-culture-section').slideUp();
+                }
+            });
+        });
+
+                    $(document).ready(function () {
+
+            // Define the function
+            function toggleInfectionSections() {
+                // First hide all sections
+                $('#section-burn, #section-decu, #section-st, #section-skin').hide();
+
+                // Then check which checkboxes are checked
+                $('input[name="InfectionType"]:checked').each(function () {
+                    let val = $(this).val();
+                    switch (val) {
+                        case "BURN":
+                            $('#section-burn').show();
+                            break;
+                        case "DECU":
+                            $('#section-decu').show();
+                            break;
+                        case "ST":
+                            $('#section-st').show();
+                            break;
+                        case "SKIN":
+                            $('#section-skin').show();
+                            break;
+                    }
+                });
+            }
+
+            // CALL the function initially (important for pre-filled cases)
+            toggleInfectionSections();
+
+            // Set event handler for InfectionType checkbox change
+            $('input[name="InfectionType"]').change(function () {
+                toggleInfectionSections();
+            });
+        });
+    </script>
 }
