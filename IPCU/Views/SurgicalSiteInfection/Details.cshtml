@@ -1,0 +1,51 @@
+﻿@model IPCU.Models.VentilatorEventChecklist
+
+@{
+    ViewData["Title"] = "Patient Details";
+}
+
+<h2>Patient Details</h2>
+
+<table class="table table-bordered">
+    <tr>
+        <td>First Name: @Model.FName</td>
+        <td>Middle Name: @Model.MName</td>
+        <td>Last Name: @Model.LName</td>
+        <td>Hospital Number: @Model.HospNum</td>
+    </tr>
+
+    <tr>
+        <td>Date of Birth: @Model.DateOfBirth.ToString("yyyy-MM-dd")</td>
+        <td>Age: @Model.Age</td>
+        <td>Unit/Ward Area: @Model.UwArea</td>
+        <td>Main Service: @Model.MainService</td>
+    </tr>
+
+    <tr>
+        <td>Date of Event: @Model.DateOfEvent.ToString("yyyy-MM-dd")</td>
+        <td>Date of Intubation: @(Model.DateOfIntubation?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+        <td>Investigator: @Model.NameOfInvestigator</td>
+        <td>Date of Admission: @Model.DateOfAdmission.ToString("yyyy-MM-dd")</td>
+    </tr>
+
+    <tr>
+        <td>Disposition: @Model.Disposition</td>
+        <td>Disposition Date: @Model.DispositionDate.ToString("yyyy-MM-dd")</td>
+        <td>Gender: @Model.Gender</td>
+        <td>Classification: @Model.Classification</td>
+    </tr>
+
+    <tr>
+        <td>MDRO: @(Model.MDRO ? "Yes" : "No")</td>
+        <td>MDRO Organism: @Model.MDROOrganism</td>
+        <td>Type/Class: @Model.TypeClass</td>
+        <td></td> <!-- Empty cell for alignment -->
+    </tr>
+
+    @if (!string.IsNullOrEmpty(Model.DispositionTransfer))
+    {
+        <tr>
+            <td colspan="4">Disposition Transfer: @Model.DispositionTransfer</td>
+        </tr>
+    }
+</table>
