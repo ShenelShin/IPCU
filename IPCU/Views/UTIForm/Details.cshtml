@@ -386,36 +386,79 @@
                 </td>
             </tr>
         </table>
-
     </fieldset>
 </div>
+
+<div class="abuti-section" id="section-abuti" style="display: none;">
+    <fieldset disabled>
+        <!-- Disabled fieldset disables all child elements -->
+        <legend>ABUTI - Asymptomatic Bacteremic Urinary Tract Infection</legend>
+
+        <!-- No Symptoms -->
+        <div class="form-group">
+            @Html.CheckBox("ABUTI_NoSymptoms", Model.ABUTI_NoSymptoms.GetValueOrDefault(), new { @id = "abuti-no-symptoms", disabled = "disabled" })
+            <label for="abuti-no-symptoms">Patient with* or without an indwelling urinary catheter has no signs or symptoms of SUTI 1 or 2 according to age.</label>
+        </div>
+
+        <hr />
+
+        <!-- Urine Culture -->
+        <div class="form-group">
+            @Html.CheckBox("ABUTI_ValidUrineCulture", Model.ABUTI_ValidUrineCulture.GetValueOrDefault(), new { @id = "abuti-valid-culture", disabled = "disabled" })
+            <label for="abuti-valid-culture">
+                Patient has a urines culture with no more than two species of organisms identified, at least one of which is a bacterium of >10<sup>5</sup>CFU/ml
+            </label>
+        </div>
+
+        <!-- Organism Identified -->
+        <div class="form-group">
+            @Html.CheckBox("ABUTI_OrganismIdentified", Model.ABUTI_OrganismIdentified.GetValueOrDefault(), new { @id = "abuti-organism-identified", disabled = "disabled" })
+            <label for="abuti-organism-identified">Patient has organism identified** from blood specimen with at least matching bacterium to the bacterium at >100,000 CFU/ml identified in urine specimen OR is eligible for LCBI criterion 2 (without fever) and matching common commensal(s) in the urine.</label>
+        </div>
+
+        <hr />
+        *patient had an IUC in place for more than 2 consecutive days in an inpatient location on the date of event, and the IUC was in place on the date of event or the day before. Catheter-associated ABUTI is reportable if CAUTI is in the facility's reporting plan for the location.
+        **organism identified by a culture or non-culture based microbiologic testing method which is performed for purposes of clinical diagnosis or treatment (for example, not Active Surveillance Culture/Testing (ASC/AST)).
+        <hr />
+
+        <!-- Culture Date & Results -->
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.ABUTI_CultureDate, "Culture Date:") <br />
+                    @Html.TextBoxFor(m => m.ABUTI_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.ABUTI_CultureResults, "Culture Results:") <br />
+                    @Html.TextAreaFor(m => m.ABUTI_CultureResults, new { rows = "3", cols = "30", @class = "form-control", disabled = "disabled" })
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+
 
 <a asp-action="PatientIndex" class="btn btn-primary">Back to List</a>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Get elements
-        var suti1aSection = document.getElementById("section-catheter");
-        var suti1bSection = document.getElementById("section-suti1b");
-        var suti2Section = document.getElementById("section-suti2");
+        function toggleSections() {
+            let suti1a = document.getElementById("suti1aCheckbox").checked;
+            let suti1b = document.getElementById("suti1b-checkbox").checked;
+            let suti2 = document.getElementById("suti2-checkbox").checked;
+            let abuti = document.getElementById("abuti-checkbox").checked;
 
-        // Get field values from the model
-        var hasCatheter = @Json.Serialize(Model.CatheterPresent);
-        var hasSUTI1b = @Json.Serialize(Model.SUTI1b_HadCatheterLessThan2Days) || @Json.Serialize(Model.SUTI1b_NoCatheterInPlace);
-        var hasSUTI2 = @Json.Serialize(Model.SUTI2_IsOneYearOrLess);
-
-        // Check if SUTI 1A form has data
-        if (hasCatheter) {
-            suti1aSection.style.display = "block"; // Show SUTI 1A
+            document.getElementById("section-catheter").style.display = suti1a ? "block" : "none";
+            document.getElementById("section-suti1b").style.display = suti1b ? "block" : "none";
+            document.getElementById("section-suti2").style.display = suti2 ? "block" : "none";
+            document.getElementById("section-abuti").style.display = abuti ? "block" : "none";
         }
 
-        // Check if SUTI 1B form has data
-        if (hasSUTI1b) {
-            suti1bSection.style.display = "block"; // Show SUTI 1B
-        }
+        // Add event listeners to checkboxes
+        document.querySelectorAll("input[name='TypeClass']").forEach(function (checkbox) {
+            checkbox.addEventListener("change", toggleSections);
+        });
 
-        // Check if SUTI 2 form has data
-        if (hasSUTI2) {
-            suti2Section.style.display = "block"; // Show SUTI 2
-        }
+        // Initial check on page load
+        toggleSections();
     });
 </script>

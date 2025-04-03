@@ -93,26 +93,25 @@ namespace IPCU.Controllers
             return View(patient);
         }
         [HttpPost]
-        public IActionResult Submit(UTIFormModel model)
+        public IActionResult Submit(string[] TypeClass, UTIFormModel model)
         {
-            var nullableFields = new List<string>
-            {
-                "CultureResults",
-                "SUTI1b_CultureResults",
-                "SUTI2_CultureResults",
-                "ABUTI_CultureResults"
-            };
+            // Ensure the concatenated values are stored
+            model.TypeClass = TypeClass != null ? string.Join(", ", TypeClass) : "";
 
-            // Loop through each field, clear validation errors, set empty string if empty
+            var nullableFields = new List<string>
+    {
+        "CultureResults",
+        "SUTI1b_CultureResults",
+        "SUTI2_CultureResults",
+        "ABUTI_CultureResults"
+    };
+
             foreach (var field in nullableFields)
             {
                 if (string.IsNullOrWhiteSpace(ModelState[field]?.AttemptedValue))
                 {
-                    // Set empty string instead of null (non-nullable fields need non-null value)
                     typeof(UTIFormModel).GetProperty(field)?.SetValue(model, "");
                 }
-
-                // Clear validation error for this field
                 ModelState[field]?.Errors.Clear();
             }
 
@@ -125,5 +124,7 @@ namespace IPCU.Controllers
 
             return View("Index", model);
         }
+
+
     }
 }

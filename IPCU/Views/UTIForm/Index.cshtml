@@ -137,32 +137,30 @@
                 </td>
                 <td>
                     @Html.LabelFor(m => m.TypeClass) <br />
+
                     <div>
-                        <input type="checkbox" id="suti1aCheckbox" name="TypeClass" value="SUTI 1A (Catheter)"
-                        @(Model.TypeClass != null && Model.TypeClass.Contains("SUTI 1A (Catheter)") ? "checked" : "") />
+                        <input type="checkbox" id="suti1aCheckbox" name="TypeClass" value="SUTI 1A (Catheter)" />
                         <label for="suti1aCheckbox">SUTI 1A (Catheter)</label>
                     </div>
 
                     <div>
-                        <input type="checkbox" id="suti1b-checkbox" name="TypeClass" value="SUTI 1B (Non-Catheter)"
-                        @(Model.TypeClass != null && Model.TypeClass.Contains("SUTI 1B (Non-Catheter)") ? "checked" : "") />
-                        <label for="suti1b-checkbox">SUTI 1B (Non-Catheter)</label>
+                        <input type="checkbox" id="suti1bCheckbox" name="TypeClass" value="SUTI 1B (Non-Catheter)" />
+                        <label for="suti1bCheckbox">SUTI 1B (Non-Catheter)</label>
                     </div>
 
                     <div>
-                        <input type="checkbox" id="suti2-checkbox" name="TypeClass" value="SUTI 2 (Catheter)"
-                        @(Model.TypeClass != null && Model.TypeClass.Contains("SUTI 2 (Catheter)") ? "checked" : "") />
-                        <label>SUTI 2 (Catheter)</label>
+                        <input type="checkbox" id="suti2Checkbox" name="TypeClass" value="SUTI 2 (Catheter)" />
+                        <label for="suti2Checkbox">SUTI 2 (Catheter)</label>
                     </div>
 
                     <div>
-                        <input type="checkbox" id="abuti-checkbox" name="TypeClass" value="ABUTI"
-                        @(Model.TypeClass != null && Model.TypeClass.Contains("ABUTI") ? "checked" : "") />
-                        <label for="abuti-checkbox">ABUTI </label>
+                        <input type="checkbox" id="abutiCheckbox" name="TypeClass" value="ABUTI" />
+                        <label for="abutiCheckbox">ABUTI</label>
                     </div>
 
                     @Html.ValidationMessageFor(m => m.TypeClass, "", new { @class = "text-danger" })
                 </td>
+
             </tr>
         </table>
     </fieldset>
@@ -463,86 +461,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
-
-            function toggleDispositionTransfer() {
-                var selected = $('#DispositionDropdown').val();
-                if (selected === "Transferred In" || selected === "Transferred Out") {
-                    $('#DispositionTransferContainer').show();
-                } else {
-                    $('#DispositionTransferContainer').hide();
-                    $('#DispositionTransferContainer input').val('');
-                }
-            }
-
-            toggleDispositionTransfer();
-
-            $('#DispositionDropdown').change(function () {
-                toggleDispositionTransfer();
-            });
-        });
-
-
-
-
-
-             document.addEventListener('DOMContentLoaded', function() {
-            var suti1aCheckbox = document.getElementById('suti1aCheckbox');
-            var catheterSection = document.getElementById('section-catheter');
-
-            // Function to toggle the section based on checkbox state
-            function toggleCatheterSection() {
-                if (suti1aCheckbox.checked) {
-                    catheterSection.style.display = 'block';
-                } else {
-                    catheterSection.style.display = 'none';
-                }
-            }
-
-            // Attach event listener to checkbox
-            suti1aCheckbox.addEventListener('change', toggleCatheterSection);
-
-            // Initialize visibility on page load
-            toggleCatheterSection();
-        });
-
-
-
-
-
-        //suti b
-
-                $(document).ready(function() {
-            // Function to toggle section visibility based on checkbox state
-            function toggleSection(checkboxId, sectionId) {
-                if ($(checkboxId).is(':checked')) {
-                    $(sectionId).show();
-                } else {
-                    $(sectionId).hide();
-                }
-            }
-
-            // Initial check to set section visibility on page load
-            toggleSection('#suti1a-checkbox', '#section-suti1a');
-            toggleSection('#suti1b-checkbox', '#section-suti1b');
-
-            // Event listeners for checkbox state changes
-            $('#suti1a-checkbox').change(function() {
-                toggleSection('#suti1a-checkbox', '#section-suti1a');
-            });
-
-            $('#suti1b-checkbox').change(function() {
-                toggleSection('#suti1b-checkbox', '#section-suti1b');
-            });
-        });
-
-
-
-
-        //SUTI 2
-
-
-             $(document).ready(function () {
-            // Function to toggle section visibility based on checkbox state
+            // Function to toggle visibility of a section based on checkbox state
             function toggleSection(checkboxId, sectionId) {
                 if ($(checkboxId).is(':checked')) {
                     $(sectionId).fadeIn();
@@ -551,42 +470,28 @@
                 }
             }
 
-            // Initialize visibility based on the current state of checkboxes
-            toggleSection('#suti1b-checkbox', '#section-suti1b');
-            toggleSection('#suti2-checkbox', '#section-suti2');
+            // Initial check to set section visibility on page load for each checkbox
+            toggleSection('#suti1aCheckbox', '#section-catheter');  // SUTI 1A
+            toggleSection('#suti1bCheckbox', '#section-suti1b');   // SUTI 1B
+            toggleSection('#suti2Checkbox', '#section-suti2');     // SUTI 2
+            toggleSection('#abutiCheckbox', '#section-abuti');     // ABUTI
 
             // Set up change event listeners for the checkboxes
-            $('#suti1b-checkbox').change(function () {
-                toggleSection('#suti1b-checkbox', '#section-suti1b');
+            $('#suti1aCheckbox').change(function () {
+                toggleSection('#suti1aCheckbox', '#section-catheter');
             });
 
-            $('#suti2-checkbox').change(function () {
-                toggleSection('#suti2-checkbox', '#section-suti2');
+            $('#suti1bCheckbox').change(function () {
+                toggleSection('#suti1bCheckbox', '#section-suti1b');
+            });
+
+            $('#suti2Checkbox').change(function () {
+                toggleSection('#suti2Checkbox', '#section-suti2');
+            });
+
+            $('#abutiCheckbox').change(function () {
+                toggleSection('#abutiCheckbox', '#section-abuti');
             });
         });
-
-
-
-         
-        //ABUTI
-            $(document).ready(function () {
-            // Function to toggle the visibility of the ABUTI section
-            function toggleAbutiSection() {
-                if ($('#abuti-checkbox').is(':checked')) {
-                    $('#section-abuti').show();
-                } else {
-                    $('#section-abuti').hide();
-                }
-            }
-
-            // Bind the toggle function to the checkbox change event
-            $('#abuti-checkbox').change(function () {
-                toggleAbutiSection();
-            });
-
-            // Call the toggle function on page load to set the initial state
-            toggleAbutiSection();
-        });
-
     </script>
 }
