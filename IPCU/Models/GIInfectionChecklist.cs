@@ -57,13 +57,13 @@ namespace IPCU.Models
         public string TypeClassification { get; set; }
 
         // CDI
-        public string? CDItoxin { get; set;  }
+        public bool CDItoxin { get; set;  }
 
-        public string CDIpseudomembranous { get; set; }
+        public bool CDIpseudomembranous { get; set; }
 
 
         // GE
-        public string GEdiarrhea { get; set; }
+        public bool GEdiarrhea { get; set; }
 
         public bool GENausea { get; set; }
 
