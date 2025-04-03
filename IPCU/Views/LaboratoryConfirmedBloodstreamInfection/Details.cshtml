@@ -1,50 +1,921 @@
 ﻿@model IPCU.Models.LaboratoryConfirmedBSI
 
 @{
-    ViewData["Title"] = "Patient Details";
+    ViewData["Title"] = "LABORATORY CONFIRMED BLOODSTREAM INFECTION (LCBI) CHECKLIST";
 }
 
-<h2>Patient Details</h2>
+<style>
+    fieldset {
+        border: 2px solid #000;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
 
-<table class="table table-bordered">
-    <tr>
-        <th>Full Name:</th>
-        <td>@($"{Model.Lname}, {Model.Fname} {Model.Mname}")</td>
-    </tr>
-    <tr>
-        <th>Hospital Number:</th>
-        <td>@Model.HospitalNumber</td>
-    </tr>
-    <tr>
-        <th>Date of Birth:</th>
-        <td>@Model.DateOfBirth?.ToString("yyyy-MM-dd")</td>
-    </tr>
-    <tr>
-        <th>Age:</th>
-        <td>@Model.Age</td>
-    </tr>
-    <tr>
-        <th>Unit/Ward Area:</th>
-        <td>@Model.UnitWardArea</td>
-    </tr>
-    <tr>
-        <th>Main Service:</th>
-        <td>@Model.MainService</td>
-    </tr>
-    <tr>
-        <th>Date of Event:</th>
-        <td>@Model.DateOfEvent?.ToString("yyyy-MM-dd")</td>
-    </tr>
-    <tr>
-        <th>Investigator:</th>
-        <td>@Model.Investigator</td>
-    </tr>
-    <tr>
-        <th>Date of Admission:</th>
-        <td>@Model.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
-    </tr>
-</table>
+    legend {
+        font-weight: bold;
+    }
 
-<a asp-action="PatientIndex" class="btn btn-primary">Back to List</a>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
 
+    td, th {
+        border: 1px solid #000;
+        padding: 5px;
+        vertical-align: top;
+    }
+
+    label {
+        font-weight: normal;
+    }
+</style>
+
+<h2 style="text-align:center;">@ViewData["Title"]</h2>
+
+<form asp-action="Submit" method="post">
+    <fieldset>
+        <legend>Patient Information</legend>
+        <table>
+            <tr>
+                <td>
+                    <label asp-for="Fname"></label><br />
+                    <input asp-for="Fname" class="form-control" />
+                    <span asp-validation-for="Fname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Mname"></label><br />
+                    <input asp-for="Mname" class="form-control" />
+                    <span asp-validation-for="Mname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Lname"></label><br />
+                    <input asp-for="Lname" class="form-control" />
+                    <span asp-validation-for="Lname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="HospitalNumber"></label><br />
+                    <input asp-for="HospitalNumber" class="form-control" />
+                    <span asp-validation-for="HospitalNumber" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="DateOfBirth"></label><br />
+                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Age"></label><br />
+                    <input asp-for="Age" class="form-control" type="number" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Gender"></label><br />
+                    <select asp-for="Gender" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Classification"></label><br />
+                    <select asp-for="Classification" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Pay</option>
+                        <option>Service</option>
+                    </select>
+                    <span asp-validation-for="Classification" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="UnitWardArea"></label><br />
+                    <input asp-for="UnitWardArea" class="form-control" />
+                    <span asp-validation-for="UnitWardArea" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="MainService"></label><br />
+                    <input asp-for="MainService" class="form-control" />
+                    <span asp-validation-for="MainService" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfAdmission"></label><br />
+                    <input asp-for="DateOfAdmission" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfAdmission" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfEvent"></label><br />
+                    <input asp-for="DateOfEvent" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfEvent" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Investigator"></label><br />
+                    <input asp-for="Investigator" class="form-control" />
+                    <span asp-validation-for="Investigator" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="MDRO"></label><br />
+                    <select asp-for="MDRO" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                    <span asp-validation-for="MDRO" class="text-danger"></span>
+                </td>
+
+                <td>
+                    <label asp-for="Disposition"></label><br />
+                    <select asp-for="Disposition" class="form-control" id="DispositionDropdown">
+                        <option value="">--Select--</option>
+                        <option>Mortality</option>
+                        <option>Discharged</option>
+                        <option>Still Admitted</option>
+                        <option>Transferred In</option>
+                        <option>Transferred Out</option>
+                    </select>
+                    <span asp-validation-for="Disposition" class="text-danger"></span>
+
+                    <div id="DispositionTransferBox" style="display: none; margin-top: 10px;">
+                        <label asp-for="DispositionTransfer"></label><br />
+                        <input asp-for="DispositionTransfer" class="form-control" />
+                        <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+                    </div>
+                </td>
+
+
+                <td>
+                    <label asp-for="DispositionDate"></label><br />
+                    <input asp-for="DispositionDate" type="date" class="form-control" />
+                    <span asp-validation-for="DispositionDate" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="TypeClass"></label><br />
+                    <div>
+                        <input type="checkbox" name="TypeClass" value="LCBI1" id="lcbi1" onclick="toggleForms()" />
+                        <label for="lcbi1">LCBI1</label>
+
+                        <input type="checkbox" name="TypeClass" value="LCBI2" id="lcbi2" class="ml-2" onclick="toggleForms()" />
+                        <label for="lcbi2">LCBI2</label>
+
+                        <input type="checkbox" name="TypeClass" value="LCBI3" id="lcbi3" class="ml-2" onclick="toggleForms()" />
+                        <label for="lcbi3">LCBI3</label>
+
+                        <input type="checkbox" name="TypeClass" value="MBI-LCBI1" id="mbi-lcbi1" class="ml-2" onclick="toggleForms()" />
+                        <label for="mbi-lcbi1">MBI-LCBI1</label>
+
+                        <input type="checkbox" name="TypeClass" value="MBI-LCBI2" id="mbi-lcbi2" class="ml-2" onclick="toggleForms()" />
+                        <label for="mbi-lcbi2">MBI-LCBI2</label>
+
+                        <input type="checkbox" name="TypeClass" value="MBI-LCBI3" id="mbi-lcbi3" class="ml-2" onclick="toggleForms()" />
+                        <label for="mbi-lcbi3">MBI-LCBI3</label>
+                    </div>
+
+                    <span asp-validation-for="TypeClass" class="text-danger"></span>
+                </td>
+                <td colspan="4" style="background-color: #a9cce3; font-weight: bold; font-style: italic;">
+                    If with central line:
+                    <input type="checkbox" name="centralline" value="ForMedications" id="forMedications" />
+                    <label for="forMedications">For Medications</label>
+
+                    <input type="checkbox" name="centralline" value="ForHemodialysis" id="forHemodialysis" class="ml-3" />
+                    <label for="forHemodialysis">For Hemodialysis</label>
+                </td>
+            </tr>
+            <tr id="DispositionTransferRow" style="display:none;">
+                <td colspan="2">
+                    <label asp-for="DispositionTransfer"></label><br />
+                    <input asp-for="DispositionTransfer" class="form-control" />
+                    <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+                </td>
+            </tr>
+
+
+
+
+
+
+
+
+        </table>
+    </fieldset>
+
+    <fieldset id="form-lcbi1" style="display: none; border: 2px solid black; padding: 10px; margin-bottom: 20px;">
+        <legend style="font-weight: bold; text-align: center;">LCBI 1</legend>
+
+        <p style="font-style: italic; font-weight: bold;">Patient of any age</p>
+
+        <div style="margin-left: 15px;">
+            <input type="checkbox" asp-for="IdentifiedByCulture" id="IdentifiedByCulture" />
+            <label for="IdentifiedByCulture">
+                Identified from one or more blood specimens obtained by a culture,
+                <strong>OR</strong>
+            </label>
+            <br />
+
+            <input type="checkbox" asp-for="IdentifiedByNonCulture" id="IdentifiedByNonCulture" />
+            <label for="IdentifiedByNonCulture">
+                Identified to the genus or species level by non-culture based microbiologic testing
+            </label>
+        </div>
+
+        <p style="font-weight: bold; margin-top: 10px;">AND</p>
+
+        <div style="margin-left: 15px;">
+            <input type="checkbox" asp-for="OrganismNotFromAnotherSite" id="OrganismNotFromAnotherSite" />
+            <label for="OrganismNotFromAnotherSite">
+                Organism(s) identified in blood is not related to an infection at another site
+            </label>
+        </div>
+
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <tr>
+                <td style="border: 1px solid black; font-weight: bold;">Culture date:</td>
+                <td style="border: 1px solid black;">
+                    <input asp-for="CultureDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; font-weight: bold;">Culture results:</td>
+                <td style="border: 1px solid black;">
+                    <textarea asp-for="CultureResults" class="form-control"></textarea>
+                </td>
+            </tr>
+        </table>
+
+        <p style="font-style: italic; text-align: center; margin-top: 5px;">
+            If LCBI 1 criteria is met, consider MBI-LCBI 1
+        </p>
+    </fieldset>
+
+
+
+
+
+    <!-- LCBI 2 Section -->
+    <fieldset id="form-lcbi2" style="display: none;">
+        <legend>LCBI 2</legend>
+
+        <p style="font-style: italic; font-weight: bold;">Patient of any age</p>
+
+        <div style="margin-left: 15px;">
+            <label><strong>At least one (1) of the following signs or symptoms:</strong></label>
+            <br />
+            <input type="checkbox" asp-for="Fever" id="Fever" />
+            <label for="Fever">Fever (>38°C)</label>
+            <br />
+            <input type="checkbox" asp-for="Hypotension" id="Hypotension" />
+            <label for="Hypotension">Hypotension</label>
+            <br />
+            <input type="checkbox" asp-for="Chills" id="Chills" />
+            <label for="Chills">Chills</label>
+        </div>
+
+        <p style="font-weight: bold; margin-top: 10px;">AND</p>
+
+        <!-- Step 2 -->
+        <div id="step2" style="margin-left: 15px; display: none;">
+            <input type="checkbox" id="lcbi2OrganismNotFromAnotherSite" />
+            <label for="lcbi2OrganismNotFromAnotherSite">
+                Organism(s) identified in blood is not related to an infection at another site
+            </label>
+        </div>
+        <p style="font-weight: bold; margin-top: 10px;">AND</p>
+
+        <!-- Step 3 -->
+        <div id="step3" style="margin-left: 15px; display: none;">
+            <input type="checkbox" id="TwoOrMorePositiveCultures" />
+            <label for="TwoOrMorePositiveCultures">
+                The same organism is identified by a culture from <strong>two or more</strong> blood specimens collected on separate occasions
+            </label>
+        </div>
+
+        <!-- Step 4 -->
+        <table id="step4" style="width: 100%; border-collapse: collapse; margin-top: 10px; display: none;">
+            <tr>
+                <td style="border: 1px solid black; font-weight: bold;">Culture date:</td>
+                <td style="border: 1px solid black;">
+                    <input type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; font-weight: bold;">Culture results:</td>
+                <td style="border: 1px solid black;">
+                    <textarea class="form-control"></textarea>
+                </td>
+            </tr>
+        </table>
+
+
+        <p style="font-style: italic; text-align: center; margin-top: 5px;">
+            If LCBI 2 criteria is met, consider MBI-LCBI 2
+        </p>
+    </fieldset>
+
+    <fieldset id="form-lcbi3" style="display: none;">
+        <legend>LCBI 3</legend>
+
+        <p style="font-style: italic; font-weight: bold;">Patient &lt;1 year of age</p>
+
+        <div style="margin-left: 15px;">
+            <label><strong>At least <u>one (1)</u> of the following signs or symptoms:</strong></label>
+            <br />
+            <input type="checkbox" asp-for="lcbi3Fever" id="lcbi3Fever" />
+            <label for="lcbi3Fever">Fever (>38°C)</label>
+            <br />
+            <input type="checkbox" asp-for="Hypothermia" id="Hypothermia" />
+            <label for="Hypothermia">Hypothermia</label>
+            <br />
+            <input type="checkbox" asp-for="Apnea" id="Apnea" />
+            <label for="Apnea">Apnea</label>
+            <br />
+            <input type="checkbox" asp-for="Bradycardia" id="Bradycardia" />
+            <label for="Bradycardia">Bradycardia</label>
+        </div>
+
+        <p id="and1_lcbi3" style="font-weight: bold; margin-top: 10px; display: none;">AND</p>
+
+        <div id="step2_lcbi3" style="margin-left: 15px; display: none;">
+            <input type="checkbox" id="lcbi3OrganismNotFromAnotherSite" />
+            <label for="lcbi3OrganismNotFromAnotherSite">
+                Organism(s) identified in blood is not related to an infection at another site
+            </label>
+        </div>
+
+        <p id="and2_lcbi3" style="font-weight: bold; margin-top: 10px; display: none;">AND</p>
+
+        <div id="step3_lcbi3" style="margin-left: 15px; display: none;">
+            <input type="checkbox" id="lcbi3TwoOrMorePositiveCultures" />
+            <label for="lcbi3TwoOrMorePositiveCultures">
+                The same organism is identified by a culture from <strong>two or more</strong> blood specimens collected on separate occasions
+            </label>
+        </div>
+
+        <table id="step4_lcbi3" style="width: 100%; border-collapse: collapse; margin-top: 10px; display: none;">
+            <tr>
+                <td style="border: 1px solid black; font-weight: bold;">Culture date:</td>
+                <td style="border: 1px solid black;">
+                    <input asp-for="lcbi3CultureDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; font-weight: bold;">Culture results:</td>
+                <td style="border: 1px solid black;">
+                    <textarea asp-for="lcbi3CultureResults" class="form-control"></textarea>
+                </td>
+            </tr>
+        </table>
+
+        <p style="font-style: italic; text-align: center; margin-top: 5px;">
+            If LCBI 3 criteria is met, consider MBI-LCBI 3
+        </p>
+    </fieldset>
+
+
+    <fieldset id="form-mbi-lcbi1" style="display: none;">
+        <legend>MBI-LCBI 1</legend>
+
+        <p style="font-style: italic; font-weight: bold;">Patient of any age fully meets LCBI 1</p>
+
+        <div style="margin-left: 15px;">
+            <label><strong>With at least one blood specimen:</strong></label>
+            <br />
+            <input type="checkbox" asp-for="mbilcbi1IdentifiedByCulture" id="mbilcbi1IdentifiedByCultureNew" />
+            <label for="mbilcbi1IdentifiedByCultureNew">
+                Identified from one or more blood specimens obtained by a culture, <strong>OR</strong>
+            </label>
+            <br />
+            <input type="checkbox" asp-for="mbilcbi1IdentifiedByNonCulture" id="mbilcbi1IdentifiedByNonCultureNew" />
+            <label for="mbilcbi1IdentifiedByNonCultureNew">
+                Identified to the genus or species level by non-culture based microbiologic testing
+            </label>
+        </div>
+
+        <p id="andStepOne" style="font-weight: bold; margin-top: 10px; display: none;">AND</p>
+
+        <div id="stepOneNew" style="margin-left: 15px; display: none;">
+            <input type="checkbox" asp-for="OnlyIntestinalOrganisms" id="OnlyIntestinalOrganismsNew" />
+            <label for="OnlyIntestinalOrganismsNew">
+                <strong>ONLY</strong> intestinal organisms from MBI organism list are identified*
+            </label>
+        </div>
+
+        <p id="andStepTwo" style="font-weight: bold; margin-top: 10px; display: none;">AND at least <u>one (1)</u> of the following:</p>
+
+        <div id="stepTwoNew" style="margin-left: 15px; display: none;">
+            <label><strong>1. Is an allogeneic hematopoietic stem cell transplant recipient within the past year:</strong></label>
+            <br />
+            <input type="checkbox" asp-for="mbilcbi1GraftVsHostDisease" id="mbilcbi1GraftVsHostDiseaseNew" />
+            <label for="mbilcbi1GraftVsHostDiseaseNew">
+                Grade III or IV gastrointestinal graft versus host disease, <strong>OR</strong>
+            </label>
+            <br />
+            <input type="checkbox" asp-for="mbilcbi1Diarrhea" id="mbilcbi1DiarrheaNew" />
+            <label for="mbilcbi1DiarrheaNew">
+                ≥1-liter diarrhea in a 24-hour period (or ≥20 mL/kg in a 24-hour period for patients &lt;18 years of age)
+            </label>
+        </div>
+
+        <p id="orStepNew" style="font-weight: bold; text-align: center; margin-top: 10px; display: none;"><strong>OR</strong></p>
+
+        <div id="stepThreeNew" style="margin-left: 15px; display: none;">
+            <label><strong>2. Is neutropenic, defined as at least two separate days with ANC and/or WBC values &lt;500 cells /mm³ collected*</strong></label>
+            <br />
+            <input type="checkbox" asp-for="mbilcbi1Neutropenic" id="mbilcbi1NeutropenicNew" />
+            <label for="mbilcbi1NeutropenicNew">
+                Neutropenic (ANC and/or WBC values &lt;500 cells/mm³ collected within 7-day period)
+            </label>
+        </div>
+
+        <table id="stepFourNew" style="width: 100%; border-collapse: collapse; margin-top: 10px; display: none;">
+            <tr>
+                <td style="border: 1px solid black; font-weight: bold;">Culture date:</td>
+                <td style="border: 1px solid black;">
+                    <input asp-for="mbilcbi1CultureDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; font-weight: bold;">Culture results:</td>
+                <td style="border: 1px solid black;">
+                    <textarea asp-for="mbilcbi1CultureResults" class="form-control"></textarea>
+                </td>
+            </tr>
+        </table>
+
+        <p style="font-style: italic; text-align: center; margin-top: 5px;">
+            *within a 7-day time period which includes the collection date of the blood specimen
+        </p>
+    </fieldset>
+
+
+    <fieldset id="form-mbi-lcbi2" style="display: none;">
+        <legend>MBI-LCBI 2</legend>
+
+        <p style="font-style: italic; font-weight: bold;">Patient fully meets LCBI 2</p>
+
+        <p style="font-weight: bold;">AND</p>
+
+        <div style="margin-left: 15px;">
+            <input type="checkbox" asp-for="ViridansGroupOnly" id="ViridansGroupOnly" />
+            <label for="ViridansGroupOnly">
+                <strong>Viridans Group ONLY</strong> Streptococcus and/or Rothia spp. alone but no other organisms
+            </label>
+        </div>
+
+        <!-- AND at least one (1) of the following: (Initially Hidden) -->
+        <div id="conditionsSection" style="display: none;">
+            <p style="font-weight: bold; margin-top: 10px;">AND at least <u>one (1)</u> of the following:</p>
+
+            <div style="margin-left: 15px;">
+                <label><strong>1. Is an allogeneic hematopoietic stem cell transplant recipient within the past year:</strong></label>
+                <br />
+                <input type="checkbox" asp-for="mbilcbi2GraftVsHostDisease" id="mbilcbi2GraftVsHostDisease" />
+                <label for="mbilcbi2GraftVsHostDisease">
+                    Grade III or IV gastrointestinal graft versus host disease, <strong>OR</strong>
+                </label>
+                <br />
+                <input type="checkbox" asp-for="mbilcbi2Diarrhea" id="mbilcbi2Diarrhea" />
+                <label for="mbilcbi2Diarrhea">
+                    ≥1-liter diarrhea in a 24-hour period (or ≥20 mL/kg in a 24-hour period for patients &lt;18 years of age)
+                </label>
+            </div>
+
+            <p style="font-weight: bold; text-align: center; margin-top: 10px;"><strong>OR</strong></p>
+
+            <div style="margin-left: 15px;">
+                <label><strong>2. Is neutropenic, defined as at least two separate days with ANC and/or WBC values &lt;500 cells /mm³ collected*</strong></label>
+                <br />
+                <input type="checkbox" asp-for="mbilcbi2Neutropenic" id="mbilcbi2Neutropenic" />
+                <label for="mbilcbi2Neutropenic">
+                    Neutropenic (ANC and/or WBC values &lt;500 cells/mm³ collected within 7-day period)
+                </label>
+            </div>
+        </div>
+
+        <!-- Culture Table (Initially Hidden) -->
+        <div id="cultureTable" style="display: none;">
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <tr>
+                    <td style="border: 1px solid black; font-weight: bold;">Culture date:</td>
+                    <td style="border: 1px solid black;">
+                        <input asp-for="mbilcbi2CultureDate" type="date" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black; font-weight: bold;">Culture results:</td>
+                    <td style="border: 1px solid black;">
+                        <textarea asp-for="mbilcbi2CultureResults" class="form-control"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p style="font-style: italic; text-align: center; margin-top: 5px;">
+            *Within a 7-day time period which includes the collection date of the positive blood specimen, the 3 calendar days before, and the 3 calendar days after.
+        </p>
+    </fieldset>
+
+
+    <fieldset id="form-mbi-lcbi3" style="display: none;">
+        <legend>MBI-LCBI 3</legend>
+
+        <p style="font-style: italic; font-weight: bold;">Patient &lt;1 year of age fully meets LCBI 3</p>
+
+        <p style="font-weight: bold;">AND</p>
+
+        <div style="margin-left: 15px;">
+            <input type="checkbox" asp-for="mbilcbi3ViridansGroupOnly" id="mbilcbi3ViridansGroupOnly" />
+            <label for="mbilcbi3ViridansGroupOnly">
+                <strong>Viridans Group ONLY</strong> Streptococcus and/or Rothia spp. alone but no other organisms
+            </label>
+        </div>
+
+        <!-- Conditions Section (Initially Hidden) -->
+        <div id="conditionsSection3" style="display: none;">
+            <p style="font-weight: bold; margin-top: 10px;">AND at least <u>one (1)</u> of the following:</p>
+
+            <div style="margin-left: 15px;">
+                <label><strong>1. Is an allogeneic hematopoietic stem cell transplant recipient within the past year:</strong></label>
+                <br />
+                <input type="checkbox" asp-for="mbilcbi3GraftVsHostDisease" id="mbilcbi3GraftVsHostDisease" />
+                <label for="mbilcbi3GraftVsHostDisease">
+                    Grade III or IV gastrointestinal graft versus host disease, <strong>OR</strong>
+                </label>
+                <br />
+                <input type="checkbox" asp-for="mbilcbi3Diarrhea" id="mbilcbi3Diarrhea" />
+                <label for="mbilcbi3Diarrhea">
+                    ≥1-liter diarrhea in a 24-hour period (or ≥20 mL/kg in a 24-hour period for patients &lt;18 years of age)
+                </label>
+            </div>
+
+            <p style="font-weight: bold; text-align: center; margin-top: 10px;"><strong>OR</strong></p>
+
+            <div style="margin-left: 15px;">
+                <label><strong>2. Is neutropenic, defined as at least two separate days with ANC and/or WBC values &lt;500 cells /mm³ collected*</strong></label>
+                <br />
+                <input type="checkbox" asp-for="mbilcbi3Neutropenic" id="mbilcbi3Neutropenic" />
+                <label for="mbilcbi3Neutropenic">
+                    Neutropenic (ANC and/or WBC values &lt;500 cells/mm³ collected within 7-day period)
+                </label>
+            </div>
+        </div>
+
+        <!-- Culture Table (Initially Hidden) -->
+        <div id="cultureTable3" style="display: none;">
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <tr>
+                    <td style="border: 1px solid black; font-weight: bold;">Culture date:</td>
+                    <td style="border: 1px solid black;">
+                        <input asp-for="mbilcbi3CultureDate" type="date" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black; font-weight: bold;">Culture results:</td>
+                    <td style="border: 1px solid black;">
+                        <textarea asp-for="mbilcbi3CultureResults" class="form-control"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <p style="font-style: italic; text-align: center; margin-top: 5px;">
+            *Within a 7-day time period which includes the collection date of the positive blood specimen, the 3 calendar days before, and the 3 calendar days after.
+        </p>
+    </fieldset>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+                function toggleForms() {
+                const checkboxes = document.querySelectorAll('input[name="TypeClass"]');
+                checkboxes.forEach((checkbox) => {
+                    const formId = "form-" + checkbox.value.toLowerCase();
+                    document.getElementById(formId).style.display = checkbox.checked ? "block" : "none";
+                });
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                var dispositionDropdown = document.getElementById("DispositionDropdown");
+                var dispositionTransferBox = document.getElementById("DispositionTransferBox");
+
+                function toggleDispositionTransfer() {
+                    var selectedValue = dispositionDropdown.value;
+                    if (selectedValue === "Transferred In" || selectedValue === "Transferred Out") {
+                        dispositionTransferBox.style.display = "";
+                    } else {
+                        dispositionTransferBox.style.display = "none";
+                    }
+                }
+
+                dispositionDropdown.addEventListener("change", toggleDispositionTransfer);
+                toggleDispositionTransfer(); // Check on page load for prefilled values
+            });
+
+
+
+
+             document.addEventListener("DOMContentLoaded", function () {
+            const fever = document.getElementById("Fever");
+            const hypotension = document.getElementById("Hypotension");
+            const chills = document.getElementById("Chills");
+            const step2 = document.getElementById("step2");
+            const organismCheck = document.getElementById("lcbi2OrganismNotFromAnotherSite");
+            const step3 = document.getElementById("step3");
+            const culturesCheck = document.getElementById("TwoOrMorePositiveCultures");
+            const step4 = document.getElementById("step4");
+
+            function showStep2() {
+                if (fever.checked || hypotension.checked || chills.checked) {
+                    step2.style.display = "block";
+                } else {
+                    step2.style.display = "none";
+                    step3.style.display = "none";
+                    step4.style.display = "none";
+                    organismCheck.checked = false;
+                    culturesCheck.checked = false;
+                }
+            }
+
+            function showStep3() {
+                if (organismCheck.checked) {
+                    step3.style.display = "block";
+                } else {
+                    step3.style.display = "none";
+                    step4.style.display = "none";
+                    culturesCheck.checked = false;
+                }
+            }
+
+            function showStep4() {
+                if (culturesCheck.checked) {
+                    step4.style.display = "block";
+                } else {
+                    step4.style.display = "none";
+                }
+            }
+
+            fever.addEventListener("change", showStep2);
+            hypotension.addEventListener("change", showStep2);
+            chills.addEventListener("change", showStep2);
+            organismCheck.addEventListener("change", showStep3);
+            culturesCheck.addEventListener("change", showStep4);
+        });
+
+         document.addEventListener("DOMContentLoaded", function () {
+                // LCBI 3 Logic
+                const symptoms = document.querySelectorAll("#lcbi3Fever, #Hypothermia, #Apnea, #Bradycardia");
+                const and1 = document.getElementById("and1_lcbi3");
+                const step2_lcbi3 = document.getElementById("step2_lcbi3");
+                const organismCheck_lcbi3 = document.getElementById("lcbi3OrganismNotFromAnotherSite");
+
+                const and2 = document.getElementById("and2_lcbi3");
+                const step3_lcbi3 = document.getElementById("step3_lcbi3");
+                const cultureCheck_lcbi3 = document.getElementById("lcbi3TwoOrMorePositiveCultures");
+
+                const step4_lcbi3 = document.getElementById("step4_lcbi3");
+
+                // Function to check if any symptom is selected
+                function checkSymptoms_LCBI3() {
+                    let anyChecked = [...symptoms].some(input => input.checked);
+                    if (anyChecked) {
+                        and1.style.display = "block";
+                        step2_lcbi3.style.display = "block";
+                    } else {
+                        and1.style.display = "none";
+                        step2_lcbi3.style.display = "none";
+                        and2.style.display = "none";
+                        step3_lcbi3.style.display = "none";
+                        step4_lcbi3.style.display = "none";
+                        organismCheck_lcbi3.checked = false;
+                        cultureCheck_lcbi3.checked = false;
+                    }
+                }
+
+                function checkStep2_LCBI3() {
+                    if (organismCheck_lcbi3.checked) {
+                        and2.style.display = "block";
+                        step3_lcbi3.style.display = "block";
+                    } else {
+                        and2.style.display = "none";
+                        step3_lcbi3.style.display = "none";
+                        step4_lcbi3.style.display = "none";
+                        cultureCheck_lcbi3.checked = false;
+                    }
+                }
+
+                function checkStep3_LCBI3() {
+                    step4_lcbi3.style.display = cultureCheck_lcbi3.checked ? "block" : "none";
+                }
+
+                // Add event listeners
+                symptoms.forEach(input => input.addEventListener("change", checkSymptoms_LCBI3));
+                organismCheck_lcbi3.addEventListener("change", checkStep2_LCBI3);
+                cultureCheck_lcbi3.addEventListener("change", checkStep3_LCBI3);
+            });
+
+
+                 document.addEventListener("DOMContentLoaded", function () {
+                // Get all relevant checkboxes and sections
+                const firstGroupCheckboxes = document.querySelectorAll("#mbilcbi1IdentifiedByCulture, #mbilcbi1IdentifiedByNonCulture");
+                const secondCheckbox = document.getElementById("OnlyIntestinalOrganisms");
+                const thirdGroupCheckboxes = document.querySelectorAll("#mbilcbi1GraftVsHostDisease, #mbilcbi1Diarrhea");
+                const fourthCheckbox = document.getElementById("mbilcbi1Neutropenic");
+
+                // Get the sections to show/hide
+                const secondSection = secondCheckbox.parentElement;
+                const thirdSection = thirdGroupCheckboxes[0].parentElement;
+                const fourthSection = fourthCheckbox.parentElement;
+                const finalTable = document.querySelector("table");
+
+                // Initially hide all steps
+                secondSection.style.display = "none";
+                thirdSection.style.display = "none";
+                fourthSection.style.display = "none";
+                finalTable.style.display = "none";
+
+                function updateVisibility() {
+                    // Step 1: If any checkbox in the first group is selected, show the second section
+                    if ([...firstGroupCheckboxes].some(checkbox => checkbox.checked)) {
+                        secondSection.style.display = "block";
+                    } else {
+                        secondSection.style.display = "none";
+                        thirdSection.style.display = "none";
+                        fourthSection.style.display = "none";
+                        finalTable.style.display = "none";
+                        return; // Stop further checks if first section isn't selected
+                    }
+
+                    // Step 2: If the second checkbox (OnlyIntestinalOrganisms) is selected, show the third section
+                    if (secondCheckbox.checked) {
+                        thirdSection.style.display = "block";
+                    } else {
+                        thirdSection.style.display = "none";
+                        fourthSection.style.display = "none";
+                        finalTable.style.display = "none";
+                        return; // Stop further checks if second section isn't selected
+                    }
+
+                    // Step 3: If any checkbox in the third group is selected, show the fourth section
+                    if ([...thirdGroupCheckboxes].some(checkbox => checkbox.checked)) {
+                        fourthSection.style.display = "block";
+                    } else {
+                        fourthSection.style.display = "none";
+                        finalTable.style.display = "none";
+                        return; // Stop further checks if third section isn't selected
+                    }
+
+                    // Step 4: If the fourth checkbox (Neutropenic) is selected, show the final table
+                    if (fourthCheckbox.checked) {
+                        finalTable.style.display = "block";
+                    } else {
+                        finalTable.style.display = "none";
+                    }
+                }
+
+                // Add event listeners to all relevant checkboxes
+                firstGroupCheckboxes.forEach(checkbox => checkbox.addEventListener("change", updateVisibility));
+                secondCheckbox.addEventListener("change", updateVisibility);
+                thirdGroupCheckboxes.forEach(checkbox => checkbox.addEventListener("change", updateVisibility));
+                fourthCheckbox.addEventListener("change", updateVisibility);
+            });
+
+
+                 document.addEventListener("DOMContentLoaded", function () {
+                const firstStepCheckboxes = document.querySelectorAll("#mbilcbi1IdentifiedByCultureNew, #mbilcbi1IdentifiedByNonCultureNew");
+                const andStepOne = document.getElementById("andStepOne");
+                const stepOneNew = document.getElementById("stepOneNew");
+
+                firstStepCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener("change", function () {
+                        if (Array.from(firstStepCheckboxes).some(cb => cb.checked)) {
+                            andStepOne.style.display = "block";
+                            stepOneNew.style.display = "block";
+                        } else {
+                            andStepOne.style.display = "none";
+                            stepOneNew.style.display = "none";
+                        }
+                    });
+                });
+
+                const stepOneCheckbox = document.getElementById("OnlyIntestinalOrganismsNew");
+                const andStepTwo = document.getElementById("andStepTwo");
+                const stepTwoNew = document.getElementById("stepTwoNew");
+                const orStepNew = document.getElementById("orStepNew");
+                const stepThreeNew = document.getElementById("stepThreeNew");
+
+                stepOneCheckbox.addEventListener("change", function () {
+                    if (stepOneCheckbox.checked) {
+                        andStepTwo.style.display = "block";
+                        stepTwoNew.style.display = "block";
+                        orStepNew.style.display = "block";
+                        stepThreeNew.style.display = "block";
+                    } else {
+                        andStepTwo.style.display = "none";
+                        stepTwoNew.style.display = "none";
+                        orStepNew.style.display = "none";
+                        stepThreeNew.style.display = "none";
+                    }
+                });
+
+                const stepTwoCheckboxes = document.querySelectorAll("#mbilcbi1GraftVsHostDiseaseNew, #mbilcbi1DiarrheaNew, #mbilcbi1NeutropenicNew");
+                const stepFourNew = document.getElementById("stepFourNew");
+
+                stepTwoCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener("change", function () {
+                        if (Array.from(stepTwoCheckboxes).some(cb => cb.checked)) {
+                            stepFourNew.style.display = "block";
+                        } else {
+                            stepFourNew.style.display = "none";
+                        }
+                    });
+                });
+            });
+
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                const viridansCheckbox = document.getElementById("ViridansGroupOnly");
+                const conditionsSection = document.getElementById("conditionsSection");
+                const conditionCheckboxes = document.querySelectorAll("#mbilcbi2GraftVsHostDisease, #mbilcbi2Diarrhea, #mbilcbi2Neutropenic");
+                const cultureTable = document.getElementById("cultureTable");
+
+                function resetSelections() {
+                    // Uncheck all conditions
+                    conditionCheckboxes.forEach(cb => cb.checked = false);
+
+                    // Hide all dependent sections
+                    conditionsSection.style.display = "none";
+                    cultureTable.style.display = "none";
+                }
+
+                viridansCheckbox.addEventListener("change", function () {
+                    if (viridansCheckbox.checked) {
+                        conditionsSection.style.display = "block";
+                    } else {
+                        resetSelections();
+                    }
+                });
+
+                conditionCheckboxes.forEach(checkbox => {
+                    checkbox.addEventListener("change", function () {
+                        if (Array.from(conditionCheckboxes).some(cb => cb.checked)) {
+                            cultureTable.style.display = "block";
+                        } else {
+                            cultureTable.style.display = "none";
+                        }
+                    });
+                });
+            });
+
+
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                const viridansCheckbox3 = document.getElementById("mbilcbi3ViridansGroupOnly");
+                const conditionsSection3 = document.getElementById("conditionsSection3");
+                const conditionCheckboxes3 = document.querySelectorAll("#mbilcbi3GraftVsHostDisease, #mbilcbi3Diarrhea, #mbilcbi3Neutropenic");
+                const cultureTable3 = document.getElementById("cultureTable3");
+
+                function resetSelections3() {
+                    // Uncheck all conditions
+                    conditionCheckboxes3.forEach(cb => cb.checked = false);
+
+                    // Hide all dependent sections
+                    conditionsSection3.style.display = "none";
+                    cultureTable3.style.display = "none";
+                }
+
+                viridansCheckbox3.addEventListener("change", function () {
+                    if (viridansCheckbox3.checked) {
+                        conditionsSection3.style.display = "block";
+                    } else {
+                        resetSelections3();
+                    }
+                });
+
+                conditionCheckboxes3.forEach(checkbox => {
+                    checkbox.addEventListener("change", function () {
+                        if (Array.from(conditionCheckboxes3).some(cb => cb.checked)) {
+                            cultureTable3.style.display = "block";
+                        } else {
+                            cultureTable3.style.display = "none";
+                        }
+                    });
+                });
+            });
+
+    </script>
 }
