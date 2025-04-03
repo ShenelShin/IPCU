@@ -76,6 +76,7 @@ namespace IPCU.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
+            
             if (id == null)
             {
                 return NotFound();
@@ -84,12 +85,40 @@ namespace IPCU.Controllers
             var patient = await _context.SurgicalSiteInfectionChecklist
                                         .FirstOrDefaultAsync(p => p.Id == id);
 
-            if (patient == null)
+            // Ensure patient.Subclass is properly initialized
+            if (string.IsNullOrEmpty(patient.Subclass))
             {
-                return NotFound();
+                patient.Subclass = "";  // Prevent null reference issues
+            }
+            var Subclass = patient.Subclass;
+            return View(patient);
+        }
+        public IActionResult Submit(SurgicalSiteInfectionChecklist model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.SurgicalSiteInfectionChecklist.Add(model);
+                    Console.WriteLine("Saving changes to the database...");
+                    _context.SaveChanges();
+                    Console.WriteLine("Data saved successfully.");
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error saving data: {ex.Message}");
+                }
             }
 
-            return View(patient);
+            // Log errors if ModelState is invalid
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+            foreach (var error in errors)
+            {
+                Console.WriteLine($"Validation Error: {error.ErrorMessage}");
+            }
+
+            return View("Index", model);
         }
     }
 }
