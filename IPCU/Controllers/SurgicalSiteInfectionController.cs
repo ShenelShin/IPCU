@@ -93,12 +93,17 @@ namespace IPCU.Controllers
             var Subclass = patient.Subclass;
             return View(patient);
         }
+        [HttpPost]
         public IActionResult Submit(SurgicalSiteInfectionChecklist model)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Concatenate TypeClass and Subclass values
+                    model.TypeClass = string.Join(",", Request.Form["TypeClass"]);
+                    model.Subclass = string.Join(",", Request.Form["Subclass"]);
+
                     _context.SurgicalSiteInfectionChecklist.Add(model);
                     Console.WriteLine("Saving changes to the database...");
                     _context.SaveChanges();
@@ -120,5 +125,6 @@ namespace IPCU.Controllers
 
             return View("Index", model);
         }
+
     }
 }
