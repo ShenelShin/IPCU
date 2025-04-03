@@ -92,16 +92,20 @@ namespace IPCU.Controllers
         }
         [HttpPost]
 
-        public IActionResult Submit(LaboratoryConfirmedBSI model)
+        public IActionResult Submit(LaboratoryConfirmedBSI model, string[] TypeClass)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // Concatenate checkbox values with commas
+                    model.TypeClass = TypeClass != null ? string.Join(",", TypeClass) : "";
+
                     _context.LaboratoryConfirmedBSI.Add(model);
                     Console.WriteLine("Saving changes to the database...");
                     _context.SaveChanges();
                     Console.WriteLine("Data saved successfully.");
+
                     return RedirectToAction("Index");
                 }
                 catch (Exception ex)

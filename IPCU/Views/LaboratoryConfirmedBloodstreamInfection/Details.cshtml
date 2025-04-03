@@ -9,6 +9,7 @@
         border: 2px solid #000;
         padding: 10px;
         margin-bottom: 20px;
+        pointer-events: none; /* Prevent interactions */
     }
 
     legend {
@@ -19,6 +20,7 @@
         width: 100%;
         border-collapse: collapse;
         margin-bottom: 10px;
+        opacity: 0.8; /* Make them look disabled */
     }
 
     td, th {
@@ -34,7 +36,6 @@
 
 <h2 style="text-align:center;">@ViewData["Title"]</h2>
 
-<form asp-action="Submit" method="post">
     <fieldset>
         <legend>Patient Information</legend>
         <table>
@@ -155,38 +156,59 @@
                 </td>
             </tr>
             <tr>
+                @{
+                    // Split the stored TypeClass string into an array
+                    var selectedValues = Model.TypeClass?.Split(',') ?? new string[] { };
+                }
+
                 <td>
                     <label asp-for="TypeClass"></label><br />
                     <div>
-                        <input type="checkbox" name="TypeClass" value="LCBI1" id="lcbi1" onclick="toggleForms()" />
+                        <input type="checkbox" name="TypeClass" value="LCBI1" id="lcbi1"
+                        @(selectedValues.Contains("LCBI1") ? "checked" : "") />
                         <label for="lcbi1">LCBI1</label>
 
-                        <input type="checkbox" name="TypeClass" value="LCBI2" id="lcbi2" class="ml-2" onclick="toggleForms()" />
+                        <input type="checkbox" name="TypeClass" value="LCBI2" id="lcbi2" class="ml-2"
+                        @(selectedValues.Contains("LCBI2") ? "checked" : "") />
                         <label for="lcbi2">LCBI2</label>
 
-                        <input type="checkbox" name="TypeClass" value="LCBI3" id="lcbi3" class="ml-2" onclick="toggleForms()" />
+                        <input type="checkbox" name="TypeClass" value="LCBI3" id="lcbi3" class="ml-2"
+                        @(selectedValues.Contains("LCBI3") ? "checked" : "") />
                         <label for="lcbi3">LCBI3</label>
 
-                        <input type="checkbox" name="TypeClass" value="MBI-LCBI1" id="mbi-lcbi1" class="ml-2" onclick="toggleForms()" />
+                        <input type="checkbox" name="TypeClass" value="MBI-LCBI1" id="mbi-lcbi1" class="ml-2"
+                        @(selectedValues.Contains("MBI-LCBI1") ? "checked" : "") />
                         <label for="mbi-lcbi1">MBI-LCBI1</label>
 
-                        <input type="checkbox" name="TypeClass" value="MBI-LCBI2" id="mbi-lcbi2" class="ml-2" onclick="toggleForms()" />
+                        <input type="checkbox" name="TypeClass" value="MBI-LCBI2" id="mbi-lcbi2" class="ml-2"
+                        @(selectedValues.Contains("MBI-LCBI2") ? "checked" : "") />
                         <label for="mbi-lcbi2">MBI-LCBI2</label>
 
-                        <input type="checkbox" name="TypeClass" value="MBI-LCBI3" id="mbi-lcbi3" class="ml-2" onclick="toggleForms()" />
+                        <input type="checkbox" name="TypeClass" value="MBI-LCBI3" id="mbi-lcbi3" class="ml-2"
+                        @(selectedValues.Contains("MBI-LCBI3") ? "checked" : "") />
                         <label for="mbi-lcbi3">MBI-LCBI3</label>
                     </div>
 
                     <span asp-validation-for="TypeClass" class="text-danger"></span>
                 </td>
+
+                @{
+                    // Split the stored CentralLine string into an array
+                    var centralLineValues = Model.centralline?.Split(',') ?? new string[] { };
+                }
+
                 <td colspan="4" style="background-color: #a9cce3; font-weight: bold; font-style: italic;">
                     If with central line:
-                    <input type="checkbox" name="centralline" value="ForMedications" id="forMedications" />
+
+                    <input type="checkbox" name="centralline" value="ForMedications" id="forMedications"
+                    @(centralLineValues.Contains("ForMedications") ? "checked" : "") />
                     <label for="forMedications">For Medications</label>
 
-                    <input type="checkbox" name="centralline" value="ForHemodialysis" id="forHemodialysis" class="ml-3" />
+                    <input type="checkbox" name="centralline" value="ForHemodialysis" id="forHemodialysis" class="ml-3"
+                    @(centralLineValues.Contains("ForHemodialysis") ? "checked" : "") />
                     <label for="forHemodialysis">For Hemodialysis</label>
                 </td>
+
             </tr>
             <tr id="DispositionTransferRow" style="display:none;">
                 <td colspan="2">
@@ -196,16 +218,10 @@
                 </td>
             </tr>
 
-
-
-
-
-
-
-
         </table>
     </fieldset>
 
+    <!-- LCBI 1 Section -->
     <fieldset id="form-lcbi1" style="display: none; border: 2px solid black; padding: 10px; margin-bottom: 20px;">
         <legend style="font-weight: bold; text-align: center;">LCBI 1</legend>
 
@@ -589,47 +605,40 @@
         </p>
     </fieldset>
 
-    <div class="form-group mt-3">
-        <button type="submit" class="btn btn-primary">Save</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-    </div>
-</form>
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
     <script>
-                function toggleForms() {
-                const checkboxes = document.querySelectorAll('input[name="TypeClass"]');
-                checkboxes.forEach((checkbox) => {
+        document.addEventListener("DOMContentLoaded", function () {
+            // ✅ Toggle Forms Based on TypeClass Checkboxes
+            function toggleForms() {
+                document.querySelectorAll('input[name="TypeClass"]').forEach((checkbox) => {
                     const formId = "form-" + checkbox.value.toLowerCase();
-                    document.getElementById(formId).style.display = checkbox.checked ? "block" : "none";
+                    const formElement = document.getElementById(formId);
+                    if (formElement) {
+                        formElement.style.display = checkbox.checked ? "block" : "none";
+                    }
                 });
             }
+            document.querySelectorAll('input[name="TypeClass"]').forEach(cb => cb.addEventListener("change", toggleForms));
+            toggleForms(); // Call on load
 
-            document.addEventListener("DOMContentLoaded", function () {
-                var dispositionDropdown = document.getElementById("DispositionDropdown");
-                var dispositionTransferBox = document.getElementById("DispositionTransferBox");
-
-                function toggleDispositionTransfer() {
-                    var selectedValue = dispositionDropdown.value;
-                    if (selectedValue === "Transferred In" || selectedValue === "Transferred Out") {
-                        dispositionTransferBox.style.display = "";
-                    } else {
-                        dispositionTransferBox.style.display = "none";
-                    }
+            // ✅ Toggle Disposition Transfer Box
+            const dispositionDropdown = document.getElementById("DispositionDropdown");
+            const dispositionTransferBox = document.getElementById("DispositionTransferBox");
+            function toggleDispositionTransfer() {
+                if (dispositionDropdown) {
+                    dispositionTransferBox.style.display = ["Transferred In", "Transferred Out"].includes(dispositionDropdown.value) ? "" : "none";
                 }
-
+            }
+            if (dispositionDropdown) {
                 dispositionDropdown.addEventListener("change", toggleDispositionTransfer);
-                toggleDispositionTransfer(); // Check on page load for prefilled values
-            });
+                toggleDispositionTransfer(); // Initial check
+            }
 
-
-
-
-             document.addEventListener("DOMContentLoaded", function () {
+            // ✅ Toggle Step Sections for LCBI2
             const fever = document.getElementById("Fever");
             const hypotension = document.getElementById("Hypotension");
             const chills = document.getElementById("Chills");
@@ -640,282 +649,113 @@
             const step4 = document.getElementById("step4");
 
             function showStep2() {
-                if (fever.checked || hypotension.checked || chills.checked) {
+                if (fever?.checked || hypotension?.checked || chills?.checked) {
                     step2.style.display = "block";
                 } else {
                     step2.style.display = "none";
                     step3.style.display = "none";
                     step4.style.display = "none";
-                    organismCheck.checked = false;
-                    culturesCheck.checked = false;
+                    if (organismCheck) organismCheck.checked = false;
+                    if (culturesCheck) culturesCheck.checked = false;
                 }
             }
 
             function showStep3() {
-                if (organismCheck.checked) {
-                    step3.style.display = "block";
-                } else {
-                    step3.style.display = "none";
-                    step4.style.display = "none";
-                    culturesCheck.checked = false;
-                }
+                step3.style.display = organismCheck?.checked ? "block" : "none";
+                if (!organismCheck?.checked) step4.style.display = "none";
             }
 
             function showStep4() {
-                if (culturesCheck.checked) {
-                    step4.style.display = "block";
+                step4.style.display = culturesCheck?.checked ? "block" : "none";
+            }
+
+            [fever, hypotension, chills].forEach(el => el?.addEventListener("change", showStep2));
+            organismCheck?.addEventListener("change", showStep3);
+            culturesCheck?.addEventListener("change", showStep4);
+
+            // ✅ Toggle LCBI 3 Sections
+            const symptoms = document.querySelectorAll("#lcbi3Fever, #Hypothermia, #Apnea, #Bradycardia");
+            const and1 = document.getElementById("and1_lcbi3");
+            const step2_lcbi3 = document.getElementById("step2_lcbi3");
+            const organismCheck_lcbi3 = document.getElementById("lcbi3OrganismNotFromAnotherSite");
+            const and2 = document.getElementById("and2_lcbi3");
+            const step3_lcbi3 = document.getElementById("step3_lcbi3");
+            const cultureCheck_lcbi3 = document.getElementById("lcbi3TwoOrMorePositiveCultures");
+            const step4_lcbi3 = document.getElementById("step4_lcbi3");
+
+            function checkSymptoms_LCBI3() {
+                if ([...symptoms].some(input => input.checked)) {
+                    and1.style.display = "block";
+                    step2_lcbi3.style.display = "block";
                 } else {
-                    step4.style.display = "none";
+                    [and1, step2_lcbi3, and2, step3_lcbi3, step4_lcbi3].forEach(el => el.style.display = "none");
+                    organismCheck_lcbi3.checked = false;
+                    cultureCheck_lcbi3.checked = false;
                 }
             }
 
-            fever.addEventListener("change", showStep2);
-            hypotension.addEventListener("change", showStep2);
-            chills.addEventListener("change", showStep2);
-            organismCheck.addEventListener("change", showStep3);
-            culturesCheck.addEventListener("change", showStep4);
-        });
+            function checkStep2_LCBI3() {
+                and2.style.display = organismCheck_lcbi3?.checked ? "block" : "none";
+                step3_lcbi3.style.display = organismCheck_lcbi3?.checked ? "block" : "none";
+                if (!organismCheck_lcbi3?.checked) step4_lcbi3.style.display = "none";
+            }
 
-         document.addEventListener("DOMContentLoaded", function () {
-                // LCBI 3 Logic
-                const symptoms = document.querySelectorAll("#lcbi3Fever, #Hypothermia, #Apnea, #Bradycardia");
-                const and1 = document.getElementById("and1_lcbi3");
-                const step2_lcbi3 = document.getElementById("step2_lcbi3");
-                const organismCheck_lcbi3 = document.getElementById("lcbi3OrganismNotFromAnotherSite");
+            function checkStep3_LCBI3() {
+                step4_lcbi3.style.display = cultureCheck_lcbi3?.checked ? "block" : "none";
+            }
 
-                const and2 = document.getElementById("and2_lcbi3");
-                const step3_lcbi3 = document.getElementById("step3_lcbi3");
-                const cultureCheck_lcbi3 = document.getElementById("lcbi3TwoOrMorePositiveCultures");
+            symptoms.forEach(input => input?.addEventListener("change", checkSymptoms_LCBI3));
+            organismCheck_lcbi3?.addEventListener("change", checkStep2_LCBI3);
+            cultureCheck_lcbi3?.addEventListener("change", checkStep3_LCBI3);
 
-                const step4_lcbi3 = document.getElementById("step4_lcbi3");
+            // ✅ Toggle MBI-LCBI 1 Steps
+            function updateVisibility() {
+                const firstGroup = document.querySelectorAll("#mbilcbi1IdentifiedByCulture, #mbilcbi1IdentifiedByNonCulture");
+                const second = document.getElementById("OnlyIntestinalOrganisms");
+                const thirdGroup = document.querySelectorAll("#mbilcbi1GraftVsHostDisease, #mbilcbi1Diarrhea");
+                const fourth = document.getElementById("mbilcbi1Neutropenic");
+                const table = document.querySelector("table");
 
-                // Function to check if any symptom is selected
-                function checkSymptoms_LCBI3() {
-                    let anyChecked = [...symptoms].some(input => input.checked);
-                    if (anyChecked) {
-                        and1.style.display = "block";
-                        step2_lcbi3.style.display = "block";
-                    } else {
-                        and1.style.display = "none";
-                        step2_lcbi3.style.display = "none";
-                        and2.style.display = "none";
-                        step3_lcbi3.style.display = "none";
-                        step4_lcbi3.style.display = "none";
-                        organismCheck_lcbi3.checked = false;
-                        cultureCheck_lcbi3.checked = false;
-                    }
-                }
-
-                function checkStep2_LCBI3() {
-                    if (organismCheck_lcbi3.checked) {
-                        and2.style.display = "block";
-                        step3_lcbi3.style.display = "block";
-                    } else {
-                        and2.style.display = "none";
-                        step3_lcbi3.style.display = "none";
-                        step4_lcbi3.style.display = "none";
-                        cultureCheck_lcbi3.checked = false;
-                    }
-                }
-
-                function checkStep3_LCBI3() {
-                    step4_lcbi3.style.display = cultureCheck_lcbi3.checked ? "block" : "none";
-                }
-
-                // Add event listeners
-                symptoms.forEach(input => input.addEventListener("change", checkSymptoms_LCBI3));
-                organismCheck_lcbi3.addEventListener("change", checkStep2_LCBI3);
-                cultureCheck_lcbi3.addEventListener("change", checkStep3_LCBI3);
-            });
-
-
-                 document.addEventListener("DOMContentLoaded", function () {
-                // Get all relevant checkboxes and sections
-                const firstGroupCheckboxes = document.querySelectorAll("#mbilcbi1IdentifiedByCulture, #mbilcbi1IdentifiedByNonCulture");
-                const secondCheckbox = document.getElementById("OnlyIntestinalOrganisms");
-                const thirdGroupCheckboxes = document.querySelectorAll("#mbilcbi1GraftVsHostDisease, #mbilcbi1Diarrhea");
-                const fourthCheckbox = document.getElementById("mbilcbi1Neutropenic");
-
-                // Get the sections to show/hide
-                const secondSection = secondCheckbox.parentElement;
-                const thirdSection = thirdGroupCheckboxes[0].parentElement;
-                const fourthSection = fourthCheckbox.parentElement;
-                const finalTable = document.querySelector("table");
-
-                // Initially hide all steps
-                secondSection.style.display = "none";
-                thirdSection.style.display = "none";
-                fourthSection.style.display = "none";
-                finalTable.style.display = "none";
-
-                function updateVisibility() {
-                    // Step 1: If any checkbox in the first group is selected, show the second section
-                    if ([...firstGroupCheckboxes].some(checkbox => checkbox.checked)) {
-                        secondSection.style.display = "block";
-                    } else {
-                        secondSection.style.display = "none";
-                        thirdSection.style.display = "none";
-                        fourthSection.style.display = "none";
-                        finalTable.style.display = "none";
-                        return; // Stop further checks if first section isn't selected
-                    }
-
-                    // Step 2: If the second checkbox (OnlyIntestinalOrganisms) is selected, show the third section
-                    if (secondCheckbox.checked) {
-                        thirdSection.style.display = "block";
-                    } else {
-                        thirdSection.style.display = "none";
-                        fourthSection.style.display = "none";
-                        finalTable.style.display = "none";
-                        return; // Stop further checks if second section isn't selected
-                    }
-
-                    // Step 3: If any checkbox in the third group is selected, show the fourth section
-                    if ([...thirdGroupCheckboxes].some(checkbox => checkbox.checked)) {
-                        fourthSection.style.display = "block";
-                    } else {
-                        fourthSection.style.display = "none";
-                        finalTable.style.display = "none";
-                        return; // Stop further checks if third section isn't selected
-                    }
-
-                    // Step 4: If the fourth checkbox (Neutropenic) is selected, show the final table
-                    if (fourthCheckbox.checked) {
-                        finalTable.style.display = "block";
-                    } else {
-                        finalTable.style.display = "none";
-                    }
-                }
-
-                // Add event listeners to all relevant checkboxes
-                firstGroupCheckboxes.forEach(checkbox => checkbox.addEventListener("change", updateVisibility));
-                secondCheckbox.addEventListener("change", updateVisibility);
-                thirdGroupCheckboxes.forEach(checkbox => checkbox.addEventListener("change", updateVisibility));
-                fourthCheckbox.addEventListener("change", updateVisibility);
-            });
-
-
-                 document.addEventListener("DOMContentLoaded", function () {
-                const firstStepCheckboxes = document.querySelectorAll("#mbilcbi1IdentifiedByCultureNew, #mbilcbi1IdentifiedByNonCultureNew");
-                const andStepOne = document.getElementById("andStepOne");
-                const stepOneNew = document.getElementById("stepOneNew");
-
-                firstStepCheckboxes.forEach(checkbox => {
-                    checkbox.addEventListener("change", function () {
-                        if (Array.from(firstStepCheckboxes).some(cb => cb.checked)) {
-                            andStepOne.style.display = "block";
-                            stepOneNew.style.display = "block";
-                        } else {
-                            andStepOne.style.display = "none";
-                            stepOneNew.style.display = "none";
+                if ([...firstGroup].some(cb => cb.checked)) {
+                    second.parentElement.style.display = "block";
+                    if (second.checked) {
+                        thirdGroup[0].parentElement.style.display = "block";
+                        if ([...thirdGroup].some(cb => cb.checked)) {
+                            fourth.parentElement.style.display = "block";
+                            table.style.display = fourth.checked ? "block" : "none";
                         }
-                    });
-                });
-
-                const stepOneCheckbox = document.getElementById("OnlyIntestinalOrganismsNew");
-                const andStepTwo = document.getElementById("andStepTwo");
-                const stepTwoNew = document.getElementById("stepTwoNew");
-                const orStepNew = document.getElementById("orStepNew");
-                const stepThreeNew = document.getElementById("stepThreeNew");
-
-                stepOneCheckbox.addEventListener("change", function () {
-                    if (stepOneCheckbox.checked) {
-                        andStepTwo.style.display = "block";
-                        stepTwoNew.style.display = "block";
-                        orStepNew.style.display = "block";
-                        stepThreeNew.style.display = "block";
-                    } else {
-                        andStepTwo.style.display = "none";
-                        stepTwoNew.style.display = "none";
-                        orStepNew.style.display = "none";
-                        stepThreeNew.style.display = "none";
                     }
-                });
+                } else {
+                    [second.parentElement, thirdGroup[0].parentElement, fourth.parentElement, table].forEach(el => el.style.display = "none");
+                }
+            }
 
-                const stepTwoCheckboxes = document.querySelectorAll("#mbilcbi1GraftVsHostDiseaseNew, #mbilcbi1DiarrheaNew, #mbilcbi1NeutropenicNew");
-                const stepFourNew = document.getElementById("stepFourNew");
+            document.querySelectorAll("#mbilcbi1IdentifiedByCulture, #mbilcbi1IdentifiedByNonCulture, #OnlyIntestinalOrganisms, #mbilcbi1GraftVsHostDisease, #mbilcbi1Diarrhea, #mbilcbi1Neutropenic").forEach(cb => cb.addEventListener("change", updateVisibility));
 
-                stepTwoCheckboxes.forEach(checkbox => {
-                    checkbox.addEventListener("change", function () {
-                        if (Array.from(stepTwoCheckboxes).some(cb => cb.checked)) {
-                            stepFourNew.style.display = "block";
-                        } else {
-                            stepFourNew.style.display = "none";
-                        }
-                    });
-                });
-            });
-
-
-                    document.addEventListener("DOMContentLoaded", function () {
-                const viridansCheckbox = document.getElementById("ViridansGroupOnly");
-                const conditionsSection = document.getElementById("conditionsSection");
-                const conditionCheckboxes = document.querySelectorAll("#mbilcbi2GraftVsHostDisease, #mbilcbi2Diarrhea, #mbilcbi2Neutropenic");
-                const cultureTable = document.getElementById("cultureTable");
+            // ✅ Toggle Viridans Conditions
+            function toggleViridans(viridansId, conditionsId, cultureTableId) {
+                const viridansCheckbox = document.getElementById(viridansId);
+                const conditionsSection = document.getElementById(conditionsId);
+                const cultureTable = document.getElementById(cultureTableId);
+                const conditionCheckboxes = document.querySelectorAll(`#${conditionsId} input[type='checkbox']`);
 
                 function resetSelections() {
-                    // Uncheck all conditions
                     conditionCheckboxes.forEach(cb => cb.checked = false);
-
-                    // Hide all dependent sections
-                    conditionsSection.style.display = "none";
-                    cultureTable.style.display = "none";
+                    [conditionsSection, cultureTable].forEach(el => el.style.display = "none");
                 }
 
-                viridansCheckbox.addEventListener("change", function () {
-                    if (viridansCheckbox.checked) {
-                        conditionsSection.style.display = "block";
-                    } else {
-                        resetSelections();
-                    }
+                viridansCheckbox?.addEventListener("change", function () {
+                    viridansCheckbox.checked ? conditionsSection.style.display = "block" : resetSelections();
                 });
 
-                conditionCheckboxes.forEach(checkbox => {
-                    checkbox.addEventListener("change", function () {
-                        if (Array.from(conditionCheckboxes).some(cb => cb.checked)) {
-                            cultureTable.style.display = "block";
-                        } else {
-                            cultureTable.style.display = "none";
-                        }
-                    });
-                });
-            });
+                conditionCheckboxes.forEach(cb => cb.addEventListener("change", function () {
+                    cultureTable.style.display = [...conditionCheckboxes].some(cb => cb.checked) ? "block" : "none";
+                }));
+            }
 
-
-
-                    document.addEventListener("DOMContentLoaded", function () {
-                const viridansCheckbox3 = document.getElementById("mbilcbi3ViridansGroupOnly");
-                const conditionsSection3 = document.getElementById("conditionsSection3");
-                const conditionCheckboxes3 = document.querySelectorAll("#mbilcbi3GraftVsHostDisease, #mbilcbi3Diarrhea, #mbilcbi3Neutropenic");
-                const cultureTable3 = document.getElementById("cultureTable3");
-
-                function resetSelections3() {
-                    // Uncheck all conditions
-                    conditionCheckboxes3.forEach(cb => cb.checked = false);
-
-                    // Hide all dependent sections
-                    conditionsSection3.style.display = "none";
-                    cultureTable3.style.display = "none";
-                }
-
-                viridansCheckbox3.addEventListener("change", function () {
-                    if (viridansCheckbox3.checked) {
-                        conditionsSection3.style.display = "block";
-                    } else {
-                        resetSelections3();
-                    }
-                });
-
-                conditionCheckboxes3.forEach(checkbox => {
-                    checkbox.addEventListener("change", function () {
-                        if (Array.from(conditionCheckboxes3).some(cb => cb.checked)) {
-                            cultureTable3.style.display = "block";
-                        } else {
-                            cultureTable3.style.display = "none";
-                        }
-                    });
-                });
-            });
-
+            toggleViridans("ViridansGroupOnly", "conditionsSection", "cultureTable");
+            toggleViridans("mbilcbi3ViridansGroupOnly", "conditionsSection3", "cultureTable3");
+        });
     </script>
+
 }
