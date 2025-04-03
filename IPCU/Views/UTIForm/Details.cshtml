@@ -3,46 +3,419 @@
 @{
     ViewData["Title"] = "Patient Details";
 }
+<style>
+    fieldset {
+        border: 2px solid #000;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
 
+    legend {
+        font-weight: bold;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+    td, th {
+        border: 1px solid #000;
+        padding: 5px;
+        vertical-align: top;
+    }
+
+    label {
+        font-weight: normal;
+    }
+</style>
 <h2>Patient Details</h2>
+<fieldset>
+    <legend>Patient Information</legend>
+    <table>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.Fname) <br />
+                @Html.TextBoxFor(m => m.Fname, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.Fname, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.Mname) <br />
+                @Html.TextBoxFor(m => m.Mname, new { @class = "form-control", @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.Lname) <br />
+                @Html.TextBoxFor(m => m.Lname, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.Lname, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.HospitalNumber) <br />
+                @Html.TextBoxFor(m => m.HospitalNumber, new { @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.HospitalNumber, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.DateOfBirth) <br />
+                @Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.Age) <br />
+                @Html.TextBoxFor(m => m.Age, new { @class = "form-control", type = "number", min = "0", @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.UnitWardArea) <br />
+                @Html.TextBoxFor(m => m.UnitWardArea, new { @class = "form-control", @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.MainService) <br />
+                @Html.TextBoxFor(m => m.MainService, new { @class = "form-control", @readonly = "readonly" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.DateOfEvent) <br />
+                @Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.Investigator) <br />
+                @Html.TextBoxFor(m => m.Investigator, new { @class = "form-control", @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.DateOfAdmission) <br />
+                @Html.TextBoxFor(m => m.DateOfAdmission, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", @readonly = "readonly" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.Disposition) <br />
+                @Html.DropDownListFor(m => m.Disposition,
+                         new SelectList(new[] { "Mortality", "Discharged", "Still Admitted", "Transferred In", "Transferred Out" }),
+                         "-- Select Disposition --",
+                         new { @class = "form-control", id = "DispositionDropdown", @disabled = "disabled" }
+                         )
+                @Html.ValidationMessageFor(m => m.Disposition, "", new { @class = "text-danger" })
 
-<table class="table table-bordered">
-    <tr>
-        <th>Full Name:</th>
-        <td>@($"{Model.Lname}, {Model.Fname} {Model.Mname}")</td>
-    </tr>
-    <tr>
-        <th>Hospital Number:</th>
-        <td>@Model.HospitalNumber</td>
-    </tr>
-    <tr>
-        <th>Date of Birth:</th>
-        <td>@Model.DateOfBirth?.ToString("yyyy-MM-dd")</td>
-    </tr>
-    <tr>
-        <th>Age:</th>
-        <td>@Model.Age</td>
-    </tr>
-    <tr>
-        <th>Unit/Ward Area:</th>
-        <td>@Model.UnitWardArea</td>
-    </tr>
-    <tr>
-        <th>Main Service:</th>
-        <td>@Model.MainService</td>
-    </tr>
-    <tr>
-        <th>Date of Event:</th>
-        <td>@Model.DateOfEvent?.ToString("yyyy-MM-dd")</td>
-    </tr>
-    <tr>
-        <th>Investigator:</th>
-        <td>@Model.Investigator</td>
-    </tr>
-    <tr>
-        <th>Date of Admission:</th>
-        <td>@Model.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
-    </tr>
-</table>
+                @Html.LabelFor(m => m.DispositionDate) <br />
+                @Html.TextBoxFor(m => m.DispositionDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.DispositionDate, "", new { @class = "text-danger" })
+
+                <div id="DispositionTransferContainer" style="display:none; margin-top: 10px;">
+                    @Html.LabelFor(m => m.DispositionTransfer) <br />
+                    @Html.TextBoxFor(m => m.DispositionTransfer, new { @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.DispositionTransfer, "", new { @class = "text-danger" })
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.Gender) <br />
+                @Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female" }), "Select", new { @class = "form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(m => m.Gender, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.Classification) <br />
+                @Html.DropDownListFor(m => m.Classification, new SelectList(new[] { "Pay", "Service" }), "Select", new { @class = "form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(m => m.Classification, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.MDRO) <br />
+                @Html.DropDownListFor(m => m.MDRO, new SelectList(new[] { "Yes", "No" }), "Select", new { @class = "form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(m => m.MDRO, "", new { @class = "text-danger" })
+            </td>
+            <td>
+                @Html.LabelFor(m => m.TypeClass) <br />
+                <div>
+                    <input type="checkbox" id="suti1aCheckbox" name="TypeClass" value="SUTI 1A (Catheter)"
+                    @(Model.TypeClass != null && Model.TypeClass.Contains("SUTI 1A (Catheter)") ? "checked" : "") disabled />
+                    <label for="suti1aCheckbox">SUTI 1A (Catheter)</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" id="suti1b-checkbox" name="TypeClass" value="SUTI 1B (Non-Catheter)"
+                    @(Model.TypeClass != null && Model.TypeClass.Contains("SUTI 1B (Non-Catheter)") ? "checked" : "") disabled />
+                    <label for="suti1b-checkbox">SUTI 1B (Non-Catheter)</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" id="suti2-checkbox" name="TypeClass" value="SUTI 2 (Catheter)"
+                    @(Model.TypeClass != null && Model.TypeClass.Contains("SUTI 2 (Catheter)") ? "checked" : "") disabled />
+                    <label>SUTI 2 (Catheter)</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" id="abuti-checkbox" name="TypeClass" value="ABUTI"
+                    @(Model.TypeClass != null && Model.TypeClass.Contains("ABUTI") ? "checked" : "") disabled />
+                    <label for="abuti-checkbox">ABUTI </label>
+                </div>
+
+                @Html.ValidationMessageFor(m => m.TypeClass, "", new { @class = "text-danger" })
+            </td>
+        </tr>
+    </table>
+</fieldset>
+
+
+<!-- Infection Section -->
+<div class="catheter-section" id="section-catheter" style="display: none;">
+    <fieldset>
+        <legend>SUTI 1A</legend>
+        <p><strong>Patient of any age catheter-associated Urinary Tract Infection (CAUTI).</strong></p>
+        <p>Patient had an indwelling urinary catheter (IUC) that had been in place for more than 2 consecutive days in an inpatient location on the date of event AND was either:</p>
+
+        <!-- Catheter Presence Options -->
+        <div class="form-group">
+            @Html.CheckBox("CatheterPresent", Model.CatheterPresent.GetValueOrDefault(), new { @id = "catheter-present", @disabled = "disabled" })
+            <label for="catheter-present">Present for any portion of the calendar day on the date of event</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("CatheterRemovedBeforeEvent", Model.CatheterRemovedBeforeEvent.GetValueOrDefault(), new { @id = "catheter-removed", @disabled = "disabled" })
+            <label for="catheter-removed">Removed the day before the date of event</label>
+        </div>
+
+        <hr />
+
+        <!-- Symptoms Checkboxes -->
+        <h4>Symptoms:</h4>
+        <div class="form-group">
+            <div>
+                @Html.CheckBox("HasFever", Model.HasFever.GetValueOrDefault(), new { @id = "has-fever", @disabled = "disabled" })
+                <label for="has-fever">Fever</label>
+            </div>
+
+            <div>
+                @Html.CheckBox("HasSuprapubicTenderness", Model.HasSuprapubicTenderness.GetValueOrDefault(), new { @id = "has-suprapubic", @disabled = "disabled" })
+                <label for="has-suprapubic">Suprapubic tenderness</label>
+            </div>
+
+            <div>
+                @Html.CheckBox("HasCostovertebralPain", Model.HasCostovertebralPain.GetValueOrDefault(), new { @id = "has-costovertebral", @disabled = "disabled" })
+                <label for="has-costovertebral">Costovertebral angle pain or tenderness</label>
+            </div>
+
+            <div>
+                @Html.CheckBox("HasUrinaryUrgency", Model.HasUrinaryUrgency.GetValueOrDefault(), new { @id = "has-urgency", @disabled = "disabled" })
+                <label for="has-urgency">Urinary urgency</label>
+            </div>
+
+            <div>
+                @Html.CheckBox("HasUrinaryFrequency", Model.HasUrinaryFrequency.GetValueOrDefault(), new { @id = "has-frequency", @disabled = "disabled" })
+                <label for="has-frequency">Urinary frequency</label>
+            </div>
+
+            <div>
+                @Html.CheckBox("HasDysuria", Model.HasDysuria.GetValueOrDefault(), new { @id = "has-dysuria", @disabled = "disabled" })
+                <label for="has-dysuria">Dysuria</label>
+            </div>
+
+            <div>
+                @Html.CheckBox("HasUrineCultureWithTwoSpecies", Model.HasUrineCultureWithTwoSpecies.GetValueOrDefault(), new { @id = "has-culture-two-species", @disabled = "disabled" })
+                <label for="has-culture-two-species">Patient has a urine culture with no more than two species of organisms identified, at least one of which is a bacterium of &gt;10<sup>5</sup> CFU/ml</label>
+            </div>
+        </div>
+
+        <hr />
+
+        <!-- Culture Details -->
+        <h4>Culture Details:</h4>
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.CultureDate, "Culture Date:") <br />
+                    @Html.TextBoxFor(m => m.CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.CultureDate, "", new { @class = "text-danger" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.CultureResults, "Culture Results:") <br />
+                    @Html.TextAreaFor(m => m.CultureResults, new { rows = "3", cols = "30", @class = "form-control", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.CultureResults, "", new { @class = "text-danger" })
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+
+
+
+<div class="suti1b-section" id="section-suti1b" style="display: none;">
+    <fieldset>
+        <legend>SUTI 1B</legend>
+        <p><strong>Patient of any age, non-catheter-associated Urinary Tract Infection (non-CAUTI).</strong></p>
+        <p>One (1) of the following is true: </p>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI1b_HadCatheterLessThan2Days", Model.SUTI1b_HadCatheterLessThan2Days.GetValueOrDefault(), new { @id = "suti1b-catheter-less", @disabled = "disabled" })
+            <label for="suti1b-catheter-less">Patient has/had an indwelling urinary catheter, but it has/had not been in place for more than 2 consecutive days in an inpatient location on the date of event, OR</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI1b_NoCatheterInPlace", Model.SUTI1b_NoCatheterInPlace.GetValueOrDefault(), new { @id = "suti1b-no-catheter", @disabled = "disabled" })
+            <label for="suti1b-no-catheter">Patient did not have an indwelling urinary catheter in place on the date of event nor day before the date</label>
+        </div>
+
+        <hr />
+
+        <!-- Symptoms Checkboxes -->
+        <h4>Symptoms:</h4>
+        <div class="form-group">
+            @Html.CheckBox("SUTI1b_Fever", Model.SUTI1b_Fever.GetValueOrDefault(), new { @id = "suti1b-fever", @disabled = "disabled" })
+            <label for="suti1b-fever">Fever</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI1b_SuprapubicTenderness", Model.SUTI1b_SuprapubicTenderness.GetValueOrDefault(), new { @id = "suti1b-suprapubic", @disabled = "disabled" })
+            <label for="suti1b-suprapubic">Suprapubic tenderness</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI1b_CostovertebralPain", Model.SUTI1b_CostovertebralPain.GetValueOrDefault(), new { @id = "suti1b-costovertebral", @disabled = "disabled" })
+            <label for="suti1b-costovertebral">Costovertebral angle pain or tenderness</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI1b_UrinaryUrgency", Model.SUTI1b_UrinaryUrgency.GetValueOrDefault(), new { @id = "suti1b-urgency", @disabled = "disabled" })
+            <label for="suti1b-urgency">Urinary urgency</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI1b_UrinaryFrequency", Model.SUTI1b_UrinaryFrequency.GetValueOrDefault(), new { @id = "suti1b-frequency", @disabled = "disabled" })
+            <label for="suti1b-frequency">Urinary frequency</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI1b_Dysuria", Model.SUTI1b_Dysuria.GetValueOrDefault(), new { @id = "suti1b-dysuria", @disabled = "disabled" })
+            <label for="suti1b-dysuria">Dysuria</label>
+        </div>
+
+        <hr />
+
+        <!-- Urine Culture -->
+        <div class="form-group">
+            @Html.CheckBox("SUTI1b_HasValidUrineCulture", Model.SUTI1b_HasValidUrineCulture.GetValueOrDefault(), new { @id = "suti1b-valid-culture", @disabled = "disabled" })
+            <label for="suti1b-valid-culture">
+                Patient has a urine culture with no more than two species of organisms identified, at least one of which is a bacterium of >10<sup>5</sup> CFU/ml
+            </label>
+        </div>
+
+        <!-- Culture Details -->
+        <h4>Culture Details:</h4>
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.SUTI1b_CultureDate, "Culture Date:") <br />
+                    @Html.TextBoxFor(m => m.SUTI1b_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.SUTI1b_CultureResults, "Culture Results:") <br />
+                    @Html.TextAreaFor(m => m.SUTI1b_CultureResults, new { rows = "3", cols = "30", @class = "form-control", @readonly = "readonly" })
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+
+<div class="infection-section" id="section-suti2" style="display: none;">
+    <fieldset>
+        <legend>SUTI 2 - Urinary Tract Infection Checklist</legend>
+        <p><strong>CAUTI or Non-Cauti in patients 1 year of age or less</strong></p>
+        <!-- Age Check -->
+        <div class="form-group">
+            @Html.CheckBox("SUTI2_IsOneYearOrLess", Model.SUTI2_IsOneYearOrLess.GetValueOrDefault(), new { @id = "suti2-is-one-year-or-less", @disabled = "disabled" })
+            <label for="suti2-is-one-year-or-less">Patient is ≤ 1 year of age(with or without indwelling urinary catheter)</label>
+        </div>
+
+        <hr />
+
+        <!-- Symptoms -->
+        <h4>Symptoms:</h4>
+        <div class="form-group">
+            @Html.CheckBox("SUTI2_Fever", Model.SUTI2_Fever.GetValueOrDefault(), new { @id = "suti2-fever", @disabled = "disabled" })
+            <label for="suti2-fever">Fever (>38°C)</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI2_Hypothermia", Model.SUTI2_Hypothermia.GetValueOrDefault(), new { @id = "suti2-hypothermia", @disabled = "disabled" })
+            <label for="suti2-hypothermia">Hypothermia (&lt;36°C core temperature)</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI2_Apnea", Model.SUTI2_Apnea.GetValueOrDefault(), new { @id = "suti2-apnea", @disabled = "disabled" })
+            <label for="suti2-apnea">Apnea</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI2_Bradycardia", Model.SUTI2_Bradycardia.GetValueOrDefault(), new { @id = "suti2-bradycardia", @disabled = "disabled" })
+            <label for="suti2-bradycardia">Bradycardia</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI2_Lethargy", Model.SUTI2_Lethargy.GetValueOrDefault(), new { @id = "suti2-lethargy", @disabled = "disabled" })
+            <label for="suti2-lethargy">Lethargy</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI2_Vomiting", Model.SUTI2_Vomiting.GetValueOrDefault(), new { @id = "suti2-vomiting", @disabled = "disabled" })
+            <label for="suti2-vomiting">Vomiting</label>
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("SUTI2_SuprapubicTenderness", Model.SUTI2_SuprapubicTenderness.GetValueOrDefault(), new { @id = "suti2-suprapubic", @disabled = "disabled" })
+            <label for="suti2-suprapubic">Suprapubic tenderness</label>
+        </div>
+
+        <hr />
+
+        <!-- Urine Culture -->
+        <div class="form-group">
+            @Html.CheckBox("SUTI2_HasValidUrineCulture", Model.SUTI2_HasValidUrineCulture.GetValueOrDefault(), new { @id = "suti2-valid-culture", @disabled = "disabled" })
+            <label for="suti2-valid-culture">
+                Patient has a urine culture with no more than two species of organisms identified, at least one of which is a bacterium of >10<sup>5</sup> CFU/ml
+            </label>
+        </div>
+
+        <!-- Culture Date & Results -->
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.SUTI2_CultureDate, "Culture Date:") <br />
+                    @Html.TextBoxFor(m => m.SUTI2_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", @readonly = "readonly" })
+                </td>
+                <td>
+                    @Html.LabelFor(m => m.SUTI2_CultureResults, "Culture Results:") <br />
+                    @Html.TextAreaFor(m => m.SUTI2_CultureResults, new { rows = "3", cols = "30", @class = "form-control", @readonly = "readonly" })
+                </td>
+            </tr>
+        </table>
+
+    </fieldset>
+</div>
 
 <a asp-action="PatientIndex" class="btn btn-primary">Back to List</a>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Get elements
+        var suti1aSection = document.getElementById("section-catheter");
+        var suti1bSection = document.getElementById("section-suti1b");
+        var suti2Section = document.getElementById("section-suti2");
+
+        // Get field values from the model
+        var hasCatheter = @Json.Serialize(Model.CatheterPresent);
+        var hasSUTI1b = @Json.Serialize(Model.SUTI1b_HadCatheterLessThan2Days) || @Json.Serialize(Model.SUTI1b_NoCatheterInPlace);
+        var hasSUTI2 = @Json.Serialize(Model.SUTI2_IsOneYearOrLess);
+
+        // Check if SUTI 1A form has data
+        if (hasCatheter) {
+            suti1aSection.style.display = "block"; // Show SUTI 1A
+        }
+
+        // Check if SUTI 1B form has data
+        if (hasSUTI1b) {
+            suti1bSection.style.display = "block"; // Show SUTI 1B
+        }
+
+        // Check if SUTI 2 form has data
+        if (hasSUTI2) {
+            suti2Section.style.display = "block"; // Show SUTI 2
+        }
+    });
+</script>
