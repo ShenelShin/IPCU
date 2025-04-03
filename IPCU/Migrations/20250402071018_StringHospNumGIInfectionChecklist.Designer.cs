@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250402071018_StringHospNumGIInfectionChecklist")]
+    partial class StringHospNumGIInfectionChecklist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1997,10 +2000,12 @@ namespace IPCU.Migrations
                     b.Property<bool>("BurnAppearanceChange")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("BurnCultureDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("BurnCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BurnCultureResults")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("BurnOrganismIdentified")
@@ -2019,10 +2024,12 @@ namespace IPCU.Migrations
                     b.Property<DateTime>("DateOfEvent")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DecubitusCultureDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DecubitusCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DecubitusCultureResults")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("DecubitusErythema")
@@ -2104,10 +2111,12 @@ namespace IPCU.Migrations
                     b.Property<bool>("STAbscess")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("STCultureDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("STCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("STCultureResults")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("STDrainage")
@@ -2119,10 +2128,12 @@ namespace IPCU.Migrations
                     b.Property<bool>("SkinBoils")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("SkinCultureDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("SkinCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SkinCultureResults")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("SkinPurulentDrainage")

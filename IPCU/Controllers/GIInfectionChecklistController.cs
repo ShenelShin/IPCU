@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using IPCU.Data;
 using IPCU.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace IPCU.Controllers
@@ -10,15 +11,56 @@ namespace IPCU.Controllers
     public class GIInfectionChecklistController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public GIInfectionChecklistController(ApplicationDbContext context)
+        public GIInfectionChecklistController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string hospNum)
         {
-            return View();
+            var model = new GIInfectionChecklist();
+            // Get current user's name for investigator
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser != null)
+            {
+                model.NameOfInvestigator = $"{currentUser.FirstName} {currentUser.Initial} {currentUser.LastName}".Trim();
+            }
+
+            if (!string.IsNullOrEmpty(hospNum))
+            {
+                // Get patient info where HospNum matches
+                var patientInfo = await (from pm in _context.PatientMasters
+                                         join p in _context.Patients
+                                         on pm.HospNum equals p.HospNum
+                                         where pm.HospNum == hospNum
+                                         select new
+                                         {
+                                             PatientMaster = pm,
+                                             Patients = p
+                                         }).FirstOrDefaultAsync();
+
+                if (patientInfo != null)
+                {
+                    model.HospNum = patientInfo.PatientMaster.HospNum;
+                    model.Gender = patientInfo.PatientMaster.Sex == "M" ? "Male" : "Female";
+                    model.FName = patientInfo.PatientMaster.FirstName;
+                    model.MName = patientInfo.PatientMaster.MiddleName;
+                    model.LName = patientInfo.PatientMaster.LastName;
+                    model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
+                    model.UnitWardArea = patientInfo.Patients.AdmLocation;
+                    model.DateOfAdmission = patientInfo.Patients.AdmDate.Value;
+                    model.Age = int.Parse(patientInfo.Patients.Age);
+
+
+                    // Add other fields you want to auto-fill
+                }
+            }
+
+            return View(model);
         }
 
         [HttpPost]
@@ -51,37 +93,7 @@ namespace IPCU.Controllers
             Console.WriteLine("Saved successfully!");
             return RedirectToAction("Index");
         }
-        public async Task<IActionResult> PatientIndex(string hospNum)
-        {
-            if (string.IsNullOrEmpty(hospNum))
-            {
-                return NotFound("Hospital Number is required.");
-            }
 
-            var patients = await _context.GIInfectionChecklists
-                                         .Where(p => p.HospNum == hospNum)
-                                         .ToListAsync();
-
-            return View(patients);
-        }
-
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var patient = await _context.GIInfectionChecklists
-                                        .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (patient == null)
-            {
-                return NotFound();
-            }
-
-            return View(patient);
-        }
 
     }
 }

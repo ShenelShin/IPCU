@@ -133,7 +133,11 @@ namespace IPCU.Controllers
                                          USIForm = _context.Usi
                                              .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
                                          VAEForm = _context.VentilatorEventChecklists
-                                             .FirstOrDefault(f => f.HospNum == p.HospNum)
+                                             .FirstOrDefault(f => f.HospNum == p.HospNum),
+                                         GIInfectionForm = _context.GIInfectionChecklists
+                                             .FirstOrDefault(f => f.HospNum == p.HospNum),
+                                         SSIForm = _context.SurgicalSiteInfectionChecklist
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum)
                                      }
                                  })
                                 .FirstOrDefaultAsync();
@@ -163,6 +167,8 @@ namespace IPCU.Controllers
             if (forms.PneumoniaForm != null) count++;
             if (forms.USIForm != null) count++;
             if (forms.VAEForm != null) count++;
+            if (forms.GIInfectionForm != null) count++;
+            if (forms.SSIForm != null) count++;
             return count;
         }
 
@@ -449,12 +455,17 @@ namespace IPCU.Controllers
 
             return View(viewModel);
         }
-
-        // POST: Process the form submission to add a new connected device
+        //post
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddConnectedDevice(AddConnectedDeviceViewModel model)
         {
+            // Custom validation for DeviceClass
+            if ((model.DeviceType == "CL" || model.DeviceType == "IUC") && string.IsNullOrEmpty(model.DeviceClass))
+            {
+                ModelState.AddModelError("DeviceClass", "The Device Class field is required for this device type.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -466,6 +477,7 @@ namespace IPCU.Controllers
                 DeviceId = Guid.NewGuid().ToString(),
                 HospNum = model.HospNum,
                 DeviceType = model.DeviceType,
+                DeviceClass = (model.DeviceType == "CL" || model.DeviceType == "IUC") ? model.DeviceClass : null,
                 DeviceInsert = model.DeviceInsert,
                 DeviceRemove = model.DeviceRemove
             };
@@ -477,6 +489,7 @@ namespace IPCU.Controllers
             // Redirect back to the connected devices list
             return RedirectToAction(nameof(ConnectedDevices), new { id = model.IdNum });
         }
+
 
         // GET: Display form to update a connected device (mainly to set removal date)
         public async Task<IActionResult> UpdateConnectedDevice(string id, string deviceId)
@@ -559,6 +572,12 @@ namespace IPCU.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateConnectedDevice(UpdateConnectedDeviceViewModel model)
         {
+            // Custom validation for DeviceClass
+            if ((model.DeviceType == "CL" || model.DeviceType == "IUC") && string.IsNullOrEmpty(model.DeviceClass))
+            {
+                ModelState.AddModelError("DeviceClass", "The Device Class field is required for this device type.");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -576,6 +595,7 @@ namespace IPCU.Controllers
 
             // Update the device
             device.DeviceRemove = model.DeviceRemove;
+            device.DeviceClass = (device.DeviceType == "CL" || device.DeviceType == "IUC") ? model.DeviceClass : null;
 
             // Save changes
             await _context.SaveChangesAsync();
