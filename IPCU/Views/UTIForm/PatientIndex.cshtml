@@ -2,42 +2,44 @@
     ViewData["Title"] = "Patient Index";
 }
 
-<h2>Patient Index</h2>
+<h2 class="text-center my-4">Patient Index</h2>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Full Name</th>
-            <th>Hospital Number</th>
-            <th>Date of Birth</th>
-            <th>Age</th>
-            <th>Unit/Ward Area</th>
-            <th>Main Service</th>
-            <th>Date of Event</th>
-            <th>Investigator</th>
-            <th>Date of Admission</th>
-            <th>Action</th> <!-- New column for the Details link -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var patient in Model)
-        {
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered shadow-sm rounded">
+        <thead class="thead-light">
             <tr>
-                <td>@($"{patient.Lname}, {patient.Fname} {patient.Mname}")</td>
-                <td>@patient.HospitalNumber</td>
-                <td>@patient.DateOfBirth?.ToString("yyyy-MM-dd")</td>
-                <td>@patient.Age</td>
-                <td>@patient.UnitWardArea</td>
-                <td>@patient.MainService</td>
-                <td>@patient.DateOfEvent?.ToString("yyyy-MM-dd")</td>
-                <td>@patient.Investigator</td>
-                <td>@patient.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
-                <td>
-                    <a asp-controller="UTIForm" asp-action="Details" asp-route-id="@patient.Id" class="btn btn-info">
-                        View Details
-                    </a>
-                </td>
+                <th>Full Name</th>
+                <th>Hospital Number</th>
+                <th>Date of Birth</th>
+                <th>Age</th>
+                <th>Unit/Ward Area</th>
+                <th>Main Service</th>
+                <th>Date of Event</th>
+                <th>Investigator</th>
+                <th>Date of Admission</th>
+                <th>Action</th> <!-- New column for the Details link -->
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var patient in Model)
+            {
+                <tr>
+                    <td>@($"{patient.Lname}, {patient.Fname} {patient.Mname}")</td>
+                    <td>@patient.HospitalNumber</td>
+                    <td>@patient.DateOfBirth?.ToString("yyyy-MM-dd")</td>
+                    <td>@patient.Age</td>
+                    <td>@patient.UnitWardArea</td>
+                    <td>@patient.MainService</td>
+                    <td>@patient.DateOfEvent?.ToString("yyyy-MM-dd")</td>
+                    <td>@patient.Investigator</td>
+                    <td>@patient.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        <a asp-controller="UTIForm" asp-action="Details" asp-route-id="@patient.Id" class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye"></i> View Details
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
