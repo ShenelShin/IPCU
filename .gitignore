@@ -366,3 +366,4 @@ IPCU/appsettings.json
 /IPCU/appsettings.json
 IPCU/appsettings.Development.json
 /IPCU/Views/TestResults/Index.cshtml
+IPCU/Migrations/ApplicationDbContextModelSnapshot.cs
