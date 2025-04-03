@@ -25,17 +25,23 @@
         border: 1px solid #000;
         padding: 5px;
         vertical-align: top;
+        pointer-events: none; /* Prevent clicks */
+        opacity: 0.8; /* Make it look disabled */
     }
 
     label {
         font-weight: normal;
     }
+
+    .st-trigger-checkbox {
+        pointer-events: none;
+        opacity: 0.8; /* Make it look disabled */
+    }
+
 </style>
 
 <h2 style="text-align:center;">SST Infection Checklist Form</h2>
 
-@using (Html.BeginForm("Submit", "InfectionChecklist", FormMethod.Post))
-{
     <fieldset>
         <legend>Patient Information</legend>
         <table>
@@ -273,8 +279,7 @@
             </table>
         </fieldset>
     </div>
-    <button type="submit">Submit</button>
-}
+
 
 
 
