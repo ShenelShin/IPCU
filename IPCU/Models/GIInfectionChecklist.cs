@@ -21,7 +21,7 @@ namespace IPCU.Models
         public string LName { get; set; }
 
         [Required]
-        public int HospNum { get; set; }
+        public string HospNum { get; set; }
 
         [Required]
         [DataType(DataType.Date)]

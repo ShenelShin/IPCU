@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using IPCU.Data;
 using IPCU.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace IPCU.Controllers
 {
@@ -50,7 +51,37 @@ namespace IPCU.Controllers
             Console.WriteLine("Saved successfully!");
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> PatientIndex(string hospNum)
+        {
+            if (string.IsNullOrEmpty(hospNum))
+            {
+                return NotFound("Hospital Number is required.");
+            }
 
+            var patients = await _context.GIInfectionChecklists
+                                         .Where(p => p.HospNum == hospNum)
+                                         .ToListAsync();
+
+            return View(patients);
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var patient = await _context.GIInfectionChecklists
+                                        .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            return View(patient);
+        }
 
     }
 }
