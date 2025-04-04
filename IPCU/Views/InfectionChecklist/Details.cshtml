@@ -63,12 +63,22 @@
                 <td>@Html.LabelFor(m => m.DateOfEvent) <br />@Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}", new { type = "date" })</td>
                 <td>@Html.LabelFor(m => m.Investigator) <br />@Html.TextBoxFor(m => m.Investigator)</td>
                 <td>@Html.LabelFor(m => m.DateOfAdmission) <br />@Html.TextBoxFor(m => m.DateOfAdmission, "{0:yyyy-MM-dd}", new { type = "date" })</td>
-                <td>@Html.LabelFor(m => m.Disposition) <br />@Html.TextBoxFor(m => m.Disposition)</td>
+                <td>@Html.LabelFor(m => m.Disposition) <br />@Html.TextBoxFor(m => m.Disposition)
+                @if (!string.IsNullOrEmpty(Model.DispositionTransfer))
+                {
+                    <div>Disposition Transfer: @Model.DispositionTransfer</div>
+                }
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(m => m.Gender) <br />@Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female" }))</td>
                 <td>@Html.LabelFor(m => m.Classification) <br />@Html.DropDownListFor(m => m.Classification, new SelectList(new[] { "Pay", "Service" }))</td>
-                <td>@Html.LabelFor(m => m.MDRO) <br />@Html.CheckBoxFor(m => m.MDRO) Yes</td>
+                <td>@Html.LabelFor(m => m.MDRO) <br />@Html.CheckBoxFor(m => m.MDRO) Yes
+                @if (!string.IsNullOrEmpty(Model.MDROOrganism))
+                {
+                    <div>MDRO Organism: @Model.MDROOrganism</div>
+                }
+            </td>
                 <td>
                     @Html.LabelFor(m => m.InfectionType) <br />
                     <table>
@@ -100,15 +110,8 @@
                         </tr>
                     </table>
                 </td>
-
-
             </tr>
-            <tr>
-                <td>@Html.LabelFor(m => m.InfectionClassification) <br />@Html.TextBoxFor(m => m.InfectionClassification)</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+
         </table>
     </fieldset>
 

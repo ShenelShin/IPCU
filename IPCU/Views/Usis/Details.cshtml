@@ -22,19 +22,23 @@
         <td>Disposition: @Model.Disposition</td>
     </tr>
     <tr>
-        <td>Disposition Date: @Model.DispositionDate.ToShortDateString()</td>
+        <td>
+            <div>Disposition Date: @Model.DispositionDate.ToShortDateString()</div>
+            @if (!string.IsNullOrEmpty(Model.DispositionTransfer))
+            {
+                <div>Disposition Transfer: @Model.DispositionTransfer</div>
+            }
+        </td>
         <td>Gender: @Model.Gender</td>
         <td>Classification: @Model.Classification</td>
-        <td>MDRO: @Model.MDRO</td>
+        <td>MDRO: @Model.MDRO
+            @if (!string.IsNullOrEmpty(Model.MDROOrganism))
+            {
+                <div>MDRO Organism: @Model.MDROOrganism</div>
+            }
+        </td>
     </tr>
-    @if (!string.IsNullOrEmpty(Model.DispositionTransfer))
-    {
-        <tr>
-            <td>Disposition Transfer: @Model.DispositionTransfer</td>
-            <td>MDRO Organism: @Model.MDROOrganism</td>
 
-        </tr>
-    }
 </table>
 
 <table class="table table-bordered">
