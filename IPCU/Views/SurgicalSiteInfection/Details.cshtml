@@ -135,6 +135,11 @@
                         <option>Transferred In</option>
                         <option>Transferred Out</option>
                     </select>
+                    <div margin-top: 10px;">
+                        <label asp-for="DispositionTransfer"></label><br />
+                        <input asp-for="DispositionTransfer" class="form-control" disabled />
+                        <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+                    </div>
                 </td>
                 <td>
                     <label asp-for="DispositionDate"></label><br />
