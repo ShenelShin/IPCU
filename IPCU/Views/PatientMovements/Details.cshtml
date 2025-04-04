@@ -1,0 +1,97 @@
+﻿@model IPCU.Models.PatientMovement
+
+@{
+    ViewData["Title"] = "Patient Movement Details";
+    var details = ViewBag.Details as List<IPCU.Models.PatientMovementDetail>;
+}
+
+<div class="container-fluid">
+    <h2>Patient Movement Details</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    <h5>Movement Information</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Date</dt>
+                        <dd class="col-sm-8">@Model.MovementDate.ToString("MMMM d, yyyy")</dd>
+
+                        <dt class="col-sm-4">Area</dt>
+                        <dd class="col-sm-8">@Model.Area</dd>
+
+                        <dt class="col-sm-4">Created</dt>
+                        <dd class="col-sm-8">@Model.DateCreated.ToString("MMM d, yyyy h:mm tt") by @Model.CreatedBy</dd>
+
+                        @if (Model.DateModified.HasValue)
+                        {
+                            <dt class="col-sm-4">Last Modified</dt>
+                            <dd class="col-sm-8">@Model.DateModified.Value.ToString("MMM d, yyyy h:mm tt") by @Model.ModifiedBy</dd>
+                        }
+
+                        <dt class="col-sm-4">Notes</dt>
+                        <dd class="col-sm-8">@(string.IsNullOrEmpty(Model.Notes) ? "No notes provided" : Model.Notes)</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-info text-white">
+                    <h5>Movement Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card bg-success text-white mb-3">
+                                <div class="card-header">New Arrivals</div>
+                                <div class="card-body">
+                                    <dl class="row mb-0">
+                                        <dt class="col-sm-7">Admissions</dt>
+                                        <dd class="col-sm-5 text-right">@Model.AdmissionCount</dd>
+
+                                        <dt class="col-sm-7">Transfers In</dt>
+                                        <dd class="col-sm-5 text-right">@Model.TransferInCount</dd>
+
+                                        <dt class="col-sm-7">Total In</dt>
+                                        <dd class="col-sm-5 text-right font-weight-bold">@(Model.AdmissionCount + Model.TransferInCount)</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card bg-danger text-white mb-3">
+                                <div class="card-header">Discharges</div>
+                                <div class="card-body">
+                                    <dl class="row mb-0">
+                                        <dt class="col-sm-7">Sent Home</dt>
+                                        <dd class="col-sm-5 text-right">@Model.SentHomeCount</dd>
+
+                                        <dt class="col-sm-7">Mortality</dt>
+                                        <dd class="col-sm-5 text-right">@Model.MortalityCount</dd>
+
+                                        <dt class="col-sm-7">Transfers Out</dt>
+                                        <dd class="col-sm-5 text-right">@Model.TransferOutCount</dd>
+
+                                        <dt class="col-sm-7">Total Out</dt>
+                                        <dd class="col-sm-5 text-right font-weight-bold">@(Model.SentHomeCount + Model.MortalityCount + Model.TransferOutCount)</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card bg-primary text-white">
+                        <div class="card-header">Net Change</div>
+                        <div class="card-body">
+                            <h2 class="text-center mb-0">
+                                @{
+                                    var netChange = (Model.AdmissionCount + Model.TransferInCount) - (Model.SentHomeCount + Model.MortalityCount + Model.TransferOutCount);
+                                    var changeClass = netChange > 0 ? "text-success" : (netChange < 0 ? "text-danger" : "text-warning");
+                                    var changeIcon = netChange > 0 ? "fa-arrow-up" : (netChange < 0 ? "fa-arrow-down" : "fa-minus");
+                                }
+                                <span class="@changeClass">

@@ -207,6 +207,23 @@
         </div>
     </div>
 
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <h2>Patient List</h2>
+        </div>
+        <div class="col-md-6 text-end">
+            <a asp-action="GenerateHAILineListReport" class="btn btn-primary">
+                <i class="fas fa-download"></i> Download HAI Line List
+            </a>
+            <a asp-controller="DeviceMonitoringReport" asp-action="Index" class="btn btn-info">
+                <i class="bi bi-file-earmark-pdf"></i> Device Monitoring Report
+            </a>
+            <a asp-controller="PatientMovements" asp-action="Index" class="btn btn-info">
+                <i class="bi bi-file-earmark-pdf"></i> Patient Movement
+            </a>
+        </div>
+    </div>
+
     @if (!Model.Any())
     {
         <div class="alert alert-info shadow-sm">

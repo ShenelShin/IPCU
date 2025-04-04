@@ -53,6 +53,8 @@ namespace IPCU.Models
         public ICollection<VitalSigns> VitalSigns { get; set; }
 
         public InfectionFormsInfo? InfectionForms { get; set; }
+        public PatientMovementViewModel? PatientMovements { get; set; }
+
 
         public PatientViewModel()
         {
