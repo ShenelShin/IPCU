@@ -103,19 +103,16 @@
                              new { @class = "form-control", id = "DispositionDropdown" }
                              )
                     @Html.ValidationMessageFor(m => m.Disposition, "", new { @class = "text-danger" })
-              
-                        @Html.LabelFor(m => m.DispositionDate) <br />
-                        @Html.TextBoxFor(m => m.DispositionDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.DispositionDate, "", new { @class = "text-danger" })
-                
+
+                    @Html.LabelFor(m => m.DispositionDate) <br />
+                    @Html.TextBoxFor(m => m.DispositionDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.DispositionDate, "", new { @class = "text-danger" })
 
                     <div id="DispositionTransferContainer" style="display:none; margin-top: 10px;">
                         @Html.LabelFor(m => m.DispositionTransfer) <br />
                         @Html.TextBoxFor(m => m.DispositionTransfer, new { @class = "form-control" })
                         @Html.ValidationMessageFor(m => m.DispositionTransfer, "", new { @class = "text-danger" })
                     </div>
-
-
                 </td>
             </tr>
             <tr>
@@ -517,6 +514,27 @@
             $('#MDRODropdown').change(function () {
                 toggleMDROOrganismField();
             });
+        });
+
+             document.addEventListener('DOMContentLoaded', function () {
+            const dispositionDropdown = document.getElementById('DispositionDropdown');
+            const transferContainer = document.getElementById('DispositionTransferContainer');
+            const transferInput = document.querySelector('[name="DispositionTransfer"]');
+
+            function toggleTransferField() {
+                const selected = dispositionDropdown.value.toLowerCase();
+                if (selected === 'transferred in' || selected === 'transferred out') {
+                    transferContainer.style.display = 'block';
+                } else {
+                    transferContainer.style.display = 'none';
+                    transferInput.value = ''; // Clear if not applicable
+                }
+            }
+
+            dispositionDropdown.addEventListener('change', toggleTransferField);
+
+            // Trigger once in case of page reload with pre-selected value
+            toggleTransferField();
         });
     </script>
 }
