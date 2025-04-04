@@ -8,36 +8,296 @@
 
 <table class="table table-bordered">
     <tr>
-        <th>Full Name:</th>
-        <td>@($"{Model.LName}, {Model.FName} {Model.MName}")</td>
+        <td>First Name: @Model.FName</td>
+        <td>Middle Name: @Model.MName</td>
+        <td>Last Name: @Model.LName</td>
+        <td>Hospital Number: @Model.HospNum</td>
     </tr>
     <tr>
-        <th>Hospital Number:</th>
-        <td>@Model.HospNum</td>
+        <td>Date of Birth: @Model.DateOfBirth.ToShortDateString()</td>
+        <td>Age: @Model.Age</td>
+        <td>Unit/Ward/Area: @Model.UnitWardArea</td>
+        <td>Main Service: @Model.MainService</td>
     </tr>
     <tr>
-        <th>Date of Birth:</th>
-        <td>@Model.DateOfBirth.ToString("yyyy-MM-dd")</td>
+        <td>Date of Event: @Model.DateOfEvent.ToShortDateString()</td>
+        <td>Investigator: @Model.NameOfInvestigator</td>
+        <td>Date of Admission: @Model.DateOfAdmission.ToShortDateString()</td>
+        <td>Disposition: @Model.Disposition</td>
     </tr>
     <tr>
-        <th>Age:</th>
-        <td>@Model.Age</td>
+        <td>Disposition Date: @Model.DispositionDate.ToShortDateString()</td>
+        <td>Gender: @Model.Gender</td>
+        <td>Classification: @Model.Classification</td>
+        <td>MDRO: @(Model.MDRO ? "Yes" : "No")</td>
     </tr>
+    @if (!string.IsNullOrEmpty(Model.DispositionArea))
+    {
+        <tr>
+            <td colspan="4">Disposition Transfer: @Model.DispositionArea</td>
+        </tr>
+    }
+</table>
 
-    <tr>
-        <th>Main Service:</th>
-        <td>@Model.MainService</td>
-    </tr>
-    <tr>
-        <th>Date of Event:</th>
-        <td>@Model.DateOfEvent.ToString("yyyy-MM-dd")</td>
-    </tr>
-    <tr>
-        <th>Date of Admission:</th>
-        <td>@Model.DateOfAdmission.ToString("yyyy-MM-dd")</td>
-    </tr>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th colspan="2">CDI-CLOSTRIDIOIDES DIFFICILE INFECTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <p>At least one (1) of the following criteria:</p>
+                <div>
+                    <input type="checkbox" @(Model.CDItoxin ? "checked" : "") disabled>
+                    Positive test for toxin-producing C. difficile on an unformed stool specimen (conforms to the shape of the container)
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.CDIpseudomembranous ? "checked" : "") disabled>
+                    Patient has evidence of pseudomembranous colitis on gross anatomic (includes endoscopic exams) or histopathologic exam
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th colspan="2">GE-GASTROENTERITIS (EXCLUDING C. DIFFICILE INFECTIONS)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <p>At least one (1) of the following criteria:</p>
+                <div>
+                    <input type="checkbox" @(Model.GEdiarrhea ? "checked" : "") disabled>
+                    Patient has an acute onset of diarrhea (liquid stools for > 12 hours) and no likely noninfectious cause (for example, diagnostic tests, therapeutic regimen other than antimicrobial agents, acute exacerbation of a chronic condition, or psychological stress information)
+                </div>
+            </td>
+        </tr>
+    </tbody>
+ 
+    <tbody>
+        <tr>
+            <td>
+                <p>Patient hasdatalist  least two of the following signs or symptoms:</p>
+                <div>
+                    <input type="checkbox" @(Model.GENausea ? "checked" : "") disabled>
+                    Nausea*
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GEVomiting ? "checked" : "") disabled>
+                    Vomiting*
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GENAbdominal ? "checked" : "") disabled>
+                    Abdominal pain*
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GENFever ? "checked" : "") disabled>
+                    Fever (>38.0°C)
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GENHeadache ? "checked" : "") disabled>
+                    Headache*
+                </div>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>
+                <p>AND at least one of the following:</p>
+                <div>
+                    <input type="checkbox" @(Model.GENpenteric1 ? "checked" : "") disabled>
+                    An enteric pathogen is identified from stool or rectal swab by a culture or nonculture based microbiologic testing
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GENenteric2 ? "checked" : "") disabled>
+                    An enteric pathogen is detected by microscopy on stool
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GENantibody ? "checked" : "") disabled>
+                    Diagnostic single antibody titer (IgM) or 4-fold increase in paired sera (IgG) for organism
+                </div>
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th colspan="2">IAB-INTRAABDOMINAL INFECTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <p>At least one (1) of the following criteria:</p>
+                <div>
+                    <input type="checkbox" @(Model.IABorganism ? "checked" : "") disabled>
+                    Patient has organism(s) identified from an abscess or from purulent material from intraabdominal space by a culture or non-culture based microbiologic testing method
+                </div>
+            </td>
+        </tr>
+    </tbody>
+
+    <tbody>
+        <tr>
+            <td>
+                <p>AND at least one of the following:</p>
+                <div>
+                    <input type="checkbox" @(Model.IABAbscess1 ? "checked" : "") disabled>
+                    Abscess or other evidence of intraabdominal infection on gross anatomic or histopathologic exam
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.IABAbscess2 ? "checked" : "") disabled>
+                    Abscess or other evidence of intraabdominal infection on gross anatomic or histopathologic exam, <b>AND</b> organism(s) identified from blood by a culture or non-culture based microbiologic testing method
+                </div>
+            </td>
+        </tr>
+    </tbody>
+
+    <tbody>
+        <tr>
+            <td>
+                <p>At least two (2) of the following criteria:</p>
+                <div>
+                    <input type="checkbox" @(Model.IABFever ? "checked" : "") disabled>
+                    Fever (>38.0°C)
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.IABHypotension ? "checked" : "") disabled>
+                    Hypotension
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.IABNausea ? "checked" : "") disabled>
+                    Nausea*
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.IABVomiting ? "checked" : "") disabled>
+                    Vomiting*
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.IABAbdominal ? "checked" : "") disabled>
+                    Abdominal pain or tenderness*
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.IABtransaminase ? "checked" : "") disabled>
+                    Elevated transaminase level(s)*
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.IABJaundice ? "checked" : "") disabled>
+                    Jaundice*
+                </div>
+            </td>
+        </tr>
+    </tbody>
+    <tbody>
+        <tr>
+            <td>
+                <p>AND at least one of the following:</p>
+                <div>
+                    <input type="checkbox" @(Model.IABOrgintraabdominal ? "checked" : "") disabled>
+                    Organism(s) seen on Gram stain and/or identified from intraabdominal fluid or tissue obtained during invasive procedure or from an aseptically-placed drain in the intraabdominal space (for example, closed suction drainage system, open drain, T-tube drain, CT-guided drainage)
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.IABmicrobiologic ? "checked" : "") disabled>
+                    Organism(s) identified from blood by a culture or nonculture based microbiologic testing method, <b>AND</b> Imaging test evidence definitive for infection (for example, ultrasound, CT scan, MRI, ERCP, radiolabel scans [gallium, technetium, etc.], or on abdominal x-ray)
+                </div>
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th colspan="2">GIT-GASTROINTESTINAL TRACT INFECTION</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <p>At least one (1) of the following criteria:</p>
+                <div>
+                    <input type="checkbox" @(Model.GITAbscess1 ? "checked" : "") disabled>
+                    An abscess or other evidence of gastrointestinal tract infection on gross anatomic or histopathologic exam
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GITAbscess2 ? "checked" : "") disabled>
+                    Abscess or other evidence of gastrointestinal tract infection on gross anatomic or histopathologic exam, <b>AND</b>
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GITblood ? "checked" : "") disabled>
+                    Organism(s) identified from blood by a culture or nonculture based microbiologic testing method
+                </div>
+            </td>
+        </tr>
+    </tbody>
+
+    <tbody>
+        <tr>
+            <td>
+                <p>At least two of the following signs or symptoms compatible with infection of the organ or tissue involved:</p>
+                <div>
+                    <input type="checkbox" @(Model.GITNausea ? "checked" : "") disabled>
+                    Nausea*
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GITVomiting ? "checked" : "") disabled>
+                    Vomiting*
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GITPainTend ? "checked" : "") disabled>
+                    Pain* or tenderness*
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GITFEVER ? "checked" : "") disabled>
+                    Fever (>38.0°C)
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GITOdynophagia ? "checked" : "") disabled>
+                    Odynophagia*
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GITDysphagia ? "checked" : "") disabled>
+                    Dysphagia*
+                </div>
+            </td>
+        </tr>
+    </tbody>
+
+    <tbody>
+        <tr>
+            <td>
+                <p>AND at least one of the following:</p>
+                <div>
+                    <input type="checkbox" @(Model.GITDrain ? "checked" : "") disabled>
+                    Organism(s) identified from drainage or tissue
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GITGram ? "checked" : "") disabled>
+                    Organism(s) seen on Gram stain or fungal elements seen on KOH stain or multinucleated giant cells
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GITmicrobiologic ? "checked" : "") disabled>
+                    Organism(s) identified from blood by a culture or nonculture based microbiologic testing method, AND imaging test evidence definitive for gastrointestinal infection
+                </div>
+                <div>
+                    <input type="checkbox" @(Model.GITgastrointestinal ? "checked" : "") disabled>
+                    Imaging test evidence definitive for gastrointestinal infection (for example, endoscopic exam, MRI, CT scan)
+                </div>
+            </td>
+        </tr>
+    </tbody>
+
 </table>
 
 <a asp-action="PatientIndex" class="btn btn-primary">Back to List</a>
-
-}

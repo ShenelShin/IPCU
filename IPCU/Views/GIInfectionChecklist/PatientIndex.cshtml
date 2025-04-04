@@ -23,17 +23,17 @@
         @foreach (var patient in Model)
         {
             <tr>
-                <td>@($"{patient.Lname}, {patient.Fname} {patient.Mname}")</td>
-                <td>@patient.HospitalNumber</td>
+                <td>@($"{patient.LName}, {patient.FName} {patient.MName}")</td>
+                <td>@patient.HospNum</td>
                 <td>@patient.DateOfBirth?.ToString("yyyy-MM-dd")</td>
                 <td>@patient.Age</td>
                 <td>@patient.UnitWardArea</td>
                 <td>@patient.MainService</td>
                 <td>@patient.DateOfEvent?.ToString("yyyy-MM-dd")</td>
-                <td>@patient.Investigator</td>
+                <td>@patient.NameOfInvestigator</td>
                 <td>@patient.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
                 <td>
-                    <a asp-controller="Pneumonias" asp-action="Details" asp-route-id="@patient.Id" class="btn btn-info">
+                    <a asp-controller="GIInfectionChecklist" asp-action="Details" asp-route-id="@patient.Id" class="btn btn-info">
                         View Details
                     </a>
                 </td>
