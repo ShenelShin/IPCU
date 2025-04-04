@@ -110,13 +110,21 @@
                     <input asp-for="Investigator" class="form-control" readonly />
                 </td>
                 <td>
-                    <label asp-for="MDRO"></label><br />
-                    <select asp-for="MDRO" class="form-control" disabled>
-                        <option value="">--Select--</option>
+                    <label asp-for="MDRO"></label>
+                    <select asp-for="MDRO" class="form-control" id="MDRODropdown" disabled>
+                        <option value="">Select</option>
                         <option>Yes</option>
                         <option>No</option>
                     </select>
+                    <span asp-validation-for="MDRO" class="text-danger"></span>
+
+                    <div id="mdroOrganismContainer">
+                        <label asp-for="MDROOrganism"></label>
+                        <input asp-for="MDROOrganism" class="form-control" disabled />
+                        <span asp-validation-for="MDROOrganism" class="text-danger"></span>
+                    </div>
                 </td>
+
                 <td>
                     <label asp-for="Disposition"></label><br />
                     <select asp-for="Disposition" class="form-control" id="DispositionDropdown" disabled>

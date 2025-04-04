@@ -132,8 +132,14 @@
                 </td>
                 <td>
                     @Html.LabelFor(m => m.MDRO) <br />
-                    @Html.DropDownListFor(m => m.MDRO, new SelectList(new[] { "Yes", "No" }), "Select", new { @class = "form-control" })
+                    @Html.DropDownListFor(m => m.MDRO, new SelectList(new[] { "Yes", "No" }), "Select", new { @class = "form-control", id = "MDRODropdown" })
                     @Html.ValidationMessageFor(m => m.MDRO, "", new { @class = "text-danger" })
+
+                    <div id="mdroOrganismContainer" style="display: none; margin-top: 10px;">
+                        @Html.LabelFor(m => m.MDROOrganism)
+                        @Html.TextBoxFor(m => m.MDROOrganism, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.MDROOrganism, "", new { @class = "text-danger" })
+                    </div>
                 </td>
                 <td>
                     @Html.LabelFor(m => m.TypeClass) <br />
@@ -491,6 +497,25 @@
 
             $('#abutiCheckbox').change(function () {
                 toggleSection('#abutiCheckbox', '#section-abuti');
+            });
+        });
+
+          $(document).ready(function () {
+            function toggleMDROOrganismField() {
+                var selectedValue = $('#MDRODropdown').val();
+                if (selectedValue === "Yes") {
+                    $('#mdroOrganismContainer').show();
+                } else {
+                    $('#mdroOrganismContainer').hide();
+                }
+            }
+
+            // Initial check
+            toggleMDROOrganismField();
+
+            // Change event
+            $('#MDRODropdown').change(function () {
+                toggleMDROOrganismField();
             });
         });
     </script>

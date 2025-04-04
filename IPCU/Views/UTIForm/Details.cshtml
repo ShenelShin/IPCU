@@ -121,7 +121,16 @@
                 @Html.LabelFor(m => m.MDRO) <br />
                 @Html.DropDownListFor(m => m.MDRO, new SelectList(new[] { "Yes", "No" }), "Select", new { @class = "form-control", @disabled = "disabled" })
                 @Html.ValidationMessageFor(m => m.MDRO, "", new { @class = "text-danger" })
+
+                @if (Model.MDRO == "Yes" && !string.IsNullOrWhiteSpace(Model.MDROOrganism))
+                {
+                    <div style="margin-top: 10px;">
+                        <label>@Html.DisplayNameFor(m => m.MDROOrganism)</label><br />
+                        <span>@Model.MDROOrganism</span>
+                    </div>
+                }
             </td>
+
             <td>
                 @Html.LabelFor(m => m.TypeClass) <br />
                 <div>

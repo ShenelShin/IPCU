@@ -20,20 +20,26 @@
         <td>Unit/Ward Area: @Model.UnitWardArea</td>
         <td>Main Service: @Model.MainService</td>
     </tr>
-    
+
     <tr>
         <td>Date of Event: @Model.DateOfEvent?.ToString("yyyy-MM-dd")</td>
         <td>Investigator: @Model.Investigator</td>
         <td>Date of Admission: @Model.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
         <td>Disposition: @Model.Disposition</td>
     </tr>
-
     <tr>
-        <td>Disposition Date: @Model.DispositionDate</td>
+        <td>Disposition Date: @Model.DispositionDate?.ToString("yyyy-MM-dd")</td>
         <td>Gender: @Model.Gender</td>
         <td>Classification: @Model.Classification</td>
-        <td>MDRO: @Model.MDRO</td>
+        <td>
+            MDRO: @Model.MDRO
+            @if (Model.MDRO?.Trim().ToLower() == "yes" && !string.IsNullOrWhiteSpace(Model.MDROOrganism))
+            {
+                <text><br />Organism: @Model.MDROOrganism</text>
+            }
+        </td>
     </tr>
+
     @if (!string.IsNullOrEmpty(Model.DispositionTransfer))
     {
         <tr>

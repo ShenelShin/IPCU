@@ -119,12 +119,18 @@
             </td>
             <td>
                 <label asp-for="MDRO"></label>
-                <select asp-for="MDRO" class="form-control" disabled>
+                <select asp-for="MDRO" class="form-control" id="MDRODropdown" disabled>
                     <option value="">Select</option>
                     <option>Yes</option>
                     <option>No</option>
                 </select>
                 <span asp-validation-for="MDRO" class="text-danger"></span>
+
+                <div id="mdroOrganismContainer">
+                    <label asp-for="MDROOrganism"></label>
+                    <input asp-for="MDROOrganism" class="form-control" disabled />
+                    <span asp-validation-for="MDROOrganism" class="text-danger"></span>
+                </div>
             </td>
         </tr>
         <tr>

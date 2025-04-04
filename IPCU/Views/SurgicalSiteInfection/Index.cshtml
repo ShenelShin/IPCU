@@ -119,14 +119,21 @@
                     <span asp-validation-for="Investigator" class="text-danger"></span>
                 </td>
                 <td>
-                    <label asp-for="MDRO"></label><br />
-                    <select asp-for="MDRO" class="form-control">
-                        <option value="">--Select--</option>
+                    <label asp-for="MDRO"></label>
+                    <select asp-for="MDRO" class="form-control" id="MDRODropdown">
+                        <option value="">Select</option>
                         <option>Yes</option>
                         <option>No</option>
                     </select>
                     <span asp-validation-for="MDRO" class="text-danger"></span>
+
+                    <div id="mdroOrganismContainer" style="display: none; margin-top: 10px;">
+                        <label asp-for="MDROOrganism"></label>
+                        <input asp-for="MDROOrganism" class="form-control" />
+                        <span asp-validation-for="MDROOrganism" class="text-danger"></span>
+                    </div>
                 </td>
+
                 <td>
                     <label asp-for="Disposition"></label><br />
                     <select asp-for="Disposition" class="form-control" id="DispositionDropdown">
@@ -914,8 +921,29 @@
         // Initialize visibility on page load
         toggleOSSection();
     });
+
+ 
 </script>
 <script>
+
+       $(document).ready(function () {
+            function toggleMDROOrganismField() {
+                var selectedValue = $('#MDRODropdown').val();
+                if (selectedValue === "Yes") {
+                    $('#mdroOrganismContainer').show();
+                } else {
+                    $('#mdroOrganismContainer').hide();
+                }
+            }
+
+            // Run on page load
+            toggleMDROOrganismField();
+
+            // Bind change event
+            $('#MDRODropdown').change(function () {
+                toggleMDROOrganismField();
+            });
+        });
     document.addEventListener("DOMContentLoaded", function () {
         const checkboxes = document.querySelectorAll("input[type='checkbox'][name='Subclass']");
         

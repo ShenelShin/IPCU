@@ -35,7 +35,13 @@
         </tr>
         <tr>
             <td><strong>Classification:</strong> @Model.Classification</td>
-            <td><strong>MDRO:</strong> @Model.MDRO</td>
+            <td>
+                MDRO: @Model.MDRO
+                @if (Model.MDRO?.Trim().ToLower() == "yes" && !string.IsNullOrWhiteSpace(Model.MDROOrganism))
+                {
+                    <text><br />Organism: @Model.MDROOrganism</text>
+                }
+            </td>
             <td colspan="2"><strong>Type & Classification:</strong> @Model.TypeClass</td>
         </tr>
         <tr>
