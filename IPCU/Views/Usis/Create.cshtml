@@ -79,7 +79,7 @@
                 </td>
                 <td>
                     <label asp-for="Disposition"></label>
-                    <select asp-for="Disposition" class="form-control">
+                    <select asp-for="Disposition" class="form-control" id="dispositionSelect">
                         <option value="">-- Select Disposition --</option>
                         <option>Mortality</option>
                         <option>Discharged</option>
@@ -89,13 +89,11 @@
                     </select>
                     <span asp-validation-for="Disposition" class="text-danger"></span>
 
-                <div id="dispositionTransferDiv" style="display:none;">
-
-                    <label asp-for="DispositionTransfer"></label>
-                    <input asp-for="DispositionTransfer" class="form-control" />
-                    <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
-
-                </div>
+                    <div id="dispositionTransferDiv" style="display:none; margin-top:10px;">
+                        <label asp-for="DispositionTransfer"></label>
+                        <input asp-for="DispositionTransfer" class="form-control" id="dispositionTransferInput" />
+                        <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+                    </div>
                 </td>
                 
             </tr>
@@ -125,14 +123,20 @@
                     </select>
                     <span asp-validation-for="Classification" class="text-danger"></span>
                 </td>
-                    <td>
+                <td>
                     <label asp-for="MDRO"></label>
-                    <select asp-for="MDRO" class="form-control">
+                    <select asp-for="MDRO" class="form-control" id="MDRODropdown">
                         <option value="">Select</option>
                         <option>Yes</option>
                         <option>No</option>
                     </select>
                     <span asp-validation-for="MDRO" class="text-danger"></span>
+
+                    <div id="mdroOrganismContainer" style="display: none; margin-top: 10px;">
+                        <label asp-for="MDROOrganism"></label>
+                        <input asp-for="MDROOrganism" class="form-control" />
+                        <span asp-validation-for="MDROOrganism" class="text-danger"></span>
+                    </div>
                 </td>
             </tr>         
             
@@ -348,16 +352,39 @@
     </script>
 
     <script>
-        document.getElementById("dispositionSelect").addEventListener("change", function () {
-            var dispositionValue = this.value;
-            var transferField = document.getElementById("dispositionTransferField");
+        $(document).ready(function () {
+            $("#dispositionSelect").change(function () {
+                var selectedValue = $(this).val();
+                var transferDiv = $("#dispositionTransferDiv");
+                var transferInput = $("#dispositionTransferInput");
 
-            // Show DispositionTransfer only if "Transferred In" or "Transferred Out" is selected
-            if (dispositionValue === "Transferred In" || dispositionValue === "Transferred Out") {
-                transferField.style.display = "table-cell"; // Show the field
-            } else {
-                transferField.style.display = "none"; // Hide the field
+                if (selectedValue === "Transferred In" || selectedValue === "Transferred Out") {
+                    transferDiv.show();
+                } else {
+                    transferDiv.hide();
+                    transferInput.val(""); // Clear input when hiding
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            function toggleMDROOrganismField() {
+                var selectedValue = $('#MDRODropdown').val();
+                if (selectedValue === "Yes") {
+                    $('#mdroOrganismContainer').show();
+                } else {
+                    $('#mdroOrganismContainer').hide();
+                }
             }
+
+            // Run on page load
+            toggleMDROOrganismField();
+
+            // Bind change event
+            $('#MDRODropdown').change(function () {
+                toggleMDROOrganismField();
+            });
         });
     </script>
 }
