@@ -127,9 +127,9 @@
                     </select>
                     <span asp-validation-for="MDRO" class="text-danger"></span>
 
-                    <div id="mdroOrganismContainer" style="display: none; margin-top: 10px;">
+                    <div id="mdroOrganismContainer" class="mt-2 d-none">
                         <label asp-for="MDROOrganism"></label>
-                        <input asp-for="MDROOrganism" class="form-control" />
+                        <input asp-for="MDROOrganism" class="form-control" id="MDROOrganism" />
                         <span asp-validation-for="MDROOrganism" class="text-danger"></span>
                     </div>
                 </td>
@@ -1037,20 +1037,19 @@
         });
     </script>
     <script>
-        $(document).ready(function () {
+           $(document).ready(function () {
             function toggleMDROOrganismField() {
                 var selectedValue = $('#MDRODropdown').val();
                 if (selectedValue === "Yes") {
-                    $('#mdroOrganismContainer').show();
+                    $('#mdroOrganismContainer').removeClass('d-none');
                 } else {
-                    $('#mdroOrganismContainer').hide();
+                    $('#mdroOrganismContainer').addClass('d-none');
+                    $('#MDROOrganism').val(''); // optional: clear value if hidden
                 }
             }
 
-            // Run on page load
             toggleMDROOrganismField();
 
-            // Bind change event
             $('#MDRODropdown').change(function () {
                 toggleMDROOrganismField();
             });
