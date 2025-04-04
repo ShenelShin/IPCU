@@ -24,7 +24,9 @@ namespace IPCU.Models
     public string Gender { get; set; }
     public string Classification { get; set; }
     public bool MDRO { get; set; }
-    public string InfectionType { get; set; }
+        public string? MDROOrganism { get; set; }
+
+        public string InfectionType { get; set; }
     public string InfectionClassification { get; set; }
 
         // Infection Details - Burn Infection

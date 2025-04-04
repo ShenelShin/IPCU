@@ -69,6 +69,8 @@ namespace IPCU.Models
 
         [Required]
         public string MDRO { get; set; } // Yes / No
+        public string? MDROOrganism { get; set; }
+
 
         [Required]
         [Display(Name = "Type & Classification")]

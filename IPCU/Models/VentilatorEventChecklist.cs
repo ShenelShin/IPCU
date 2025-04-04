@@ -59,7 +59,7 @@ namespace IPCU.Models
 
         public bool MDRO { get; set; } // Multi-Drug Resistant Organism (
 
-        public string MDROOrganism { get; set; }
+        public string? MDROOrganism { get; set; }
 
         public string TypeClass { get; set; } // Concatenated values if multiple
 

@@ -53,6 +53,9 @@ namespace IPCU.Models
 
         public string Classification { get; set; }
         public bool MDRO { get; set; } // Multi-Drug Resistant Organism
+        public string? MDROOrganism { get; set; }
+
+
 
         public string TypeClassification { get; set; }
 

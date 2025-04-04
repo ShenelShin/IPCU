@@ -24,6 +24,8 @@
         public string Gender { get; set; } // Male, Femalef
         public string Classification { get; set; } // Pay, Servicef
         public string MDRO { get; set; } // Yes, No
+        public string? MDROOrganism { get; set; }
+
         public string TypeClass { get; set; }
         //start of forms
 

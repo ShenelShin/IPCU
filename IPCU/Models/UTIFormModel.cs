@@ -65,6 +65,7 @@ using System.ComponentModel.DataAnnotations;
 
     [Required]
     public string MDRO { get; set; } // Yes / No
+    public string? MDROOrganism { get; set; }
 
 
     [Required]
