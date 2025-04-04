@@ -21,7 +21,11 @@ namespace IPCU.Models
     public string Investigator { get; set; }
     public DateTime DateOfAdmission { get; set; }
     public string Disposition { get; set; }
-    public string Gender { get; set; }
+        public DateTime? DispositionDate { get; set; }
+
+        public string? DispositionTransfer { get; set; }
+
+        public string Gender { get; set; }
     public string Classification { get; set; }
     public bool MDRO { get; set; }
         public string? MDROOrganism { get; set; }

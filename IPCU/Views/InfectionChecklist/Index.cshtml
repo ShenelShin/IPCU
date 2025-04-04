@@ -55,12 +55,39 @@
                 <td>@Html.LabelFor(m => m.DateOfEvent) <br />@Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}", new { type = "date" })</td>
                 <td>@Html.LabelFor(m => m.Investigator) <br />@Html.TextBoxFor(m => m.Investigator)</td>
                 <td>@Html.LabelFor(m => m.DateOfAdmission) <br />@Html.TextBoxFor(m => m.DateOfAdmission, "{0:yyyy-MM-dd}", new { type = "date" })</td>
-                <td>@Html.LabelFor(m => m.Disposition) <br />@Html.TextBoxFor(m => m.Disposition)</td>
+                <td>
+                    @Html.LabelFor(m => m.Disposition) <br />
+                    @Html.DropDownListFor(m => m.Disposition, new SelectList(new[]
+                             {
+                new { Value = "", Text = "-- Select Disposition --" },
+                new { Value = "Mortality", Text = "Mortality" },
+                new { Value = "Discharged", Text = "Discharged" },
+                new { Value = "Still Admitted", Text = "Still Admitted" },
+                new { Value = "Transferred In", Text = "Transferred In" },
+                new { Value = "Transferred Out", Text = "Transferred Out" }
+                }, "Value", "Text"), new { @class = "form-control", id = "dispositionSelect" })
+
+                    @Html.LabelFor(m => m.DispositionDate)
+                    @Html.TextBoxFor(m => m.DispositionDate, new { @class = "form-control", type = "date", id = "dispositionDateInput" })
+
+                    <div id="dispositionTransferDiv" style="display: none;">
+                        @Html.LabelFor(m => m.DispositionTransfer) <br />
+                        @Html.TextBoxFor(m => m.DispositionTransfer, new { @class = "form-control", id = "dispositionTransferInput" })
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td>@Html.LabelFor(m => m.Gender) <br />@Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female" }))</td>
                 <td>@Html.LabelFor(m => m.Classification) <br />@Html.DropDownListFor(m => m.Classification, new SelectList(new[] { "Pay", "Service" }))</td>
-                <td>@Html.LabelFor(m => m.MDRO) <br />@Html.CheckBoxFor(m => m.MDRO) Yes</td>
+                <td>
+                    @Html.LabelFor(m => m.MDRO) <br />
+                    @Html.CheckBoxFor(m => m.MDRO, new { id = "mdroCheckbox" }) Yes
+
+                    <div id="mdroganismDiv" style="display:none; margin-top:10px;">
+                        @Html.LabelFor(m => m.MDROOrganism)
+                        @Html.TextBoxFor(m => m.MDROOrganism, new { @class = "form-control", id = "mdroganismInput" })
+                    </div>
+                </td>
                 <td>
                     @Html.LabelFor(m => m.InfectionType) <br />
                     <table>
@@ -94,12 +121,6 @@
                 </td>
 
 
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(m => m.InfectionClassification) <br />@Html.TextBoxFor(m => m.InfectionClassification)</td>
-                <td></td>
-                <td></td>
-                <td></td>
             </tr>
         </table>
     </fieldset>
@@ -451,5 +472,41 @@
                 toggleInfectionSections();
             });
         }); 
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#mdroCheckbox").change(function () {
+                var mdroganismDiv = $("#mdroganismDiv");
+                var mdroganismInput = $("#mdroganismInput");
+
+                if ($(this).is(":checked")) {
+                    mdroganismDiv.show();
+                } else {
+                    mdroganismDiv.hide();
+                    mdroganismInput.val(""); // Clear input when hiding
+                }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            function toggleDispositionTransfer() {
+                var selectedValue = $("#dispositionSelect").val();
+                if (selectedValue === "Transferred In" || selectedValue === "Transferred Out") {
+                    $("#dispositionTransferDiv").show();
+                } else {
+                    $("#dispositionTransferDiv").hide();
+                    $("#dispositionTransferInput").val(""); // Clear input field when hidden
+                }
+            }
+
+            // Initial check
+            toggleDispositionTransfer();
+
+            // On change event
+            $("#dispositionSelect").change(function () {
+                toggleDispositionTransfer();
+            });
+        });
     </script>
 }
