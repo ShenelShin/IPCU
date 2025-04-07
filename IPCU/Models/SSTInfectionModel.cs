@@ -31,7 +31,6 @@ namespace IPCU.Models
         public string? MDROOrganism { get; set; }
 
         public string InfectionType { get; set; }
-    public string InfectionClassification { get; set; }
 
         // Infection Details - Burn Infection
         public bool BurnAppearanceChange { get; set; }

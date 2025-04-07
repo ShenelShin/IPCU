@@ -145,8 +145,13 @@
                         <option>Transferred Out</option>
                     </select>
                     <span asp-validation-for="Disposition" class="text-danger"></span>
+
+                    <div id="DispositionTransferContainer" style="display: none; margin-top: 10px;">
+                        <label asp-for="DispositionTransfer"></label><br />
+                        <input asp-for="DispositionTransfer" class="form-control" />
+                        <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+                    </div>
                 </td>
-                <!-- Disposition Transfer input - initially hidden -->
 
 
                 <td>
@@ -961,5 +966,51 @@
                 }
             });
         });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dispositionDropdown = document.getElementById('DispositionDropdown');
+        const transferContainer = document.getElementById('DispositionTransferContainer');
+        const transferInput = document.querySelector('[name="DispositionTransfer"]');
+
+        function toggleTransferField() {
+            const selected = dispositionDropdown.value.toLowerCase();
+            if (selected === 'transferred in' || selected === 'transferred out') {
+                transferContainer.style.display = 'block';
+            } else {
+                transferContainer.style.display = 'none';
+                transferInput.value = ''; // Clear the field when hidden
+            }
+        }
+
+        dispositionDropdown.addEventListener('change', toggleTransferField);
+
+        // Initialize on page load in case a value is already selected
+        toggleTransferField();
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const mdroDropdown = document.getElementById('MDRODropdown');
+        const organismContainer = document.getElementById('mdroOrganismContainer');
+        const organismInput = document.querySelector('[name="MDROOrganism"]');
+
+        function toggleOrganismField() {
+            const selected = mdroDropdown.value.toLowerCase();
+            if (selected === 'yes') {
+                organismContainer.style.display = 'block';
+            } else {
+                organismContainer.style.display = 'none';
+                organismInput.value = ''; // Clear the input if hidden
+            }
+        }
+
+        mdroDropdown.addEventListener('change', toggleOrganismField);
+
+        // Run on page load to handle pre-selected values
+        toggleOrganismField();
     });
 </script>

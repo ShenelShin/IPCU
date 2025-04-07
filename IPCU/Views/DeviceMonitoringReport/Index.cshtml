@@ -1,0 +1,371 @@
+﻿@model IPCU.Controllers.DeviceMonitoringReportViewModel
+@{
+    ViewData["Title"] = "Device Monitoring Report";
+}
+
+<div class="container-fluid">
+    <h2>Device Monitoring Report</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Select Report Parameters</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="GenerateReport" method="post" id="reportForm">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="SelectedArea" class="control-label"></label>
+                            <select asp-for="SelectedArea" class="form-control" id="selectedArea">
+                                @foreach (var area in Model.Areas)
+                                {
+                                    <option value="@area">@area</option>
+                                }
+                            </select>
+                            <span asp-validation-for="SelectedArea" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="ReportMonth" class="control-label"></label>
+                            <select asp-for="ReportMonth" class="form-control" id="reportMonth">
+                                @for (int i = 1; i <= 12; i++)
+                                {
+                                    <option value="@i">@(new DateTime(2000, i, 1).ToString("MMMM"))</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ReportMonth" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="ReportYear" class="control-label"></label>
+                            <select asp-for="ReportYear" class="form-control" id="reportYear">
+                                @for (int year = DateTime.Now.Year - 2; year <= DateTime.Now.Year + 2; year++)
+                                {
+                                    <option value="@year">@year</option>
+                                }
+                            </select>
+                            <span asp-validation-for="ReportYear" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label asp-for="ExportFormat" class="control-label"></label>
+                            <select asp-for="ExportFormat" class="form-control" id="exportFormat">
+                                <option value="PDF">PDF</option>
+                                <option value="EXCEL">Excel</option>
+                            </select>
+                            <span asp-validation-for="ExportFormat" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="button" id="viewReportBtn" class="btn btn-primary">
+                                <i class="bi bi-eye"></i> View Report
+                            </button>
+                            <button type="submit" id="generateBtn" class="btn btn-success">
+                                <i class="bi bi-download"></i> Generate Report
+                            </button>
+                            <button type="button" id="downloadExcelBtn" class="btn btn-info">
+                                <i class="bi bi-file-earmark-excel"></i> Download Excel
+                            </button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Back to Dashboard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Report Information</h5>
+                </div>
+                <div class="card-body">
+                    <p>This report generates a monthly summary of device usage and patient movement for the selected area.</p>
+
+                    <h6>The report includes:</h6>
+                    <ul>
+                        <li>
+                            Daily counts of patients with specific devices:
+                            <ul>
+                                <li>IUC (Non-KT and KT)</li>
+                                <li>CL (Non-HD and HD)</li>
+                                <li>MV (Mechanical Ventilation)</li>
+                            </ul>
+                        </li>
+                        <li>
+                            Daily patient movement:
+                            <ul>
+                                <li>Admissions and Transfers In</li>
+                                <li>Discharges (Sent Home, Mortality, Transfers Out)</li>
+                            </ul>
+                        </li>
+                        <li>Monthly totals for all metrics</li>
+                    </ul>
+
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> The report can be exported as either a PDF or Excel file based on your selection.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add this section to your Index.cshtml view -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Generate Yearly Report</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="GenerateYearlyReport" method="get" class="row g-3">
+                    <div class="col-md-6">
+                        <label for="yearlyArea" class="form-label">Area</label>
+                        <select id="yearlyArea" name="area" class="form-select" required>
+                            <option value="">Select Area</option>
+                            @foreach (var area in Model.Areas)
+                            {
+                                <option value="@area">@area</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="yearlyYear" class="form-label">Year</label>
+                        <select id="yearlyYear" name="year" class="form-select" required>
+                            @for (int y = DateTime.Now.Year; y >= 2020; y--)
+                            {
+                                <option value="@y">@y</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-file-excel"></i> Generate Yearly Excel Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add this section for Area Yearly Report -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Generate Area Yearly Report</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="GenerateAreaYearlyReport" method="get" class="row g-3">
+                    <div class="col-md-6">
+                        <label for="areaYearlyYear" class="form-label">Year</label>
+                        <select id="areaYearlyYear" name="year" class="form-select" required>
+                            @for (int y = DateTime.Now.Year; y >= 2020; y--)
+                            {
+                                <option value="@y">@y</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-file-excel"></i> Generate Area Yearly Report
+                        </button>
+                        <div class="form-text">This will generate a consolidated Excel report for all your assigned areas for the selected year.</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add this section for Half-Yearly Report -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Generate Half-Yearly Report</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="GenerateAreaHalfYearlyReport" method="get" class="row g-3">
+                    <div class="col-md-6">
+                        <label for="halfYearlyYear" class="form-label">Year</label>
+                        <select id="halfYearlyYear" name="year" class="form-select" required>
+                            @for (int y = DateTime.Now.Year; y >= 2020; y--)
+                            {
+                                <option value="@y">@y</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="halfYear" class="form-label">Period</label>
+                        <select id="halfYear" name="halfYear" class="form-select" required>
+                            <option value="1">First Half (Jan-Jun)</option>
+                            <option value="2">Second Half (Jul-Dec)</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-file-excel"></i> Generate Half-Yearly Report
+                        </button>
+                        <div class="form-text">This will generate a consolidated Excel report for all your assigned areas for the selected half-year period.</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function() {
+            // Generate Report button handling
+            $("#reportForm").submit(function(e) {
+                e.preventDefault(); // Prevent standard form submit
+
+                if ($(this).valid()) {
+                    var formData = $(this).serialize();
+                    var exportFormat = $("#exportFormat").val();
+                    var buttonText = exportFormat === "PDF" ?
+                        '<i class="bi bi-file-earmark-pdf"></i> Generate PDF' :
+                        '<i class="bi bi-file-earmark-excel"></i> Generate Excel';
+                    var contentType = exportFormat === "PDF" ?
+                        "application/pdf" :
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    var defaultFileName = exportFormat === "PDF" ?
+                        "DeviceMonitoringReport.pdf" :
+                        "DeviceMonitoringReport.xlsx";
+
+                    // Show loading indicator
+                    $("#generateBtn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...');
+                    $("#generateBtn").prop('disabled', true);
+
+                    // Submit the form data
+                    $.ajax({
+                        type: "POST",
+                        url: $(this).attr('action'),
+                        data: formData,
+                        xhrFields: {
+                            responseType: 'blob' // Important for handling binary data
+                        },
+                        success: function(data, status, xhr) {
+                            // Check if the response is an error message (sometimes errors come as JSON)
+                            var contentType = xhr.getResponseHeader("content-type") || "";
+                            if (contentType.indexOf('application/json') !== -1) {
+                                // Convert blob to text to read the error
+                                var reader = new FileReader();
+                                reader.onload = function() {
+                                    var errorJson = JSON.parse(reader.result);
+                                    alert("Error: " + (errorJson.error || "Unknown error occurred"));
+                                };
+                                reader.readAsText(data);
+                            } else {
+                                // Process file blob
+                                var blob = new Blob([data], { type: contentType });
+
+                                // Check if we have a valid file (at least check the size)
+                                if (blob.size < 100) {
+                                    alert("Error: Generated file is too small or empty");
+                                } else {
+                                    // Create file link and download
+                                    var link = document.createElement('a');
+                                    link.href = window.URL.createObjectURL(blob);
+
+                                    // Extract filename from Content-Disposition header if available
+                                    var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+                                    var fileName = defaultFileName;
+                                    if (contentDisposition) {
+                                        var fileNameMatch = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
+                                        if (fileNameMatch != null && fileNameMatch[1]) {
+                                            fileName = fileNameMatch[1].replace(/['"]/g, '');
+                                        }
+                                    }
+
+                                    link.download = fileName;
+                                    link.click();
+                                }
+                            }
+
+                            // Reset button
+                            $("#generateBtn").html('<i class="bi bi-download"></i> Generate Report');
+                            $("#generateBtn").prop('disabled', false);
+                        },
+                        error: function(xhr, status, error) {
+                            // Try to parse error message if available
+                            var errorMessage = "Error generating report";
+                            try {
+                                if (xhr.responseText) {
+                                    var reader = new FileReader();
+                                    reader.onload = function() {
+                                        try {
+                                            var response = JSON.parse(reader.result);
+                                            if (response && response.error) {
+                                                alert(response.error);
+                                            } else {
+                                                alert("Error generating report: " + error);
+                                            }
+                                        } catch (e) {
+                                            alert("Error generating report: " + error);
+                                        }
+                                    };
+                                    reader.readAsText(xhr.response);
+                                } else {
+                                    alert("Error generating report: " + error);
+                                }
+                            } catch (e) {
+                                alert("Error generating report: " + error);
+                            }
+
+                            $("#generateBtn").html('<i class="bi bi-download"></i> Generate Report');
+                            $("#generateBtn").prop('disabled', false);
+                        }
+                    });
+                }
+            });
+
+            // View Report button handling - uses the current form values
+            $("#viewReportBtn").click(function() {
+                if ($("#reportForm").valid()) {
+                    var area = $("#selectedArea").val();
+                    var year = $("#reportYear").val();
+                    var month = $("#reportMonth").val();
+
+                    // Generate URL with current values
+                    var viewUrl = '@Url.Action("ViewReport", "DeviceMonitoringReport")' +
+                        '?area=' + encodeURIComponent(area) +
+                        '&year=' + encodeURIComponent(year) +
+                        '&month=' + encodeURIComponent(month);
+
+                    // Open in new tab
+                    window.open(viewUrl, '_blank');
+                }
+            });
+
+            // Download Excel button handling
+            $("#downloadExcelBtn").click(function() {
+                if ($("#reportForm").valid()) {
+                    var area = $("#selectedArea").val();
+                    var year = $("#reportYear").val();
+                    var month = $("#reportMonth").val();
+
+                    // Generate URL with current values
+                    var excelUrl = '@Url.Action("DownloadExcel", "DeviceMonitoringReport")' +
+                        '?area=' + encodeURIComponent(area) +
+                        '&year=' + encodeURIComponent(year) +
+                        '&month=' + encodeURIComponent(month);
+
+                    // Open in new tab or directly download
+                    window.location.href = excelUrl;
+                }
+            });
+
+            // Update button text when export format changes
+            $("#exportFormat").change(function() {
+                var exportFormat = $(this).val();
+                if (exportFormat === "PDF") {
+                    $("#generateBtn").html('<i class="bi bi-download"></i> Generate Report');
+                } else {
+                    $("#generateBtn").html('<i class="bi bi-download"></i> Generate Report');
+                }
+            });
+        });
+    </script>
+}

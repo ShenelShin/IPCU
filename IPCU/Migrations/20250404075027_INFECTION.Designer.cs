@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250404075027_INFECTION")]
+    partial class INFECTION
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1408,119 +1411,6 @@ namespace IPCU.Migrations
                     b.HasKey("HospNum");
 
                     b.ToTable("tbmaster");
-                });
-
-            modelBuilder.Entity("IPCU.Models.PatientMovement", b =>
-                {
-                    b.Property<int>("MovementId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovementId"));
-
-                    b.Property<int>("AdmissionCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("MortalityCount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("MovementDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("SentHomeCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TransferInCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TransferOutCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("MovementId");
-
-                    b.HasIndex("MovementDate", "Area")
-                        .IsUnique();
-
-                    b.ToTable("tbPatientMovement");
-                });
-
-            modelBuilder.Entity("IPCU.Models.PatientMovementDetail", b =>
-                {
-                    b.Property<int>("MovementDetailId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovementDetailId"));
-
-                    b.Property<string>("DestinationArea")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("HospNum")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<string>("IdNum")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<DateTime>("MovementDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MovementId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MovementType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("SourceArea")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("MovementDetailId");
-
-                    b.HasIndex("HospNum");
-
-                    b.HasIndex("MovementId");
-
-                    b.ToTable("tbPatientMovementDetail");
                 });
 
             modelBuilder.Entity("IPCU.Models.PediatricVAEChecklist", b =>
@@ -3148,29 +3038,28 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DateOfAdmission")
+                    b.Property<DateTime>("DateOfAdmission")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfEvent")
+                    b.Property<DateTime>("DateOfEvent")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateofIntubation")
+                    b.Property<DateTime?>("DateOfIntubation")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Disposition")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DispositionDate")
+                    b.Property<DateTime>("DispositionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DispositionTransfer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Fname")
+                    b.Property<string>("FName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -3178,7 +3067,7 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HospitalNumber")
+                    b.Property<string>("HospNum")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -3191,26 +3080,25 @@ namespace IPCU.Migrations
                     b.Property<bool>("IVac3")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Investigator")
+                    b.Property<string>("LName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Lname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MDRO")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("MDRO")
+                        .HasColumnType("bit");
 
                     b.Property<string>("MDROOrganism")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MainService")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Mname")
+                    b.Property<string>("NameOfInvestigator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -3264,7 +3152,7 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UnitWardArea")
+                    b.Property<string>("UwArea")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -3508,25 +3396,6 @@ namespace IPCU.Migrations
                         .IsRequired();
 
                     b.Navigation("HandHygieneForm");
-                });
-
-            modelBuilder.Entity("IPCU.Models.PatientMovementDetail", b =>
-                {
-                    b.HasOne("IPCU.Models.PatientMaster", "Patient")
-                        .WithMany()
-                        .HasForeignKey("HospNum")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("IPCU.Models.PatientMovement", "PatientMovement")
-                        .WithMany()
-                        .HasForeignKey("MovementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-
-                    b.Navigation("PatientMovement");
                 });
 
             modelBuilder.Entity("IPCU.Models.VitalSigns", b =>

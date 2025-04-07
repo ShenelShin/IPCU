@@ -99,11 +99,14 @@
                 @Html.TextBoxFor(m => m.DispositionDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", @readonly = "readonly" })
                 @Html.ValidationMessageFor(m => m.DispositionDate, "", new { @class = "text-danger" })
 
-                <div id="DispositionTransferContainer" style="display:none; margin-top: 10px;">
-                    @Html.LabelFor(m => m.DispositionTransfer) <br />
-                    @Html.TextBoxFor(m => m.DispositionTransfer, new { @class = "form-control", @readonly = "readonly" })
-                    @Html.ValidationMessageFor(m => m.DispositionTransfer, "", new { @class = "text-danger" })
-                </div>
+                @if (Model.Disposition == "Transferred In" || Model.Disposition == "Transferred Out")
+                {
+                    <div style="margin-top: 10px;">
+                        @Html.LabelFor(m => m.DispositionTransfer) <br />
+                        @Html.TextBoxFor(m => m.DispositionTransfer, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.DispositionTransfer, "", new { @class = "text-danger" })
+                    </div>
+                }
             </td>
         </tr>
         <tr>
@@ -122,14 +125,16 @@
                 @Html.DropDownListFor(m => m.MDRO, new SelectList(new[] { "Yes", "No" }), "Select", new { @class = "form-control", @disabled = "disabled" })
                 @Html.ValidationMessageFor(m => m.MDRO, "", new { @class = "text-danger" })
 
-                @if (Model.MDRO == "Yes" && !string.IsNullOrWhiteSpace(Model.MDROOrganism))
+                @if (Model.MDRO == "Yes")
                 {
                     <div style="margin-top: 10px;">
-                        <label>@Html.DisplayNameFor(m => m.MDROOrganism)</label><br />
-                        <span>@Model.MDROOrganism</span>
+                        @Html.LabelFor(m => m.MDROOrganism) <br />
+                        @Html.TextBoxFor(m => m.MDROOrganism, new { @class = "form-control", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(m => m.MDROOrganism, "", new { @class = "text-danger" })
                     </div>
                 }
             </td>
+
 
             <td>
                 @Html.LabelFor(m => m.TypeClass) <br />

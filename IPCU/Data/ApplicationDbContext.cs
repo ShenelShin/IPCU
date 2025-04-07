@@ -50,8 +50,31 @@ namespace IPCU.Data
         public DbSet<DiagnosticsTreatment> DiagnosticsTreatments { get; set; }
         public DbSet<SurgicalSiteInfectionChecklist> SurgicalSiteInfectionChecklist { get; set; }
         public DbSet<GIInfectionChecklist> GIInfectionChecklists { get; set; }
-       
+        public DbSet<PatientMovement> PatientMovements { get; set; }
+        public DbSet<PatientMovementDetail> PatientMovementDetails { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Create a unique index on PatientMovement for date and area combination
+            modelBuilder.Entity<PatientMovement>()
+                .HasIndex(p => new { p.MovementDate, p.Area })
+                .IsUnique();
+
+            // Configure relationship between PatientMovementDetail and PatientMaster
+            modelBuilder.Entity<PatientMovementDetail>()
+                .HasOne(pmd => pmd.Patient)
+                .WithMany()
+                .HasForeignKey(pmd => pmd.HospNum)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure relationship between PatientMovementDetail and PatientMovement
+            modelBuilder.Entity<PatientMovementDetail>()
+                .HasOne(pmd => pmd.PatientMovement)
+                .WithMany()
+                .HasForeignKey(pmd => pmd.MovementId);
+        }
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);
