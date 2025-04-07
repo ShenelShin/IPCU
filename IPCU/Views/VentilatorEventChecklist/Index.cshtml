@@ -4,551 +4,472 @@
     ViewData["Title"] = "Ventilator-Associated Event (VAE) Checklist";
 }
 
-<div class="container mt-4">
-    <div class="card shadow-lg">
-        <div class="card-header bg-primary text-white">
-            <h4 class="text-center">NATIONAL KIDNEY AND TRANSPLANT INSTITUTE</h4>
-            <p class="text-center">Infection Prevention and Control Unit</p>
-            <h5 class="text-center">Ventilator-Associated Event (VAE) Checklist</h5>
-        </div>
+<style>
+    fieldset {
+        border: 2px solid #000;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
 
-        <div class="card-body">
-            <form asp-controller="VentilatorEventChecklist" asp-action="Submit" method="post">
-                @Html.AntiForgeryToken()
+    legend {
+        font-weight: bold;
+    }
 
-                <!-- Patient Information -->
-                <div class="row">
-                    <div class="col-md-4">
-                        <label>Last Name:</label>
-                        <input asp-for="LName" class="form-control" required />
-                    </div>
-                    <div class="col-md-4">
-                        <label>First Name:</label>
-                        <input asp-for="FName" class="form-control" required />
-                    </div>
-                    <div class="col-md-4">
-                        <label>Middle Name:</label>
-                        <input asp-for="MName" class="form-control" />
-                    </div>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+    td, th {
+        border: 1px solid #000;
+        padding: 5px;
+        vertical-align: top;
+    }
+
+    label {
+        font-weight: normal;
+    }
+</style>
+
+<h2 style="text-align:center;">@ViewData["Title"]</h2>
+
+<form asp-action="Submit" method="post">
+    <fieldset>
+        <legend>Patient Information</legend>
+        <table>
+            <tr>
+                <td>
+                    <label asp-for="Fname"></label><br />
+                    <input asp-for="Fname" class="form-control" />
+                    <span asp-validation-for="Fname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Mname"></label><br />
+                    <input asp-for="Mname" class="form-control" />
+                    <span asp-validation-for="Mname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Lname"></label><br />
+                    <input asp-for="Lname" class="form-control" />
+                    <span asp-validation-for="Lname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="HospitalNumber"></label><br />
+                    <input asp-for="HospitalNumber" class="form-control" />
+                    <span asp-validation-for="HospitalNumber" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="DateOfBirth"></label><br />
+                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Age"></label><br />
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Gender"></label><br />
+                    <select asp-for="Gender" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Classification"></label><br />
+                    <select asp-for="Classification" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Pay</option>
+                        <option>Service</option>
+                    </select>
+                    <span asp-validation-for="Classification" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="UnitWardArea"></label><br />
+                    <input asp-for="UnitWardArea" class="form-control" />
+                    <span asp-validation-for="UnitWardArea" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="MainService"></label><br />
+                    <input asp-for="MainService" class="form-control" />
+                    <span asp-validation-for="MainService" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfAdmission"></label><br />
+                    <input asp-for="DateOfAdmission" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfAdmission" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfEvent"></label><br />
+                    <input asp-for="DateOfEvent" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfEvent" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Investigator"></label><br />
+                    <input asp-for="Investigator" class="form-control" />
+                    <span asp-validation-for="Investigator" class="text-danger"></span>
+                </td>
+                
+
+                <!-- Disposition dropdown -->
+                <td>
+                    <label asp-for="Disposition"></label><br />
+                    <select asp-for="Disposition" class="form-control" id="DispositionDropdown" onchange="toggleDispositionDateField()">
+                        <option value="">--Select--</option>
+                        <option>Mortality</option>
+                        <option>Discharged</option>
+                        <option>Still Admitted</option>
+                        <option>Transferred In</option>
+                        <option>Transferred Out</option>
+                    </select>
+                    <span asp-validation-for="Disposition" class="text-danger"></span>
+                </td>
+
+                <td id="DispositionDateSection">
+                    <label asp-for="DispositionDate"></label><br />
+                    <input asp-for="DispositionDate" type="date" class="form-control" />
+                    <span asp-validation-for="DispositionDate" class="text-danger"></span>
+                </td>
+
+                <td id="DispositionTransferRow" style="display:none;" colspan="1">
+                    <label asp-for="DispositionTransfer"></label><br />
+                    <select asp-for="DispositionTransfer" class="form-control">
+                        <option value="">-- Select --</option>
+                        <option value="2A">2A</option>
+                        <option value="2B">2B</option>
+                        <option value="2C">2C</option>
+                    </select>
+                    <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+                </td>
+
+            </tr>
+           
+            <tr>
+                <!-- Type & Classification Row -->
+            <td colspan="1">
+                <h4 style="margin-bottom:10px;">Type & Classification</h4>
+
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" id="vacCheckbox" class="form-check-input" value="VAC" name="TypeClass" onchange="toggleVACSection()" />
+                    <label class="form-check-label" for="vacCheckbox">VAC</label>
                 </div>
 
-                <div class="row mt-3">
-                    <div class="col-md-4">
-                        <label>Hospital Number:</label>
-                        <input asp-for="HospNum" class="form-control" required />
-                    </div>
-                    <div class="col-md-4">
-                        <label>Date of Admission:</label>
-                        <input asp-for="DateOfAdmission" type="date" class="form-control" required />
-                    </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" id="ivacCheckbox" class="form-check-input" value="IVAC" name="TypeClass" onchange="toggleIVACSection()" />
+                    <label class="form-check-label" for="ivacCheckbox">IVAC</label>
+                </div>
 
-                    <div class="col-md-4">
-                        <label>Disposition:</label>
-                        <select asp-for="Disposition" id="dispositionDropdown" class="form-control" onchange="toggleDispositionTransferField()">
-                            <option value="">-- Select Disposition --</option>
-                            <option value="Transferred In">Transferred In</option>
-                            <option value="Transferred Out">Transferred Out</option>
-                            <option value="Mortality">Mortality</option>
-                            <option value="Discharged">Discharged</option>
-                            <option value="Still admitted">Still admitted</option>
-                        </select>
-                    </div>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" id="pvapCheckbox" class="form-check-input" value="PVAP" name="TypeClass" onchange="togglePVAPSection()" />
+                    <label class="form-check-label" for="pvapCheckbox">PVAP</label>
+                </div>
+            </td>
+                <td id="DateofIntubationSection">
+                    <label asp-for="DateofIntubation"></label><br />
+                    <input asp-for="DateofIntubation" type="date" class="form-control" />
+                    <span asp-validation-for="DateofIntubation" class="text-danger"></span>
+                </td>
 
-                    <!-- Disposition Date and Disposition Area Fields -->
-                    <div class="row mt-3">
-                        <!-- Disposition Date Field (Always Visible, Left Side) -->
-                        <div class="col-md-4">
-                            <label>Disposition Date:</label>
-                            <input asp-for="DispositionDate" type="date" class="form-control" required />
-                        </div>
+                <td>
+                    <label asp-for="MDRO"></label>
+                    <select asp-for="MDRO" class="form-control" id="MDRODropdown" onchange="toggleMDROOrganism()">
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                    <span asp-validation-for="MDRO" class="text-danger"></span>
+                </td>
 
-                        <!-- Disposition Area Dropdown (Hidden Initially) -->
-                        <div id="dispositionAreaField" class="col-md-4" style="display: none;">
-                            <label>DispositionTransfer:</label>
-                            <select class="form-control">
-                                <option value="">Select an area</option>
-                                <option value="2A">2A</option>
-                                <option value="2B">2B</option>
-                                <option value="2C">2C</option>
-                            </select>
-                        </div>
-                    </div>
+                <td id="mdroOrganismContainer" style="display:none;">
+                    <label asp-for="MDROOrganism"></label><br />
+                    <input asp-for="MDROOrganism" class="form-control" />
+                    <span asp-validation-for="MDROOrganism" class="text-danger"></span>
+                </td>
 
-                    <div class="row mt-3">
-                        <div class="col-md-4">
-                            <label>Date of Birth:</label>
-                            <input asp-for="DateOfBirth" type="date" class="form-control" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label>Age:</label>
-                            <input asp-for="Age" class="form-control" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label for="genderSelect">Sex/Gender:</label>
-                            <select asp-for="Gender" class="form-control" id="genderSelect">
-                                <option value="">-- Select Gender --</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                        </div>
-                    </div>
+            </tr>
+                     
+        </table>
+    </fieldset>
 
-                    <div class="row mt-3">
-                        <div class="col-md-4">
-                            <label>Unit/Ward/Area</label>
-                            <input asp-for="UwArea" class="form-control" />
-                        </div>
-                        <div class="col-md-4">
-                            <label>Classification:</label>
-                            <div class="form-check">
-                                <input asp-for="Classification" type="radio" class="form-check-input" value="Pay" checked />
-                                <label class="form-check-label">Pay</label>
-                            </div>
-                            <div class="form-check">
-                                <input asp-for="Classification" type="radio" class="form-check-input" value="Service" />
-                                <label class="form-check-label">Service</label>
-                            </div>
-                        </div>
-                    </div>
+    <div id="VACsection" style="display:none;">
+        <fieldset>
 
-                    <div class="row mt-3">
-                        <div class="col-md-5">
-                            <label>MDRO (Multi-Drug Resistant Organism):</label>
-                            <div class="form-check">
-                                <input asp-for="MDRO" type="radio" class="form-check-input" value="true" id="mdroYes" onchange="toggleMDROOrganismField()" />
-                                <label class="form-check-label" for="mdroYes">Yes</label>
-                            </div>
-                            <div class="form-check">
-                                <input asp-for="MDRO" type="radio" class="form-check-input" value="false" id="mdroNo" onchange="toggleMDROOrganismField()" />
-                                <label class="form-check-label" for="mdroNo">No</label>
-                            </div>
-                        </div>
+            <!-- VAC CHECKBOX -->
+            <legend style="text-align:center; font-weight:bold; border:1px solid black; padding:5px;">
+                VENTILATOR ASSOCIATED CONDITION (VAC)
+            </legend>
 
-                    </div>
+            <p>Baseline period of improvement or stability* on the ventilator</p>
 
-                    <!-- MDROOrganism Field (Hidden by Default) -->
-                    <div class="row mt-3">
-                        <div id="mdroOrganismField" class="col-md-4" style="display: none;">
-                            <label for="mdroOrganism">MDRO Organism:</label>
-                            <input asp-for="MDROOrganism" class="form-control" id="mdroOrganism" style="width: 100%;" />
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-md-4">
-                            <label>Main Service:</label>
-                            <input asp-for="MainService" class="form-control" />
-                        </div>
-                        <div class="col-md-4">
-                            <label>Date of Event (DOE):</label>
-                            <input asp-for="DateOfEvent" type="date" class="form-control" required />
-                        </div>
-                        <div class="col-md-4">
-                            <label>Date of Intubation:</label>
-                            <input asp-for="DateOfIntubation" type="date" class="form-control" />
-                        </div>
-                    </div>
-
-                    <div class="row mt-3">
-                        <div class="col-md-4">
-                            <label>Name of Investigator:</label>
-                            <input asp-for="NameOfInvestigator" class="form-control" />
-                        </div>
-                    </div>
-
-                    <!-- Type Classification (Concatenated Checkboxes) -->
-                    <div class="card shadow-sm border-0 mt-4">
-                        <div class="card-header bg-primary text-white text-center">
-                            <h5 class="mb-0">Type Classification</h5>
-                        </div>
-                        <div class="card-body">
-                            <label class="fw-bold">Select Type:</label>
-                            <div class="d-flex gap-3 mt-2">
-                                <div class="form-check">
-                                    <input type="checkbox" id="vacCheckbox" name="TypeClass" class="form-check-input" value="VAC" onchange="toggleVACSection()" />
-                                    <label class="form-check-label fw-bold text-dark" for="vacCheckbox">VAC</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="ivacCheckbox" name="TypeClass" class="form-check-input" value="IVAC" onchange="toggleIVACSection()" />
-                                    <label class="form-check-label fw-bold text-dark" for="ivacCheckbox">IVAC</label>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" id="pvapCheckbox" name="TypeClass" class="form-check-input" value="PVAP" onchange="togglePVAPSection()" />
-                                    <label class="form-check-label fw-bold text-dark" for="pvapCheckbox">PVAP</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- VAC Section (Hidden by Default) -->
-                    <div id="vacSection" style="display: none;" class="animated-section">
-                        <hr class="my-4" />
-                        <div class="card mt-4">
-                            <div class="card-header bg-danger text-white">
-                                <h5 class="text-center">VENTILATOR ASSOCIATED CONDITION (VAC)</h5>
-                            </div>
-                            <div class="card-body">
-                                <p><strong>Baseline period of improvement or stability* on the ventilator</strong></p>
-                                <div class="form-check">
-                                    <input asp-for="Vac1" class="form-check-input" type="checkbox" />
-                                    <label class="form-check-label" for="Vac1">Daily minimum FiO2 increase >= 0.20 (20 points) for >= 2 days, OR</label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="Vac2" class="form-check-input" type="checkbox" />
-                                    <label class="form-check-label" for="Vac2">Daily minimum PEEP increase >= 3 cm H20 for >= 2 days</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- IVAC Section (Hidden by Default) -->
-                    <div id="ivacSection" style="display: none;" class="animated-section">
-                        <hr class="my-4" />
-                        <div class="card mt-4">
-                            <div class="card-header bg-warning text-white">
-                                <h5 class="text-center">INFECTION-RELATED VENTILATOR-ASSOCIATED COMPLICATION (IVAC)</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-check">
-                                    <input asp-for="IVac1" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Temperature > 38°C or < 36°C</label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="IVac2" type="checkbox" class="form-check-input" value="true" id="ivac2Checkbox" onchange="toggleIVac3Checkbox()">
-                                    <label class="form-check-label">White blood cell count ≥ 12,000 or ≤ 4,000 cells/mm³</label>
-                                </div>
-                                <!-- IVac3 Checkbox (Hidden by Default) -->
-                                <div id="ivac3CheckboxContainer" style="display: none;">
-                                    <div class="form-check">
-                                        <input asp-for="IVac3" type="checkbox" class="form-check-input" value="true">
-                                        <label class="form-check-label">A new antimicrobial agent is started and continued for ≥ 4 days</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PVAP Section (Hidden by Default) -->
-                    <div id="pvapSection" style="display: none;" class="animated-section">
-                        <hr class="my-4" />
-                        <div class="card mt-4">
-                            <div class="card-header bg-info text-white">
-                                <h5 class="text-center">POSSIBLE VENTILATOR-ASSOCIATED PNEUMONIA (PVAP)</h5>
-                            </div>
-                            <div class="card-body">
-                                <p><strong>Patient must meet one of the following criteria:</strong></p>
-
-                                <h6 class="text-primary">Criterion 1: Positive culture</h6>
-                                <div class="form-check">
-                                    <input asp-for="Pvap1Endo" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Endotracheal aspirate</label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="Pvap1Lung" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Bronchoalveolar lavage</label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="Pvap1Bronch" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Lung tissue</label>
-                                </div>
-
-                                <h6 class="text-primary">Criterion 2: Purulent respiratory secretions</h6>
-                                <div class="form-check">
-                                    <input asp-for="Pvap2Sputum" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Sputum</label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="Pvap2Endo" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Endotracheal aspirate</label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="Pvap2Lung" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Lung tissue</label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="Pvap2Bronch" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Bronchoalveolar lavage</label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="Pvap2Specimen" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Protected specimen brush</label>
-                                </div>
-
-                                <h6 class="text-primary">Criterion 3: Other Positive Tests</h6>
-                                <div class="form-check">
-                                    <input asp-for="Pvap3Organism" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Organism(s) identified from pleural fluid</label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="Pvap3Lung" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Lung Histopathology</label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="Pvap3Legionella" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Diagnostic test for Legionella species</label>
-                                </div>
-                                <div class="form-check">
-                                    <input asp-for="Pvap3Viral" type="checkbox" class="form-check-input" value="true">
-                                    <label class="form-check-label">Diagnostic test for selected viral pathogens</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Culture Information -->
-                    <div class="card mt-4">
-                        <div class="card-header bg-secondary text-white">
-                            <h5 class="text-center">Culture Results</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <!-- Culture Results -->
-                                <div class="col-md-5">
-                                    <label>Culture Results:</label>
-                                    <textarea asp-for="PvapResult" class="form-control" rows="3"></textarea>
-                                </div>
-
-                                <!-- VAE Remarks -->
-                                <div class="col-md-5">
-                                    <label>VAE Remarks:</label>
-                                    <textarea asp-for="VaeRemarks" class="form-control" rows="3"></textarea>
-                                </div>
-
-                                <!-- Culture Date -->
-                                <div class="col-md-2">
-                                    <label>Culture Date:</label>
-                                    <input asp-for="PvapCultureDate" type="date" class="form-control" required />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div asp-validation-summary="All" class="text-danger"></div>
-
-
-                    <!-- Submit Button -->
-                    <div class="row mt-4">
-                        <div class="col text-center">
-                            <button type="submit" class="btn btn-primary mt-3">Submit</button>
-                        </div>
-                    </div>
-            </form>
-        </div>
+            <!-- First 2 Checkbox -->
+            <table>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Vac1" asp-for="Vac1" />
+                        <label for="Vac1">
+                            Daily minimum FiO2 increase &gt;= 0.20 (20 points) for &gt;= 2 days, OR
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Vac2" asp-for="Vac2" />
+                        <label for="Vac2">
+                            Daily minimum PEEP increase &gt;= 3 cm H<sub>2</sub>O for &gt;= 2 days
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            
+        </fieldset>
     </div>
-</div>
 
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <div id="IVACsection" style="display:none;">
+        <fieldset>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+            <!-- IVAC CHECKBOX -->
+            <legend style="text-align:center; font-weight:bold; border:1px solid black; padding:5px;">
+                INFECTION-RELATED VENTILATOR-ASSOCIATED COMPLICATION (IVAC)
+            </legend>
+
+            <!-- IVAC Criteria (in table format) -->
+            <table>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="IVac1" asp-for="IVac1" value="true" />
+                        <label for="IVac1">Temperature &gt; 38°C or &lt; 36°C</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="IVac2" asp-for="IVac2" value="true" onchange="toggleIVac3Checkbox()" />
+                        <label for="ivac2Checkbox">White blood cell count ≥ 12,000 or ≤ 4,000 cells/mm³</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>AND</b> <input type="checkbox" id="IVac3" asp-for="IVac3" value="true" />
+                        <label for="IVac3">A new antimicrobial agent is started and continued for ≥ 4 days</label>
+                    </td>
+                </tr>
+            </table>
+
+        </fieldset>
+    </div>
+
+    <div id="PVAPsection" style="display:none;">
+        <fieldset>
+
+            <!-- PVAP CHECKBOX -->
+            <legend style="text-align:center; font-weight:bold; border:1px solid black; padding:5px;">
+                POSSIBLE VENTILATOR-ASSOCIATED PNEUMONIA (PVAP)
+            </legend>
+
+            <p><b>AND</b>, Patient must meet one of following criteria <b>on or after calendar day 3 of MV and within 2 calendar days before or after the onset</b> of worsening oxygenation <em>(Refer to VAE Protocol for organisms excluded from meeting PVAP):</em></p>
+
+            <!-- PVAP Criteria (in table format) -->
+            <table>
+                <tr>
+                    <td>
+                        <p><em>Criterion 1:</em> Positive culture of <b>one (1)</b> of the following specimens, meeting quantitative or semi-quantitative thresholds as outlined in protocol**, without requirement for purulent respiratory secretions</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>                  
+                        <input type="checkbox" id="Pvap1Endo" asp-for="Pvap1Endo" value="true" />
+                        <label for="Pvap1Endo">Endotracheal aspirate</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Pvap1Lung" asp-for="Pvap1Lung" value="true" />
+                        <label for="Pvap1Lung">Bronchoalveolar lavage</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Pvap1Bronch" asp-for="Pvap1Bronch" value="true" />
+                        <label for="Pvap1Bronch">Lung tissue</label>
+                    </td>
+                </tr>
+            </table>
+
+            <table>
+                <tr>
+                    <td>
+                        <p><em>Criterion 2:</em> Purulent respiratory secretions** <b>AND</b> an organism(s) identified from one of the following specimens*</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Pvap2Sputum" asp-for="Pvap2Sputum" value="true" />
+                        <label for="Pvap2Sputum">Sputum</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Pvap2Endo" asp-for="Pvap2Endo" value="true" />
+                        <label for="Pvap2Endo">Endotracheal aspirate</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Pvap2Lung" asp-for="Pvap2Lung" value="true" />
+                        <label for="Pvap2Lung">Lung tissue</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Pvap2Bronch" asp-for="Pvap2Bronch" value="true" />
+                        <label for="Pvap2Bronch">Bronchoalveolar lavage</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Pvap2Specimen" asp-for="Pvap2Specimen" value="true" />
+                        <label for="Pvap2Specimen">Protected specimen brush</label>
+                    </td>
+                </tr>
+            </table>
+
+            <table>
+                <tr>
+                    <td>
+                        <p><em>Criterion 3:</em> <b>One 1</b> of the following positive tests (as outlined in the protocol**)</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Pvap3Organism" asp-for="Pvap3Organism" value="true" />
+                        <label for="Pvap3Organism">Organism(s) identified from pleural fluid</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Pvap3Lung" asp-for="Pvap3Lung" value="true" />
+                        <label for="Pvap3Lung">Lung Histopathology</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Pvap3Legionella" asp-for="Pvap3Legionella" value="true" />
+                        <label for="Pvap3Legionella">Diagnostic test for Legionella species</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="checkbox" id="Pvap3Viral" asp-for="Pvap3Viral" value="true" />
+                        <label for="Pvap3Viral">Diagnostic test for selected viral pathogens</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>
+                            <em>
+                                *Stability or improvement on the ventilator is defined by ≥ 2 calendar days of stable or decreasing daily minimum FiO2
+                                **Collected after 2 days of mechanical ventilation and within +/- 2 days of onset of increase in FiO2 or PEEP
+                            </em>
+                        </p>
+                    </td>
+                </tr>
+            </table>
+
+        </fieldset>
+    </div>
+    
+    <!-- FIFTH SECTION -->
+    <div id="FinalCultureSection" margin-top:10px; border-top:1px solid black;">
+        <table style="width:100%; margin-top:10px;">
+            <tr>
+                <td><strong>Culture date:</strong></td>
+                <td><input type="date" asp-for="PvapCultureDate" /></td>
+            </tr>
+            <tr>
+                <td><strong>Culture results:</strong></td>
+                <td><input type="text" asp-for="PvapResult" style="width:100%;" /></td>
+            </tr>
+            <tr>
+                <td><strong>Remarks:</strong></td>
+                <td><input type="text" asp-for="VaeRemarks" style="width:100%;" /></td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="text-align:center;">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+
+</form>
+
+<script>
+        // Initially hide VAC, IVAC, and PVAP sections on page load
+    window.onload = function() {
+        toggleVACSection();
+        toggleIVACSection();
+        togglePVAPSection();
     }
-    <script>
 
-        document.addEventListener("DOMContentLoaded", function () {
-            const vacCheckbox = document.getElementById("vacCheckbox");
-            const ivacCheckbox = document.getElementById("ivacCheckbox");
-            const pvapCheckbox = document.getElementById("pvapCheckbox");
+    // Toggle VAC section visibility based on checkbox selection
+    function toggleVACSection() {
+        var vacSection = document.getElementById('VACsection');
+        var vacCheckbox = document.getElementById('vacCheckbox');
+        vacSection.style.display = vacCheckbox.checked ? 'block' : 'none';
+    }
 
-            function validateCheckboxes() {
-                if (!vacCheckbox.checked) {
-                    ivacCheckbox.checked = false;
-                    pvapCheckbox.checked = false;
-                    ivacCheckbox.disabled = true;
-                    pvapCheckbox.disabled = true;
-                } else {
-                    ivacCheckbox.disabled = false;
-                }
+    // Toggle IVAC section visibility based on checkbox selection
+    function toggleIVACSection() {
+        var ivacSection = document.getElementById('IVACsection');
+        var ivacCheckbox = document.getElementById('ivacCheckbox');
+        ivacSection.style.display = ivacCheckbox.checked ? 'block' : 'none';
+    }
 
-                if (!ivacCheckbox.checked) {
-                    pvapCheckbox.checked = false;
-                    pvapCheckbox.disabled = true;
-                } else {
-                    pvapCheckbox.disabled = false;
-                }
-            }
+    // Toggle PVAP section visibility based on checkbox selection
+    function togglePVAPSection() {
+        var pvapSection = document.getElementById('PVAPsection');
+        var pvapCheckbox = document.getElementById('pvapCheckbox');
+        pvapSection.style.display = pvapCheckbox.checked ? 'block' : 'none';
+    }
 
-            vacCheckbox.addEventListener("change", validateCheckboxes);
-            ivacCheckbox.addEventListener("change", validateCheckboxes);
-            pvapCheckbox.addEventListener("change", validateCheckboxes);
+    function toggleDispositionDateField() {
+        const dispositionDropdown = document.getElementById('DispositionDropdown');
+        const transferRow = document.getElementById('DispositionTransferRow');
 
-            validateCheckboxes(); // Run on page load to enforce the rules initially
-        });
-
-        // Function to toggle VAC section visibility
-        function toggleVACSection() {
-            const vacSection = document.getElementById('vacSection');
-            const vacCheckbox = document.getElementById('vacCheckbox');
-            if (vacCheckbox.checked) {
-                vacSection.style.display = 'block'; // Show the section
-                setTimeout(() => vacSection.classList.add('show'), 10); // Add fade-in effect
-            } else {
-                vacSection.classList.remove('show'); // Start fade-out effect
-                setTimeout(() => vacSection.style.display = 'none', 300); // Hide after animation
-            }
+        // Show the transfer row only if "Transferred In" or "Transferred Out" is selected
+        if (dispositionDropdown.value === 'Transferred In' || dispositionDropdown.value === 'Transferred Out') {
+            transferRow.style.display = '';
+        } else {
+            transferRow.style.display = 'none';
+            // Optional: Clear the transfer value when hiding
+            document.querySelector('[asp-for="DispositionTransfer"]').value = '';
         }
+    }
 
-        // Function to toggle IVAC section visibility
-        function toggleIVACSection() {
-            const ivacSection = document.getElementById('ivacSection');
-            const ivacCheckbox = document.getElementById('ivacCheckbox');
-            if (ivacCheckbox.checked) {
-                ivacSection.style.display = 'block'; // Show the section
-                setTimeout(() => ivacSection.classList.add('show'), 10); // Add fade-in effect
-            } else {
-                ivacSection.classList.remove('show'); // Start fade-out effect
-                setTimeout(() => ivacSection.style.display = 'none', 300); // Hide after animation
-            }
+    // Initialize the field visibility when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleDispositionDateField();
+    });
+    
+    function toggleMDROOrganism() {
+        const mdroDropdown = document.getElementById('MDRODropdown');
+        const organismContainer = document.getElementById('mdroOrganismContainer');
+
+        if (mdroDropdown.value === 'Yes') {
+            organismContainer.style.display = ''; // or 'block' depending on your layout
+        } else {
+            organismContainer.style.display = 'none';
         }
+    }
 
-        // Function to toggle PVAP section visibility
-        function togglePVAPSection() {
-            const pvapSection = document.getElementById('pvapSection');
-            const pvapCheckbox = document.getElementById('pvapCheckbox');
-            if (pvapCheckbox.checked) {
-                pvapSection.style.display = 'block'; // Show the section
-                setTimeout(() => pvapSection.classList.add('show'), 10); // Add fade-in effect
-            } else {
-                pvapSection.classList.remove('show'); // Start fade-out effect
-                setTimeout(() => pvapSection.style.display = 'none', 300); // Hide after animation
-            }
-        }
-        // Function to toggle Disposition Area dropdown visibility with smooth animation
-        function toggleDispositionAreaField() {
-            const dispositionDropdown = document.getElementById('dispositionDropdown');
-            const dispositionAreaField = document.getElementById('dispositionAreaField');
+    // Also call the function on page load in case there's a selected value
+    document.addEventListener('DOMContentLoaded', toggleMDROOrganism);
 
-            if (dispositionDropdown.value === "Transferred In" || dispositionDropdown.value === "Transferred Out") {
-                dispositionAreaField.style.display = 'block'; // Ensure it's visible before animation
-                setTimeout(() => dispositionAreaField.classList.add('visible'), 10); // Add fade-in effect
-            } else {
-                dispositionAreaField.classList.remove('visible'); // Start fade-out effect
-                setTimeout(() => dispositionAreaField.style.display = 'none', 300); // Hide after animation
-            }
-        }
-
-        // Run function on page load and when dropdown changes
-        document.addEventListener("DOMContentLoaded", function () {
-            const dispositionDropdown = document.getElementById('dispositionDropdown');
-            dispositionDropdown.addEventListener("change", toggleDispositionAreaField);
-            toggleDispositionAreaField(); // Run initially to set correct state
-        });
-
-
-        // Run the function when the dropdown changes
-        document.addEventListener("DOMContentLoaded", function () {
-            const dispositionDropdown = document.getElementById('dispositionDropdown');
-            dispositionDropdown.addEventListener("change", toggleDispositionAreaField);
-            toggleDispositionAreaField(); // Run initially to set the correct state
-        });
-
-        // Function to toggle MDROOrganism field visibility
-        function toggleMDROOrganismField() {
-            const mdroYes = document.getElementById('mdroYes');
-            const mdroOrganismField = document.getElementById('mdroOrganismField');
-
-            // Check if "Yes" is selected
-            if (mdroYes.checked) {
-                mdroOrganismField.style.display = 'flex'; // Show the field
-                setTimeout(() => mdroOrganismField.classList.add('show'), 10); // Add fade-in effect
-            } else {
-                mdroOrganismField.classList.remove('show'); // Start fade-out effect
-                setTimeout(() => mdroOrganismField.style.display = 'none', 300); // Hide after animation
-            }
-        }
-        // Function to toggle IVac3 checkbox visibility
-        function toggleIVac3Checkbox() {
-            const ivac2Checkbox = document.getElementById('ivac2Checkbox');
-            const ivac3CheckboxContainer = document.getElementById('ivac3CheckboxContainer');
-            const ivac3Checkbox = ivac3CheckboxContainer.querySelector('input[type="checkbox"]');
-
-            if (ivac2Checkbox.checked) {
-                ivac3CheckboxContainer.style.display = 'block'; // Show IVac3 container
-                setTimeout(() => ivac3CheckboxContainer.classList.add('show'), 10); // Add fade-in effect
-            } else {
-                ivac3Checkbox.checked = false; // Uncheck IVac3 when IVac2 is unchecked
-                ivac3CheckboxContainer.classList.remove('show'); // Start fade-out effect
-                setTimeout(() => {
-                    ivac3CheckboxContainer.style.display = 'none'; // Hide after animation
-                }, 300);
-            }
-        }
-    </script>
-
-    <style>
-
-        /* Styling the card */
-        .card {
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        /* Styling checkboxes */
-        .form-check-input {
-            transform: scale(1.2);
-            margin-right: 5px;
-        }
-
-        /* Align checkboxes horizontally */
-        .d-flex {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        /* Adjust spacing */
-        .gap-3 {
-            gap: 15px;
-        }
-
-        /* Animation for sections */
-        #vacSection,
-        #ivacSection,
-        #pvapSection {
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            display: none; /* Initially hidden */
-        }
-
-            #vacSection.show,
-            #ivacSection.show,
-            #pvapSection.show {
-                opacity: 1; /* Fully visible */
-            }
-
-        /* Smooth fade-in and fade-out */
-        #dispositionAreaField {
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-        }
-
-            /* When visible, smoothly fade in */
-            #dispositionAreaField.visible {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-        /* Animation for MDROOrganism field */
-        #mdroOrganismField {
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            display: none; /* Initially hidden */
-        }
-
-            #mdroOrganismField.show {
-                opacity: 1; /* Fully visible */
-                display: flex; /* Show the field */
-            }
-        /* Animation for IVac3 checkbox container */
-        #ivac3CheckboxContainer {
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            display: none; /* Initially hidden */
-        }
-
-            #ivac3CheckboxContainer.show {
-                opacity: 1; /* Fully visible */
-                display: block; /* Show the container */
-            }
-    </style>
-}
+</script>

@@ -9,55 +9,73 @@ namespace IPCU.Models
     public class GIInfectionChecklist
     {
 
+        // Patient Info
         [Key]
-        public int Id { get; set; } // Primary Key
+        public int Id { get; set; }
 
         [Required]
-        public string FName { get; set; }
-
-        public string MName { get; set; }
-
-        [Required]
-        public string LName { get; set; }
+        [Display(Name = "First Name")]
+        public string Fname { get; set; }
 
         [Required]
-        public string HospNum { get; set; }
+        [Display(Name = "Last Name")]
+        public string Lname { get; set; }
+
+        [Display(Name = "Middle Name")]
+        public string Mname { get; set; }
 
         [Required]
+
+        [Display(Name = "Hospital Number")]
+        public string HospitalNumber { get; set; }
+
         [DataType(DataType.Date)]
-        public DateTime DateOfAdmission { get; set; }
+        [Display(Name = "Date of Birth")]
+        public DateTime? DateOfBirth { get; set; }
 
-        public string? Disposition { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime DispositionDate { get; set; }
-
-        public string? DispositionArea { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime DateOfBirth { get; set; }
-
-        [Required]
         public int Age { get; set; }
-
-        public string Gender { get; set; }
 
         public string UnitWardArea { get; set; }
 
+        [Display(Name = "Main Service")]
         public string MainService { get; set; }
 
-        public DateTime DateOfEvent { get; set; }
+        [DataType(DataType.Date)]
+        [Display(Name = "Date of Event")]
+        public DateTime? DateOfEvent { get; set; }
 
-        public string NameOfInvestigator { get; set; }
+        public string Investigator { get; set; }
 
-        public string Classification { get; set; }
-        public bool MDRO { get; set; } // Multi-Drug Resistant Organism
+        [DataType(DataType.Date)]
+        [Display(Name = "Date of Admission")]
+        public DateTime? DateOfAdmission { get; set; }
+
+        [Required]
+        public string Disposition { get; set; } // Enum could be used (Mortality, Discharged, Still Admitted, etc.)
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Disposition Date")]
+        public DateTime? DispositionDate { get; set; }
+
+        [Display(Name = "Disposition Transfer")]
+        public string? DispositionTransfer { get; set; }
+
+        [Required]
+        public string Gender { get; set; } // Male / Female
+
+        [Required]
+        public string Classification { get; set; } // Pay / Service
+
+        [Required]
+        public string MDRO { get; set; } // Yes / No
+
+        [Display(Name = "MDRO Organism")]
         public string? MDROOrganism { get; set; }
 
+        [Required]
+        [Display(Name = "Type & Classification")]
+        public string TypeClass { get; set; } // CDI, GE, GIT, IAB
 
-
-        public string TypeClassification { get; set; }
 
         // CDI
         public bool CDItoxin { get; set;  }

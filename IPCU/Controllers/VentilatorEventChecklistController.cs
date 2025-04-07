@@ -22,6 +22,7 @@ namespace IPCU.Controllers
 
         }
 
+        // Display the form
         public async Task<IActionResult> Index(string hospNum)
         {
             var model = new VentilatorEventChecklist();
@@ -30,7 +31,7 @@ namespace IPCU.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser != null)
             {
-                model.NameOfInvestigator = $"{currentUser.FirstName} {currentUser.Initial} {currentUser.LastName}".Trim();
+                model.Investigator = $"{currentUser.FirstName} {currentUser.Initial} {currentUser.LastName}".Trim();
             }
 
             if (!string.IsNullOrEmpty(hospNum))
@@ -48,25 +49,14 @@ namespace IPCU.Controllers
 
                 if (patientInfo != null)
                 {
-                    model.HospNum = patientInfo.PatientMaster.HospNum;
+                    model.HospitalNumber = patientInfo.PatientMaster.HospNum;
                     model.Gender = patientInfo.PatientMaster.Sex == "M" ? "Male" : "Female";
-                    model.FName = patientInfo.PatientMaster.FirstName;
-                    model.MName = patientInfo.PatientMaster.MiddleName;
-                    model.LName = patientInfo.PatientMaster.LastName;
+                    model.Fname = patientInfo.PatientMaster.FirstName;
+                    model.Mname = patientInfo.PatientMaster.MiddleName;
+                    model.Lname = patientInfo.PatientMaster.LastName;
                     model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
-
-                    model.UwArea = patientInfo.Patients.AdmLocation;
-
-                    // null kasi bdate ko fuck goddamit
-                    if (patientInfo.Patients.AdmDate.HasValue)
-                    {
-                        model.DateOfBirth = patientInfo.Patients.AdmDate.Value;
-                    }
-                    else
-                    {
-                        // null shit
-                        model.DateOfAdmission = DateTime.MinValue;
-                    }
+                    model.UnitWardArea = patientInfo.Patients.AdmLocation;
+                    model.DateOfAdmission = patientInfo.Patients.AdmDate;
                     model.Age = int.Parse(patientInfo.Patients.Age);
 
 
@@ -84,7 +74,7 @@ namespace IPCU.Controllers
             }
 
             var patients = await _context.VentilatorEventChecklists
-                                         .Where(p => p.HospNum == hospNum)
+                                         .Where(p => p.HospitalNumber == hospNum)
                                          .ToListAsync();
 
             return View(patients);
@@ -108,26 +98,19 @@ namespace IPCU.Controllers
             return View(patient);
         }
 
+
+        // Submit the form
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Submit(VentilatorEventChecklist model, string[] TypeClass)
+        public IActionResult Submit(VentilatorEventChecklist model)
         {
+
             if (ModelState.IsValid)
             {
-                // Concatenate selected TypeClass values into a single string
-                if (TypeClass != null && TypeClass.Length > 0)
-                {
-                    model.TypeClass = string.Join(", ", TypeClass);
-                }
-
-                // Add and save the model to the database
                 _context.VentilatorEventChecklists.Add(model);
-                await _context.SaveChangesAsync();
-
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            // If the model is invalid, return to the form with the entered data
             return View("Index", model);
         }
     }

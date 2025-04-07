@@ -135,9 +135,9 @@ namespace IPCU.Controllers
                                          USIForm = _context.Usi
                                              .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
                                          VAEForm = _context.VentilatorEventChecklists
-                                             .FirstOrDefault(f => f.HospNum == p.HospNum),
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
                                          GIInfectionForm = _context.GIInfectionChecklists
-                                             .FirstOrDefault(f => f.HospNum == p.HospNum),
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
                                          SSIForm = _context.SurgicalSiteInfectionChecklist
                                              .FirstOrDefault(f => f.HospitalNumber == p.HospNum)
                                      }
@@ -1028,7 +1028,7 @@ namespace IPCU.Controllers
 
                 // 7. Check VAE forms
                 var vaeForms = await _context.VentilatorEventChecklists
-                    .Where(f => f.HospNum == patient.HospNum)
+                    .Where(f => f.HospitalNumber == patient.HospNum)
                     .ToListAsync();
 
                 foreach (var form in vaeForms)
@@ -1052,8 +1052,8 @@ namespace IPCU.Controllers
                         HaiType = "VAE",
                         SpecificHaiClassification = DetermineVAEClassification(form),
                         CLAccess = centralLineInfo,
-                        IsMDRO = form.MDRO,
-                        MDROOrganism = form.MDRO ? (form.MDROOrganism ?? "") : "",
+                        IsMDRO = form.MDRO == "Yes",
+                        MDROOrganism = form.MDRO == "Yes" ? (form.MDROOrganism ?? "") : "",
                         Outcome = outcomeInfo.Status,
                         DischargeDate = outcomeInfo.Date,
                         DateCreated = DateTime.Now
@@ -1564,7 +1564,7 @@ namespace IPCU.Controllers
 
             // Check if we have any VAE forms to get main service
             var vaeForm = _context.VentilatorEventChecklists
-                .Where(v => v.HospNum == hospNum)
+                .Where(v => v.HospitalNumber == hospNum)
                 .OrderByDescending(v => v.DateOfEvent)
                 .FirstOrDefault();
 
