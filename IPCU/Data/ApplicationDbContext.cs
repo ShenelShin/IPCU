@@ -75,6 +75,7 @@ namespace IPCU.Data
                 .WithMany()
                 .HasForeignKey(pmd => pmd.MovementId);
         }
+        public DbSet<IPCU.Models.ICRA> ICRA { get; set; } = default!;
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);

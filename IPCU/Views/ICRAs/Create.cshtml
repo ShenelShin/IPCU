@@ -1,0 +1,503 @@
+﻿@model IPCU.Models.ICRA
+
+@{
+    ViewData["Title"] = "Create";
+}
+<style>
+    .custom-radio:disabled {
+        pointer-events: none; /* Prevent clicking */
+        opacity: 0.5; /* Keep it looking normal */
+        cursor: default; /* Default cursor */
+    }
+</style>
+<h1>Create</h1>
+
+<h4>ICRA</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div class="container-fluid px-5">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-bordered w-100">
+                            <tr>
+                                <td style="width: 50%;">
+                                    <div class="form-group">
+                                        <label><strong>Project Reference Number:</strong></label>
+                                        <input asp-for="ProjectReferenceNumber" class="form-control" />
+                                        <span asp-validation-for="ProjectReferenceNumber" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td style="width: 50%;">
+                                    <div class="form-group">
+                                        <label><strong>Project Name and Description:</strong></label>
+                                        <input asp-for="ProjectNameAndDescription" class="form-control" />
+                                        <span asp-validation-for="ProjectNameAndDescription" class="text-danger"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label><strong>Contractor/Supplier Representative (Name):</strong></label>
+                                        <input asp-for="ContractorRepresentativeName" class="form-control" />
+                                        <span asp-validation-for="ContractorRepresentativeName" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label><strong>Telephone/Mobile number:</strong></label>
+                                        <input asp-for="TelephoneOrMobileNumber" class="form-control" />
+                                        <span asp-validation-for="TelephoneOrMobileNumber" class="text-danger"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="form-group">
+                                        <label><strong>Specific Site of the Activity</strong> (patient room, corridor, etc):</label>
+                                        <input asp-for="SpecificSiteOfActivity" class="form-control" />
+                                        <span asp-validation-for="SpecificSiteOfActivity" class="text-danger"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="form-group">
+                                        <label><strong>Scope of Work (Brief Summary):</strong></label>
+                                        <input asp-for="ScopeOfWork" class="form-control" />
+                                        <span asp-validation-for="ScopeOfWork" class="text-danger"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <label><strong>Project Start Date:</strong></label>
+                                        <input asp-for="ProjectStartDate" class="form-control" />
+                                        <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <label><strong>Estimate Duration:</strong></label>
+                                        <input asp-for="EstimatedDuration" class="form-control" />
+                                        <span asp-validation-for="EstimatedDuration" class="text-danger"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid px-5">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-bordered w-100">
+                            <tr>
+                                <td style="width: 100%;">
+                                    <div class="form-group">
+                                        <label><strong>Construction Type</strong></label>
+
+                                        <div>
+                                            <label>
+                                                <input type="radio" asp-for="ConstructionType" value="Type A" onclick="updatePreventiveMeasure()" /> Type A
+                                            </label><br />
+                                            <label>
+                                                <input type="radio" asp-for="ConstructionType" value="Type B" onclick="updatePreventiveMeasure()" /> Type B
+                                            </label><br />
+                                            <label>
+                                                <input type="radio" asp-for="ConstructionType" value="Type C" onclick="updatePreventiveMeasure()" /> Type C
+                                            </label><br />
+                                            <label>
+                                                <input type="radio" asp-for="ConstructionType" value="Type D" onclick="updatePreventiveMeasure()" /> Type D
+                                            </label>
+                                        </div>
+
+                                        <span asp-validation-for="ConstructionType" class="text-danger"></span>
+                                    </div>
+
+                                </td>
+                                <td style="width: 100%;">
+                                    <div class="form-group">
+                                        <label><strong>Patient Risk Group</strong></label>
+
+                                        <div>
+                                            <label>
+                                                <input type="radio" asp-for="PatientRiskGroup" value="Low" onclick="updatePreventiveMeasure()" /> Low risk, non-patient care
+                                            </label><br />
+                                            <label>
+                                                <input type="radio" asp-for="PatientRiskGroup" value="Medium" onclick="updatePreventiveMeasure()" /> Medium risk, patient support
+                                            </label><br />
+                                            <label>
+                                                <input type="radio" asp-for="PatientRiskGroup" value="High" onclick="updatePreventiveMeasure()" /> High risk, patient care
+                                            </label>
+                                            <label>
+                                                <input type="radio" asp-for="PatientRiskGroup" value="Highest" onclick="updatePreventiveMeasure()" /> Highest risk, invasive, sterile or highly compromised care
+                                            </label>
+                                        </div>
+
+                                        <span asp-validation-for="PatientRiskGroup" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td style="width: 100%;">
+                                    <div class="form-group">
+                                        <label><strong>Preventive Measures</strong></label>
+
+                                        <div>
+                                            <label>
+                                                <input type="radio" asp-for="PreventiveMeasures" value="Class I" class="custom-radio" disabled /> Class I
+                                            </label><br />
+                                            <label>
+                                                <input type="radio" asp-for="PreventiveMeasures" value="Class II" class="custom-radio" disabled /> Class II
+                                            </label><br />
+                                            <label>
+                                                <input type="radio" asp-for="PreventiveMeasures" value="Class III" class="custom-radio" disabled /> Class III
+                                            </label>
+                                            <label>
+                                                <input type="radio" asp-for="PreventiveMeasures" value="Class IV" class="custom-radio" disabled /> Class IV
+                                            </label>
+                                            <label>
+                                                <input type="radio" asp-for="PreventiveMeasures" value="Class V" class="custom-radio" disabled /> Class V
+                                            </label>
+                                        </div>
+                                        <input type="hidden" id="PreventiveMeasuresHidden" name="PreventiveMeasures" />
+
+                                        <span asp-validation-for="PreventiveMeasures" class="text-danger"></span>
+                                    </div>
+                                </td>
+                                <td style="width: 100%;">
+                                    <label>
+                                        *Infection Control approval will berequired when the ConstructionActivity and Risk Level indicatethatClass III or Class IVcontrol
+                                        procedures are necessary*
+                                    </label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid px-5">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-bordered w-100 text-center">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Below</th>
+                                    <th>Above</th>
+                                    <th>Lateral</th>
+                                    <th>Behind</th>
+                                    <th>Front</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>Risk group</th>
+                                    <td colspan="5">
+                                        <input asp-for="RiskGroup" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Local number</th>
+                                    <td colspan="5">
+                                        <input asp-for="LocalNumber" class="form-control" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Controls</th>
+                                  
+                                        <td class="text-start">
+                                            <div class="form-check">
+                                                <input class="form-check-input" asp-for="Below_Noise" /> Noise <br />
+                                                <input class="form-check-input" asp-for="Below_Vibration" /> Vibration<br />
+                                                <input class="form-check-input" asp-for="Below_Dust" /> Dust<br />
+                                                <input class="form-check-input" asp-for="Below_Ventilation" /> Ventilation<br />
+                                                <input class="form-check-input" asp-for="Below_Pressuraztion" /> Pressurization<br />
+                                            </div>
+                                    </td>
+                                    <td class="text-start">
+                                        <div class="form-check">
+                                            <input class="form-check-input" asp-for="Above_Noise" /> Noise <br />
+                                            <input class="form-check-input" asp-for="Above_Vibration" /> Vibration<br />
+                                            <input class="form-check-input" asp-for="Above_Dust" /> Dust<br />
+                                            <input class="form-check-input" asp-for="Above_Ventilation" /> Ventilation<br />
+                                            <input class="form-check-input" asp-for="Above_Pressuraztion" /> Pressurization<br />
+                                        </div>
+                                    </td>
+                                     <td class="text-start">
+                                        <div class="form-check">
+                                            <input class="form-check-input" asp-for="Lateral_Noise" /> Noise <br />
+                                            <input class="form-check-input" asp-for="Lateral_Vibration" /> Vibration<br />
+                                            <input class="form-check-input" asp-for="Lateral_Dust" /> Dust<br />
+                                            <input class="form-check-input" asp-for="Lateral_Ventilation" /> Ventilation<br />
+                                            <input class="form-check-input" asp-for="Lateral_Pressuraztion" /> Pressurization<br />
+                                        </div>
+                                    </td>
+                                     <td class="text-start">
+                                        <div class="form-check">
+                                            <input class="form-check-input" asp-for="Behind_Noise" /> Noise <br />
+                                            <input class="form-check-input" asp-for="Behind_Vibration" /> Vibration<br />
+                                            <input class="form-check-input" asp-for="Behind_Dust" /> Dust<br />
+                                            <input class="form-check-input" asp-for="Behind_Ventilation" /> Ventilation<br />
+                                            <input class="form-check-input" asp-for="Behind_Pressuraztion" /> Pressurization<br />
+                                        </div>
+                                    </td>
+                                    <td class="text-start">
+                                        <div class="form-check">
+                                            <input class="form-check-input" asp-for="Front_Noise" /> Noise <br />
+                                            <input class="form-check-input" asp-for="Front_Vibration" /> Vibration<br />
+                                            <input class="form-check-input" asp-for="Front_Dust" /> Dust<br />
+                                            <input class="form-check-input" asp-for="Front_Ventilation" /> Ventilation<br />
+                                            <input class="form-check-input" asp-for="Front_Pressuraztion" /> Pressurization<br />
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Systems Impacted</th>
+                                   
+                                        <td class="text-start">
+                                            <div class="form-check">
+                                            <input class="form-check-input" asp-for="Below_Data" /> Data <br />
+                                            <input class="form-check-input" asp-for="Below_Mechanical" /> Mechanical <br />
+                                            <input class="form-check-input" asp-for="Below_MedicalGas" /> Medical Gas <br />
+                                            <input class="form-check-input" asp-for="Below_HotColdWater" /> Hot/Cold water <br />
+                                            <input class="form-check-input" asp-for="Below_Other" /> Other <br />
+                                            </div>
+                                        </td>
+                                    <td class="text-start">
+                                        <div class="form-check">
+                                            <input class="form-check-input" asp-for="Above_Data" /> Data <br />
+                                            <input class="form-check-input" asp-for="Above_Mechanical" /> Mechanical <br />
+                                            <input class="form-check-input" asp-for="Above_MedicalGas" /> Medical Gas <br />
+                                            <input class="form-check-input" asp-for="Above_HotColdWater" /> Hot/Cold water <br />
+                                            <input class="form-check-input" asp-for="Above_Other" /> Other <br />
+                                        </div>
+                                    </td>
+                                    <td class="text-start">
+                                            <div class="form-check">
+                                            <input class="form-check-input" asp-for="Lateral_Data" /> Data <br />
+                                            <input class="form-check-input" asp-for="Lateral_Mechanical" /> Mechanical <br />
+                                            <input class="form-check-input" asp-for="Lateral_MedicalGas" /> Medical Gas <br />
+                                            <input class="form-check-input" asp-for="Lateral_HotColdWater" /> Hot/Cold water <br />
+                                            <input class="form-check-input" asp-for="Lateral_Other" /> Other <br />
+                                            </div>
+                                        </td>
+                                        <td class="text-start">
+                                            <div class="form-check">
+                                            <input class="form-check-input" asp-for="Behind_Data" /> Data <br />
+                                            <input class="form-check-input" asp-for="Behind_Mechanical" /> Mechanical <br />
+                                            <input class="form-check-input" asp-for="Behind_MedicalGas" /> Medical Gas <br />
+                                            <input class="form-check-input" asp-for="Behind_HotColdWater" /> Hot/Cold water <br />
+                                            <input class="form-check-input" asp-for="Behind_Other" /> Other <br />
+                                            </div>
+                                        </td>
+                                    <td class="text-start">
+                                        <div class="form-check">
+                                            <input class="form-check-input" asp-for="Front_Data" /> Data <br />
+                                            <input class="form-check-input" asp-for="Front_Mechanical" /> Mechanical <br />
+                                            <input class="form-check-input" asp-for="Front_MedicalGas" /> Medical Gas <br />
+                                            <input class="form-check-input" asp-for="Front_HotColdWater" /> Hot/Cold water <br />
+                                            <input class="form-check-input" asp-for="Front_Other" /> Other <br />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid px-3">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped text-center w-100">
+                                <thead>
+                                    <tr>
+                                        <th class="text-start" colspan="15">
+                                            <strong>OTHER PREVENTIVE MEASURES TO BE DISCUSSED</strong>
+                                            (In addition to the enumerated measures per class, indicated at the back)
+                                        </th>
+                                        <th colspan="4"><strong>YES/NO</strong></th>
+                                        <th class="text-start" colspan="5"><strong>REMARKS</strong></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-start" colspan="15">
+                                            Risk for water damage, or will water be aerosolized during this work?
+                                        </td>
+                                        <td colspan="4">
+                                            <div>
+                                                <input type="radio" asp-for="RiskofWater" value="Yes" /> Yes <br />
+                                                <input type="radio" asp-for="RiskofWater" value="No" /> No
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input asp-for="Remarks_RiskofWater" class="form-control" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start" colspan="15">
+                                            Work should be done during during patient care hours?
+                                        </td>
+                                        <td colspan ="4">
+                                            <div>
+                                                <input type="radio" asp-for="ShouldWork" value="Yes" /> Yes <br />
+                                                <input type="radio" asp-for="ShouldWork" value="No" /> No
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input asp-for="Remarks_ShouldWork" class="form-control" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start" colspan="15">
+                                            Can supply air be completely isolated?
+                                        </td>
+                                        <td colspan="4">
+                                            <div>
+                                                <input type="radio" asp-for="CanSupplyAir" value="Yes" /> Yes <br />
+                                                <input type="radio" asp-for="CanSupplyAir" value="No" /> No
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input asp-for="Remarks_CanSupplyAir" class="form-control" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start" colspan="15">
+                                           Have traffice care equipment and supplies be relocated or protected from dust?
+                                        </td>
+                                        <td colspan="4">
+                                            <div>
+                                                <input type="radio" asp-for="HaveTraffic" value="Yes" /> Yes <br />
+                                                <input type="radio" asp-for="HaveTraffic" value="No" /> No
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input asp-for="Remarks_HaveTraffic" class="form-control" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start" colspan="15">
+                                            Can patient care equipment and supplies
+                                            relocated or protected from dust exposure?
+                                        </td>
+                                        <td colspan="4">
+                                            <div>
+                                                <input type="radio" asp-for="CanPatientCare" value="Yes" /> Yes <br />
+                                                <input type="radio" asp-for="CanPatientCare" value="No" /> No
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input asp-for="Remarks_CanPatientCare" class="form-control" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-start" colspan="15">
+                                            Are measures in place to contain construction contaminants?
+                                        </td>
+                                        <td colspan="4">
+                                            <div>
+                                                <input type="radio" asp-for="AreMeasures" value="Yes" /> Yes <br />
+                                                <input type="radio" asp-for="AreMeasures" value="No" /> No
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input asp-for="Remarks_AreMeasures" class="form-control" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="20">
+                                           <strong>Additional Comments and Instructions:</strong>
+                                            <input asp-for="AdditionalComments" class="form-control" />
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ContractorSign" class="control-label"></label>
+                <input asp-for="ContractorSign" class="form-control" />
+                <span asp-validation-for="ContractorSign" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EngineeringSign" class="control-label"></label>
+                <input asp-for="EngineeringSign" class="form-control" />
+                <span asp-validation-for="EngineeringSign" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ICPSign" class="control-label"></label>
+                <input asp-for="ICPSign" class="form-control" />
+                <span asp-validation-for="ICPSign" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitAreaRep" class="control-label"></label>
+                <input asp-for="UnitAreaRep" class="form-control" />
+                <span asp-validation-for="UnitAreaRep" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Define the preventive measures matrix based on construction type and patient risk
+        const preventiveMatrix = {
+            "Type A": { "Low": "I", "Medium": "I", "High": "I", "Highest": "III" },
+            "Type B": { "Low": "II", "Medium": "II", "High": "III", "Highest": "IV" },
+            "Type C": { "Low": "II", "Medium": "III", "High": "IV", "Highest": "V" },
+            "Type D": { "Low": "III", "Medium": "IV", "High": "V", "Highest": "V" }
+        };
+
+        function updatePreventiveMeasure() {
+            const constructionType = document.querySelector('input[name="ConstructionType"]:checked')?.value;
+            const patientRisk = document.querySelector('input[name="PatientRiskGroup"]:checked')?.value;
+
+            if (constructionType && patientRisk) {
+                const selectedClass = preventiveMatrix[constructionType][patientRisk];
+
+                // Uncheck all radio buttons for PreventiveMeasures
+                document.querySelectorAll('input[name="PreventiveMeasures"]').forEach(input => {
+                    input.checked = false;
+                });
+
+                // Check the correct radio button for display
+                const selectedInput = document.querySelector(`input[name="PreventiveMeasures"][value="Class ${selectedClass}"]`);
+                if (selectedInput) {
+                    selectedInput.checked = true;
+                }
+
+                // Update the hidden input to ensure value is submitted
+                document.getElementById('PreventiveMeasuresHidden').value = `Class ${selectedClass}`;
+            }
+        }
+
+        // Optional: initialize the form if values are already selected
+        document.addEventListener("DOMContentLoaded", () => {
+            updatePreventiveMeasure();
+        });
+    </script>
+
+}
+

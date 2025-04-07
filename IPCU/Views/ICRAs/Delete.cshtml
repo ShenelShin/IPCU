@@ -1,0 +1,501 @@
+﻿@model IPCU.Models.ICRA
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>ICRA</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectReferenceNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProjectReferenceNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectNameAndDescription)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProjectNameAndDescription)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ContractorRepresentativeName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ContractorRepresentativeName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TelephoneOrMobileNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TelephoneOrMobileNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SpecificSiteOfActivity)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SpecificSiteOfActivity)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ScopeOfWork)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ScopeOfWork)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectStartDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProjectStartDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EstimatedDuration)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EstimatedDuration)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ConstructionType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ConstructionType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientRiskGroup)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientRiskGroup)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PreventiveMeasures)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PreventiveMeasures)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RiskGroup)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RiskGroup)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LocalNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LocalNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Below_Noise)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Below_Noise)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Below_Vibration)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Below_Vibration)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Below_Dust)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Below_Dust)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Below_Ventilation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Below_Ventilation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Below_Pressuraztion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Below_Pressuraztion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Below_Data)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Below_Data)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Below_Mechanical)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Below_Mechanical)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Below_MedicalGas)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Below_MedicalGas)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Below_HotColdWater)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Below_HotColdWater)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Below_Other)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Below_Other)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Above_Noise)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Above_Noise)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Above_Vibration)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Above_Vibration)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Above_Dust)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Above_Dust)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Above_Ventilation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Above_Ventilation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Above_Pressuraztion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Above_Pressuraztion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Above_Data)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Above_Data)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Above_Mechanical)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Above_Mechanical)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Above_MedicalGas)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Above_MedicalGas)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Above_HotColdWater)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Above_HotColdWater)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Above_Other)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Above_Other)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lateral_Noise)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lateral_Noise)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lateral_Vibration)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lateral_Vibration)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lateral_Dust)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lateral_Dust)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lateral_Ventilation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lateral_Ventilation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lateral_Pressuraztion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lateral_Pressuraztion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lateral_Data)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lateral_Data)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lateral_Mechanical)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lateral_Mechanical)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lateral_MedicalGas)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lateral_MedicalGas)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lateral_HotColdWater)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lateral_HotColdWater)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Lateral_Other)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Lateral_Other)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Behind_Noise)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Behind_Noise)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Behind_Vibration)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Behind_Vibration)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Behind_Dust)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Behind_Dust)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Behind_Ventilation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Behind_Ventilation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Behind_Pressuraztion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Behind_Pressuraztion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Behind_Data)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Behind_Data)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Behind_Mechanical)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Behind_Mechanical)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Behind_MedicalGas)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Behind_MedicalGas)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Behind_HotColdWater)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Behind_HotColdWater)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Behind_Other)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Behind_Other)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Front_Noise)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Front_Noise)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Front_Vibration)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Front_Vibration)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Front_Dust)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Front_Dust)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Front_Ventilation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Front_Ventilation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Front_Pressuraztion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Front_Pressuraztion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Front_Data)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Front_Data)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Front_Mechanical)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Front_Mechanical)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Front_MedicalGas)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Front_MedicalGas)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Front_HotColdWater)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Front_HotColdWater)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Front_Other)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Front_Other)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.RiskofWater)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.RiskofWater)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Remarks_RiskofWater)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Remarks_RiskofWater)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ShouldWork)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ShouldWork)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Remarks_ShouldWork)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Remarks_ShouldWork)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CanSupplyAir)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CanSupplyAir)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Remarks_CanSupplyAir)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Remarks_CanSupplyAir)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HaveTraffic)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HaveTraffic)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Remarks_HaveTraffic)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Remarks_HaveTraffic)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CanPatientCare)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CanPatientCare)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Remarks_CanPatientCare)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Remarks_CanPatientCare)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AreMeasures)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AreMeasures)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Remarks_AreMeasures)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Remarks_AreMeasures)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AdditionalComments)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AdditionalComments)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ContractorSign)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ContractorSign)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EngineeringSign)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EngineeringSign)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ICPSign)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ICPSign)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UnitAreaRep)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UnitAreaRep)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250407022012_ICRA")]
+    partial class ICRA
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1015,35 +1018,45 @@ namespace IPCU.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Above_Data")
-                        .HasColumnType("bit");
+                    b.Property<string>("Above_Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Above_Dust")
-                        .HasColumnType("bit");
+                    b.Property<string>("Above_Dust")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Above_HotColdWater")
-                        .HasColumnType("bit");
+                    b.Property<string>("Above_HotColdWater")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Above_Mechanical")
-                        .HasColumnType("bit");
+                    b.Property<string>("Above_Mechanical")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Above_MedicalGas")
-                        .HasColumnType("bit");
+                    b.Property<string>("Above_MedicalGas")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Above_Noise")
-                        .HasColumnType("bit");
+                    b.Property<string>("Above_Noise")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Above_Other")
-                        .HasColumnType("bit");
+                    b.Property<string>("Above_Other")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Above_Pressuraztion")
-                        .HasColumnType("bit");
+                    b.Property<string>("Above_Pressuraztion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Above_Ventilation")
-                        .HasColumnType("bit");
+                    b.Property<string>("Above_Ventilation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Above_Vibration")
-                        .HasColumnType("bit");
+                    b.Property<string>("Above_Vibration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AdditionalComments")
                         .HasColumnType("nvarchar(max)");
@@ -1052,65 +1065,85 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Behind_Data")
-                        .HasColumnType("bit");
+                    b.Property<string>("Behind_Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Behind_Dust")
-                        .HasColumnType("bit");
+                    b.Property<string>("Behind_Dust")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Behind_HotColdWater")
-                        .HasColumnType("bit");
+                    b.Property<string>("Behind_HotColdWater")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Behind_Mechanical")
-                        .HasColumnType("bit");
+                    b.Property<string>("Behind_Mechanical")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Behind_MedicalGas")
-                        .HasColumnType("bit");
+                    b.Property<string>("Behind_MedicalGas")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Behind_Noise")
-                        .HasColumnType("bit");
+                    b.Property<string>("Behind_Noise")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Behind_Other")
-                        .HasColumnType("bit");
+                    b.Property<string>("Behind_Other")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Behind_Pressuraztion")
-                        .HasColumnType("bit");
+                    b.Property<string>("Behind_Pressuraztion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Behind_Ventilation")
-                        .HasColumnType("bit");
+                    b.Property<string>("Behind_Ventilation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Behind_Vibration")
-                        .HasColumnType("bit");
+                    b.Property<string>("Behind_Vibration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Below_Data")
-                        .HasColumnType("bit");
+                    b.Property<string>("Below_Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Below_Dust")
-                        .HasColumnType("bit");
+                    b.Property<string>("Below_Dust")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Below_HotColdWater")
-                        .HasColumnType("bit");
+                    b.Property<string>("Below_HotColdWater")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Below_Mechanical")
-                        .HasColumnType("bit");
+                    b.Property<string>("Below_Mechanical")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Below_MedicalGas")
-                        .HasColumnType("bit");
+                    b.Property<string>("Below_MedicalGas")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Below_Noise")
-                        .HasColumnType("bit");
+                    b.Property<string>("Below_Noise")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Below_Other")
-                        .HasColumnType("bit");
+                    b.Property<string>("Below_Other")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Below_Pressuraztion")
-                        .HasColumnType("bit");
+                    b.Property<string>("Below_Pressuraztion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Below_Ventilation")
-                        .HasColumnType("bit");
+                    b.Property<string>("Below_Ventilation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Below_Vibration")
-                        .HasColumnType("bit");
+                    b.Property<string>("Below_Vibration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CanPatientCare")
                         .IsRequired()
@@ -1138,35 +1171,45 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Front_Data")
-                        .HasColumnType("bit");
+                    b.Property<string>("Front_Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Front_Dust")
-                        .HasColumnType("bit");
+                    b.Property<string>("Front_Dust")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Front_HotColdWater")
-                        .HasColumnType("bit");
+                    b.Property<string>("Front_HotColdWater")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Front_Mechanical")
-                        .HasColumnType("bit");
+                    b.Property<string>("Front_Mechanical")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Front_MedicalGas")
-                        .HasColumnType("bit");
+                    b.Property<string>("Front_MedicalGas")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Front_Noise")
-                        .HasColumnType("bit");
+                    b.Property<string>("Front_Noise")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Front_Other")
-                        .HasColumnType("bit");
+                    b.Property<string>("Front_Other")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Front_Pressuraztion")
-                        .HasColumnType("bit");
+                    b.Property<string>("Front_Pressuraztion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Front_Ventilation")
-                        .HasColumnType("bit");
+                    b.Property<string>("Front_Ventilation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Front_Vibration")
-                        .HasColumnType("bit");
+                    b.Property<string>("Front_Vibration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HaveTraffic")
                         .IsRequired()
@@ -1175,35 +1218,45 @@ namespace IPCU.Migrations
                     b.Property<string>("ICPSign")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Lateral_Data")
-                        .HasColumnType("bit");
+                    b.Property<string>("Lateral_Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Lateral_Dust")
-                        .HasColumnType("bit");
+                    b.Property<string>("Lateral_Dust")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Lateral_HotColdWater")
-                        .HasColumnType("bit");
+                    b.Property<string>("Lateral_HotColdWater")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Lateral_Mechanical")
-                        .HasColumnType("bit");
+                    b.Property<string>("Lateral_Mechanical")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Lateral_MedicalGas")
-                        .HasColumnType("bit");
+                    b.Property<string>("Lateral_MedicalGas")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Lateral_Noise")
-                        .HasColumnType("bit");
+                    b.Property<string>("Lateral_Noise")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Lateral_Other")
-                        .HasColumnType("bit");
+                    b.Property<string>("Lateral_Other")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Lateral_Pressuraztion")
-                        .HasColumnType("bit");
+                    b.Property<string>("Lateral_Pressuraztion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Lateral_Ventilation")
-                        .HasColumnType("bit");
+                    b.Property<string>("Lateral_Ventilation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Lateral_Vibration")
-                        .HasColumnType("bit");
+                    b.Property<string>("Lateral_Vibration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LocalNumber")
                         .IsRequired()
