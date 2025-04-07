@@ -1,0 +1,39 @@
+﻿@model IEnumerable<IPCU.Models.ConstructionSite>
+
+@{
+    ViewData["Title"] = "Construction Site Submissions";
+}
+
+<h2>Construction Site Submissions</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>CSID</th>
+            <th>Project Reference Number</th>
+            <th>Project Name</th>
+            <th>Contractor Representative</th>
+            <th>Start Date</th>
+            <th>Scope of Work</th>
+            <th>Actions</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CSID</td>
+                <td>@item.ProjectReferenceNumber</td>
+                <td>@item.ProjectNameAndDescription</td>
+                <td>@item.ContractorRepresentativeName</td>
+                <td>@(item.ProjectStartDate?.ToShortDateString())</td>
+                <td>@item.ScopeOfWork</td>
+                <td>
+                    <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.CSID">View</a>
+                </td>
+                <!-- More fields if needed -->
+            </tr>
+        }
+    </tbody>
+</table>
