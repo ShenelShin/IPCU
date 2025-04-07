@@ -1,4 +1,4 @@
-﻿using IPCU.Models;
+﻿ using IPCU.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,7 +50,8 @@ namespace IPCU.Data
         public DbSet<DiagnosticsTreatment> DiagnosticsTreatments { get; set; }
         public DbSet<SurgicalSiteInfectionChecklist> SurgicalSiteInfectionChecklist { get; set; }
         public DbSet<GIInfectionChecklist> GIInfectionChecklists { get; set; }
-       
+        public DbSet<ConstructionSite> ConstructionSites { get; set; }
+
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
