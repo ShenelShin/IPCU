@@ -75,7 +75,7 @@ namespace IPCU.Models
 
         [Required]
         [Display(Name = "Type & Classification")]
-        public string TypeClass { get; set; } //Only VASC checked
+        public string TypeClass { get; set; }
 
 
         // VAC

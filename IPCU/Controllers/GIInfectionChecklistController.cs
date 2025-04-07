@@ -27,7 +27,7 @@ namespace IPCU.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser != null)
             {
-                model.NameOfInvestigator = $"{currentUser.FirstName} {currentUser.Initial} {currentUser.LastName}".Trim();
+                model.Investigator = $"{currentUser.FirstName} {currentUser.Initial} {currentUser.LastName}".Trim();
             }
 
             if (!string.IsNullOrEmpty(hospNum))
@@ -45,11 +45,11 @@ namespace IPCU.Controllers
 
                 if (patientInfo != null)
                 {
-                    model.HospNum = patientInfo.PatientMaster.HospNum;
+                    model.HospitalNumber = patientInfo.PatientMaster.HospNum;
                     model.Gender = patientInfo.PatientMaster.Sex == "M" ? "Male" : "Female";
-                    model.FName = patientInfo.PatientMaster.FirstName;
-                    model.MName = patientInfo.PatientMaster.MiddleName;
-                    model.LName = patientInfo.PatientMaster.LastName;
+                    model.Fname = patientInfo.PatientMaster.FirstName;
+                    model.Mname = patientInfo.PatientMaster.MiddleName;
+                    model.Lname = patientInfo.PatientMaster.LastName;
                     model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
                     model.UnitWardArea = patientInfo.Patients.AdmLocation;
                     model.DateOfAdmission = patientInfo.Patients.AdmDate.Value;
@@ -71,7 +71,7 @@ namespace IPCU.Controllers
             }
 
             var patients = await _context.GIInfectionChecklists
-                                         .Where(p => p.HospNum == hospNum)
+                                         .Where(p => p.HospitalNumber == hospNum)
                                          .ToListAsync();
 
             return View(patients);
@@ -101,7 +101,7 @@ namespace IPCU.Controllers
         {
             if (TypeClassification != null && TypeClassification.Length > 0)
             {
-                model.TypeClassification = string.Join(", ", TypeClassification);
+                model.Classification = string.Join(", ", TypeClassification);
             }
 
             if (!ModelState.IsValid)
