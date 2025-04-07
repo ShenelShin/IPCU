@@ -871,7 +871,7 @@ namespace IPCU.Controllers
                         EventDate = form.DateOfEvent,
                         HaiStatus = patient.HaiStatus,
                         HaiType = "SST",
-                        SpecificHaiClassification = form.InfectionClassification ?? "Soft Tissue",
+                        SpecificHaiClassification = form.Classification ?? "Soft Tissue",
                         CLAccess = centralLineInfo,
                         IsMDRO = mdroInfo.IsMDRO,
                         MDROOrganism = mdroInfo.Organism,
