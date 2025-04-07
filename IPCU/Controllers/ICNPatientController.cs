@@ -133,7 +133,7 @@ namespace IPCU.Controllers
                                          USIForm = _context.Usi
                                              .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
                                          VAEForm = _context.VentilatorEventChecklists
-                                             .FirstOrDefault(f => f.HospNum == p.HospNum),
+                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
                                          GIInfectionForm = _context.GIInfectionChecklists
                                              .FirstOrDefault(f => f.HospNum == p.HospNum),
                                          SSIForm = _context.SurgicalSiteInfectionChecklist

@@ -6,75 +6,93 @@ namespace IPCU.Models
     public class VentilatorEventChecklist
     {
 
+        // Patient Info
         [Key]
-        public int Id { get; set; } // Primary Key
+        public int Id { get; set; }
 
         [Required]
-        public string FName { get; set; }
-
-        public string MName { get; set; }
-
-        [Required]
-        public string LName { get; set; }
-
+        [Display(Name = "First Name")]
+        public string Fname { get; set; }
 
         [Required]
-        public string HospNum { get; set; }
+        [Display(Name = "Last Name")]
+        public string Lname { get; set; }
 
+        [Display(Name = "Middle Name")]
+        public string Mname { get; set; }
 
         [Required]
+
+        [Display(Name = "Hospital Number")]
+        public string HospitalNumber { get; set; }
+
         [DataType(DataType.Date)]
-        public DateTime DateOfBirth { get; set; }
+        [Display(Name = "Date of Birth")]
+        public DateTime? DateOfBirth { get; set; }
 
-        [Required]
         public int Age { get; set; }
 
-        public string UwArea { get; set; }
+        public string UnitWardArea { get; set; }
 
+        [Display(Name = "Main Service")]
         public string MainService { get; set; }
 
+        [DataType(DataType.Date)]
+        [Display(Name = "Date of Event")]
+        public DateTime? DateOfEvent { get; set; }
+
+        public string Investigator { get; set; }
+
+        [DataType(DataType.Date)]
+        [Display(Name = "Date of Admission")]
+        public DateTime? DateOfAdmission { get; set; }
+
         [Required]
-        [DataType(DataType.Date)]
-        public DateTime DateOfEvent { get; set; }
+        public string Disposition { get; set; } // Enum could be used (Mortality, Discharged, Still Admitted, etc.)
 
         [DataType(DataType.Date)]
-        public DateTime? DateOfIntubation { get; set; }
+        [Display(Name = "Disposition Date")]
+        public DateTime? DispositionDate { get; set; }
 
-        public string NameOfInvestigator { get; set; }
-
-        [Required]
-        [DataType(DataType.Date)]
-        public DateTime DateOfAdmission { get; set; }
-
-        public string? Disposition { get; set; }
-
-        [DataType(DataType.Date)]
-        public DateTime DispositionDate { get; set; }
-
+        [Display(Name = "Disposition Transfer")]
         public string? DispositionTransfer { get; set; }
 
-        public string Gender { get; set; }
+        [Required]
+        public string Gender { get; set; } // Male / Female
 
-        public string Classification { get; set; }
+        [Required]
+        public string Classification { get; set; } // Pay / Service
 
-        public bool MDRO { get; set; } // Multi-Drug Resistant Organism (
+        [Required]
+        public string MDRO { get; set; } // Yes / No
 
+        [Display(Name = "MDRO Organism")]
         public string? MDROOrganism { get; set; }
 
-        public string TypeClass { get; set; } // Concatenated values if multiple
+        [DataType(DataType.Date)]
+        [Display(Name = " Date of Intubation:")]
+        public DateTime? DateofIntubation { get; set; }
 
-        public string VaeRemarks { get; set; }
+        [Required]
+        [Display(Name = "Type & Classification")]
+        public string TypeClass { get; set; } //Only VASC checked
 
+
+        // VAC
         public bool Vac1 { get; set; }
 
         public bool Vac2 { get; set; }
 
+
+        // IVAC
         public bool IVac1 { get; set; }
 
         public bool IVac2 { get; set; }
 
         public bool IVac3 { get; set; }
 
+
+        // PVAP
         public bool Pvap1Endo { get; set; }
 
         public bool Pvap1Lung { get; set; }
@@ -82,6 +100,7 @@ namespace IPCU.Models
         public bool Pvap1Bronch { get; set; }
 
         public bool Pvap1Specimen { get; set; }
+
 
         public bool Pvap2Sputum { get; set; }
 
@@ -93,6 +112,7 @@ namespace IPCU.Models
 
         public bool Pvap2Specimen { get; set; }
 
+
         public bool Pvap3Organism { get; set; }
 
         public bool Pvap3Lung { get; set; }
@@ -101,10 +121,14 @@ namespace IPCU.Models
 
         public bool Pvap3Viral { get; set; }
 
+
+
         [DataType(DataType.Date)]
         public DateTime? PvapCultureDate { get; set; }
 
         public string PvapResult { get; set; }
+
+        public string VaeRemarks { get; set; }
 
     }
 }
