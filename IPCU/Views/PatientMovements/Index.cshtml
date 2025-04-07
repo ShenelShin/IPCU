@@ -1,0 +1,103 @@
+﻿@model IEnumerable<IPCU.Models.PatientMovementViewModel>
+@{
+    ViewData["Title"] = "Patient Movement";
+    var selectedDate = (DateTime)ViewBag.SelectedDate;
+}
+
+<div class="container-fluid">
+    <h2>Patient Movement - @selectedDate.ToString("MMMM d, yyyy")</h2>
+
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <form method="get" class="form-inline">
+                <div class="input-group">
+                    <input type="date" name="date" class="form-control" value="@selectedDate.ToString("yyyy-MM-dd")" />
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary">Go</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-8 text-right">
+            <a asp-action="Create" class="btn btn-success">
+                <i class="fa fa-plus"></i> Add New Entry
+            </a>
+            <a asp-action="Report" class="btn btn-info">
+                <i class="fa fa-chart-bar"></i> View Report
+            </a>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            No patient movement data found for this date. <a asp-action="Create" class="alert-link">Create a new entry</a>.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Area</th>
+                        <th colspan="3" class="text-center bg-success text-white">New Arrivals</th>
+                        <th colspan="4" class="text-center bg-danger text-white">Discharges</th>
+                        <th rowspan="2" class="align-middle">Actions</th>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <th>Admission</th>
+                        <th>Transfer In</th>
+                        <th>Total In</th>
+                        <th>Sent Home</th>
+                        <th>Mortality</th>
+                        <th>Transfer Out</th>
+                        <th>Total Out</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Area)</td>
+                            <td>@Html.DisplayFor(modelItem => item.AdmissionCount)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TransferInCount)</td>
+                            <td class="bg-light font-weight-bold">@Html.DisplayFor(modelItem => item.TotalArrivals)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SentHomeCount)</td>
+                            <td>@Html.DisplayFor(modelItem => item.MortalityCount)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TransferOutCount)</td>
+                            <td class="bg-light font-weight-bold">@Html.DisplayFor(modelItem => item.TotalDischarges)</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a asp-action="Edit" asp-route-id="@item.MovementId" class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.MovementId" class="btn btn-sm btn-outline-info">
+                                        <i class="fa fa-info-circle"></i> Details
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.MovementId" class="btn btn-sm btn-outline-danger">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr class="font-weight-bold">
+                        <td>Total</td>
+                        <td>@Model.Sum(m => m.AdmissionCount)</td>
+                        <td>@Model.Sum(m => m.TransferInCount)</td>
+                        <td class="bg-light">@Model.Sum(m => m.TotalArrivals)</td>
+                        <td>@Model.Sum(m => m.SentHomeCount)</td>
+                        <td>@Model.Sum(m => m.MortalityCount)</td>
+                        <td>@Model.Sum(m => m.TransferOutCount)</td>
+                        <td class="bg-light">@Model.Sum(m => m.TotalDischarges)</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+</div>

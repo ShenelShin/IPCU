@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250403004849_PatientMovement")]
+    partial class PatientMovement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -255,9 +258,6 @@ namespace IPCU.Migrations
 
                     b.Property<string>("MDRO")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MDROOrganism")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MainService")
@@ -670,11 +670,12 @@ namespace IPCU.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
-                    b.Property<bool>("CDIpseudomembranous")
-                        .HasColumnType("bit");
+                    b.Property<string>("CDIpseudomembranous")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("CDItoxin")
-                        .HasColumnType("bit");
+                    b.Property<string>("CDItoxin")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Classification")
                         .IsRequired()
@@ -726,8 +727,9 @@ namespace IPCU.Migrations
                     b.Property<bool>("GEVomiting")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("GEdiarrhea")
-                        .HasColumnType("bit");
+                    b.Property<string>("GEdiarrhea")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("GITAbscess1")
                         .HasColumnType("bit");
@@ -818,9 +820,6 @@ namespace IPCU.Migrations
 
                     b.Property<bool>("MDRO")
                         .HasColumnType("bit");
-
-                    b.Property<string>("MDROOrganism")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MName")
                         .IsRequired()
@@ -1093,9 +1092,6 @@ namespace IPCU.Migrations
 
                     b.Property<string>("MDRO")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MDROOrganism")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MainService")
@@ -1593,9 +1589,6 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MDROOrganism")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("MainService")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1781,9 +1774,6 @@ namespace IPCU.Migrations
 
                     b.Property<string>("MDRO")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MDROOrganism")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MainService")
@@ -2123,10 +2113,12 @@ namespace IPCU.Migrations
                     b.Property<bool>("BurnAppearanceChange")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("BurnCultureDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("BurnCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("BurnCultureResults")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("BurnOrganismIdentified")
@@ -2145,10 +2137,12 @@ namespace IPCU.Migrations
                     b.Property<DateTime>("DateOfEvent")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DecubitusCultureDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DecubitusCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DecubitusCultureResults")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("DecubitusErythema")
@@ -2170,12 +2164,6 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DispositionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DispositionTransfer")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Fname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -2185,6 +2173,10 @@ namespace IPCU.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HospitalNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InfectionClassification")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -2215,9 +2207,6 @@ namespace IPCU.Migrations
                     b.Property<bool>("MDRO")
                         .HasColumnType("bit");
 
-                    b.Property<string>("MDROOrganism")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("MainService")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -2235,10 +2224,12 @@ namespace IPCU.Migrations
                     b.Property<bool>("STAbscess")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("STCultureDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("STCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("STCultureResults")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("STDrainage")
@@ -2250,10 +2241,12 @@ namespace IPCU.Migrations
                     b.Property<bool>("SkinBoils")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("SkinCultureDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("SkinCultureDate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SkinCultureResults")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("SkinPurulentDrainage")
@@ -2453,9 +2446,6 @@ namespace IPCU.Migrations
 
                     b.Property<string>("MDRO")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MDROOrganism")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MainService")
@@ -2911,9 +2901,6 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MDROOrganism")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("MainService")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -3086,9 +3073,6 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MDROOrganism")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("MainService")
                         .HasColumnType("nvarchar(max)");
 
@@ -3198,6 +3182,7 @@ namespace IPCU.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("MDROOrganism")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MName")

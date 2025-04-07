@@ -1,3 +1,4 @@
+using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using IPCU.Data;
 using IPCU.Services;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +18,12 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 builder.Services.AddScoped<PatientFormPdfService>();
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<DeviceMonitoringReportService>();
+builder.Services.AddScoped<DeviceMonitoringPdfService>();
+builder.Services.AddScoped<DeviceMonitoringExcelService>();
+builder.Services.AddScoped<DeviceMonitoringYearlyExcelService>();
+builder.Services.AddScoped<DeviceMonitoringAreaYearlyExcelService>();
+
 
 var app = builder.Build();
 

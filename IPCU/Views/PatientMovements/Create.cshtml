@@ -1,0 +1,110 @@
+﻿@model IPCU.Models.PatientMovement
+
+@{
+    ViewData["Title"] = "Add Patient Movement";
+}
+
+<div class="container-fluid">
+    <h2>Add Patient Movement</h2>
+    <hr />
+
+    <form asp-action="Create">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header bg-primary text-white">
+                        <h5>Movement Information</h5>
+                    </div>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="card-body">
+                        <input type="hidden" asp-for="CreatedBy" value="@(User.Identity?.Name ?? "System")" />
+                        <input type="hidden" asp-for="ModifiedBy" value="@(User.Identity?.Name ?? "System")" />
+                        <div class="form-group">
+                            <label asp-for="MovementDate" class="control-label">Date</label>
+                            <input asp-for="MovementDate" class="form-control" type="date" />
+                            <span asp-validation-for="MovementDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Area" class="control-label">Area</label>
+                            <textarea asp-for="Area" class="form-control" rows="1" maxlength="50"></textarea>
+                            <span asp-validation-for="Area" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="Notes" class="control-label">Notes</label>
+                            <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="Notes" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-header bg-success text-white">
+                        <h5>New Arrivals</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="AdmissionCount" class="control-label">New Admissions</label>
+                            <input asp-for="AdmissionCount" class="form-control" min="0" />
+                            <span asp-validation-for="AdmissionCount" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="TransferInCount" class="control-label">Transfers In</label>
+                            <input asp-for="TransferInCount" class="form-control" min="0" />
+                            <span asp-validation-for="TransferInCount" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        <h5>Discharges</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label asp-for="SentHomeCount" class="control-label">Sent Home</label>
+                            <input asp-for="SentHomeCount" class="form-control" min="0" />
+                            <span asp-validation-for="SentHomeCount" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="MortalityCount" class="control-label">Mortality</label>
+                            <input asp-for="MortalityCount" class="form-control" min="0" />
+                            <span asp-validation-for="MortalityCount" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label asp-for="TransferOutCount" class="control-label">Transfers Out</label>
+                            <input asp-for="TransferOutCount" class="form-control" min="0" />
+                            <span asp-validation-for="TransferOutCount" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-save"></i> Save
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fa fa-arrow-left"></i> Back to List
+            </a>
+            <button type="button" class="btn btn-info" onclick="alert('Date: ' + document.querySelector('[name=MovementDate]').value + '\nArea: ' + document.querySelector('[name=Area]').value);">
+                Check Values
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
