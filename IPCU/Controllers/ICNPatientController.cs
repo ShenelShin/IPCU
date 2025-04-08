@@ -1102,76 +1102,76 @@ namespace IPCU.Controllers
 
                 // After the existing forms processing, add these two new sections:
 
-                // 9. Check GI Infection forms
-                //var giForms = await _context.GIInfectionChecklists
-                //    .Where(f => f.HospNum == patient.HospNum)
-                //    .ToListAsync();
+                //9.Check GI Infection forms
+               var giForms = await _context.GIInfectionChecklists
+                   .Where(f => f.HospitalNumber == patient.HospNum)
+                   .ToListAsync();
 
-                //foreach (var form in giForms)
-                //{
-                //    var centralLineInfo = GetCentralLineInfoForForm("GI", patient.HospNum);
-                //    var outcomeInfo = GetPatientOutcome(patient.HospNum);
+                foreach (var form in giForms)
+                {
+                    var centralLineInfo = GetCentralLineInfoForForm("GI", patient.HospNum);
+                    var outcomeInfo = GetPatientOutcome(patient.HospNum);
 
-                //    bool isMdro = !string.IsNullOrEmpty(form.MDRO) &&
-                //        form.MDRO.Equals("Yes", StringComparison.OrdinalIgnoreCase);
+                    bool isMdro = !string.IsNullOrEmpty(form.MDRO) &&
+                        form.MDRO.Equals("Yes", StringComparison.OrdinalIgnoreCase);
 
-                //    haiEntries.Add(new HAILineListViewModel
-                //    {
-                //        HospNum = patient.HospNum,
-                //        PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
-                //        BirthDate = patient.BirthDate,
-                //        Age = patient.Age,
-                //        Unit = patient.AdmLocation,
-                //        Room = patient.RoomID,
-                //        AdmissionDate = patient.AdmDate,
-                //        Classification = form.Classification ?? classificationAndService.Classification,
-                //        MainService = form.MainService ?? classificationAndService.MainService,
-                //        EventDate = form.DateOfEvent,
-                //        HaiStatus = patient.HaiStatus,
-                //        HaiType = "GI",
-                //        SpecificHaiClassification = form.TypeClassification ?? "",
-                //        CLAccess = centralLineInfo,
-                //        IsMDRO = isMdro,
-                //        MDROOrganism = isMdro ? ExtractOrganism(form.CultureResults) : "",
-                //        Outcome = outcomeInfo.Status,
-                //        DischargeDate = outcomeInfo.Date,
-                //        DateCreated = form.DateCreated,
-                //    });
-                //}
+                    haiEntries.Add(new HAILineListViewModel
+                    {
+                        HospNum = patient.HospNum,
+                        PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
+                        BirthDate = patient.BirthDate,
+                        Age = patient.Age,
+                        Unit = patient.AdmLocation,
+                        Room = patient.RoomID,
+                        AdmissionDate = patient.AdmDate,
+                        Classification = form.Classification ?? classificationAndService.Classification,
+                        MainService = form.MainService ?? classificationAndService.MainService,
+                        EventDate = form.DateOfEvent,
+                        HaiStatus = patient.HaiStatus,
+                        HaiType = "GI",
+                        SpecificHaiClassification = form.TypeClass ?? "",
+                        CLAccess = centralLineInfo,
+                        IsMDRO = isMdro,
+                        MDROOrganism = form.MDRO == "Yes" ? (form.MDROOrganism ?? "") : "",
+                        Outcome = outcomeInfo.Status,
+                        DischargeDate = outcomeInfo.Date,
+                        DateCreated = form.DateCreated,
+                    });
+                }
 
-                //// 10. Check Pediatric VAE forms
-                //var pvaeForms = await _context.PediatricVAEChecklist
-                //    .Where(f => f.HospitalNumber == patient.HospNum)
-                //    .ToListAsync();
+                // 10. Check Pediatric VAE forms
+                var pvaeForms = await _context.PediatricVAEChecklist
+                    .Where(f => f.HospitalNumber == patient.HospNum)
+                    .ToListAsync();
 
-                //foreach (var form in pvaeForms)
-                //{
-                //    var centralLineInfo = GetCentralLineInfoForForm("PVAE", patient.HospNum);
-                //    var outcomeInfo = GetPatientOutcome(patient.HospNum);
+                foreach (var form in pvaeForms)
+                {
+                    var centralLineInfo = GetCentralLineInfoForForm("PVAE", patient.HospNum);
+                    var outcomeInfo = GetPatientOutcome(patient.HospNum);
 
-                //    haiEntries.Add(new HAILineListViewModel
-                //    {
-                //        HospNum = patient.HospNum,
-                //        PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
-                //        BirthDate = patient.BirthDate,
-                //        //Age = patient.Age,
-                //        Unit = patient.AdmLocation,
-                //        Room = patient.RoomID,
-                //        AdmissionDate = patient.AdmDate,
-                //        Classification = form.Classification ?? classificationAndService.Classification,
-                //        MainService = form.MainService ?? classificationAndService.MainService,
-                //        EventDate = form.DateOfEvent,
-                //        HaiStatus = patient.HaiStatus,
-                //        HaiType = "PVAE",
-                //        SpecificHaiClassification = form.TypeClass ?? "",
-                //        CLAccess = centralLineInfo,
-                //        IsMDRO = form.MDRO,
-                //        MDROOrganism = form.MDRO ? (form.MDROOrganism ?? "") : "",
-                //        Outcome = outcomeInfo.Status,
-                //        DischargeDate = outcomeInfo.Date,
-                //        DateCreated = form.DateCreated,
-                //    });
-                //}
+                    haiEntries.Add(new HAILineListViewModel
+                    {
+                        HospNum = patient.HospNum,
+                        PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
+                        BirthDate = patient.BirthDate,
+                        Age = patient.Age,
+                        Unit = patient.AdmLocation,
+                        Room = patient.RoomID,
+                        AdmissionDate = patient.AdmDate,
+                        Classification = form.Classification ?? classificationAndService.Classification,
+                        MainService = form.MainService ?? classificationAndService.MainService,
+                        EventDate = form.DateOfEvent,
+                        HaiStatus = patient.HaiStatus,
+                        HaiType = "PVAE",
+                        SpecificHaiClassification = form.TypeClass ?? "",
+                        CLAccess = centralLineInfo,
+                        IsMDRO = form.MDRO == "Yes",
+                        MDROOrganism = form.MDRO == "Yes" ? (form.MDROOrganism ?? "") : "",
+                        Outcome = outcomeInfo.Status,
+                        DischargeDate = outcomeInfo.Date,
+                        DateCreated = form.DateCreated,
+                    });
+                }
 
             }
 
