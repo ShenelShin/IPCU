@@ -1,0 +1,495 @@
+﻿@model IPCU.Models.PostConstruction
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+        <form asp-action="Create">
+            <h2 class="text-center">INFECTION PREVENTION AND CONTROL<br />CONSTRUCTION SITE MONITORING TOOL</h2>
+
+    <p><strong>Note:</strong> This form is used by Infection Control Professional or their Designate to ensure the post construction area is readyforpatient/ staff occupancy or turn-over.</p>
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Project Reference Number:</th>
+            <td>
+                <input asp-for="ProjectReferenceNumber" class="form-control" />
+            </td>
+                    <th>Project/Activity Name and Description:</th>
+            <td>
+                <input asp-for="ProjectNameAndDescription" class="form-control" />
+            </td>
+                </tr>
+                <tr>
+                    <th>Specific Site of the Activity</th>
+            <td colspan="3">
+                <input asp-for="SpecificSiteOfActivity" class="form-control" />
+            </td>
+                </tr>
+                <tr>
+                    <th>Project Start Date:</th>
+            <td>
+                <input asp-for="ProjectStartDate" type="date" class="form-control" />
+
+            </td>
+                    <th>Estimated Duration:</th>
+            <td>
+                <input asp-for="EstimatedDuration" class="form-control" />
+            </td>
+                </tr>
+            </table>
+    <h4 class="mt-4">Preventive Measures</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>PREVENTIVE MEASURE</th>
+                <th>Yes</th>
+                <th>No</th>
+                <th>N/A</th>
+                <th>
+                    DEFICIENCIES OR
+                    COMMENTS
+                </th>
+                <th>DATE COMPLETED</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td colspan="5"><strong>Post Construction Cleaning</strong></td></tr>
+            <tr>
+                <td>
+                    <label>
+                        Before hoarding removal, job site is clear of dust, construction
+                        debris/ equipment. Area has been cleaned, including HEPA
+                        vacuuming and/or wipe down of surfaces including hoarding to
+                        remove dust
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="BeforeHoarding" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="BeforeHoarding" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="BeforeHoarding" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="BeforeHoardingDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="BeforeHoardingDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Facility based cleaning performed prior to hoarding removal
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="FacilityBased" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="FacilityBased" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="FacilityBased" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="FacilityBasedDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="FacilityBasedDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        After removal of hoarding, contractor completes final
+                        construction cleaning followed by facility based Return to
+                        Service cleaning
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="AfterRemoval" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="AfterRemoval" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="AfterRemoval" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="AfterRemovalDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="AfterRemovalDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Where required, HVAC duct work cleaning has been performed
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="WhereRequired" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="WhereRequired" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="WhereRequired" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="WhereRequiredlDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="WhereRequiredDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr><td colspan="5"><strong>Finishes</strong></td></tr>
+            <tr>
+                <td>
+                    <label>
+                        Area is dust free (all horizontal surfaces, headwalls, ledges,
+                        inside of cabinets, drawers, tops of clocks etc.)
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="AreaIs" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="AreaIs" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="AreaIs" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="AreaIsDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="AreaIsDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Integrity of walls or ceiling tiles are maintained (not stained or
+                        damaged)
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="IntegrityofWalls" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="IntegrityofWalls" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="IntegrityofWalls" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="IntegrityofWallsDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="IntegrityofWallsDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Surfaces in patient care/procedure/service areas are
+                        appropriate (smooth, nonporous, water resistant)
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="SurfaceinPatient" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="SurfaceinPatient" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="SurfaceinPatient" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="SurfaceinPatientDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="SurfaceinPatientDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        Area surfaces are free of fissures or open joints and crevices
+                        that retain or permit collection of debris or facilitate bacterial
+                        and fungal growth
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="AreaSurfaces" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="AreaSurfaces" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="AreaSurfaces" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="AreaSurfacesDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="AreaSurfacesDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr><td colspan="5"><strong>Infrastructure</strong></td></tr>
+            <tr>
+                <td>
+                    <label>
+                        If plumbing has been affected/shutdown plumbing has been
+                        flushed, superheated or hyperchlorinated, as required
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="IfPlumbinghasbeenAffected" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="IfPlumbinghasbeenAffected" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="IfPlumbinghasbeenAffected" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="IfPlumbinghasbeenAffectedDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="IfPlumbinghasbeenAffectedDate" type="date" class="form-control" />
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <label>
+                        Plumbing, if affected, has been checked for leaks
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="PlumbingifAffected" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="PlumbingifAffected" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="PlumbingifAffected" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="PlumbingifAffectedDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="PlumbingifAffectedDate" type="date" class="form-control" />
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <label>
+                        Correct hand washing sinks/faucets present, properly located, and functioning
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="CorrectHandWashing" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="CorrectHandWashing" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="CorrectHandWashing" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="CorrectHandWashingDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="CorrectHandWashingDate" type="date" class="form-control" />
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <label>
+                        Faucet aerators are NOT present in patient care areas
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="FaucetAerators" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="FaucetAerators" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="FaucetAerators" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="FaucetAeratorsDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="FaucetAeratorsDate" type="date" class="form-control" />
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <label>
+                        Ceiling tiles are in place, well approximated and not stained
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="CeilingTiles" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="CeilingTiles" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="CeilingTiles" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="CeilingTilesDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="CeilingTilesDate" type="date" class="form-control" />
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <label>
+                        HVAC systems are clean, functional, balanced and verified
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="HVACSystems" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="HVACSystems" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="HVACSystems" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="HVACSystemsDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="HVACSystemsDate" type="date" class="form-control" />
+                </td>
+            </tr>
+             <tr>
+                <td>
+                    <label>
+                        Correct room pressurization (negative or positive) has been
+                        checked, if applicable
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="CorrectRoomPressurization" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="CorrectRoomPressurization" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="CorrectRoomPressurization" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="CorrectRoomPressurizationDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="CorrectRoomPressurizationDate" type="date" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label>
+                        All mechanical spaces, including ceiling space should be cleaned
+                        of dust and debris
+                    </label>
+
+                </td>
+                <td>
+                    <input type="radio" asp-for="AllMechanicalSpaces" value="Yes" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="AllMechanicalSpaces" value="No" />
+                </td>
+                <td>
+                    <input type="radio" asp-for="AllMechanicalSpaces" value="N/A" />
+                </td>
+                <td>
+                    <input asp-for="AllMechanicalSpacesDC" class="form-control" />
+                </td>
+                <td>
+                    <input asp-for="AllMechanicalSpacesDate" type="date" class="form-control" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h4 class="mt-5">Reported to:</h4>
+    <table class="table borderless" style="width: 100%; margin-top: 30px;">
+        <tr>
+            <td>
+                <strong>Contractor/Supplier Representative</strong><br />
+                Signature over printed name and Date signed<br />
+                <input asp-for="ContractorSign" class="form-control" />
+            </td>
+            <td>
+                <strong>NKTI Engineering Staff Representative</strong><br />
+                Signature over printed name and Date signed<br />
+                <input asp-for="EngineeringSign" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Infection Control Representative</strong><br />
+                Signature over printed name and Date signed<br />
+                <input asp-for="ICPSign" class="form-control" />
+            </td>
+            <td>
+                <strong>Unit/Area Representative</strong><br />
+                Signature over printed name and Date signed<br />
+                <input asp-for="UnitAreaRep" class="form-control" />
+            </td>
+        </tr>
+    </table>
+
+    <div class="mt-4 d-flex justify-content-between align-items-end">
+        <div style="border: 2px solid #000; padding: 15px; width: 50%; font-size: 0.9rem;">
+            This form is used for compliance and quality monitoring by the infection control professional<br />
+            or other member of the multidisciplinary team to monitor preventive measures required<br />
+            during construction/renovation activities.<br />
+            <strong>Failure to observe the measures, as discussed, might result to penalty or other actions necessary.</strong>
+        </div>
+        <div style="text-align: right; font-style: italic;">
+            IPC-WIF-014c_ver1
+        </div>
+    </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

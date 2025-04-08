@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250407063715_ConstructionSites")]
+    partial class ConstructionSites
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -874,26 +877,25 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DateOfAdmission")
+                    b.Property<DateTime>("DateOfAdmission")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfEvent")
+                    b.Property<DateTime>("DateOfEvent")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Disposition")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DispositionDate")
+                    b.Property<string>("DispositionArea")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DispositionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DispositionTransfer")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Fname")
+                    b.Property<string>("FName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -967,7 +969,7 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HospitalNumber")
+                    b.Property<string>("HospNum")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1007,30 +1009,29 @@ namespace IPCU.Migrations
                     b.Property<bool>("IABtransaminase")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Investigator")
+                    b.Property<string>("LName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Lname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MDRO")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("MDRO")
+                        .HasColumnType("bit");
 
                     b.Property<string>("MDROOrganism")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MainService")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Mname")
+                    b.Property<string>("NameOfInvestigator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TypeClass")
+                    b.Property<string>("TypeClassification")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1201,277 +1202,6 @@ namespace IPCU.Migrations
                     b.HasKey("HHId");
 
                     b.ToTable("HandHygieneForms");
-                });
-
-            modelBuilder.Entity("IPCU.Models.ICRA", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<bool>("Above_Data")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Above_Dust")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Above_HotColdWater")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Above_Mechanical")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Above_MedicalGas")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Above_Noise")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Above_Other")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Above_Pressuraztion")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Above_Ventilation")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Above_Vibration")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("AdditionalComments")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AreMeasures")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Behind_Data")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Behind_Dust")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Behind_HotColdWater")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Behind_Mechanical")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Behind_MedicalGas")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Behind_Noise")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Behind_Other")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Behind_Pressuraztion")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Behind_Ventilation")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Behind_Vibration")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Below_Data")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Below_Dust")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Below_HotColdWater")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Below_Mechanical")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Below_MedicalGas")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Below_Noise")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Below_Other")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Below_Pressuraztion")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Below_Ventilation")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Below_Vibration")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("CanPatientCare")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CanSupplyAir")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ConstructionType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ContractorRepresentativeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ContractorSign")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EngineeringSign")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EstimatedDuration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Front_Data")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Front_Dust")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Front_HotColdWater")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Front_Mechanical")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Front_MedicalGas")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Front_Noise")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Front_Other")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Front_Pressuraztion")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Front_Ventilation")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Front_Vibration")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("HaveTraffic")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ICPSign")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Lateral_Data")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Lateral_Dust")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Lateral_HotColdWater")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Lateral_Mechanical")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Lateral_MedicalGas")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Lateral_Noise")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Lateral_Other")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Lateral_Pressuraztion")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Lateral_Ventilation")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Lateral_Vibration")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LocalNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PatientRiskGroup")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreventiveMeasures")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProjectNameAndDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProjectReferenceNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ProjectStartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Remarks_AreMeasures")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Remarks_CanPatientCare")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Remarks_CanSupplyAir")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Remarks_HaveTraffic")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Remarks_RiskofWater")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Remarks_ShouldWork")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RiskGroup")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RiskofWater")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ScopeOfWork")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShouldWork")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SpecificSiteOfActivity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TelephoneOrMobileNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnitAreaRep")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ICRA");
                 });
 
             modelBuilder.Entity("IPCU.Models.LaboratoryConfirmedBSI", b =>
@@ -1877,119 +1607,6 @@ namespace IPCU.Migrations
                     b.ToTable("tbmaster");
                 });
 
-            modelBuilder.Entity("IPCU.Models.PatientMovement", b =>
-                {
-                    b.Property<int>("MovementId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovementId"));
-
-                    b.Property<int>("AdmissionCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("MortalityCount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("MovementDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("SentHomeCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TransferInCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TransferOutCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("MovementId");
-
-                    b.HasIndex("MovementDate", "Area")
-                        .IsUnique();
-
-                    b.ToTable("tbPatientMovement");
-                });
-
-            modelBuilder.Entity("IPCU.Models.PatientMovementDetail", b =>
-                {
-                    b.Property<int>("MovementDetailId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovementDetailId"));
-
-                    b.Property<string>("DestinationArea")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("HospNum")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<string>("IdNum")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<DateTime>("MovementDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MovementId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MovementType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("SourceArea")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("MovementDetailId");
-
-                    b.HasIndex("HospNum");
-
-                    b.HasIndex("MovementId");
-
-                    b.ToTable("tbPatientMovementDetail");
-                });
-
             modelBuilder.Entity("IPCU.Models.PediatricVAEChecklist", b =>
                 {
                     b.Property<int>("Id")
@@ -2386,210 +2003,6 @@ namespace IPCU.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Pneumonias");
-                });
-
-            modelBuilder.Entity("IPCU.Models.PostConstruction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AfterRemoval")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AfterRemovalDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("AfterRemovalDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AllMechanicalSpaces")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AllMechanicalSpacesDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("AllMechanicalSpacesDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AreaIs")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AreaIsDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("AreaIsDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("AreaSurfaces")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("AreaSurfacesDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("AreaSurfacesDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("BeforeHoarding")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("BeforeHoardingDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("BeforeHoardingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CeilingTiles")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CeilingTilesDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CeilingTilesDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ContractorSign")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CorrectHandWashing")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CorrectHandWashingDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CorrectHandWashingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CorrectRoomPressurization")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CorrectRoomPressurizationDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CorrectRoomPressurizationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EngineeringSign")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EstimatedDuration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FacilityBased")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FacilityBasedDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("FacilityBasedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FaucetAerators")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FaucetAeratorsDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("FaucetAeratorsDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("HVACSystems")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HVACSystemsDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("HVACSystemsDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ICPSign")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IfPlumbinghasbeenAffected")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IfPlumbinghasbeenAffectedDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("IfPlumbinghasbeenAffectedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("IntegrityofWalls")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("IntegrityofWallsDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("IntegrityofWallsDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PlumbingifAffected")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlumbingifAffectedDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("PlumbingifAffectedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ProjectNameAndDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProjectReferenceNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ProjectStartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SpecificSiteOfActivity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SurfaceinPatient")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SurfaceinPatientDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("SurfaceinPatientDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UnitAreaRep")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WhereRequired")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("WhereRequiredDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("WhereRequiredlDC")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PostConstruction");
                 });
 
             modelBuilder.Entity("IPCU.Models.PostTestClinical", b =>
@@ -3819,29 +3232,28 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DateOfAdmission")
+                    b.Property<DateTime>("DateOfAdmission")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateOfEvent")
+                    b.Property<DateTime>("DateOfEvent")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateofIntubation")
+                    b.Property<DateTime?>("DateOfIntubation")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Disposition")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DispositionDate")
+                    b.Property<DateTime>("DispositionDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DispositionTransfer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Fname")
+                    b.Property<string>("FName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -3849,7 +3261,7 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HospitalNumber")
+                    b.Property<string>("HospNum")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -3862,26 +3274,25 @@ namespace IPCU.Migrations
                     b.Property<bool>("IVac3")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Investigator")
+                    b.Property<string>("LName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Lname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MDRO")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("MDRO")
+                        .HasColumnType("bit");
 
                     b.Property<string>("MDROOrganism")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MainService")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Mname")
+                    b.Property<string>("NameOfInvestigator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -3935,7 +3346,7 @@ namespace IPCU.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UnitWardArea")
+                    b.Property<string>("UwArea")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -4179,25 +3590,6 @@ namespace IPCU.Migrations
                         .IsRequired();
 
                     b.Navigation("HandHygieneForm");
-                });
-
-            modelBuilder.Entity("IPCU.Models.PatientMovementDetail", b =>
-                {
-                    b.HasOne("IPCU.Models.PatientMaster", "Patient")
-                        .WithMany()
-                        .HasForeignKey("HospNum")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("IPCU.Models.PatientMovement", "PatientMovement")
-                        .WithMany()
-                        .HasForeignKey("MovementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-
-                    b.Navigation("PatientMovement");
                 });
 
             modelBuilder.Entity("IPCU.Models.VitalSigns", b =>

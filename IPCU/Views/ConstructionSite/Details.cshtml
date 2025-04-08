@@ -1,0 +1,135 @@
+﻿@model IPCU.Models.ConstructionSite
+@using Microsoft.AspNetCore.Html
+
+@{
+    ViewBag.Title = "Infection Prevention and Control Construction Site Monitoring Tool - Details";
+}
+
+<h2 class="text-center">INFECTION PREVENTION AND CONTROL<br />CONSTRUCTION SITE MONITORING TOOL</h2>
+
+<p><strong>Note:</strong> This form is used for compliance and quality monitoring by the infection control professional or other member of the multidisciplinary team to monitor preventive measures required during construction/renovation activities.</p>
+
+<a class="btn btn-primary" href="/ConstructionSite/List">Back to List</a>
+<table class="table table-bordered">
+    <tr>
+        <th>Project Reference Number:</th>
+        <td>@Html.DisplayFor(m => m.ProjectReferenceNumber)</td>
+        <th>Project/Activity Name and Description:</th>
+        <td>@Html.DisplayFor(m => m.ProjectNameAndDescription)</td>
+    </tr>
+    <tr>
+        <th>Contractor/Supplier Representative (Name):</th>
+        <td>@Html.DisplayFor(m => m.ContractorRepresentativeName)</td>
+        <th>Telephone/Mobile number:</th>
+        <td>@Html.DisplayFor(m => m.TelephoneOrMobileNumber)</td>
+    </tr>
+    <tr>
+        <th>Specific Site of the Activity</th>
+        <td colspan="3">@Html.DisplayFor(m => m.SpecificSiteOfActivity)</td>
+    </tr>
+    <tr>
+        <th>Scope of Work (Brief Summary):</th>
+        <td colspan="3">@Html.DisplayFor(m => m.ScopeOfWork)</td>
+    </tr>
+    <tr>
+        <th>Project Start Date:</th>
+        <td>@Html.DisplayFor(m => m.ProjectStartDate)</td>
+        <th>Estimated Duration:</th>
+        <td>@Html.DisplayFor(m => m.EstimatedDuration)</td>
+    </tr>
+</table>
+
+<h4 class="mt-4">Preventive Measures</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>PREVENTIVE MEASURE</th>
+            <th colspan="3">SELECTION</th>
+            <th>COMMENTS</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td colspan="5"><strong>Barriers</strong></td></tr>
+        @Html.Raw(RenderMeasureRowReadOnly("ICRA or applicable signage is posted in the area", Model.BarrierICRA, Model.BarrierICRAComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Doors properly closed and sealed", Model.BarrierDoorsSealedSelection, Model.BarrierDoorsSealedComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Floor area is clean, with no dust tracked", Model.BarrierFloorCleanSelection, Model.BarrierFloorCleanComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Walk-off mats clean, and are free of debris", Model.BarrierWalkOffMatsSelection, Model.BarrierWalkOffMatsComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Tape adhering to surface", Model.BarrierTapeAdheringSelection, Model.BarrierTapeAdheringComments))
+
+        <tr><td colspan="5"><strong>Air handling</strong></td></tr>
+        @Html.Raw(RenderMeasureRowReadOnly("All windows closed behind barrier", Model.AirhandlingWindowsClosedBehindBarrierSelection, Model.AirhandlingWindowsClosedBehindBarrierComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Negative air monitored at entrance, with anteroom", Model.AirhandlingNegativeAirMonitoredSelection, Model.AirhandlingNegativeAirMonitoredComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Construction air handling unit running", Model.AirHandlingUnitRunningSelection, Model.AirHandlingUnitRunningComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Current maintenance label visible", Model.AirhandlingMaintenanceLabelVisibleSelection, Model.AirhandlingMaintenanceLabelVisibleComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Air exhausted to appropriate area", Model.AirhandlingAirExhaustedToAppropriateAreaSelection, Model.AirhandlingAirExhaustedToAppropriateAreaComments))
+
+        <tr><td colspan="5"><strong>Project area</strong></td></tr>
+        @Html.Raw(RenderMeasureRowReadOnly("HEPA-filtered vacuum on job site", Model.ProjectareaHEPAFilteredVacuumOnJobsiteSelection, Model.ProjectareaHEPAFilteredVacuumOnJobsiteComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Debris removed in covered container daily", Model.ProjectareaDebrisRemovedInCoveredContainerDailySelection, Model.ProjectareaDebrisRemovedInCoveredContainerDailyComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Designated construction route or map posted, and staff oriented", Model.ProjectareaDesignatedConstructionRouteOrMapPostedSelection, Model.ProjectareaDesignatedConstructionRouteOrMapPostedComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Trash in appropriate container", Model.ProjectareaTrashInAppropriateContainerSelection, Model.ProjectareaTrashInAppropriateContainerComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Routine cleaning done on site", Model.ProjectareaRoutineCleaningDoneOnSiteSelection, Model.ProjectareaRoutineCleaningDoneOnSiteComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Air vents sealed or duct work capped", Model.ProjectareaAirVentsSealedOrDuctworkCappedSelection, Model.ProjectareaAirVentsSealedOrDuctworkCappedComments))
+
+        <tr><td colspan="5"><strong>Traffic control</strong></td></tr>
+        @Html.Raw(RenderMeasureRowReadOnly("Restricted to construction workers and necessary staff only", Model.TrafficcontrolRestrictedToConstructionWorkersSelection, Model.TrafficcontrolRestrictedToConstructionWorkersComments))
+        @Html.Raw(RenderMeasureRowReadOnly("All doors and exits free of debris", Model.TrafficcontrolDoorsAndExitsFreeOfDebrisSelection, Model.TrafficcontrolDoorsAndExitsFreeOfDebrisComments))
+
+        <tr><td colspan="5"><strong>Dress code</strong></td></tr>
+        @Html.Raw(RenderMeasureRowReadOnly("Protective clothing worn when required", Model.DresscodeProtectiveClothingWornSelection, Model.DresscodeProtectiveClothingWornComments))
+        @Html.Raw(RenderMeasureRowReadOnly("Workers clothing clean upon exiting work space", Model.DresscodeWorkersClothingCleanUponExitingSelection, Model.DresscodeWorkersClothingCleanUponExitingComments))
+    </tbody>
+</table>
+
+<h4 class="mt-5">Reported to:</h4>
+<table class="table borderless" style="width: 100%; margin-top: 30px;">
+    <tr>
+        <td>
+            <strong>Contractor/Supplier Representative</strong><br />
+            Signature over printed name and Date signed<br />
+            @Html.DisplayFor(m => m.ContractorSign)
+        </td>
+        <td>
+            <strong>NKTI Engineering Staff Representative</strong><br />
+            Signature over printed name and Date signed<br />
+            @Html.DisplayFor(m => m.EngineeringSign)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>Infection Control Representative</strong><br />
+            Signature over printed name and Date signed<br />
+            @Html.DisplayFor(m => m.ICPSign)
+        </td>
+        <td>
+            <strong>Unit/Area Representative</strong><br />
+            Signature over printed name and Date signed<br />
+            @Html.DisplayFor(m => m.UnitAreaRep)
+        </td>
+    </tr>
+</table>
+
+<div class="mt-4 d-flex justify-content-between align-items-end">
+    <div style="border: 2px solid #000; padding: 15px; width: 50%; font-size: 0.9rem;">
+        This form is used for compliance and quality monitoring by the infection control professional<br />
+        or other member of the multidisciplinary team to monitor preventive measures required<br />
+        during construction/renovation activities.<br />
+        <strong>Failure to observe the measures, as discussed, might result to penalty or other actions necessary.</strong>
+    </div>
+    <div style="text-align: right; font-style: italic;">
+        IPC-WIF-014b_ver1
+    </div>
+</div>
+
+@functions {
+    public IHtmlContent RenderMeasureRowReadOnly(string label, string value, string comment)
+    {
+        return new HtmlString(
+            "<tr>" +
+            $"<td>{label}</td>" +
+            $"<td colspan='3'>{value}</td>" +
+            $"<td>{comment}</td>" +
+            "</tr>"
+        );
+    }
+}
