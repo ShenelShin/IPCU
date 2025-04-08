@@ -1,0 +1,359 @@
+﻿@model IEnumerable<IPCU.Models.PostConstruction>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectReferenceNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectNameAndDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SpecificSiteOfActivity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EstimatedDuration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeforeHoarding)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeforeHoardingDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BeforeHoardingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacilityBased)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacilityBasedDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FacilityBasedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AfterRemoval)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AfterRemovalDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AfterRemovalDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhereRequired)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhereRequiredlDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WhereRequiredDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AreaIs)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AreaIsDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AreaIsDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IntegrityofWalls)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IntegrityofWallsDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IntegrityofWallsDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SurfaceinPatient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SurfaceinPatientDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SurfaceinPatientDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AreaSurfaces)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IfPlumbinghasbeenAffected)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IfPlumbinghasbeenAffectedDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IfPlumbinghasbeenAffectedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlumbingifAffected)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlumbingifAffectedDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlumbingifAffectedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CorrectHandWashing)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CorrectHandWashingDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CorrectHandWashingDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FaucetAerators)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FaucetAeratorsDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FaucetAeratorsDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CeilingTiles)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CeilingTilesDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CeilingTilesDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HVACSystems)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HVACSystemsDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HVACSystemsDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CorrectRoomPressurization)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CorrectRoomPressurizationDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CorrectRoomPressurizationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AllMechanicalSpaces)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AllMechanicalSpacesDC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AllMechanicalSpacesDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContractorSign)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EngineeringSign)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ICPSign)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitAreaRep)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectReferenceNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectNameAndDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SpecificSiteOfActivity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimatedDuration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeforeHoarding)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeforeHoardingDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeforeHoardingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FacilityBased)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FacilityBasedDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FacilityBasedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AfterRemoval)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AfterRemovalDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AfterRemovalDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WhereRequired)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WhereRequiredlDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WhereRequiredDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaIs)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaIsDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaIsDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IntegrityofWalls)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IntegrityofWallsDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IntegrityofWallsDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SurfaceinPatient)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SurfaceinPatientDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SurfaceinPatientDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaSurfaces)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IfPlumbinghasbeenAffected)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IfPlumbinghasbeenAffectedDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IfPlumbinghasbeenAffectedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlumbingifAffected)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlumbingifAffectedDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlumbingifAffectedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CorrectHandWashing)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CorrectHandWashingDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CorrectHandWashingDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FaucetAerators)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FaucetAeratorsDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FaucetAeratorsDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CeilingTiles)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CeilingTilesDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CeilingTilesDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HVACSystems)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HVACSystemsDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HVACSystemsDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CorrectRoomPressurization)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CorrectRoomPressurizationDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CorrectRoomPressurizationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllMechanicalSpaces)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllMechanicalSpacesDC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllMechanicalSpacesDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContractorSign)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EngineeringSign)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ICPSign)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitAreaRep)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -52,6 +52,7 @@ namespace IPCU.Data
         public DbSet<GIInfectionChecklist> GIInfectionChecklists { get; set; }
         public DbSet<PatientMovement> PatientMovements { get; set; }
         public DbSet<PatientMovementDetail> PatientMovementDetails { get; set; }
+        public DbSet<ConstructionSite> ConstructionSites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -76,6 +77,7 @@ namespace IPCU.Data
                 .HasForeignKey(pmd => pmd.MovementId);
         }
         public DbSet<IPCU.Models.ICRA> ICRA { get; set; } = default!;
+        public DbSet<IPCU.Models.PostConstruction> PostConstruction { get; set; } = default!;
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);
