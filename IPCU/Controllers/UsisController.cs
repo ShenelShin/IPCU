@@ -149,6 +149,7 @@ namespace IPCU.Controllers
             {
                 // Set TypeClass value to "USI" before saving
                 usi.TypeClass = "USI";
+               usi.DateCreated = DateTime.Now;
 
                 _context.Add(usi);
                 await _context.SaveChangesAsync();

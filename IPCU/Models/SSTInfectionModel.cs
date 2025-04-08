@@ -14,7 +14,11 @@ namespace IPCU.Models
         public string Lname { get; set; }
         public string HospitalNumber { get; set; }
     public DateTime DateOfBirth { get; set; }
-    public int Age { get; set; }
+
+        [Display(Name = "Date Created")]
+        [DataType(DataType.DateTime)]
+        public DateTime DateCreated { get; set; }
+        public int Age { get; set; }
     public string UnitWardArea { get; set; }
     public string MainService { get; set; }
     public DateTime DateOfEvent { get; set; }

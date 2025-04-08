@@ -103,6 +103,7 @@ namespace IPCU.Controllers
                     // Concatenate TypeClass and Subclass values
                     model.TypeClass = string.Join(",", Request.Form["TypeClass"]);
                     model.Subclass = string.Join(",", Request.Form["Subclass"]);
+                    model.DateCreated = DateTime.Now;
 
                     _context.SurgicalSiteInfectionChecklist.Add(model);
                     Console.WriteLine("Saving changes to the database...");

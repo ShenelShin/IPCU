@@ -100,6 +100,7 @@ namespace IPCU.Controllers
                 {
                     // Concatenate checkbox values with commas
                     model.TypeClass = TypeClass != null ? string.Join(",", TypeClass) : "";
+                    model.DateCreated = DateTime.Now;
 
                     _context.LaboratoryConfirmedBSI.Add(model);
                     Console.WriteLine("Saving changes to the database...");

@@ -1,0 +1,190 @@
+﻿<!-- Views/HaiReport/MonthlyReport.cshtml -->
+@model IPCU.Models.MonthlyHaiReportData
+@{
+    ViewData["Title"] = "Monthly HAI Report";
+}
+
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <h2>Monthly HAI Report - @Model.MonthName @Model.Year</h2>
+        </div>
+        <div class="col-md-4 text-right">
+            <a asp-action="Export" asp-route-year="@Model.Year" asp-route-month="@Model.Month" asp-route-reportType="Monthly" class="btn btn-success">
+                <i class="fa fa-file-excel-o"></i> Export to Excel
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">Back to Generator</a>
+        </div>
+    </div>
+
+    <!-- Device-Associated Infections -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4>Device-Associated Infections</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Infection Type</th>
+                        <th class="text-center">Number of Cases</th>
+                        <th class="text-center">Device Days</th>
+                        <th class="text-center">Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var infection in Model.DeviceAssociatedInfections)
+                    {
+                        <tr>
+                            <td>@infection.InfectionType</td>
+                            <td class="text-center">@infection.CaseCount</td>
+                            <td class="text-center">@infection.DeviceDays</td>
+                            <td class="text-center">@infection.FormattedRate</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Ventilator-Associated Events -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h4>Ventilator-Associated Events</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Event Type</th>
+                        <th class="text-center">Number of Cases</th>
+                        <th class="text-center">Ventilator Days</th>
+                        <th class="text-center">Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var infection in Model.VentilatorAssociatedEvents)
+                    {
+                        <tr>
+                            <td>@infection.InfectionType</td>
+                            <td class="text-center">@infection.CaseCount</td>
+                            <td class="text-center">@infection.DeviceDays</td>
+                            <td class="text-center">@infection.FormattedRate</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Non-Device-Associated Infections -->
+    <div class="card mb-4">
+        <div class="card-header bg-warning">
+            <h4>Non-Device-Associated Infections</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Infection Type</th>
+                        <th class="text-center">Number of Cases</th>
+                        <th class="text-center">Patient Days</th>
+                        <th class="text-center">Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var infection in Model.NonDeviceAssociatedInfections)
+                    {
+                        <tr>
+                            <td>@infection.InfectionType</td>
+                            <td class="text-center">@infection.CaseCount</td>
+                            <td class="text-center">@infection.DeviceDays</td>
+                            <td class="text-center">@infection.FormattedRate</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Site-Specific Infections -->
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h4>Site-Specific Infections</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Infection Type</th>
+                        <th class="text-center">Number of Cases</th>
+                        <th class="text-center">Patient Days</th>
+                        <th class="text-center">Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var infection in Model.SiteSpecificInfections)
+                    {
+                        <tr>
+                            <td>@infection.InfectionType</td>
+                            <td class="text-center">@infection.CaseCount</td>
+                            <td class="text-center">@infection.DeviceDays</td>
+                            <td class="text-center">@infection.FormattedRate</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Overall Rates -->
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <h4>Overall HAI Rates</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th class="text-center">Number of Cases</th>
+                        <th class="text-center">Patient Days</th>
+                        <th class="text-center">Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Model.DeviceAssociatedTotal.InfectionType</td>
+                        <td class="text-center">@Model.DeviceAssociatedTotal.CaseCount</td>
+                        <td class="text-center">@Model.DeviceAssociatedTotal.DeviceDays</td>
+                        <td class="text-center">@Model.DeviceAssociatedTotal.FormattedRate</td>
+                    </tr>
+                    <tr>
+                        <td>@Model.NonDeviceAssociatedTotal.InfectionType</td>
+                        <td class="text-center">@Model.NonDeviceAssociatedTotal.CaseCount</td>
+                        <td class="text-center">@Model.NonDeviceAssociatedTotal.DeviceDays</td>
+                        <td class="text-center">@Model.NonDeviceAssociatedTotal.FormattedRate</td>
+                    </tr>
+                    <tr>
+                        <td>@Model.SsiTotal.InfectionType</td>
+                        <td class="text-center">@Model.SsiTotal.CaseCount</td>
+                        <td class="text-center">@Model.SsiTotal.DeviceDays</td>
+                        <td class="text-center">@Model.SsiTotal.FormattedRate</td>
+                    </tr>
+                    <tr class="table-primary">
+                        <td><strong>@Model.OverallHaiRate.InfectionType</strong></td>
+                        <td class="text-center"><strong>@Model.OverallHaiRate.CaseCount</strong></td>
+                        <td class="text-center"><strong>@Model.OverallHaiRate.DeviceDays</strong></td>
+                        <td class="text-center"><strong>@Model.OverallHaiRate.FormattedRate</strong></td>
+                    </tr>
+                    <tr class="table-danger">
+                        <td><strong>@Model.DohRate.InfectionType</strong></td>
+                        <td class="text-center"><strong>@Model.DohRate.CaseCount</strong></td>
+                        <td class="text-center"><strong>@Model.DohRate.DeviceDays</strong></td>
+                        <td class="text-center"><strong>@Model.DohRate.FormattedRate</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

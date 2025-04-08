@@ -69,6 +69,7 @@ namespace IPCU.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.DateCreated = DateTime.Now;
                 _context.PediatricVAEChecklist.Add(model);
                 _context.SaveChanges();
                 return RedirectToAction("Index");

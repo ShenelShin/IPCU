@@ -28,6 +28,10 @@ using System.ComponentModel.DataAnnotations;
     [Display(Name = "Date of Birth")]
     public DateTime? DateOfBirth { get; set; }
 
+    [Display(Name = "Date Created")]
+    [DataType(DataType.DateTime)]
+    public DateTime DateCreated { get; set; }
+
     public int Age { get; set; }
 
     public string UnitWardArea { get; set; }

@@ -26,6 +26,9 @@ namespace IPCU.Models
         [DataType(DataType.Date)]
         [Display(Name = "Date of Birth")]
         public DateTime? DateOfBirth { get; set; }
+        [Display(Name = "Date Created")]
+        [DataType(DataType.DateTime)]
+        public DateTime DateCreated { get; set; }
 
         public int Age { get; set; }
 
@@ -45,6 +48,7 @@ namespace IPCU.Models
 
         public string Investigator { get; set; }
 
+        public string? SurgeryDone { get; set; }
 
 
 

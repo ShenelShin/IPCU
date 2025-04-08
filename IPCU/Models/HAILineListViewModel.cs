@@ -16,7 +16,7 @@ namespace IPCU.Models
         public DateTime? BirthDate { get; set; }
 
         [Display(Name = "Age")]
-        public int? Age { get; set; }
+        public string Age { get; set; }
 
         [Display(Name = "Unit")]
         public string Unit { get; set; }
@@ -66,5 +66,7 @@ namespace IPCU.Models
         [Display(Name = "Date Created")]
         [DataType(DataType.DateTime)]
         public DateTime DateCreated { get; set; }
+
+        public string? SurgeryDone { get; set; }
     }
 }

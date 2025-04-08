@@ -97,6 +97,7 @@ namespace IPCU.Controllers
         {
             // Ensure the concatenated values are stored
             model.TypeClass = TypeClass != null ? string.Join(", ", TypeClass) : "";
+            model.DateCreated = DateTime.Now;
 
             var nullableFields = new List<string>
     {
