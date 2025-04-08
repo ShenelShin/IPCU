@@ -15,6 +15,9 @@ namespace IPCU.Models
 
         public string SpecificSiteOfActivity { get; set; }
 
+        [EmailAddress]
+        public string ConstructionEmail { get; set; }
+
         public string ScopeOfWork { get; set; }
 
         public DateTime? ProjectStartDate { get; set; }

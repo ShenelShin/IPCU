@@ -31,7 +31,9 @@
                 </tr>
                 <tr>
                     <th>Specific Site of the Activity</th>
-                    <td colspan="3">@Html.TextBoxFor(m => m.SpecificSiteOfActivity, new { @class = "form-control" })</td>
+                    <td>@Html.TextBoxFor(m => m.SpecificSiteOfActivity, new { @class = "form-control" })</td>
+                    <th>Email</th>
+                    <td>@Html.TextBoxFor(m => m.ConstructionEmail, new { @class = "form-control" })</td>
                 </tr>
                 <tr>
                     <th>Scope of Work (Brief Summary):</th>
@@ -606,6 +608,9 @@
         </table>
     </div>
 
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
         </form>
 
 <div>
