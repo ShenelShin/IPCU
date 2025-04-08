@@ -14,83 +14,37 @@
 
 <h4>ICRA</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+
         <form asp-action="Create">
-            <div class="container-fluid px-5">
-                <div class="row">
-                    <div class="col-12">
-                        <table class="table table-bordered w-100">
-                            <tr>
-                                <td style="width: 50%;">
-                                    <div class="form-group">
-                                        <label><strong>Project Reference Number:</strong></label>
-                                        <input asp-for="ProjectReferenceNumber" class="form-control" />
-                                        <span asp-validation-for="ProjectReferenceNumber" class="text-danger"></span>
-                                    </div>
-                                </td>
-                                <td style="width: 50%;">
-                                    <div class="form-group">
-                                        <label><strong>Project Name and Description:</strong></label>
-                                        <input asp-for="ProjectNameAndDescription" class="form-control" />
-                                        <span asp-validation-for="ProjectNameAndDescription" class="text-danger"></span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <label><strong>Contractor/Supplier Representative (Name):</strong></label>
-                                        <input asp-for="ContractorRepresentativeName" class="form-control" />
-                                        <span asp-validation-for="ContractorRepresentativeName" class="text-danger"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <label><strong>Telephone/Mobile number:</strong></label>
-                                        <input asp-for="TelephoneOrMobileNumber" class="form-control" />
-                                        <span asp-validation-for="TelephoneOrMobileNumber" class="text-danger"></span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div class="form-group">
-                                        <label><strong>Specific Site of the Activity</strong> (patient room, corridor, etc):</label>
-                                        <input asp-for="SpecificSiteOfActivity" class="form-control" />
-                                        <span asp-validation-for="SpecificSiteOfActivity" class="text-danger"></span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <div class="form-group">
-                                        <label><strong>Scope of Work (Brief Summary):</strong></label>
-                                        <input asp-for="ScopeOfWork" class="form-control" />
-                                        <span asp-validation-for="ScopeOfWork" class="text-danger"></span>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <label><strong>Project Start Date:</strong></label>
-                                        <input asp-for="ProjectStartDate" class="form-control" />
-                                        <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <label><strong>Estimate Duration:</strong></label>
-                                        <input asp-for="EstimatedDuration" class="form-control" />
-                                        <span asp-validation-for="EstimatedDuration" class="text-danger"></span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            <table class="table table-bordered">
+                <tr>
+                    <th>Project Reference Number:</th>
+                    <td>@Html.TextBoxFor(m => m.ProjectReferenceNumber, new { @class = "form-control" })</td>
+                    <th>Project/Activity Name and Description:</th>
+                    <td>@Html.TextBoxFor(m => m.ProjectNameAndDescription, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Contractor/Supplier Representative (Name):</th>
+                    <td>@Html.TextBoxFor(m => m.ContractorRepresentativeName, new { @class = "form-control" })</td>
+                    <th>Telephone/Mobile number:</th>
+                    <td>@Html.TextBoxFor(m => m.TelephoneOrMobileNumber, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Specific Site of the Activity</th>
+                    <td colspan="3">@Html.TextBoxFor(m => m.SpecificSiteOfActivity, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>Scope of Work (Brief Summary):</th>
+                    <td colspan="3">@Html.TextAreaFor(m => m.ScopeOfWork, new { @class = "form-control", rows = 3 })</td>
+                </tr>
+                <tr>
+                    <th>Project Start Date:</th>
+                    <td>@Html.TextBoxFor(m => m.ProjectStartDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })</td>
+                    <th>Estimated Duration:</th>
+                    <td>@Html.TextBoxFor(m => m.EstimatedDuration, new { @class = "form-control" })</td>
+                </tr>
+            </table>
+
 
             <div class="container-fluid px-5">
                 <div class="row">
@@ -426,32 +380,233 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="ContractorSign" class="control-label"></label>
-                <input asp-for="ContractorSign" class="form-control" />
-                <span asp-validation-for="ContractorSign" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EngineeringSign" class="control-label"></label>
-                <input asp-for="EngineeringSign" class="form-control" />
-                <span asp-validation-for="EngineeringSign" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ICPSign" class="control-label"></label>
-                <input asp-for="ICPSign" class="form-control" />
-                <span asp-validation-for="ICPSign" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UnitAreaRep" class="control-label"></label>
-                <input asp-for="UnitAreaRep" class="form-control" />
-                <span asp-validation-for="UnitAreaRep" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <h4 class="mt-5">Reported to:</h4>
+    <table class="table borderless" style="width: 100%; margin-top: 30px;">
+        <tr>
+            <td>
+                <strong>Contractor/Supplier Representative</strong><br />
+                Signature over printed name and Date signed<br />
+                @Html.TextBoxFor(m => m.ContractorSign, new { @class = "form-control" })
+            </td>
+            <td>
+                <strong>NKTI Engineering Staff Representative</strong><br />
+                Signature over printed name and Date signed<br />
+                @Html.TextBoxFor(m => m.EngineeringSign, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Infection Control Representative</strong><br />
+                Signature over printed name and Date signed<br />
+                @Html.TextBoxFor(m => m.ICPSign, new { @class = "form-control" })
+            </td>
+            <td>
+                <strong>Unit/Area Representative</strong><br />
+                Signature over printed name and Date signed<br />
+                @Html.TextBoxFor(m => m.UnitAreaRep, new { @class = "form-control" })
+            </td>
+        </tr>
+    </table>
+
+    <h3 class="mt-4 mb-3">INFECTION CONTROL RISK ASSESSMENT (ICRA) MATRIX REFERENCE</h3>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered table-sm">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Construction Activity Type</th>
+                    <th>Description</th>
+                    <th>Patient Risk Group</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Type A</td>
+                    <td>
+                        <strong>Inspection and Non-Invasive Activities</strong><br />
+                        Includes, but is not limited to:<br />
+                        • Removal of ceiling tiles for visual inspection (limited to 1 tile per 50 square feet)<br />
+                        • Painting (but not sanding)<br />
+                        • Wallcovering, electrical trim work, minor plumbing activities which do not generate dust or require cutting of walls or access to ceilings other than for visual inspection.
+                    </td>
+                    <td>
+                        <strong>Low Risk:</strong> Non-patient care areas such as Office areas<br />
+                        <strong>Medium Risk:</strong> Outpatient and General Care Areas: Cardiology, Echocardiography, Endoscopy, Nuclear Medicine, Physical Therapy, Radiology/MRI, Respiratory Therapy<br />
+                        <strong>High Risk:</strong> In-patient units: CCU, Emergency Room, Labor and Delivery, Laboratories (specimen), Newborn Nursery, Outpatient Surgery, Pediatrics, Pharmacy, Post Anesthesia Care Unit, Surgical Units
+                    </td>
+                </tr>
+                <tr>
+                    <td>Type B</td>
+                    <td>
+                        <strong>Small-scale, short-duration activities which create minimal dust</strong><br />
+                        Includes, but is not limited to:<br />
+                        • Installation of telephone and computer cabling<br />
+                        • Access to chase spaces<br />
+                        • Cutting of walls or ceiling where dust migration can be controlled
+                    </td>
+                    <td>
+                        <strong>Highest Risk:</strong> Areas caring for immunocompromised patients, Burn Unit, Cardiac Catheterization Laboratory, Central Sterile Supply, Intensive Care Units, Medical Unit, Negative pressure isolation rooms, Oncology, Operating Rooms including C-section rooms
+                    </td>
+                </tr>
+                <tr>
+                    <td>Type C</td>
+                    <td>
+                        <strong>Work that generates a moderate to high level of dust or requires demolition/removal of any fixed building components or assemblies</strong><br />
+                        Includes, but is not limited to:<br />
+                        • Sanding of walls for painting or wall covering<br />
+                        • Removal of floor coverings, ceiling tiles, and casework<br />
+                        • New wall construction<br />
+                        • Minor ductwork or electrical work above ceilings<br />
+                        • Major cabling activities or any activity which cannot be completed within a single work shift
+                    </td>
+                    <td>
+                        Refer to matrix classification below
+                    </td>
+                </tr>
+                <tr>
+                    <td>Type D</td>
+                    <td>
+                        <strong>Major demolition and construction projects</strong><br />
+                        Includes, but is not limited to:<br />
+                        • Activities which require consecutive work shifts<br />
+                        • Requires heavy demolition or removal of a complete cabling system<br />
+                        • New construction
+                    </td>
+                    <td>
+                        Refer to matrix classification below
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h5 class="mt-4">ICRA Matrix Risk Classification</h5>
+        <table class="table table-bordered table-sm">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Patient Risk Group</th>
+                    <th>Type A</th>
+                    <th>Type B</th>
+                    <th>Type C</th>
+                    <th>Type D</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Low Risk</td>
+                    <td>I</td>
+                    <td>II</td>
+                    <td>II</td>
+                    <td>III/IV</td>
+                </tr>
+                <tr>
+                    <td>Medium Risk</td>
+                    <td>I</td>
+                    <td>II</td>
+                    <td>III</td>
+                    <td>IV</td>
+                </tr>
+                <tr>
+                    <td>High Risk</td>
+                    <td>I</td>
+                    <td>II</td>
+                    <td>III/IV<sup>2</sup></td>
+                    <td>IV</td>
+                </tr>
+                <tr>
+                    <td>Highest Risk</td>
+                    <td>II</td>
+                    <td>III/IV<sup>1</sup></td>
+                    <td>III/IV<sup>2</sup></td>
+                    <td>IV</td>
+                </tr>
+            </tbody>
+        </table>
+        <small>
+            <strong>Note:</strong>
+            <br />1: Higher class when working above ceiling.
+            <br />2: Higher class may be required based on duration, location, and potential impact of work.
+        </small>
     </div>
-</div>
+     
+    <h3 class="mt-4 mb-3">Description of Required Infection Control Precautions by Class</h3>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered table-sm">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Class</th>
+                    <th>During Construction Project</th>
+                    <th>Upon Completion of Project</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Class I</td>
+                    <td>
+                        1. Execute work by methods to minimize raising dust from construction operations.<br />
+                        2. Immediately replace any ceiling tile displaced for visual inspection.
+                    </td>
+                    <td>
+                        1. Clean work area upon completion of task.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Class II</td>
+                    <td>
+                        1. Provide active means to prevent airborne dust from dispersing into the atmosphere.<br />
+                        2. Water mist work surfaces to control dust while cutting.<br />
+                        3. Seal unused doors with duct tape.<br />
+                        4. Block off and seal air vents.<br />
+                        5. Place dust mat at entrance and exit of work area.<br />
+                        6. Remove or isolate HVAC system in areas where work is being performed.
+                    </td>
+                    <td>
+                        1. Wipe work surfaces with disinfectant.<br />
+                        2. Contain construction waste before transport in tightly covered containers.<br />
+                        3. Wet mop and/or vacuum with HEPA-filtered vacuum before leaving work area.<br />
+                        4. Remove isolation of HVAC system in areas where work is being performed.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Class III</td>
+                    <td>
+                        1. Remove or isolate HVAC system in area where work is being done to prevent contamination of duct system.<br />
+                        2. Complete all critical barriers (sheetrock, plywood, plastic) to seal area from non-work area or implement control cube method (cart with plastic covering and sealed connection to worksite with HEPA vacuum for vacuuming prior to exit) before construction begins.<br />
+                        3. Maintain negative air pressure within worksite utilizing HEPA-equipped air filtration units.<br />
+                        4. Contain construction waste before transport in tightly covered containers.<br />
+                        5. Cover transport receptacles or carts. Tape covering unless solid lid.
+                    </td>
+                    <td>
+                        1. Do not remove barriers from work area until completed project is inspected by the owner’s Safety Department and Infection Control Department and thoroughly cleaned by the owner’s Environmental Services Department.<br />
+                        2. Remove barrier materials carefully to minimize spreading of dirt and debris associated with construction.<br />
+                        3. Vacuum work area with HEPA-filtered vacuums.<br />
+                        4. Wet mop area with disinfectant.<br />
+                        5. Remove isolation of HVAC system in areas where work is being performed.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Class IV</td>
+                    <td>
+                        1. Isolate HVAC system in area where work is being done to prevent contamination of duct system.<br />
+                        2. Complete all critical barriers (sheetrock, plywood, plastic) to seal area from non-work area or implement control cube method (cart with plastic covering and sealed connection to worksite with HEPA vacuum for vacuuming prior to exit) before construction begins.<br />
+                        3. Maintain negative air pressure within worksite utilizing HEPA-equipped air filtration units.<br />
+                        4. Seal holes, pipes, conduits, and punctures appropriately.<br />
+                        5. Construct anteroom and require all personnel to pass through this room so they can be vacuumed using a HEPA vacuum cleaner before leaving worksite, or they can wear cloth or paper coveralls that are removed each time they leave the worksite.<br />
+                        6. All personnel entering worksite are required to wear shoe covers. Shoe covers must be changed each time the worker exits the work area.<br />
+                        7. Do not remove barriers from work area until completed project is inspected by the owner’s Safety Department and Infection Control Department and thoroughly cleaned by the owner’s Environmental Services Department.
+                    </td>
+                    <td>
+                        1. Remove barrier material carefully to minimize spreading of dirt and debris associated with construction.<br />
+                        2. Contain construction waste before transport in tightly covered containers.<br />
+                        3. Cover transport receptacles or carts. Tape covering unless solid lid.<br />
+                        4. Vacuum work area with HEPA-filtered vacuums.<br />
+                        5. Wet mop area with disinfectant.<br />
+                        6. Remove isolation of HVAC system in areas where work is being performed.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+        </form>
 
 <div>
     <a asp-action="Index">Back to List</a>
