@@ -1,0 +1,119 @@
+﻿<!-- Views/HaiReport/ManualEntry.cshtml -->
+@model IPCU.Models.ManualHaiEntryViewModel
+@{
+    ViewData["Title"] = "Manual HAI Data Entry";
+}
+
+<div class="container">
+    <h2>Manual HAI Data Entry</h2>
+    <p class="text-muted">Use this form to manually enter HAI data that couldn't be pulled automatically from the system.</p>
+
+    <form asp-action="SaveManualEntry" method="post">
+        <input type="hidden" asp-for="Year" />
+        <input type="hidden" asp-for="Month" />
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4>Manual Entry for @(new DateTime(Model.Year, Model.Month, 1).ToString("MMMM yyyy"))</h4>
+            </div>
+            <div class="card-body">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Reporting Period</label>
+                    <div class="col-sm-9">
+                        <div class="form-control-plaintext">
+                            @(new DateTime(Model.Year, Model.Month, 1).ToString("MMMM yyyy"))
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Device-Associated Infections -->
+                <h5 class="mt-4 mb-3">Device-Associated Infections</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-8 col-form-label">CLABSI Cases</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="ManualCaseCounts[CLABSI]" value="@(Model.ManualCaseCounts.ContainsKey("CLABSI") ? Model.ManualCaseCounts["CLABSI"] : 0)" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-8 col-form-label">Central Line Days</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="ManualDeviceDays[CL]" value="@(Model.ManualDeviceDays.ContainsKey("CL") ? Model.ManualDeviceDays["CL"] : 0)" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-8 col-form-label">CAUTI Cases</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="ManualCaseCounts[CAUTI]" value="@(Model.ManualCaseCounts.ContainsKey("CAUTI") ? Model.ManualCaseCounts["CAUTI"] : 0)" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-8 col-form-label">Urinary Catheter Days</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="ManualDeviceDays[IUC]" value="@(Model.ManualDeviceDays.ContainsKey("IUC") ? Model.ManualDeviceDays["IUC"] : 0)" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-8 col-form-label">VAE Cases</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="ManualCaseCounts[VAE]" value="@(Model.ManualCaseCounts.ContainsKey("VAE") ? Model.ManualCaseCounts["VAE"] : 0)" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-sm-8 col-form-label">Ventilator Days</label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="ManualDeviceDays[MV]" value="@(Model.ManualDeviceDays.ContainsKey("MV") ? Model.ManualDeviceDays["MV"] : 0)" min="0" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Non-Device Associated Infections -->
+                <h5 class="mt-4 mb-3">Non-Device Associated Infections</h5>
+
+                @foreach (var field in Model.ManualCaseCounts.Keys.Where(k => !new[] { "CLABSI", "CAUTI", "VAE" }.Contains(k)))
+                {
+                    <div class="form-group row">
+                        <label class="col-sm-8 col-form-label">@field</label>
+                        <div class="col-sm-4">
+                            <input type="number" class="form-control" name="ManualCaseCounts[@field]" value="@Model.ManualCaseCounts[field]" min="0" />
+                        </div>
+                    </div>
+                }
+
+                <!-- Patient Days -->
+                <h5 class="mt-4 mb-3">Denominator Data</h5>
+                <div class="form-group row">
+                    <label class="col-sm-8 col-form-label">Total Patient Days</label>
+                    <div class="col-sm-4">
+                        <input type="number" class="form-control" name="ManualDeviceDays[PatientDays]" value="@(Model.ManualDeviceDays.ContainsKey("PatientDays") ? Model.ManualDeviceDays["PatientDays"] : 0)" min="0" />
+                    </div>
+                </div>
+
+                <div class="form-group row mt-4">
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary">Save Manual Entry</button>
+                        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

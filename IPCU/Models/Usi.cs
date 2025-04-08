@@ -1,4 +1,6 @@
-﻿namespace IPCU.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IPCU.Models
 {
     public class Usi
     {
@@ -9,6 +11,9 @@
         public string Mname { get; set; } // Middle Name
         public string HospitalNumber { get; set; } // Foreign Key to Hospital Records
         public DateTime DateOfBirth { get; set; } // Date of Birth
+        [Display(Name = "Date Created")]
+        [DataType(DataType.DateTime)]
+        public DateTime DateCreated { get; set; }
         public int Age { get; set; } // Age
         public string UnitWardArea { get; set; } // Unit/Ward/Area
         public string? MainService { get; set; } // Main Service

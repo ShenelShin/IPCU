@@ -1,0 +1,122 @@
+﻿<!-- Views/HaiReport/QuarterlyReport.cshtml -->
+@model IPCU.Models.QuarterlyHaiReportData
+@{
+    ViewData["Title"] = "Quarterly HAI Report";
+}
+
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-md-8">
+            <h2>Quarterly HAI Report - Q@(Model.Quarter) @Model.Year (@Model.QuarterRange)</h2>
+        </div>
+        <div class="col-md-4 text-right">
+            <a asp-action="Export" asp-route-year="@Model.Year" asp-route-month="@Model.Quarter" asp-route-reportType="Quarterly" class="btn btn-success">
+                <i class="fa fa-file-excel-o"></i> Export to Excel
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">Back to Generator</a>
+        </div>
+    </div>
+
+    <!-- Quarterly Summary -->
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4>Quarterly Summary</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Total Patient Days:</th>
+                            <td>@Model.TotalPatientDays</td>
+                        </tr>
+                        <tr>
+                            <th>Total HAI Cases:</th>
+                            <td>@Model.MonthlyReports.Sum(r => r.OverallHaiRate.CaseCount)</td>
+                        </tr>
+                        <tr>
+                            <th>Quarterly HAI Rate:</th>
+                            <td>@Model.QuarterlyRate.ToString("0.00")%</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly Breakdowns -->
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h4>Monthly Breakdown</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Month</th>
+                        <th class="text-center">Total HAI Cases</th>
+                        <th class="text-center">Patient Days</th>
+                        <th class="text-center">HAI Rate</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var report in Model.MonthlyReports)
+                    {
+                        <tr>
+                            <td>@report.MonthName</td>
+                            <td class="text-center">@report.OverallHaiRate.CaseCount</td>
+                            <td class="text-center">@report.OverallHaiRate.DeviceDays</td>
+                            <td class="text-center">@report.OverallHaiRate.FormattedRate</td>
+                            <td class="text-center">
+                                <a asp-action="Generate" asp-route-year="@report.Year" asp-route-month="@report.Month" asp-route-reportType="Monthly" class="btn btn-sm btn-info">
+                                    View Details
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Device-Associated Infections Summary -->
+    <div class="card mb-4">
+        <div class="card-header bg-warning">
+            <h4>Device-Associated Infections Summary</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Infection Type</th>
+                        @foreach (var report in Model.MonthlyReports)
+                        {
+                            <th class="text-center">@report.MonthName</th>
+                        }
+                        <th class="text-center">Quarter Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var deviceInfections = Model.MonthlyReports.First().DeviceAssociatedInfections.Select(i => i.InfectionType).ToList();
+                    }
+                    @foreach (var infectionType in deviceInfections)
+                    {
+                        <tr>
+                            <td>@infectionType</td>
+                            @foreach (var report in Model.MonthlyReports)
+                            {
+                                var infection = report.DeviceAssociatedInfections.FirstOrDefault(i => i.InfectionType == infectionType);
+                                <td class="text-center">@(infection?.CaseCount ?? 0)</td>
+                            }
+                            <td class="text-center">
+                                @Model.MonthlyReports.Sum(r => r.DeviceAssociatedInfections.FirstOrDefault(i => i.InfectionType == infectionType)?.CaseCount ?? 0)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

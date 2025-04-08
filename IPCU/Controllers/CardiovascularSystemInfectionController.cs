@@ -102,6 +102,7 @@ namespace IPCU.Controllers
 
             if (ModelState.IsValid)
             {
+                model.DateCreated = DateTime.Now;
                 _context.CardiovascularSystemInfection.Add(model);
                 _context.SaveChanges();
                 return RedirectToAction("Index");

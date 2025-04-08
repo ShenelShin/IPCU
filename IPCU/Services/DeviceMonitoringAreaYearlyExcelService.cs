@@ -20,285 +20,24 @@ namespace IPCU.Services
             int startMonth = halfYear == 1 ? 1 : 7;
             int endMonth = halfYear == 1 ? 6 : 12;
             string halfYearLabel = halfYear == 1 ? "First Half" : "Second Half";
+            string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 
             using (var package = new ExcelPackage())
             {
-                // Create the worksheet
-                var worksheet = package.Workbook.Worksheets.Add($"{halfYearLabel} Report");
+                // Create a summary sheet first
+                var summarySheet = package.Workbook.Worksheets.Add("Summary");
+                CreateSummarySheet(summarySheet, sortedReports, startMonth, endMonth, halfYearLabel);
 
-                // Set column widths
-                worksheet.DefaultColWidth = 12;
-                worksheet.Column(1).Width = 15; // Unit/Ward column
-
-                // Create the header row
-                int row = 1;
-                int col = 1;
-
-                // Add title
-                worksheet.Cells[row, col].Value = "Unit/Ward";
-                worksheet.Cells[row, col].Style.Font.Bold = true;
-                worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                worksheet.Cells[row, col].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-
-                // Add month headers - only for the selected half of the year
-                string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-                string[] selectedMonths = months.Skip(startMonth - 1).Take(6).ToArray();
-
-                foreach (var month in selectedMonths)
-                {
-                    col++;
-                    worksheet.Cells[row, col].Value = month;
-                    worksheet.Cells[row, col].Style.Font.Bold = true;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col, row, col + 16].Merge = true;
-                    col += 16;
-                }
-
-                // Row 2 - Sub headers
-                row++;
-                col = 1;
-
-                // Empty cell above unit/ward
-                worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                col++;
-
-                // Create sub headers for each month
+                // Create separate sheets for each month
                 for (int month = startMonth; month <= endMonth; month++)
                 {
-                    // First column group - First Day/Month
-                    worksheet.Cells[row, col].Value = "First Day";
-                    worksheet.Cells[row, col, row, col + 1].Merge = true;
-                    worksheet.Cells[row, col, row, col + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col, row, col + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col, row, col + 1].Style.Font.Bold = true;
-                    col += 2;
-
-                    // Second column group - New Arrival
-                    worksheet.Cells[row, col].Value = "New Arrival";
-                    worksheet.Cells[row, col, row, col + 1].Merge = true;
-                    worksheet.Cells[row, col, row, col + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col, row, col + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col, row, col + 1].Style.Font.Bold = true;
-                    col += 2;
-
-                    // Third column group - # of DC
-                    worksheet.Cells[row, col].Value = "# of DC";
-                    worksheet.Cells[row, col, row, col + 2].Merge = true;
-                    worksheet.Cells[row, col, row, col + 2].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col, row, col + 2].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col, row, col + 2].Style.Font.Bold = true;
-                    col += 3;
-
-                    // Fourth column - Total
-                    worksheet.Cells[row, col].Value = "Total";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col].Style.Font.Bold = true;
-                    col += 1;
-
-                    // Fifth column group - Px w/ IUC
-                    worksheet.Cells[row, col].Value = "Px w/ IUC";
-                    worksheet.Cells[row, col, row, col + 1].Merge = true;
-                    worksheet.Cells[row, col, row, col + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col, row, col + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col, row, col + 1].Style.Font.Bold = true;
-                    col += 2;
-
-                    // Sixth column group - Px w/ CL
-                    worksheet.Cells[row, col].Value = "Px w/ CL";
-                    worksheet.Cells[row, col, row, col + 1].Merge = true;
-                    worksheet.Cells[row, col, row, col + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col, row, col + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col, row, col + 1].Style.Font.Bold = true;
-                    col += 2;
-
-                    // Seventh column - Px w/ MV
-                    worksheet.Cells[row, col].Value = "Px w/ MV";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col].Style.Font.Bold = true;
-                    col += 1;
-                }
-
-                // Row 3 - Sub headers (continued)
-                row++;
-                col = 1;
-
-                // Empty cell above unit/ward
-                worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                col++;
-
-                // Create detailed sub headers for each month
-                for (int month = startMonth; month <= endMonth; month++)
-                {
-                    // First column group - First Day/Month
-                    worksheet.Cells[row, col].Value = "of the Month";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    worksheet.Cells[row, col].Value = "Next Month";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    // Second column group - New Arrival
-                    worksheet.Cells[row, col].Value = "Adm";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    worksheet.Cells[row, col].Value = "T-in";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    // Third column group - # of DC
-                    worksheet.Cells[row, col].Value = "DC";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    worksheet.Cells[row, col].Value = "Mor";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    worksheet.Cells[row, col].Value = "T-out";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    // Fourth column - Total is already filled
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    // Fifth column group - Px w/ IUC
-                    worksheet.Cells[row, col].Value = "Non-KT";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    worksheet.Cells[row, col].Value = "KT";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    // Sixth column group - Px w/ CL
-                    worksheet.Cells[row, col].Value = "Non-HD";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    worksheet.Cells[row, col].Value = "HD";
-                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-
-                    // Seventh column - Px w/ MV is already filled
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    col++;
-                }
-
-                // Process data for each area
-                var areas = GetDefinedAreas(); // Use the predefined list of areas
-
-                foreach (var area in areas)
-                {
-                    row++;
-                    col = 1;
-
-                    // Write area name
-                    worksheet.Cells[row, col].Value = area;
-                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, col].Style.Font.Bold = true;
-                    col++;
-
-                    // Process each month for this area (only for the selected half-year)
-                    for (int monthNumber = startMonth; monthNumber <= endMonth; monthNumber++)
+                    // Get reports for this month
+                    var monthReports = sortedReports.Where(r => r.Month == month).ToList();
+                    if (monthReports.Any())
                     {
-                        var monthReport = sortedReports.FirstOrDefault(r => r.Month == monthNumber && r.Area == area);
-
-                        if (monthReport != null && monthReport.DailyData != null && monthReport.DailyData.Any())
-                        {
-                            // Calculate monthly summary data
-                            var monthData = CalculateMonthlyData(monthReport.DailyData, monthNumber, monthReport.Year);
-
-                            // Fill in the data for this month
-                            worksheet.Cells[row, col++].Value = monthData.FirstDayCount;
-                            worksheet.Cells[row, col++].Value = monthData.NextMonthCount;
-                            worksheet.Cells[row, col++].Value = monthData.AdmissionCount;
-                            worksheet.Cells[row, col++].Value = monthData.TransferInCount;
-                            worksheet.Cells[row, col++].Value = monthData.SentHomeCount;
-                            worksheet.Cells[row, col++].Value = monthData.MortalityCount;
-                            worksheet.Cells[row, col++].Value = monthData.TransferOutCount;
-                            worksheet.Cells[row, col++].Value = monthData.TotalCount;
-                            worksheet.Cells[row, col++].Value = monthData.IUCNonKTCount;
-                            worksheet.Cells[row, col++].Value = monthData.IUCKTCount;
-                            worksheet.Cells[row, col++].Value = monthData.CLNonHDCount;
-                            worksheet.Cells[row, col++].Value = monthData.CLHDCount;
-                            worksheet.Cells[row, col++].Value = monthData.MVCount;
-                        }
-                        else
-                        {
-                            // No data for this month, fill with zeros or empty cells
-                            for (int i = 0; i < 13; i++)
-                            {
-                                worksheet.Cells[row, col++].Value = 0;
-                            }
-                        }
-
-                        // Apply borders to all cells in this row
-                        for (int i = col - 13; i < col; i++)
-                        {
-                            worksheet.Cells[row, i].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                            worksheet.Cells[row, i].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                        }
-                    }
-                }
-
-                // Add a "Total" row at the bottom
-                row++;
-                col = 1;
-                worksheet.Cells[row, col].Value = "Total";
-                worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                worksheet.Cells[row, col].Style.Font.Bold = true;
-                col++;
-
-                // Calculate and insert totals for each column
-                int totalColumns = 6 * 13; // 6 months, 13 columns per month
-                int startCol = 2;
-                int endCol = startCol + totalColumns - 1;
-
-                for (int c = startCol; c <= endCol; c++)
-                {
-                    // Get the column letter
-                    string colLetter = GetExcelColumnName(c);
-
-                    // Create a formula to sum the column (excluding header rows)
-                    int dataStartRow = 4; // First row with actual data
-                    int dataEndRow = row - 1; // Last row with actual data
-
-                    string formula = $"=SUM({colLetter}{dataStartRow}:{colLetter}{dataEndRow})";
-                    worksheet.Cells[row, c].Formula = formula;
-                    worksheet.Cells[row, c].Style.Border.BorderAround(ExcelBorderStyle.Thin);
-                    worksheet.Cells[row, c].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    worksheet.Cells[row, c].Style.Font.Bold = true;
-                }
-
-                // Apply header styling
-                worksheet.Cells[1, 1, 3, col - 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                worksheet.Cells[1, 1, 3, col - 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
-
-                // Apply alternating row colors for better readability
-                for (int r = 4; r <= row; r++)
-                {
-                    if (r % 2 == 0)
-                    {
-                        worksheet.Cells[r, 1, r, col - 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[r, 1, r, col - 1].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240));
+                        // Create the worksheet for this month
+                        var worksheet = package.Workbook.Worksheets.Add(months[month - 1]);
+                        CreateMonthSheet(worksheet, monthReports, month);
                     }
                 }
 
@@ -310,14 +49,221 @@ namespace IPCU.Services
         // Keep the original method for backward compatibility
         public byte[] GenerateAreaYearlyExcel(List<DeviceMonitoringReportData> monthlyReports)
         {
-            // Generate full year report by combining both half-years
+            // Generate full year report by splitting into month sheets
             return GenerateAreaHalfYearlyExcel(monthlyReports, 1); // Default to first half if using the old method
+        }
+
+        // Helper method to create the summary sheet
+        private void CreateSummarySheet(ExcelWorksheet worksheet, List<DeviceMonitoringReportData> reports, int startMonth, int endMonth, string halfYearLabel)
+        {
+            var areas = GetDefinedAreas();
+            string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+            string[] selectedMonths = months.Skip(startMonth - 1).Take(endMonth - startMonth + 1).ToArray();
+
+            // Set column widths
+            worksheet.DefaultColWidth = 12;
+            worksheet.Column(1).Width = 20; // Unit/Ward column wider for area names
+
+            // Add title
+            worksheet.Cells[1, 1].Value = $"{halfYearLabel} Summary Report";
+            worksheet.Cells[1, 1, 1, selectedMonths.Length + 1].Merge = true;
+            worksheet.Cells[1, 1, 1, selectedMonths.Length + 1].Style.Font.Bold = true;
+            worksheet.Cells[1, 1, 1, selectedMonths.Length + 1].Style.Font.Size = 14;
+            worksheet.Cells[1, 1, 1, selectedMonths.Length + 1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+            // Create header row
+            int row = 3;
+            worksheet.Cells[row, 1].Value = "Unit/Ward";
+            worksheet.Cells[row, 1].Style.Font.Bold = true;
+
+            // Add month columns
+            for (int i = 0; i < selectedMonths.Length; i++)
+            {
+                worksheet.Cells[row, i + 2].Value = selectedMonths[i];
+                worksheet.Cells[row, i + 2].Style.Font.Bold = true;
+            }
+
+            // Style header row
+            worksheet.Cells[row, 1, row, selectedMonths.Length + 1].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[row, 1, row, selectedMonths.Length + 1].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+            worksheet.Cells[row, 1, row, selectedMonths.Length + 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+            // Populate data
+            row++;
+            foreach (var area in areas)
+            {
+                worksheet.Cells[row, 1].Value = area;
+                worksheet.Cells[row, 1].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+                // For each month, show total patient count (from end of month)
+                for (int month = startMonth; month <= endMonth; month++)
+                {
+                    int col = month - startMonth + 2;
+                    var monthReport = reports.FirstOrDefault(r => r.Month == month && r.Area == area);
+
+                    if (monthReport != null && monthReport.DailyData != null && monthReport.DailyData.Any())
+                    {
+                        var monthData = CalculateMonthlyData(monthReport.DailyData, month, monthReport.Year);
+                        worksheet.Cells[row, col].Value = monthData.TotalCount;
+                    }
+                    else
+                    {
+                        worksheet.Cells[row, col].Value = 0;
+                    }
+
+                    worksheet.Cells[row, col].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+                    worksheet.Cells[row, col].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                }
+
+                row++;
+            }
+
+            // Add navigation instructions
+            row += 2;
+            worksheet.Cells[row, 1].Value = "Click on the tabs below to view detailed data for each month";
+            worksheet.Cells[row, 1, row, selectedMonths.Length + 1].Merge = true;
+            worksheet.Cells[row, 1].Style.Font.Italic = true;
+
+            // Auto-fit columns
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        }
+
+        // Helper method to create individual month sheets
+        private void CreateMonthSheet(ExcelWorksheet worksheet, List<DeviceMonitoringReportData> monthReports, int month)
+        {
+            string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+            string monthName = months[month - 1];
+
+            // Set column widths
+            worksheet.DefaultColWidth = 12;
+            worksheet.Column(1).Width = 20; // Unit/Ward column wider for area names
+
+            // Create the header row
+            int row = 1;
+            int col = 1;
+
+            // Add title
+            worksheet.Cells[row, col].Value = $"{monthName} Report";
+            worksheet.Cells[row, col, row, 14].Merge = true;
+            worksheet.Cells[row, col, row, 14].Style.Font.Bold = true;
+            worksheet.Cells[row, col, row, 14].Style.Font.Size = 14;
+            worksheet.Cells[row, col, row, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+            row += 2;
+
+            // Add column headers
+            worksheet.Cells[row, col++].Value = "Unit/Ward";
+            worksheet.Cells[row, col++].Value = "First Day";
+            worksheet.Cells[row, col++].Value = "Next Month";
+            worksheet.Cells[row, col++].Value = "Adm";
+            worksheet.Cells[row, col++].Value = "T-in";
+            worksheet.Cells[row, col++].Value = "DC";
+            worksheet.Cells[row, col++].Value = "Mor";
+            worksheet.Cells[row, col++].Value = "T-out";
+            worksheet.Cells[row, col++].Value = "Total";
+            worksheet.Cells[row, col++].Value = "IUC Non-KT";
+            worksheet.Cells[row, col++].Value = "IUC KT";
+            worksheet.Cells[row, col++].Value = "CL Non-HD";
+            worksheet.Cells[row, col++].Value = "CL HD";
+            worksheet.Cells[row, col++].Value = "MV";
+
+            // Style header row
+            worksheet.Cells[3, 1, 3, 14].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[3, 1, 3, 14].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+            worksheet.Cells[3, 1, 3, 14].Style.Font.Bold = true;
+            worksheet.Cells[3, 1, 3, 14].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+            worksheet.Cells[3, 1, 3, 14].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+            // Process data for each area
+            var areas = GetDefinedAreas();
+            row = 4;
+
+            foreach (var area in areas)
+            {
+                col = 1;
+                var report = monthReports.FirstOrDefault(r => r.Area == area);
+
+                // Write area name
+                worksheet.Cells[row, col++].Value = area;
+
+                if (report != null && report.DailyData != null && report.DailyData.Any())
+                {
+                    // Calculate monthly summary data
+                    var monthData = CalculateMonthlyData(report.DailyData, month, report.Year);
+
+                    // Fill in the data for this month
+                    worksheet.Cells[row, col++].Value = monthData.FirstDayCount;
+                    worksheet.Cells[row, col++].Value = monthData.NextMonthCount;
+                    worksheet.Cells[row, col++].Value = monthData.AdmissionCount;
+                    worksheet.Cells[row, col++].Value = monthData.TransferInCount;
+                    worksheet.Cells[row, col++].Value = monthData.SentHomeCount;
+                    worksheet.Cells[row, col++].Value = monthData.MortalityCount;
+                    worksheet.Cells[row, col++].Value = monthData.TransferOutCount;
+                    worksheet.Cells[row, col++].Value = monthData.TotalCount;
+                    worksheet.Cells[row, col++].Value = monthData.IUCNonKTCount;
+                    worksheet.Cells[row, col++].Value = monthData.IUCKTCount;
+                    worksheet.Cells[row, col++].Value = monthData.CLNonHDCount;
+                    worksheet.Cells[row, col++].Value = monthData.CLHDCount;
+                    worksheet.Cells[row, col++].Value = monthData.MVCount;
+                }
+                else
+                {
+                    // No data for this month, fill with zeros
+                    for (int i = 0; i < 13; i++)
+                    {
+                        worksheet.Cells[row, col++].Value = 0;
+                    }
+                }
+
+                row++;
+            }
+
+            // Add a "Total" row at the bottom
+            col = 1;
+            worksheet.Cells[row, col++].Value = "Total";
+            worksheet.Cells[row, 1].Style.Font.Bold = true;
+
+            // Calculate and insert totals for each column
+            for (int c = 2; c <= 14; c++)
+            {
+                // Get the column letter
+                string colLetter = GetExcelColumnName(c);
+
+                // Create a formula to sum the column (excluding header rows)
+                int dataStartRow = 4; // First row with actual data
+                int dataEndRow = row - 1; // Last row with actual data
+
+                string formula = $"=SUM({colLetter}{dataStartRow}:{colLetter}{dataEndRow})";
+                worksheet.Cells[row, c].Formula = formula;
+                worksheet.Cells[row, c].Style.Font.Bold = true;
+            }
+
+            // Apply borders to all data cells
+            worksheet.Cells[3, 1, row, 14].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+            // Apply alternating row colors for better readability
+            for (int r = 4; r < row; r++)
+            {
+                if (r % 2 == 0)
+                {
+                    worksheet.Cells[r, 1, r, 14].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells[r, 1, r, 14].Style.Fill.BackgroundColor.SetColor(Color.FromArgb(240, 240, 240));
+                }
+            }
+
+            // Format the total row
+            worksheet.Cells[row, 1, row, 14].Style.Fill.PatternType = ExcelFillStyle.Solid;
+            worksheet.Cells[row, 1, row, 14].Style.Fill.BackgroundColor.SetColor(Color.LightGray);
+            worksheet.Cells[row, 1, row, 14].Style.Border.BorderAround(ExcelBorderStyle.Thin);
+
+            // Auto-fit columns for better readability
+            worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
         }
 
         // Helper method to get the predefined list of areas
         private List<string> GetDefinedAreas()
         {
-            // Use the predefined list of areas you provided
+            // Use the predefined list of areas
             return new List<string>
             {
                 "Unit 2A", "Unit 2B", "Unit 2C", "Unit 2D", "Unit 2E", "Unit 2F", "Unit 2G", "Unit 2H",
@@ -387,7 +333,6 @@ namespace IPCU.Services
             }
 
             // For device counts, use the LAST DAY's data instead of summing
-            // This fixes the problem where it was summing all values across all days
             if (dailyData.Any())
             {
                 var latestData = dailyData.OrderByDescending(d => d.Date).First();

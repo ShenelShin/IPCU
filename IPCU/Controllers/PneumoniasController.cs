@@ -118,6 +118,7 @@ namespace IPCU.Controllers
         {
             if (ModelState.IsValid)
             {
+                pneumonia.DateCreated = DateTime.Now;
                 _context.Add(pneumonia);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

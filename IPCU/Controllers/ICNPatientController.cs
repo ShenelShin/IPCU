@@ -765,6 +765,8 @@ namespace IPCU.Controllers
             return View(patientInfo);
         }
 
+
+        //HAILineList Reporting
         public async Task<IActionResult> GenerateHAILineListReport()
         {
             // Get the current logged-in user
@@ -827,7 +829,7 @@ namespace IPCU.Controllers
                         HospNum = patient.HospNum,
                         PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
                         BirthDate = patient.BirthDate,
-                        //Age = patient.Age,
+                        Age = patient.Age,
                         Unit = patient.AdmLocation,
                         Room = patient.RoomID,
                         AdmissionDate = patient.AdmDate,
@@ -842,7 +844,7 @@ namespace IPCU.Controllers
                         MDROOrganism = mdroInfo.Organism,
                         Outcome = outcomeInfo.Status,
                         DischargeDate = outcomeInfo.Date,
-                        DateCreated = DateTime.Now
+                        DateCreated = form.DateCreated,
                     });
                 }
 
@@ -862,7 +864,7 @@ namespace IPCU.Controllers
                         HospNum = patient.HospNum,
                         PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
                         BirthDate = patient.BirthDate,
-                        //Age = patient.Age,
+                        Age = patient.Age,
                         Unit = patient.AdmLocation,
                         Room = patient.RoomID,
                         AdmissionDate = patient.AdmDate,
@@ -877,7 +879,7 @@ namespace IPCU.Controllers
                         MDROOrganism = mdroInfo.Organism,
                         Outcome = outcomeInfo.Status,
                         DischargeDate = outcomeInfo.Date,
-                        DateCreated = DateTime.Now
+                        DateCreated = form.DateCreated,
                     });
                 }
 
@@ -896,7 +898,7 @@ namespace IPCU.Controllers
                         HospNum = patient.HospNum,
                         PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
                         BirthDate = patient.BirthDate,
-                        //Age = patient.Age,
+                        Age = patient.Age,
                         Unit = patient.AdmLocation,
                         Room = patient.RoomID,
                         AdmissionDate = patient.AdmDate,
@@ -911,7 +913,7 @@ namespace IPCU.Controllers
                         MDROOrganism = mdroInfo.Organism,
                         Outcome = outcomeInfo.Status,
                         DischargeDate = outcomeInfo.Date,
-                        DateCreated = DateTime.Now
+                        DateCreated = form.DateCreated,
                     });
                 }
 
@@ -933,7 +935,7 @@ namespace IPCU.Controllers
                         HospNum = patient.HospNum,
                         PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
                         BirthDate = patient.BirthDate,
-                        //Age = patient.Age,
+                        Age = patient.Age,
                         Unit = patient.AdmLocation,
                         Room = patient.RoomID,
                         AdmissionDate = patient.AdmDate,
@@ -948,7 +950,7 @@ namespace IPCU.Controllers
                         MDROOrganism = isMdro ? ExtractOrganism(form.CultureResults) : "",
                         Outcome = outcomeInfo.Status,
                         DischargeDate = outcomeInfo.Date,
-                        DateCreated = DateTime.Now
+                        DateCreated = form.DateCreated,
                     });
                 }
 
@@ -970,7 +972,7 @@ namespace IPCU.Controllers
                         HospNum = patient.HospNum,
                         PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
                         BirthDate = patient.BirthDate,
-                        //Age = patient.Age,
+                        Age = patient.Age,
                         Unit = patient.AdmLocation,
                         Room = patient.RoomID,
                         AdmissionDate = patient.AdmDate,
@@ -985,7 +987,8 @@ namespace IPCU.Controllers
                         MDROOrganism = isMdro ? ExtractOrganism(form.CultureResults) : "",
                         Outcome = outcomeInfo.Status,
                         DischargeDate = outcomeInfo.Date,
-                        DateCreated = DateTime.Now
+                        DateCreated = form.DateCreated,
+                        SurgeryDone = form.SurgeryDone
                     });
                 }
 
@@ -1007,7 +1010,7 @@ namespace IPCU.Controllers
                         HospNum = patient.HospNum,
                         PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
                         BirthDate = patient.BirthDate,
-                        //Age = patient.Age,
+                        Age = patient.Age,
                         Unit = patient.AdmLocation,
                         Room = patient.RoomID,
                         AdmissionDate = patient.AdmDate,
@@ -1022,7 +1025,7 @@ namespace IPCU.Controllers
                         MDROOrganism = isMdro ? ExtractOrganism(form.CultureResults2_1) : "",
                         Outcome = outcomeInfo.Status,
                         DischargeDate = outcomeInfo.Date,
-                        DateCreated = DateTime.Now
+                        DateCreated = form.DateCreated,
                     });
                 }
 
@@ -1041,7 +1044,7 @@ namespace IPCU.Controllers
                         HospNum = patient.HospNum,
                         PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
                         BirthDate = patient.BirthDate,
-                        //Age = patient.Age,
+                        Age = patient.Age,
                         Unit = patient.AdmLocation,
                         Room = patient.RoomID,
                         AdmissionDate = patient.AdmDate,
@@ -1056,7 +1059,7 @@ namespace IPCU.Controllers
                         MDROOrganism = form.MDRO ? (form.MDROOrganism ?? "") : "",
                         Outcome = outcomeInfo.Status,
                         DischargeDate = outcomeInfo.Date,
-                        DateCreated = DateTime.Now
+                        DateCreated = DateTime.Now,
                     });
                 }
 
@@ -1078,7 +1081,7 @@ namespace IPCU.Controllers
                         HospNum = patient.HospNum,
                         PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
                         BirthDate = patient.BirthDate,
-                        //Age = patient.Age,
+                        Age = patient.Age,
                         Unit = patient.AdmLocation,
                         Room = patient.RoomID,
                         AdmissionDate = patient.AdmDate,
@@ -1093,13 +1096,13 @@ namespace IPCU.Controllers
                         MDROOrganism = isMdro ? ExtractOrganism(form.CultureResults) : "",
                         Outcome = outcomeInfo.Status,
                         DischargeDate = outcomeInfo.Date,
-                        DateCreated = DateTime.Now
+                        DateCreated = form.DateCreated,
                     });
                 }
 
                 // After the existing forms processing, add these two new sections:
 
-                //// 9. Check GI Infection forms
+                // 9. Check GI Infection forms
                 //var giForms = await _context.GIInfectionChecklists
                 //    .Where(f => f.HospNum == patient.HospNum)
                 //    .ToListAsync();
@@ -1117,7 +1120,7 @@ namespace IPCU.Controllers
                 //        HospNum = patient.HospNum,
                 //        PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
                 //        BirthDate = patient.BirthDate,
-                //        //Age = patient.Age,
+                //        Age = patient.Age,
                 //        Unit = patient.AdmLocation,
                 //        Room = patient.RoomID,
                 //        AdmissionDate = patient.AdmDate,
@@ -1132,7 +1135,7 @@ namespace IPCU.Controllers
                 //        MDROOrganism = isMdro ? ExtractOrganism(form.CultureResults) : "",
                 //        Outcome = outcomeInfo.Status,
                 //        DischargeDate = outcomeInfo.Date,
-                //        DateCreated = DateTime.Now
+                //        DateCreated = form.DateCreated,
                 //    });
                 //}
 
@@ -1166,7 +1169,7 @@ namespace IPCU.Controllers
                 //        MDROOrganism = form.MDRO ? (form.MDROOrganism ?? "") : "",
                 //        Outcome = outcomeInfo.Status,
                 //        DischargeDate = outcomeInfo.Date,
-                //        DateCreated = DateTime.Now
+                //        DateCreated = form.DateCreated,
                 //    });
                 //}
 
@@ -1188,7 +1191,7 @@ namespace IPCU.Controllers
 
                 // Add a title row for the report
                 worksheet.Cells[1, 1].Value = "HEALTHCARE-ASSOCIATED INFECTION (HAI) LINE LIST REPORT";
-                using (var titleRange = worksheet.Cells[1, 1, 1, 18])
+                using (var titleRange = worksheet.Cells[1, 1, 1, 19])
                 {
                     titleRange.Merge = true;
                     titleRange.Style.Font.Bold = true;
@@ -1238,9 +1241,10 @@ namespace IPCU.Controllers
                 worksheet.Cells[headerRow, 16].Value = "ORGANISM (if MDRO)";
                 worksheet.Cells[headerRow, 17].Value = "OUTCOME";
                 worksheet.Cells[headerRow, 18].Value = "DATE";
+                worksheet.Cells[headerRow, 19].Value = "SURGERY DONE";
 
                 // Style the header row
-                using (var range = worksheet.Cells[headerRow, 1, headerRow, 18])
+                using (var range = worksheet.Cells[headerRow, 1, headerRow, 19])
                 {
                     range.Style.Font.Bold = true;
                     range.Style.Fill.PatternType = ExcelFillStyle.Solid;
@@ -1280,13 +1284,14 @@ namespace IPCU.Controllers
                     worksheet.Cells[row, 15].Value = entry.IsMDRO ? "Yes" : "No";
                     worksheet.Cells[row, 16].Value = entry.MDROOrganism;
                     worksheet.Cells[row, 17].Value = entry.Outcome;
-                    worksheet.Cells[row, 18].Value = entry.DischargeDate;
+                    worksheet.Cells[row, 18].Value = entry.DateCreated;
                     worksheet.Cells[row, 18].Style.Numberformat.Format = "dd-MMM-yy";
+                    worksheet.Cells[row, 19].Value = entry.HaiType == "SSI" ? entry.SurgeryDone : "NA";
 
                     // Apply alternate row coloring for better readability
                     if (row % 2 == 0)
                     {
-                        using (var range = worksheet.Cells[row, 1, row, 18])
+                        using (var range = worksheet.Cells[row, 1, row, 19])
                         {
                             range.Style.Fill.PatternType = ExcelFillStyle.Solid;
                             range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.FromArgb(240, 240, 240));
@@ -1300,7 +1305,7 @@ namespace IPCU.Controllers
                 if (!hasData)
                 {
                     worksheet.Cells[row, 1].Value = "No HAI patients found in your assigned areas.";
-                    using (var range = worksheet.Cells[row, 1, row, 18])
+                    using (var range = worksheet.Cells[row, 1, row, 19])
                     {
                         range.Merge = true;
                         range.Style.Font.Italic = true;
@@ -1311,7 +1316,7 @@ namespace IPCU.Controllers
                 // Apply borders and styling to data cells
                 if (hasData)
                 {
-                    using (var range = worksheet.Cells[headerRow, 1, row - 1, 18])
+                    using (var range = worksheet.Cells[headerRow, 1, row - 1, 19])
                     {
                         range.Style.Border.Top.Style = ExcelBorderStyle.Thin;
                         range.Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -1323,7 +1328,7 @@ namespace IPCU.Controllers
                 // Add summary statistics at the bottom
                 row += 2; // Add some space
                 worksheet.Cells[row, 1].Value = "SUMMARY STATISTICS";
-                using (var summaryHeaderRange = worksheet.Cells[row, 1, row, 18])
+                using (var summaryHeaderRange = worksheet.Cells[row, 1, row, 19])
                 {
                     summaryHeaderRange.Merge = true;
                     summaryHeaderRange.Style.Font.Bold = true;

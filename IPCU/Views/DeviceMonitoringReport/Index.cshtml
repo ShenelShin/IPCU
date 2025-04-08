@@ -3,6 +3,64 @@
     ViewData["Title"] = "Device Monitoring Report";
 }
 
+<!-- Add this at the top of your file for the loading overlay -->
+<style>
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        color: white;
+        display: none;
+    }
+
+    .spinner {
+        width: 4rem;
+        height: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    .progress-container {
+        width: 300px;
+        background-color: #f8f9fa;
+        border-radius: 0.25rem;
+        margin-top: 1rem;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 20px;
+        width: 0%;
+        background-color: #0d6efd;
+        transition: width 0.5s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.8rem;
+    }
+</style>
+
+<!-- Loading overlay -->
+<div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner-border spinner text-light" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <h4 id="loadingMessage">Generating report...</h4>
+    <p id="loadingDetails">This may take several seconds. Please wait.</p>
+
+    <div class="progress-container">
+        <div id="loadingProgressBar" class="progress-bar" role="progressbar"></div>
+    </div>
+</div>
+
 <div class="container-fluid">
     <h2>Device Monitoring Report</h2>
 
@@ -118,7 +176,7 @@
                 <h5>Generate Yearly Report</h5>
             </div>
             <div class="card-body">
-                <form asp-action="GenerateYearlyReport" method="get" class="row g-3">
+                <form asp-action="GenerateYearlyReport" method="get" class="row g-3" id="yearlyReportForm">
                     <div class="col-md-6">
                         <label for="yearlyArea" class="form-label">Area</label>
                         <select id="yearlyArea" name="area" class="form-select" required>
@@ -139,7 +197,7 @@
                         </select>
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" id="yearlyReportBtn">
                             <i class="fas fa-file-excel"></i> Generate Yearly Excel Report
                         </button>
                     </div>
@@ -153,7 +211,7 @@
                 <h5>Generate Area Yearly Report</h5>
             </div>
             <div class="card-body">
-                <form asp-action="GenerateAreaYearlyReport" method="get" class="row g-3">
+                <form asp-action="GenerateAreaYearlyReport" method="get" class="row g-3" id="areaYearlyReportForm">
                     <div class="col-md-6">
                         <label for="areaYearlyYear" class="form-label">Year</label>
                         <select id="areaYearlyYear" name="year" class="form-select" required>
@@ -164,7 +222,7 @@
                         </select>
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" id="areaYearlyReportBtn">
                             <i class="fas fa-file-excel"></i> Generate Area Yearly Report
                         </button>
                         <div class="form-text">This will generate a consolidated Excel report for all your assigned areas for the selected year.</div>
@@ -179,7 +237,7 @@
                 <h5>Generate Half-Yearly Report</h5>
             </div>
             <div class="card-body">
-                <form asp-action="GenerateAreaHalfYearlyReport" method="get" class="row g-3">
+                <form asp-action="GenerateAreaHalfYearlyReport" method="get" class="row g-3" id="halfYearlyReportForm">
                     <div class="col-md-6">
                         <label for="halfYearlyYear" class="form-label">Year</label>
                         <select id="halfYearlyYear" name="year" class="form-select" required>
@@ -197,10 +255,13 @@
                         </select>
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" id="halfYearlyReportBtn">
                             <i class="fas fa-file-excel"></i> Generate Half-Yearly Report
                         </button>
                         <div class="form-text">This will generate a consolidated Excel report for all your assigned areas for the selected half-year period.</div>
+                        <div class="alert alert-warning mt-2">
+                            <i class="bi bi-exclamation-triangle"></i> Note: This report may take up to a minute to generate. Please be patient.
+                        </div>
                     </div>
                 </form>
             </div>
@@ -217,6 +278,64 @@
 
     <script>
         $(document).ready(function() {
+            // Function to manage the loading overlay
+            function showLoading(message, details, estimatedTime = 65) {
+                $("#loadingMessage").text(message || "Generating report...");
+                $("#loadingDetails").text(details || "This may take several seconds. Please wait.");
+                $("#loadingOverlay").fadeIn(300);
+
+                // Reset progress bar
+                $("#loadingProgressBar").css("width", "0%").text("0%");
+
+                // If we have an estimated time, set up a progress simulation
+                if (estimatedTime > 0) {
+                    simulateProgress(estimatedTime);
+                }
+            }
+
+            function hideLoading() {
+                $("#loadingOverlay").fadeOut(300);
+                // Clear any progress interval
+                if (window.progressInterval) {
+                    clearInterval(window.progressInterval);
+                }
+            }
+
+            // Function to simulate progress for longer operations
+            function simulateProgress(estimatedTimeInSeconds) {
+                // Clear any existing interval
+                if (window.progressInterval) {
+                    clearInterval(window.progressInterval);
+                }
+                const totalSteps = 100;
+                const interval = (estimatedTimeInSeconds * 1000) / totalSteps;
+                let progress = 0;
+
+                window.progressInterval = setInterval(function() {
+                    progress += 1;
+                    updateProgressBar(progress);
+
+                    if (progress >= 100) {
+                        clearInterval(window.progressInterval);
+                    }
+                }, interval);
+            }
+
+            function updateProgressBar(percentage) {
+                $("#loadingProgressBar").css("width", percentage + "%").text(percentage + "%");
+
+                // When progress reaches 100%, update the message
+                if (percentage >= 100) {
+                    $("#loadingMessage").text("Done!");
+                    $("#loadingDetails").text("Your report is ready.");
+
+                    // Optionally hide the overlay after a short delay
+                    setTimeout(function() {
+                        hideLoading();
+                    }, 1000);
+                }
+            }
+
             // Generate Report button handling
             $("#reportForm").submit(function(e) {
                 e.preventDefault(); // Prevent standard form submit
@@ -235,6 +354,7 @@
                         "DeviceMonitoringReport.xlsx";
 
                     // Show loading indicator
+                    showLoading("Generating " + exportFormat + " Report", "Processing report data...", 10);
                     $("#generateBtn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...');
                     $("#generateBtn").prop('disabled', true);
 
@@ -247,6 +367,9 @@
                             responseType: 'blob' // Important for handling binary data
                         },
                         success: function(data, status, xhr) {
+                            // Hide loading overlay
+                            hideLoading();
+
                             // Check if the response is an error message (sometimes errors come as JSON)
                             var contentType = xhr.getResponseHeader("content-type") || "";
                             if (contentType.indexOf('application/json') !== -1) {
@@ -289,6 +412,9 @@
                             $("#generateBtn").prop('disabled', false);
                         },
                         error: function(xhr, status, error) {
+                            // Hide loading overlay
+                            hideLoading();
+
                             // Try to parse error message if available
                             var errorMessage = "Error generating report";
                             try {
@@ -314,6 +440,7 @@
                                 alert("Error generating report: " + error);
                             }
 
+                            // Reset button
                             $("#generateBtn").html('<i class="bi bi-download"></i> Generate Report');
                             $("#generateBtn").prop('disabled', false);
                         }
@@ -324,6 +451,9 @@
             // View Report button handling - uses the current form values
             $("#viewReportBtn").click(function() {
                 if ($("#reportForm").valid()) {
+                    // Show a quick loading indicator
+                    showLoading("Preparing Report View", "Opening report in a new tab...");
+
                     var area = $("#selectedArea").val();
                     var year = $("#reportYear").val();
                     var month = $("#reportMonth").val();
@@ -336,12 +466,20 @@
 
                     // Open in new tab
                     window.open(viewUrl, '_blank');
+
+                    // Hide loading after a short delay
+                    setTimeout(function() {
+                        hideLoading();
+                    }, 500);
                 }
             });
 
             // Download Excel button handling
             $("#downloadExcelBtn").click(function() {
                 if ($("#reportForm").valid()) {
+                    // Show loading indicator
+                    showLoading("Generating Excel Report", "Preparing Excel download...", 5);
+
                     var area = $("#selectedArea").val();
                     var year = $("#reportYear").val();
                     var month = $("#reportMonth").val();
@@ -352,8 +490,66 @@
                         '&year=' + encodeURIComponent(year) +
                         '&month=' + encodeURIComponent(month);
 
-                    // Open in new tab or directly download
-                    window.location.href = excelUrl;
+                    // Create hidden iframe to detect when download is complete
+                    var iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    document.body.appendChild(iframe);
+
+                    iframe.onload = function() {
+                        // Hide loading after download starts
+                        setTimeout(function() {
+                            hideLoading();
+                            document.body.removeChild(iframe);
+                        }, 1000);
+                    };
+
+                    // Start download
+                    iframe.src = excelUrl;
+                }
+            });
+
+            // Handle Yearly Report form submission
+            $("#yearlyReportForm").submit(function(e) {
+                if ($(this).valid()) {
+                    showLoading("Generating Yearly Report", "This may take up to 30 seconds...", 30);
+                    $("#yearlyReportBtn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...');
+                    $("#yearlyReportBtn").prop('disabled', true);
+
+                    // The form will naturally submit as GET
+                    setTimeout(function() {
+                        $("#yearlyReportBtn").html('<i class="fas fa-file-excel"></i> Generate Yearly Excel Report');
+                        $("#yearlyReportBtn").prop('disabled', false);
+                    }, 31000); // Slightly longer than progress bar to ensure it completes
+                }
+            });
+
+            // Handle Area Yearly Report form submission
+            $("#areaYearlyReportForm").submit(function(e) {
+                if ($(this).valid()) {
+                    showLoading("Generating Area Yearly Report", "This may take up to 100 seconds...", 100);
+                    $("#areaYearlyReportBtn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...');
+                    $("#areaYearlyReportBtn").prop('disabled', true);
+
+                    // The form will naturally submit as GET
+                    setTimeout(function() {
+                        $("#areaYearlyReportBtn").html('<i class="fas fa-file-excel"></i> Generate Area Yearly Report');
+                        $("#areaYearlyReportBtn").prop('disabled', false);
+                    }, 41000); // Slightly longer than progress bar to ensure it completes
+                }
+            });
+
+            // Handle Half-Yearly Report form submission - longest processing time
+            $("#halfYearlyReportForm").submit(function(e) {
+                if ($(this).valid()) {
+                    showLoading("Generating Half-Yearly Report", "This may take up to 60 seconds. Please be patient...", 53);
+                    $("#halfYearlyReportBtn").html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generating...');
+                    $("#halfYearlyReportBtn").prop('disabled', true);
+
+                    // The form will naturally submit as GET
+                    setTimeout(function() {
+                        $("#halfYearlyReportBtn").html('<i class="fas fa-file-excel"></i> Generate Half-Yearly Report');
+                        $("#halfYearlyReportBtn").prop('disabled', false);
+                    }, 54000); // Slightly longer than progress bar to ensure it completes
                 }
             });
 

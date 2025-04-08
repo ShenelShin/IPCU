@@ -23,6 +23,11 @@ builder.Services.AddScoped<DeviceMonitoringPdfService>();
 builder.Services.AddScoped<DeviceMonitoringExcelService>();
 builder.Services.AddScoped<DeviceMonitoringYearlyExcelService>();
 builder.Services.AddScoped<DeviceMonitoringAreaYearlyExcelService>();
+builder.Services.AddScoped<HAIDischargeReportService>();
+builder.Services.AddScoped<HAIDischargeExcelService>();
+builder.Services.AddScoped<HaiReportService>();
+builder.Services.AddScoped<HaiExcelExportService>();
+
 
 
 var app = builder.Build();

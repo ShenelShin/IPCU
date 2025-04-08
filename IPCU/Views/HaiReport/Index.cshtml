@@ -1,0 +1,102 @@
+﻿<!-- Views/HaiReport/Index.cshtml -->
+@model IPCU.Controllers.HaiReportViewModel
+@{
+    ViewData["Title"] = "HAI Report Generator";
+}
+<div class="container">
+    <h2>HAI Report Generator</h2>
+    
+    <div class="card">
+        <div class="card-header">
+            <h4>Generate Report</h4>
+        </div>
+        <div class="card-body">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            
+            <form asp-action="Generate" method="post">
+                <div class="form-group row">
+                    <label asp-for="ReportType" class="col-sm-2 col-form-label">Report Type</label>
+                    <div class="col-sm-4">
+                        <select asp-for="ReportType" class="form-control" id="reportType">
+                            <option value="Monthly">Monthly</option>
+                            <option value="Quarterly">Quarterly</option>
+                            <option value="Annual">Annual</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label asp-for="Year" class="col-sm-2 col-form-label">Year</label>
+                    <div class="col-sm-4">
+                        <select asp-for="Year" class="form-control">
+                            @foreach (var year in Model.AvailableYears)
+                            {
+                                <option value="@year">@year</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group row month-selector">
+                    <label asp-for="Month" class="col-sm-2 col-form-label">Month</label>
+                    <div class="col-sm-4">
+                        <select asp-for="Month" class="form-control">
+                            @for (int i = 1; i <= 12; i++)
+                            {
+                                <option value="@i">@(new DateTime(2000, i, 1).ToString("MMMM"))</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group row quarter-selector" style="display: none;">
+                    <label asp-for="Quarter" class="col-sm-2 col-form-label">Quarter</label>
+                    <div class="col-sm-4">
+                        <select asp-for="Quarter" class="form-control">
+                            @foreach (var quarter in Model.AvailableQuarters)
+                            {
+                                <option value="@quarter">Q@(quarter)</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <div class="col-sm-4 offset-sm-2">
+                        <button type="submit" class="btn btn-primary">Generate Report</button>
+                        <a asp-action="ManualEntry" class="btn btn-secondary">Manual Data Entry</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Show/hide the appropriate selectors based on report type
+            $('#reportType').change(function() {
+                var reportType = $(this).val();
+                if (reportType === 'Monthly') {
+                    $('.month-selector').show();
+                    $('.quarter-selector').hide();
+                } else if (reportType === 'Quarterly') {
+                    $('.month-selector').hide();
+                    $('.quarter-selector').show();
+                } else {
+                    $('.month-selector').hide();
+                    $('.quarter-selector').hide();
+                }
+            });
+            
+            // Trigger the change event on page load
+            $('#reportType').trigger('change');
+        });
+    </script>
+}

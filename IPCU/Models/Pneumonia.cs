@@ -17,6 +17,10 @@ namespace IPCU.Models
         public string UnitWardArea { get; set; } // Unit/Ward/Area
         public string MainService { get; set; } // Main Service
         public DateTime DateOfEvent { get; set; } // Date of Event
+
+        [Display(Name = "Date Created")]
+        [DataType(DataType.DateTime)]
+        public DateTime DateCreated { get; set; }
         public string Investigator { get; set; } // Investigator
         public DateTime DateOfAdmission { get; set; } // Date of Admission
 
