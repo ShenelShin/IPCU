@@ -11,6 +11,7 @@ namespace IPCU.Models
         public string Mname { get; set; } // Middle Name
         public string HospitalNumber { get; set; } // Foreign Key to Hospital Records
         public DateTime DateOfBirth { get; set; } // Date of Birth
+
         [Display(Name = "Date Created")]
         [DataType(DataType.DateTime)]
         public DateTime DateCreated { get; set; }

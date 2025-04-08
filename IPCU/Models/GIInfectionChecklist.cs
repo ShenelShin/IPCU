@@ -44,6 +44,11 @@ namespace IPCU.Models
         [Display(Name = "Date of Event")]
         public DateTime? DateOfEvent { get; set; }
 
+        [Display(Name = "Date Created")]
+        [DataType(DataType.DateTime)]
+        public DateTime DateCreated { get; set; }
+
+
         public string Investigator { get; set; }
 
         [DataType(DataType.Date)]
