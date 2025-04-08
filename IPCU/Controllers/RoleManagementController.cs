@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using IPCU.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace IPCU.Controllers
 {
@@ -97,8 +98,10 @@ namespace IPCU.Controllers
                 return NotFound();
             }
 
+            var users = await _userManager.Users.ToListAsync(); // <- FIXED: eager loading
             var model = new List<UserRolesViewModel>();
-            foreach (var user in _userManager.Users)
+
+            foreach (var user in users)
             {
                 var userRoleViewModel = new UserRolesViewModel
                 {
@@ -115,6 +118,7 @@ namespace IPCU.Controllers
             ViewBag.RoleName = role.Name;
             return View(model);
         }
+
 
         // POST: Update users in a role
         [HttpPost]
