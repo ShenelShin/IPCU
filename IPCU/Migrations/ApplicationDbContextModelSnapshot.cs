@@ -3845,6 +3845,127 @@ namespace IPCU.Migrations
                     b.ToTable("SurgicalSiteInfectionChecklist");
                 });
 
+            modelBuilder.Entity("IPCU.Models.TCSkillsChecklist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Area")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfObservation")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsBathroomFloorScrubbed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsCleaningSolutionPrepared")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsColorCodedWasteEmptied")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDoorFrameWiped")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsEquipmentAndCartPrepared")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsFaucetAndHandlesCleaned")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsGlovesRemovedAndHandHygieneDone")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHandHygieneAfterPPE")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHandHygieneAndGlovesDone")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsHighTouchAreasWiped")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsInfectiousWasteRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsLooseDebrisPickedUp")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsMirrorCleaned")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOtherBathroomSurfacesCleaned")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPPERemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsProperAttireAndPPEWorn")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRoomFloorMopped")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSignageChecked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSinkAreaCleaned")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSpillSoakedWithSolution")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsToiletAndFlushHandlesCleaned")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsedClothsDisposed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsVerticalSurfacesWiped")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWallsCleaned")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWasteContainersEmptied")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsWindowSillAndWindowCleaned")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ObserverName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostCleaningItems")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreCleaningItems")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecommendationsOrActions")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnitAreaStaffSignature")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TCSkillsChecklist");
+                });
+
             modelBuilder.Entity("IPCU.Models.Trainee", b =>
                 {
                     b.Property<int>("Id")
