@@ -222,7 +222,7 @@
             </table>
 
             <!-- SECOND SECTION (Initially hidden) -->
-            <div id="SignsSymptomsSection" style="display:none; margin-top:10px;">
+            <div id="SignsSymptomsSection"  margin-top:10px;">
                 <p>Patient has <strong>at least one (1)</strong> of the following signs or symptoms:</p>
                 <table>
                     <tr>
@@ -249,7 +249,7 @@
 
            
 
-            <div id="MoreThan15ColoniesSection" style="display:none; margin-top:10px;">
+            <div id="MoreThan15ColoniesSection"  margin-top:10px;">
                 <table>
                     <tr>
                         <td>
@@ -268,7 +268,7 @@
 
 
                 <!-- FOURTH SECTION -->
-                <div id="InfantSignsSection" style="display:none; margin-top:10px;">
+                <div id="InfantSignsSection"  margin-top:10px;">
                     <p>Patient <strong>≤1 year of age</strong> has at least one of the following signs or symptoms:</p>
                     <table style="width:100%;">
                         <tr>
@@ -299,7 +299,7 @@
         </table>
     </div>
             <!-- FIFTH SECTION -->
-            <div id="FinalCultureSection" style="display:none; margin-top:10px; border-top:1px solid black;">
+        <div id="FinalCultureSection" style="margin-top:10px; border-top:1px solid black;">
                 <table style="width:100%; margin-top:10px;">
                     <tr>
                         <td><strong>Culture date:</strong></td>
@@ -338,88 +338,47 @@
     });
 
 
-      $(document).ready(function () {
-        $('#DispositionDropdown').change(function () {
-            var selected = $(this).val();
-            if (selected === 'Transferred In' || selected === 'Transferred Out') {
-                $('#DispositionTransferRow').show();
-            } else {
-                $('#DispositionTransferRow').hide();
-                $('#DispositionTransferRow input').val('');
-            }
-        });
+         function updateSelectability() {
+                // Step 1: Check first section
+                let hasFirstChecked = $('#OrganismIdentified').is(':checked') || $('#GrossEvidenceOfInfection').is(':checked');
 
-        // Optionally trigger change on page load to hide/show based on default value
-        $('#DispositionDropdown').trigger('change');
-    });
+                // Enable/disable second section based on first
+                $('#SignsSymptomsSection input[type="checkbox"]').prop('disabled', !hasFirstChecked);
 
+                // Step 2: Check second section
+                let hasSecondChecked = $('#SignsSymptomsSection input[type="checkbox"]:checked').length > 0;
 
+                // Enable/disable third section based on second
+                $('#MoreThan15Colonies').prop('disabled', !hasSecondChecked);
 
-           $(document).ready(function () {
-        // FIRST: If either of the first checkboxes is checked, show next section
-        $('#OrganismIdentified, #GrossEvidenceOfInfection').change(function () {
-            if ($('#OrganismIdentified').is(':checked') || $('#GrossEvidenceOfInfection').is(':checked')) {
-                $('#SignsSymptomsSection').show();
-            } else {
-                $('#SignsSymptomsSection').hide();
-                $('#MoreThan15ColoniesSection, #InfantSignsSection, #Infant_MoreThan15ColoniesSection, #FinalCultureSection').hide();
-            }
-        });
+                // Step 3: Check third section
+                let hasThirdChecked = $('#MoreThan15Colonies').is(':checked');
 
-        // SECOND: If any symptom checkbox is checked, show MoreThan15ColoniesSection
-        $('#SignsSymptomsSection input[type="checkbox"]').change(function () {
-            if ($('#SignsSymptomsSection input[type="checkbox"]:checked').length > 0) {
-                $('#MoreThan15ColoniesSection').show();
-            } else {
-                $('#MoreThan15ColoniesSection, #InfantSignsSection, #Infant_MoreThan15ColoniesSection, #FinalCultureSection').hide();
-            }
-        });
+                // Enable/disable fourth section based on third
+                $('#InfantSignsSection input[type="checkbox"]').prop('disabled', !hasThirdChecked);
 
-        // THIRD: If MoreThan15Colonies checked, show InfantSignsSection
-        $('#MoreThan15Colonies').change(function () {
-            if ($(this).is(':checked')) {
-                $('#InfantSignsSection').show();
-            } else {
-                $('#InfantSignsSection, #Infant_MoreThan15ColoniesSection, #FinalCultureSection').hide();
-            }
-        });
+                // Step 4: Check fourth section
+                      let hasFourthChecked = $('#InfantSignsSection input[type="checkbox"]:checked').length > 0;
 
-        // FOURTH: If any infant symptom checkbox is checked, show Infant_MoreThan15ColoniesSection
-        $('#InfantSignsSection input[type="checkbox"]').change(function () {
-            if ($('#InfantSignsSection input[type="checkbox"]:checked').length > 0) {
-                $('#Infant_MoreThan15ColoniesSection').show();
-            } else {
-                $('#Infant_MoreThan15ColoniesSection, #FinalCultureSection').hide();
-            }
-        });
+        // Show/hide and enable/disable FinalCultureSection based on fourth
+        if (hasFourthChecked) {
 
-        // FIFTH: If Infant_MoreThan15Colonies checked, show FinalCultureSection
-        $('#Infant_MoreThan15Colonies').change(function () {
-            if ($(this).is(':checked')) {
-                $('#FinalCultureSection').show();
-            } else {
-                $('#FinalCultureSection').hide();
-            }
-        });
-    });
-
-     $(document).ready(function () {
-            function toggleMDROOrganismField() {
-                var selectedValue = $('#MDRODropdown').val();
-                if (selectedValue === "Yes") {
-                    $('#mdroOrganismContainer').show();
-                } else {
-                    $('#mdroOrganismContainer').hide();
-                }
+        $('#FinalCultureSection input').prop('disabled', !hasFourthChecked);
+        } else {
+            
+            $('#FinalCultureSection input').prop('disabled', true);
+        }
             }
 
-            // Run on page load
-            toggleMDROOrganismField();
+            $(document).ready(function () {
+                // Attach change listeners to all relevant inputs
+                $('#OrganismIdentified, #GrossEvidenceOfInfection').change(updateSelectability);
+                $('#SignsSymptomsSection input[type="checkbox"]').change(updateSelectability);
+                $('#MoreThan15Colonies').change(updateSelectability);
+                $('#InfantSignsSection input[type="checkbox"]').change(updateSelectability);
 
-            // Bind change event
-            $('#MDRODropdown').change(function () {
-                toggleMDROOrganismField();
+                // Initial run to set the correct state on load
+                updateSelectability();
             });
-        });
 
 </script>

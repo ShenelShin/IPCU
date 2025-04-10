@@ -189,7 +189,7 @@
                 </tbody>
             </table>
 
-            <table class="table table-bordered" style="display: none;" id="group2">
+            <table class="table table-bordered"  id="group2">
                 <thead>
                     <tr>
                         <th colspan="2">Patient has one (1) of the following signs or symptoms:</th>
@@ -229,7 +229,7 @@
                 </tbody>
             </table>
 
-            <table class="table table-bordered" style="display: none;" id="group3">
+            <table class="table table-bordered"  id="group3">
                 <thead>
                     <tr>
                 <th colspan="2">Patient has one (1) of the following signs or symptoms:</th>
@@ -310,7 +310,7 @@
             </tr>
             <tr>
                 <td>
-                        <div>
+                        <div id="FinalCultureSection" style="margin-top:10px; border-top:1px solid black;">
                             <label><strong>Culture Date</strong></label>
                         <input asp-for="CultureDate" type="date" class="form-control" />
                         <span asp-validation-for="CultureDate" class="text-danger"></span>
@@ -343,27 +343,36 @@
     <!-- JavaScript/jQuery to Control Group Display -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
-            function toggleNextGroup(currentGroupClass, nextGroupId) {
-                if ($("." + currentGroupClass + ":checked").length > 0) {
-                    $(nextGroupId).show();
-                } else {
-                    $(nextGroupId).hide();
-                    // Uncheck the next group when hiding
-                    $(nextGroupId).find("input[type='checkbox']").prop("checked", false);
+                  function updateSelectability() {
+                // Step 1: Check if any in Group 1 is checked
+                let hasGroup1Checked = $('.group1:checked').length > 0;
+
+                // Enable/disable Group 2 based on Group 1
+                $('#group2 input[type="checkbox"]').prop('disabled', !hasGroup1Checked);
+
+                // Step 2: Check if any in Group 2 is checked
+                let hasGroup2Checked = $('#group2 input[type="checkbox"]:checked').length > 0;
+
+                // Enable/disable Group 3 based on Group 2
+                $('#group3 input[type="checkbox"]').prop('disabled', !hasGroup2Checked);
+
+                // Optional: If you want to disable and *also clear* selections when disabling
+                if (!hasGroup1Checked) {
+                    $('#group2 input[type="checkbox"]').prop('checked', false);
+                    $('#group3 input[type="checkbox"]').prop('checked', false);
+                } else if (!hasGroup2Checked) {
+                    $('#group3 input[type="checkbox"]').prop('checked', false);
                 }
             }
 
-            // Monitor Group 1
-            $(".group1").change(function () {
-                toggleNextGroup("group1", "#group2");
+            $(document).ready(function () {
+                // Attach change listeners
+                $('.group1, #group2 input[type="checkbox"], #group3 input[type="checkbox"]').change(updateSelectability);
+
+                // Initial check
+                updateSelectability();
             });
 
-            // Monitor Group 2
-            $(".group2").change(function () {
-                toggleNextGroup("group2", "#group3");
-            });
-        });
     </script>
 
     <script>
