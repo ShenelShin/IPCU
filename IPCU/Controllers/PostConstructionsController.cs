@@ -54,7 +54,7 @@ namespace IPCU.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProjectReferenceNumber,ProjectNameAndDescription,SpecificSiteOfActivity,ProjectStartDate,EstimatedDuration,BeforeHoarding,BeforeHoardingDC,BeforeHoardingDate,FacilityBased,FacilityBasedDC,FacilityBasedDate,AfterRemoval,AfterRemovalDC,AfterRemovalDate,WhereRequired,WhereRequiredlDC,WhereRequiredDate,AreaIs,AreaIsDC,AreaIsDate,IntegrityofWalls,IntegrityofWallsDC,IntegrityofWallsDate,SurfaceinPatient,SurfaceinPatientDC,SurfaceinPatientDate,AreaSurfaces,IfPlumbinghasbeenAffected,IfPlumbinghasbeenAffectedDC,IfPlumbinghasbeenAffectedDate,PlumbingifAffected,PlumbingifAffectedDC,PlumbingifAffectedDate,CorrectHandWashing,CorrectHandWashingDC,CorrectHandWashingDate,FaucetAerators,FaucetAeratorsDC,FaucetAeratorsDate,CeilingTiles,CeilingTilesDC,CeilingTilesDate,HVACSystems,HVACSystemsDC,HVACSystemsDate,CorrectRoomPressurization,CorrectRoomPressurizationDC,CorrectRoomPressurizationDate,AllMechanicalSpaces,AllMechanicalSpacesDC,AllMechanicalSpacesDate,ContractorSign,EngineeringSign,ICPSign,UnitAreaRep")] PostConstruction postConstruction)
+        public async Task<IActionResult> Create([Bind("Id,ProjectReferenceNumber,ProjectNameAndDescription,SpecificSiteOfActivity,ProjectStartDate,EstimatedDuration,BeforeHoarding,BeforeHoardingDC,FacilityBased,FacilityBasedDC,FacilityBasedDate,AfterRemoval,AfterRemovalDC,AfterRemovalDate,WhereRequired,WhereRequiredlDC,WhereRequiredDate,AreaIs,AreaIsDC,IntegrityofWalls,IntegrityofWallsDC,SurfaceinPatient,SurfaceinPatientDC,AreaSurfaces,IfPlumbinghasbeenAffected,IfPlumbinghasbeenAffectedDC,IfPlumbinghasbeenAffectedDate,PlumbingifAffected,PlumbingifAffectedDC,CorrectHandWashing,CorrectHandWashingDC,FaucetAerators,FaucetAeratorsDC,CeilingTiles,CeilingTilesDC,HVACSystems,HVACSystemsDC,CorrectRoomPressurization,CorrectRoomPressurizationDC,AllMechanicalSpaces,AllMechanicalSpacesDC,ContractorSign,EngineeringSign,ICPSign,UnitAreaRep,DateCompleted")] PostConstruction postConstruction)
         {
             if (ModelState.IsValid)
             {
@@ -84,38 +84,7 @@ namespace IPCU.Controllers
         // POST: PostConstructions/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProjectReferenceNumber,ProjectNameAndDescription,SpecificSiteOfActivity,ProjectStartDate,EstimatedDuration,BeforeHoarding,BeforeHoardingDC,BeforeHoardingDate,FacilityBased,FacilityBasedDC,FacilityBasedDate,AfterRemoval,AfterRemovalDC,AfterRemovalDate,WhereRequired,WhereRequiredlDC,WhereRequiredDate,AreaIs,AreaIsDC,AreaIsDate,IntegrityofWalls,IntegrityofWallsDC,IntegrityofWallsDate,SurfaceinPatient,SurfaceinPatientDC,SurfaceinPatientDate,AreaSurfaces,IfPlumbinghasbeenAffected,IfPlumbinghasbeenAffectedDC,IfPlumbinghasbeenAffectedDate,PlumbingifAffected,PlumbingifAffectedDC,PlumbingifAffectedDate,CorrectHandWashing,CorrectHandWashingDC,CorrectHandWashingDate,FaucetAerators,FaucetAeratorsDC,FaucetAeratorsDate,CeilingTiles,CeilingTilesDC,CeilingTilesDate,HVACSystems,HVACSystemsDC,HVACSystemsDate,CorrectRoomPressurization,CorrectRoomPressurizationDC,CorrectRoomPressurizationDate,AllMechanicalSpaces,AllMechanicalSpacesDC,AllMechanicalSpacesDate,ContractorSign,EngineeringSign,ICPSign,UnitAreaRep")] PostConstruction postConstruction)
-        {
-            if (id != postConstruction.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(postConstruction);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PostConstructionExists(postConstruction.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(postConstruction);
-        }
-
+       
         // GET: PostConstructions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
