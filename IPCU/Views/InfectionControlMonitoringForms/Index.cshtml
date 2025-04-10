@@ -1,0 +1,543 @@
+﻿@using System.Text.RegularExpressions
+@model IPCU.Models.InfectionControl.Models.InfectionControlMonitoringForm
+
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+
+<form asp-action="Submit" method="post">
+
+    <div class="border border-black bg-white rounded-md p-4 space-y-4">
+        <!-- HEADER -->
+        <div class="grid grid-cols-3 items-center border border-black">
+            <!-- Left Logo -->
+            <div class="flex justify-center p-2 border-r border-black">
+                <img src="/images/nkti-left-logo.png" alt="Left Logo" class="h-20 w-auto" />
+            </div>
+            <!-- Center Text -->
+            <div class="text-center space-y-1 py-2">
+                <p class="text-sm font-bold uppercase">National Kidney and Transplant Institute</p>
+                <p class="text-sm">East Avenue, Quezon City</p>
+                <p class="text-sm font-bold uppercase pt-2">Infection Prevention and Control Unit</p>
+                <p class="text-sm font-bold uppercase border-t border-black pt-1">Environmental Cleaning and Disinfection<br />Assessment and Monitoring Form</p>
+            </div>
+            <!-- Right Logo -->
+            <div class="flex justify-center p-2 border-l border-black">
+                <img src="/images/nkti-right-logo.png" alt="Right Logo" class="h-20 w-auto" />
+            </div>
+        </div>
+
+    <!-- FORM SECTION -->
+    <div class="border border-black text-sm rounded-md overflow-hidden">
+
+        <!-- AREA/UNIT -->
+        <div class="grid grid-cols-3 border-b border-black">
+            <div class="bg-gray-100 font-semibold px-3 py-2 border-r border-black flex items-center">AREA/UNIT:</div>
+            <div class="col-span-2 px-3 py-2">
+                <input asp-for="AreaOrUnit" class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500" />
+            </div>
+        </div>
+
+        <!-- DATE AND TIME -->
+        <div class="grid grid-cols-3 border-b border-black">
+            <div class="bg-gray-100 font-semibold px-3 py-2 border-r border-black flex items-center">DATE AND TIME OF MONITORING</div>
+            <div class="col-span-2 px-3 py-2">
+                <input asp-for="DateAndTimeOfMonitoring" type="datetime-local" class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500" />
+            </div>
+        </div>
+
+        <!-- ASSESSED BY + NOTES -->
+        <div class="grid grid-cols-3">
+            <div class="bg-gray-100 font-semibold px-3 py-2 border-r border-black flex items-center">ASSESSED BY:</div>
+            <div class="px-3 py-2">
+                <input asp-for="AssessedBy" class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div class="px-3 py-2 text-xs italic text-gray-700 leading-tight">
+                Regular monitoring with feedback of results to staff can maintain or improve adherence to proper environmental practices.
+                Monitoring may be performed in any type of patient care location.
+                <span class="block mt-1 font-semibold">Use a separate sheet for each unit observed.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- INSTRUCTIONS -->
+    <div class="mt-3 text-sm leading-tight font-bold !font-bold">
+
+        Instructions: Observe each practice and check a box if adherent.
+        <br />
+        <span class="block mt-1">
+            C = Compliant;
+            NC = Not compliant;
+            CAC = Corrective action completed;
+            FU = Follow-up required;
+            NA = Not applicable
+        </span>
+    </div>
+
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Finding</th>
+                <th>Action Done</th>
+                <th>Remarks</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Section Header: Patient Exam/Treatment Rooms -->
+            <tr>
+                <td colspan="4"><strong>Patient Exam/Treatment Rooms:</strong></td>
+            </tr>
+            <tr>
+                <td>Floors and walls clean</td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_FloorsWallsClean_Finding" value="C" /> C
+                    <input type="radio" name="PatientExamRoom_FloorsWallsClean_Finding" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_FloorsWallsClean_ActionDone" value="CAC" /> CAC
+                    <input type="radio" name="PatientExamRoom_FloorsWallsClean_ActionDone" value="FU" /> FU
+                    <input type="radio" name="PatientExamRoom_FloorsWallsClean_ActionDone" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="PatientExamRoom_FloorsWallsClean_Remarks" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>Cubicle curtains clean and free of tears</td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_CurtainsClean_Finding" value="C" /> C
+                    <input type="radio" name="PatientExamRoom_CurtainsClean_Finding" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_CurtainsClean_ActionDone" value="CAC" /> CAC
+                    <input type="radio" name="PatientExamRoom_CurtainsClean_ActionDone" value="FU" /> FU
+                    <input type="radio" name="PatientExamRoom_CurtainsClean_ActionDone" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="PatientExamRoom_CurtainsClean_Remarks" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>Sink clean</td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_SinkClean_Finding" value="C" /> C
+                    <input type="radio" name="PatientExamRoom_SinkClean_Finding" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_SinkClean_ActionDone" value="CAC" /> CAC
+                    <input type="radio" name="PatientExamRoom_SinkClean_ActionDone" value="FU" /> FU
+                    <input type="radio" name="PatientExamRoom_SinkClean_ActionDone" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="PatientExamRoom_SinkClean_Remarks" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>Soap and Paper Towel Dispensers are stocked and working</td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_SoapDispenser_Finding" value="C" /> C
+                    <input type="radio" name="PatientExamRoom_SoapDispenser_Finding" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_SoapDispenser_ActionDone" value="CAC" /> CAC
+                    <input type="radio" name="PatientExamRoom_SoapDispenser_ActionDone" value="FU" /> FU
+                    <input type="radio" name="PatientExamRoom_SoapDispenser_ActionDone" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="PatientExamRoom_SoapDispenser_Remarks" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>Alcohol Hand sanitizers are available</td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_AlcoholSanitizers_Finding" value="C" /> C
+                    <input type="radio" name="PatientExamRoom_AlcoholSanitizers_Finding" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_AlcoholSanitizers_ActionDone" value="CAC" /> CAC
+                    <input type="radio" name="PatientExamRoom_AlcoholSanitizers_ActionDone" value="FU" /> FU
+                    <input type="radio" name="PatientExamRoom_AlcoholSanitizers_ActionDone" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="PatientExamRoom_AlcoholSanitizers_Remarks" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>Gloves, PPE available as per policy</td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_PPEAvailable_Finding" value="C" /> C
+                    <input type="radio" name="PatientExamRoom_PPEAvailable_Finding" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_PPEAvailable_ActionDone" value="CAC" /> CAC
+                    <input type="radio" name="PatientExamRoom_PPEAvailable_ActionDone" value="FU" /> FU
+                    <input type="radio" name="PatientExamRoom_PPEAvailable_ActionDone" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="PatientExamRoom_PPEAvailable_Remarks" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>No supplies stored under sinks</td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_NoSuppliesUnderSinks_Finding" value="C" /> C
+                    <input type="radio" name="PatientExamRoom_NoSuppliesUnderSinks_Finding" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" value="CAC" /> CAC
+                    <input type="radio" name="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" value="FU" /> FU
+                    <input type="radio" name="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="PatientExamRoom_NoSuppliesUnderSinks_Remarks" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td>No food or drink in Patient Care Areas</td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_NoFoodInCareAreas_Finding" value="C" /> C
+                    <input type="radio" name="PatientExamRoom_NoFoodInCareAreas_Finding" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="PatientExamRoom_NoFoodInCareAreas_ActionDone" value="CAC" /> CAC
+                    <input type="radio" name="PatientExamRoom_NoFoodInCareAreas_ActionDone" value="FU" /> FU
+                    <input type="radio" name="PatientExamRoom_NoFoodInCareAreas_ActionDone" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="PatientExamRoom_NoFoodInCareAreas_Remarks" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4"><strong>Work Areas:</strong></td>
+            </tr>
+                @{
+                    var workAreaItems = new Dictionary<string, string>
+            {
+            { "Charts on its designated storage area when not in use", "ChartsStored" },
+            { "No food or drinks inside the work station", "NoFoodOrDrinks" },
+            { "Electric fans are functioning and are dust-free", "FansClean" },
+            { "Air condition units are functioning and dust-free", "ACClean" },
+            { "Exhaust fans are clean and dust-free", "ExhaustFansClean" },
+            { "Ceiling are in good condition and visibly clean", "CeilingClean" },
+            { "Walls are in good condition and visibly clean", "WallsClean" },
+            { "Counters are in good condition and visibly clean", "CountersClean" },
+            { "Floors are in good condition and visibly clean", "FloorsClean" },
+            { "Doors and windows are open, in good condition and visibly clean", "DoorsWindowsClean" },
+            { "Clean, odor-free bathroom", "CleanBathroom" }
+            };
+                }
+                @foreach (var item in workAreaItems)
+                {
+                <tr>
+                    <td>@item.Key</td>
+                    <td>
+                        <input type="radio" name="@($"WorkArea_{item.Value}_Finding")" value="C" /> C
+                        <input type="radio" name="@($"WorkArea_{item.Value}_Finding")" value="NC" /> NC
+                    </td>
+                    <td>
+                        <input type="radio" name="@($"WorkArea_{item.Value}_ActionDone")" value="CAC" /> CAC
+                        <input type="radio" name="@($"WorkArea_{item.Value}_ActionDone")" value="FU" /> FU
+                        <input type="radio" name="@($"WorkArea_{item.Value}_ActionDone")" value="NA" /> NA
+                    </td>
+                    <td>
+                        <input type="text" name="@($"WorkArea_{item.Value}_Remarks")" class="form-control" />
+                    </td>
+                </tr>
+                }
+        </tbody>
+        <tbody>
+            <tr>
+                <td colspan="4"><strong>Hallways:</strong></td>
+            </tr>
+            @{
+                var hallwayItems = new Dictionary<string, string>
+            {
+            { "Floors and walls clean", "FloorsWallsClean" },
+            { "Free of obstruction and equipment", "NoObstruction" }
+            };
+            }
+            @foreach (var item in hallwayItems)
+            {
+                <tr>
+                    <td>@item.Key</td>
+                    <td>
+                        <input type="radio" name="@($"Hallway_{item.Value}_Finding")" value="C" /> C
+                        <input type="radio" name="@($"Hallway_{item.Value}_Finding")" value="NC" /> NC
+                    </td>
+                    <td>
+                        <input type="radio" name="@($"Hallway_{item.Value}_ActionDone")" value="CAC" /> CAC
+                        <input type="radio" name="@($"Hallway_{item.Value}_ActionDone")" value="FU" /> FU
+                        <input type="radio" name="@($"Hallway_{item.Value}_ActionDone")" value="NA" /> NA
+                    </td>
+                    <td>
+                        <input type="text" name="@($"Hallway_{item.Value}_Remarks")" class="form-control" />
+                    </td>
+                </tr>
+            }
+            <tr>
+                <td colspan="4"><strong>Waiting and Reception Areas:</strong></td>
+            </tr>
+            @{
+                var receptionItems = new Dictionary<string, string>
+            {
+            { "Furniture clean and in good condition", "FurnitureClean" },
+            { "Empty cups and food items placed in trash", "TrashDisposed" },
+            { "Food only in designated areas", "FoodInDesignatedArea" }
+            };
+            }
+            @foreach (var item in receptionItems)
+            {
+                <tr>
+                    <td>@item.Key</td>
+                    <td>
+                        <input type="radio" name="@($"WaitingArea_{item.Value}_Finding")" value="C" /> C
+                        <input type="radio" name="@($"WaitingArea_{item.Value}_Finding")" value="NC" /> NC
+                    </td>
+                    <td>
+                        <input type="radio" name="@($"WaitingArea_{item.Value}_ActionDone")" value="CAC" /> CAC
+                        <input type="radio" name="@($"WaitingArea_{item.Value}_ActionDone")" value="FU" /> FU
+                        <input type="radio" name="@($"WaitingArea_{item.Value}_ActionDone")" value="NA" /> NA
+                    </td>
+                    <td>
+                        <input type="text" name="@($"WaitingArea_{item.Value}_Remarks")" class="form-control" />
+                    </td>
+                </tr>
+            }
+            <!-- Section Header: Equipment and Non-Critical Items -->
+            <tr>
+                <td colspan="4"><strong>Equipment and Non-Critical Items:</strong></td>
+            </tr>
+
+            @{
+                var equipmentItems = new Dictionary<string, string>
+            {
+            { "Equipment storage is clean", "StorageClean" }
+            };
+            }
+            @foreach (var item in equipmentItems)
+            {
+                <tr>
+                    <td>@item.Key</td>
+                    <td>
+                        <input type="radio" name="@($"Equipment_{item.Value}_Finding")" value="C" /> C
+                        <input type="radio" name="@($"Equipment_{item.Value}_Finding")" value="NC" /> NC
+                    </td>
+                    <td>
+                        <input type="radio" name="@($"Equipment_{item.Value}_ActionDone")" value="CAC" /> CAC
+                        <input type="radio" name="@($"Equipment_{item.Value}_ActionDone")" value="FU" /> FU
+                        <input type="radio" name="@($"Equipment_{item.Value}_ActionDone")" value="NA" /> NA
+                    </td>
+                    <td>
+                        <input type="text" name="@($"Equipment_{item.Value}_Remarks")" class="form-control" />
+                    </td>
+                </tr>
+            }
+            <!-- Section Header: Utility and Storage Rooms -->
+            <tr>
+                <td colspan="4"><strong>Utility and Storage Rooms:</strong></td>
+            </tr>
+
+            @{
+                var utilityItems = new Dictionary<string, string>
+            {
+            { "Adequate separation of clean and soiled", "CleanSoiledSeparation" },
+            { "Floors and walls clean", "FloorsWallsClean" },
+            { "No supplies stored on the floor. Supplies stored 6\" from floor.", "NoSuppliesOnFloor" },
+            { "Supplies stored 18\" from ceiling.", "SuppliesFromCeiling" },
+            { "No supplies stored under sinks", "NoSuppliesUnderSink" },
+            { "No supplies stored in bathrooms, soiled utility rooms", "NoSuppliesInBathrooms" },
+            { "Stocks are properly organized or First in First Out (FIFO)", "FIFOStocks" },
+            { "Patient supplies within expiration dates", "SuppliesNotExpired" },
+            { "Sterilized instruments and trays unopened, free of dust, tears", "SterileTraysClean" }
+            };
+            }
+            @foreach (var item in utilityItems)
+            {
+                <tr>
+                    <td>@item.Key</td>
+                    <td>
+                        <input type="radio" name="@($"UtilityRoom_{item.Value}_Finding")" value="C" /> C
+                        <input type="radio" name="@($"UtilityRoom_{item.Value}_Finding")" value="NC" /> NC
+                    </td>
+                    <td>
+                        <input type="radio" name="@($"UtilityRoom_{item.Value}_ActionDone")" value="CAC" /> CAC
+                        <input type="radio" name="@($"UtilityRoom_{item.Value}_ActionDone")" value="FU" /> FU
+                        <input type="radio" name="@($"UtilityRoom_{item.Value}_ActionDone")" value="NA" /> NA
+                    </td>
+                    <td>
+                        <input type="text" name="@($"UtilityRoom_{item.Value}_Remarks")" class="form-control" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <!-- Section Header: Soiled Utility Rooms -->
+        <tr>
+            <td colspan="4"><strong>Soiled Utility Rooms:</strong></td>
+        </tr>
+
+        @{
+            var soiledUtilityItems = new Dictionary<string, string>
+        {
+        { "Floors and walls clean", "FloorsWallsClean" },
+        { "Free of patient supplies and sterilized trays", "NoPatientSupplies" },
+        { "Soiled linen is bagged and appropriately placed for transport", "LinenBagged" }
+        };
+        }
+        @foreach (var item in soiledUtilityItems)
+        {
+            <tr>
+                <td>@item.Key</td>
+                <td>
+                    <input type="radio" name="@($"SoiledRoom_{item.Value}_Finding")" value="C" /> C
+                    <input type="radio" name="@($"SoiledRoom_{item.Value}_Finding")" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="@($"SoiledRoom_{item.Value}_ActionDone")" value="CAC" /> CAC
+                    <input type="radio" name="@($"SoiledRoom_{item.Value}_ActionDone")" value="FU" /> FU
+                    <input type="radio" name="@($"SoiledRoom_{item.Value}_ActionDone")" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="@($"SoiledRoom_{item.Value}_Remarks")" class="form-control" />
+                </td>
+            </tr>
+        }
+        <!-- Section Header: Waste Management -->
+        <tr>
+            <td colspan="4"><strong>Waste Management:</strong></td>
+        </tr>
+        @{
+            var wasteItems = new Dictionary<string, string>
+        {
+        { "Color-coded trash bins with appropriate plastic liners are available and has proper labels", "ColorBinsAvailable" },
+        { "Proper waste disposal and segregation are observed", "ProperDisposal" },
+        { "Trash bins are not overfilled and covered", "BinsNotOverfilled" },
+        { "Trash bins are in good condition and visibly clean", "BinsClean" },
+        { "Sharps containers are available and has proper labels", "SharpsLabeled" },
+        { "Sharps containers are not overfilled, and locked if full", "SharpsNotOverfilled" }
+        };
+        }
+        @foreach (var item in wasteItems)
+        {
+            <tr>
+                <td>@item.Key</td>
+                <td>
+                    <input type="radio" name="@($"WasteMgmt_{item.Value}_Finding")" value="C" /> C
+                    <input type="radio" name="@($"WasteMgmt_{item.Value}_Finding")" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="@($"WasteMgmt_{item.Value}_ActionDone")" value="CAC" /> CAC
+                    <input type="radio" name="@($"WasteMgmt_{item.Value}_ActionDone")" value="FU" /> FU
+                    <input type="radio" name="@($"WasteMgmt_{item.Value}_ActionDone")" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="@($"WasteMgmt_{item.Value}_Remarks")" class="form-control" />
+                </td>
+            </tr>
+        }
+        <!-- Section Header: Refrigerators or Freezers -->
+        <tr>
+            <td colspan="4"><strong>Refrigerators or Freezers:</strong></td>
+        </tr>
+        @{
+            var fridgeItems = new Dictionary<string, string>
+        {
+        { "Daily Checklist completed for temperatures<br /><em>Medications and specimens, 2-8°C; Frozen Medications &lt;-15°C</em>", "TempChecked" },
+        { "Separate refrigerator designed for medications, specimens, food or drink", "Dedicated" }
+        };
+        }
+        @foreach (var item in fridgeItems)
+        {
+            <tr>
+                <td>@Html.Raw(item.Key)</td>
+                <td>
+                    <input type="radio" name="@($"Refrigerator_{item.Value}_Finding")" value="C" /> C
+                    <input type="radio" name="@($"Refrigerator_{item.Value}_Finding")" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="@($"Refrigerator_{item.Value}_ActionDone")" value="CAC" /> CAC
+                    <input type="radio" name="@($"Refrigerator_{item.Value}_ActionDone")" value="FU" /> FU
+                    <input type="radio" name="@($"Refrigerator_{item.Value}_ActionDone")" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="@($"Refrigerator_{item.Value}_Remarks")" class="form-control" />
+                </td>
+            </tr>
+        }
+        <!-- Section Header: Medications -->
+        <tr>
+            <td colspan="4"><strong>Medications:</strong></td>
+        </tr>
+        @{
+            var medsChecklist = new[] {
+        new { Label = "No outdated IV solutions or medications", Field = "Medications_NoExpired" },
+        new { Label = "Open vials dated and timed as per policy", Field = "Medications_VialsDated" },
+        new { Label = "Vaccines stored appropriately, if applicable", Field = "Medications_VaccinesStored" },
+        new { Label = "No loose syringes and needles observed", Field = "Medications_NoLooseNeedles" }
+        };
+        }
+        @foreach (var item in medsChecklist)
+        {
+            <tr>
+                <td>@item.Label</td>
+                <td>
+                    <input type="radio" name="@($"{item.Field}_Finding")" value="C" /> C
+                    <input type="radio" name="@($"{item.Field}_Finding")" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="CAC" /> CAC
+                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="FU" /> FU
+                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="@($"{item.Field}_Remarks")" class="form-control" />
+                </td>
+            </tr>
+        }
+        <!-- Section Header: Miscellaneous -->
+        <tr>
+            <td colspan="4"><strong>Miscellaneous:</strong></td>
+        </tr>
+        @{
+            var miscItems = new[]
+            {
+        new { Label = "Specimens being bagged, handled, labeled as per policy; with safety devices available", Field = "Misc_SpecimensLabeled" },
+        new { Label = "Healthcare workers observed to follow proper respiratory hygiene and cough etiquette, including correct PPE use", Field = "Misc_StaffHygienePPE" }
+        };
+        }
+        @foreach (var item in miscItems)
+        {
+            <tr>
+                <td>@item.Label</td>
+                <td>
+                    <input type="radio" name="@($"{item.Field}_Finding")" value="C" /> C
+                    <input type="radio" name="@($"{item.Field}_Finding")" value="NC" /> NC
+                </td>
+                <td>
+                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="CAC" /> CAC
+                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="FU" /> FU
+                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="NA" /> NA
+                </td>
+                <td>
+                    <input type="text" name="@($"{item.Field}_Remarks")" class="form-control" />
+                </td>
+            </tr>
+        }
+    </table>
+    <!-- Repeat similar table sections for Work Areas, Hallways, Waiting Area, etc. -->  
+    <div class="form-group mt-4">
+        <label asp-for="UnitAreaStaffSignature">Unit/Area staff:</label>
+        <input asp-for="UnitAreaStaffSignature" class="form-control" placeholder="Name and Signature" />
+    </div>
+    <div class="form-group mt-2">
+        <label asp-for="FollowUpDate">Date for follow-up:</label>
+        <input asp-for="FollowUpDate" type="date" class="form-control" />
+    </div>
+    <div class="mt-6">
+        <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">
+            Submit
+        </button>
+    </div>
+</form>
+<link href="~/css/site.css" rel="stylesheet" />
