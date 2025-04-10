@@ -207,7 +207,7 @@
                 </tr>
 
                 <!-- Second Step (Initially Hidden) -->
-                <tr id="step2" style="display: none;">
+                <tr id="step2">
                     <td>
                         <label><strong>AND, at least one (1) of the following:</strong></label>
                         <div>
@@ -230,7 +230,7 @@
                 </tr>
 
                 <!-- Third Step (Initially Hidden) -->
-                <tr id="step3" style="display: none;">
+                <tr id="step3">
                     <td>
                         <label><strong>AND, at least two (2) of the following:</strong></label>
                         <div>
@@ -294,7 +294,7 @@
                 </tr>
 
                 <!-- Second Step (Initially Hidden) -->
-                <tr id="step2_2" style="display: none;">
+                <tr id="step2_2">
                     <td>
                         <label><strong>AND</strong></label>
                         <div>
@@ -305,7 +305,7 @@
                 </tr>
 
                 <!-- Third Step (Initially Hidden) -->
-                <tr id="step3_2" style="display: none;">
+                <tr id="step3_2">
                     <td>
                         <label><strong>AND, at least three (3) of the following:</strong></label>
                         <div>
@@ -382,7 +382,7 @@
                 </tr>
 
                 <!-- Second Step (Initially Hidden) -->
-                <tr id="step2_3" style="display: none;">
+                <tr id="step2_3">
                     <td>
                         <div>
                             <label><strong>AND, at least three (3) of the following:</strong></label>
@@ -443,7 +443,7 @@
                 </tr>
 
                 <!-- Step 2 (Initially Hidden) -->
-                <tr id="step2_1_1" style="display: none;">
+                <tr id="step2_1_1">
                     <td>
                         <label><strong>AND, at least one (1) of the following:</strong></label>
                         <div>
@@ -466,7 +466,7 @@
                 </tr>
 
                 <!-- Step 3 (Initially Hidden) -->
-                <tr id="step3_1_1" style="display: none;">
+                <tr id="step3_1_1">
                     <td>
                         <label><strong>AND, at least one (1) of the following:</strong></label>
                         <div>
@@ -489,7 +489,7 @@
                 </tr>
 
                 <!-- Step 4 (Initially Hidden) -->
-                <tr id="step4_1_1" style="display: none;">
+                <tr id="step4_1_1">
                     <td>
                         <label><strong>AND, at least one (1) of the following:</strong></label>
                         <div>
@@ -582,7 +582,7 @@
                 </tr>
 
                 <!-- Step 2 (Initially Hidden) -->
-                <tr id="step2_2_2" style="display: none;">
+                <tr id="step2_2_2">
                     <td>
                         <label><strong>AND, at least one (1) of the following:</strong></label>
                         <div>
@@ -605,7 +605,7 @@
                 </tr>
 
                 <!-- Step 3 (Initially Hidden) -->
-                <tr id="step3_2_2" style="display: none;">
+                <tr id="step3_2_2">
                     <td>
                         <label><strong>AND, at least one (1) of the following:</strong></label>
                         <div>
@@ -633,7 +633,7 @@
                 </tr>
 
                 <!-- Step 4 (Initially Hidden) -->
-                <tr id="step4_2_2" style="display: none;">
+                <tr id="step4_2_2">
                     <td>
                         <label><strong>AND, at least one (1) of the following:</strong></label>
                         <div>
@@ -703,7 +703,7 @@
                     </td>
                 </tr>
                 <!-- Step 2 (Initially Hidden) -->
-                <tr id="step2_3_3" style="display: none;">
+                <tr id="step2_3_3">
                     <td>
                         <label><strong>AND, patient is immunocompromised*</strong></label>
                         <label><strong>AND, at least one (1) of the following:</strong></label>
@@ -746,7 +746,7 @@
                     </td>
                 </tr>
                 <!-- Step 3 (Initially Hidden) -->
-                <tr id="step3_3_3" style="display: none;">
+                <tr id="step3_3_3">
                     <td>
                         <label><strong>AND, at least one (1) of the following:</strong></label>
                         <div>
@@ -900,177 +900,150 @@
 
     <!--PARA SA DYNAMIC NG PNEU1_1-->
 
-    <!-- jQuery for Dynamic Behavior -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Step 1: Show the second row when a radio button is selected
-            $('input[name="PersistentorProgressive1_1"]').change(function() {
-                $('#step2').fadeIn();
-            });
-
-            // Step 2: Show the third row when at least one checkbox is checked
-            $('.requirement').change(function() {
-                if ($('.requirement:checked').length > 0) {
-                    $('#step3').fadeIn();
-                } else {
-                    $('#step3').fadeOut(); // Hide if no checkboxes are selected
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Disable all later step inputs on load
+                function disableStep(selector) {
+                    $(selector).find('input, select, button').prop('disabled', true).css('opacity', 0.5);
                 }
-            });
 
-            // Step 3: Ensure at least 2 checkboxes are checked in the last step
-            $('.final-requirement').change(function() {
-                if ($('.final-requirement:checked').length >= 2) {
+                function enableStep(selector) {
+                    $(selector).find('input, select, button').prop('disabled', false).css('opacity', 1);
                 }
-            });
-        });
-    </script>
-    <!--pnu1_2-->
-    <script>
-        $(document).ready(function() {
-            // Step 1: Show the second row when a radio button is selected
-            $('input[name="PersistentorProgressive1_2"]').change(function() {
-                $('#step2_2').fadeIn();
-            });
 
-            // Step 2: Show the third row when the requirement is met
-            $('.requirement_2').change(function() {
-                if ($('.requirement_2:checked').length > 0) {
-                    $('#step3_2').fadeIn();
-                } else {
-                    $('#step3_2').fadeOut();
+                disableStep('#step2, #step3, #step2_2, #step3_2, #step2_3, #step3_3');
+                disableStep('#step2_1_1, #step3_1_1, #step4_1_1');
+                disableStep('#step2_2_2, #step3_2_2, #step4_2_2');
+                disableStep('#step2_3_3, #step3_3_3');
+
+                // PNEU1_1
+                $('input[name="PersistentorProgressive1_1"]').change(function () {
+                    enableStep('#step2');
+                });
+
+                $('.requirement').change(function () {
+                    if ($('.requirement:checked').length > 0) {
+                        enableStep('#step3');
+                    } else {
+                        disableStep('#step3');
+                    }
+                });
+
+                // PNEU1_2
+                $('input[name="PersistentorProgressive1_2"]').change(function () {
+                    enableStep('#step2_2');
+                });
+
+                $('.requirement_2').change(function () {
+                    if ($('.requirement_2:checked').length > 0) {
+                        enableStep('#step3_2');
+                    } else {
+                        disableStep('#step3_2');
+                    }
+                });
+
+                // PNEU1_3
+                $('input[name="PersistentorProgressive1_3"]').change(function () {
+                    enableStep('#step2_3');
+                });
+
+                $('.final-requirement_3').change(function () {
+                    if ($('.final-requirement_3:checked').length >= 3) {
+                        enableStep('#step3_3');
+                    } else {
+                        disableStep('#step3_3');
+                    }
+                });
+
+                // PNEU2_1
+                $('input[name="PersistentorProgressive2_1"]').change(function () {
+                    enableStep('#step2_1_1');
+                });
+
+                $('.requirement_3_1').change(function () {
+                    if ($('.requirement_3_1:checked').length > 0) {
+                        enableStep('#step3_1_1');
+                    } else {
+                        disableStep('#step3_1_1');
+                    }
+                });
+
+                $('.final-requirement_3_1').change(function () {
+                    if ($('.final-requirement_3_1:checked').length > 0) {
+                        enableStep('#step4_1_1');
+                    } else {
+                        disableStep('#step4_1_1');
+                    }
+                });
+
+                // PNEU2_2
+                $('input[name="PersistentorProgressive2_2"]').change(function () {
+                    enableStep('#step2_2_2');
+                });
+
+                $('.requirement_2_2').change(function () {
+                    if ($('.requirement_2_2:checked').length > 0) {
+                        enableStep('#step3_2_2');
+                    } else {
+                        disableStep('#step3_2_2');
+                    }
+                });
+
+                $('.final-requirement_2_2').change(function () {
+                    if ($('.final-requirement_2_2:checked').length > 0) {
+                        enableStep('#step4_2_2');
+                    } else {
+                        disableStep('#step4_2_2');
+                    }
+                });
+
+                // PNEU3
+                $('input[name="PersistentorProgressive3"]').change(function () {
+                    enableStep('#step2_3_3');
+                });
+
+                $('.requirement_3_3').change(function () {
+                    if ($('.requirement_3_3:checked').length > 0) {
+                        enableStep('#step3_3_3');
+                        $('#step3_3_3').next('tr').find('input, select, button').prop('disabled', false).css('opacity', 1);
+                    } else {
+                        disableStep('#step3_3_3');
+                        $('#step3_3_3').next('tr').find('input, select, button').prop('disabled', true).css('opacity', 0.5);
+                    }
+                });
+
+                // Disposition Transfer
+                $("#dispositionSelect").change(function () {
+                    var selectedValue = $(this).val();
+                    var transferDiv = $("#dispositionTransferDiv");
+                    var transferInput = $("#dispositionTransferInput");
+
+                    if (selectedValue === "Transferred In" || selectedValue === "Transferred Out") {
+                        transferDiv.show();
+                    } else {
+                        transferDiv.hide();
+                        transferInput.val("");
+                    }
+                });
+
+                // MDRO Dropdown
+                function toggleMDROOrganismField() {
+                    var selectedValue = $('#MDRODropdown').val();
+                    if (selectedValue === "Yes") {
+                        $('#mdroOrganismContainer').removeClass('d-none');
+                    } else {
+                        $('#mdroOrganismContainer').addClass('d-none');
+                        $('#MDROOrganism').val('');
+                    }
                 }
-            });
 
-            // Step 3: Ensure at least 3 checkboxes are checked in the last step
-            $('.final-requirement_2').change(function() {
-                if ($('.final-requirement_2:checked').length >= 3) {
-                }
-            });
-        });
-    </script>
-
-    <!--pnu1_3-->
-    <script>
-        $(document).ready(function() {
-            // Step 1: Show the second row when a radio button is selected
-            $('input[name="PersistentorProgressive1_3"]').change(function() {
-                $('#step2_3').fadeIn();
-            });
-
-            // Step 2: Show the third row when at least 3 checkboxes are checked
-            $('.final-requirement_3').change(function() {
-                if ($('.final-requirement_3:checked').length >= 3) {
-                    $('#step3_3').fadeIn();
-                } else {
-                    $('#step3_3').fadeOut();
-                }
-            });
-        });
-    </script>
-
-    <script>
-                $(document).ready(function () {
-            // Step 1: Show Step 2 when a radio button is selected (PNEU2_1)
-            $('input[name="PersistentorProgressive2_1"]').change(function () {
-                $('#step2_1_1').fadeIn();
-            });
-
-            // Step 2: Show Step 3 when at least one checkbox (Step 2) is checked (PNEU2_1)
-            $('.requirement_3_1').change(function () {
-                if ($('.requirement_3_1:checked').length > 0) {
-                    $('#step3_1_1').fadeIn();
-                } else {
-                    $('#step3_1_1').fadeOut();
-                }
-            });
-
-            // Step 3: Show Step 4 when at least one checkbox (Step 3) is checked (PNEU2_1)
-            $('.final-requirement_3_1').change(function () {
-                if ($('.final-requirement_3_1:checked').length > 0) {
-                    $('#step4_1_1').fadeIn();
-                } else {
-                    $('#step4_1_1').fadeOut();
-                }
-            });
-
-            // Step 1: Show Step 2 when a radio button is selected (PNEU2_2)
-            $('input[name="PersistentorProgressive2_2"]').change(function () {
-                $('#step2_2_2').fadeIn();
-            });
-
-            // Step 2: Show Step 3 when at least one checkbox (Step 2) is checked (PNEU2_2)
-            $('.requirement_2_2').change(function () {
-                if ($('.requirement_2_2:checked').length > 0) {
-                    $('#step3_2_2').fadeIn();
-                } else {
-                    $('#step3_2_2').fadeOut();
-                }
-            });
-
-            // Step 3: Show Step 4 when at least one checkbox (Step 3) is checked (PNEU2_2)
-            $('.final-requirement_2_2').change(function () {
-                if ($('.final-requirement_2_2:checked').length > 0) {
-                    $('#step4_2_2').fadeIn();
-                } else {
-                    $('#step4_2_2').fadeOut();
-                }
-            });
-        });
-
-    </script>
-    <script>
-        $(document).ready(function () {
-            // Step 1: Show step 2 when a radio button is selected
-            $('input[name="PersistentorProgressive3"]').change(function () {
-                $('#step2_3_3').fadeIn();
-            });
-
-            // Step 2: Show step 3 when at least one checkbox is selected
-            $('.requirement_3_3').change(function () {
-                if ($('.requirement_3_3:checked').length > 0) {
-                    $('#step3_3_3').fadeIn();
-                    $('#step3_3_3').next('tr').fadeIn(); // Show the next row
-
-                } else {
-                    $('#step3_3_3').fadeOut();
-                }
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function () {
-            $("#dispositionSelect").change(function () {
-                var selectedValue = $(this).val();
-                var transferDiv = $("#dispositionTransferDiv");
-                var transferInput = $("#dispositionTransferInput");
-
-                if (selectedValue === "Transferred In" || selectedValue === "Transferred Out") {
-                    transferDiv.show();
-                } else {
-                    transferDiv.hide();
-                    transferInput.val(""); // Clear input when hiding
-                }
-            });
-        });
-    </script>
-    <script>
-           $(document).ready(function () {
-            function toggleMDROOrganismField() {
-                var selectedValue = $('#MDRODropdown').val();
-                if (selectedValue === "Yes") {
-                    $('#mdroOrganismContainer').removeClass('d-none');
-                } else {
-                    $('#mdroOrganismContainer').addClass('d-none');
-                    $('#MDROOrganism').val(''); // optional: clear value if hidden
-                }
-            }
-
-            toggleMDROOrganismField();
-
-            $('#MDRODropdown').change(function () {
                 toggleMDROOrganismField();
+
+                $('#MDRODropdown').change(function () {
+                    toggleMDROOrganismField();
+                });
             });
-        });
-    </script>
+        </script>
+
 }
