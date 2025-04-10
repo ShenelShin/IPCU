@@ -1,6 +1,7 @@
 ﻿using IPCU.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using IPCU.Models.InfectionControl.Models;
 
 namespace IPCU.Data
 {
@@ -54,6 +55,8 @@ namespace IPCU.Data
         public DbSet<PatientMovementDetail> PatientMovementDetails { get; set; }
         public DbSet<ConstructionSite> ConstructionSites { get; set; }
 
+        public DbSet<InfectionControlMonitoringForm> InfectionControlMonitoringForms { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -78,6 +81,7 @@ namespace IPCU.Data
         }
         public DbSet<IPCU.Models.ICRA> ICRA { get; set; } = default!;
         public DbSet<IPCU.Models.PostConstruction> PostConstruction { get; set; } = default!;
+        public DbSet<IPCU.Models.InfectionControl.Models.InfectionControlMonitoringForm> InfectionControlMonitoringForm { get; set; } = default!;
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);

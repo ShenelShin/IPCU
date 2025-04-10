@@ -32,7 +32,29 @@
     }
 </style>
 
-<h2 style="text-align:center;">SST Infection Checklist Form</h2>
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+<div class="border border-black bg-white rounded-md p-4 space-y-4">
+    <!-- HEADER -->
+    <div class="grid grid-cols-3 items-center border border-black">
+        <!-- Left Logo -->
+        <div class="flex justify-center p-2 border-r border-black">
+            <img src="/images/nkti-left-logo.png" alt="Left Logo" class="h-20 w-auto" />
+        </div>
+        <!-- Center Text -->
+        <div class="text-center space-y-1 py-2">
+            <p class="text-sm font-bold uppercase">National Kidney and Transplant Institute</p>
+            <p class="text-sm">East Avenue, Quezon City</p>
+            <p class="text-sm font-bold uppercase pt-2">Infection Prevention and Control Unit</p>
+            <p class="text-sm font-bold uppercase border-t border-black pt-1">SST Infection Checklist Form</p>
+        </div>
+        <!-- Right Logo -->
+        <div class="flex justify-center p-2 border-l border-black">
+            <img src="/images/nkti-right-logo.png" alt="Right Logo" class="h-20 w-auto" />
+        </div>
+    </div>
+
 
 @using (Html.BeginForm("Submit", "InfectionChecklist", FormMethod.Post))
 {
