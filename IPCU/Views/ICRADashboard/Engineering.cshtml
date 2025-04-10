@@ -108,7 +108,9 @@
                                             <td>
                                                 <span class="badge bg-danger">@item.PreventiveMeasures</span>
                                             </td>
-                                            <td>@item.ProjectStartDate.ToShortDateString()</td>
+                                            <td>
+                                                @(item.ProjectStartDate != DateTime.MinValue ? item.ProjectStartDate.ToShortDateString() : "")
+                                            </td>
                                             <td>@item.ContractorRepresentativeName</td>
                                             <td>
                                                 @if (!string.IsNullOrEmpty(item.ICPSign))
@@ -181,7 +183,9 @@
                                             <td>
                                                 <span class="badge bg-info">@item.PreventiveMeasures</span>
                                             </td>
-                                            <td>@(item.ProjectStartDate.HasValue ? item.ProjectStartDate.Value.ToShortDateString() : "Not specified")</td>
+                                            <td>
+                                                @(item.ProjectStartDate != DateTime.MinValue ? item.ProjectStartDate.ToShortDateString() : "")
+                                            </td>
                                             <td>@item.ContractorRepresentativeName</td>
                                             <td>
                                                 @if (!string.IsNullOrEmpty(item.ICPSign))
