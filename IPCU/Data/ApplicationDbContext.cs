@@ -81,6 +81,8 @@ namespace IPCU.Data
         }
         public DbSet<IPCU.Models.ICRA> ICRA { get; set; } = default!;
         public DbSet<IPCU.Models.PostConstruction> PostConstruction { get; set; } = default!;
+        public DbSet<IPCU.Models.TCSkillsChecklist> TCSkillsChecklist { get; set; } = default!;
+
         public DbSet<IPCU.Models.InfectionControl.Models.InfectionControlMonitoringForm> InfectionControlMonitoringForm { get; set; } = default!;
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
