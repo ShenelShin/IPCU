@@ -1,0 +1,112 @@
+﻿@model IPCU.Models.ICRA
+@{
+    ViewData["Title"] = "Add Engineering Signature";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3><i class="fas fa-signature me-2"></i>Add Engineering Signature</h3>
+        </div>
+        <div class="card-body">
+            <!-- Display validation errors if any -->
+            @if (!ViewData.ModelState.IsValid)
+            {
+                    <div class="alert alert-danger">
+                        <ul>
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                                    <li>@error.ErrorMessage</li>
+                        }
+                        </ul>
+                    </div>
+            }
+
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header bg-info text-white">
+                            Project Details
+                        </div>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-sm-4">Project Reference:</dt>
+                                <dd class="col-sm-8">@Model.ProjectReferenceNumber</dd>
+
+                                <dt class="col-sm-4">Project Name:</dt>
+                                <dd class="col-sm-8">@Model.ProjectNameAndDescription</dd>
+
+                                <dt class="col-sm-4">Location:</dt>
+                                <dd class="col-sm-8">@Model.SpecificSiteOfActivity</dd>
+
+                                <dt class="col-sm-4">Risk Class:</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge bg-danger">@Model.PreventiveMeasures</span>
+                                </dd>
+
+                                <dt class="col-sm-4">Start Date:</dt>
+                                <dd class="col-sm-8">@(Model.ProjectStartDate.HasValue ? Model.ProjectStartDate.Value.ToShortDateString() : "Not specified")</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-warning text-dark">
+                            Contractor Information
+                        </div>
+                        <div class="card-body">
+                            <dl class="row">
+                                <dt class="col-sm-4">Contractor:</dt>
+                                <dd class="col-sm-8">@Model.ContractorRepresentativeName</dd>
+
+                                <dt class="col-sm-4">Contact:</dt>
+                                <dd class="col-sm-8">@Model.TelephoneOrMobileNumber</dd>
+
+                                <dt class="col-sm-4">Email:</dt>
+                                <dd class="col-sm-8">@Model.ConstructionEmail</dd>
+
+                                <dt class="col-sm-4">Duration:</dt>
+                                <dd class="col-sm-8">@Model.EstimatedDuration</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header bg-secondary text-white">
+                    Scope of Work
+                </div>
+                <div class="card-body">
+                    <p>@Model.ScopeOfWork</p>
+                </div>
+            </div>
+
+            <form method="post">
+                <input type="hidden" name="Id" value="@Model.Id" />
+
+                <div class="mb-3">
+                    <label for="EngineeringSign" class="form-label">Engineering Signature</label>
+                    <input type="text" id="EngineeringSign" name="EngineeringSign" class="form-control" value="@Model.EngineeringSign" required />
+                    <small class="form-text text-muted">Please enter your full name as your digital signature.</small>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Engineering" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-signature me-1"></i> Add Signature and Notify Admin/ICN
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

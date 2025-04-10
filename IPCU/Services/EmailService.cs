@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Net.Mail;
 using System.Net;
-using IPCU.Migrations;
 using IPCU.Models;
 
 namespace IPCU.Services
@@ -9,56 +8,56 @@ namespace IPCU.Services
     public class EmailService : IEmailService
     {
         private readonly IConfiguration _configuration;
-            private readonly UserManager<ApplicationUser> _userManager;
-            private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-            public EmailService(
-                IConfiguration configuration,
-                UserManager<ApplicationUser> userManager,
-                RoleManager<IdentityRole> roleManager)
+        public EmailService(
+            IConfiguration configuration,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
+        {
+            _configuration = configuration;
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
+
+        public async Task SendEmailAsync(string email, string subject, string message)
+        {
+            try
             {
-                _configuration = configuration;
-                _userManager = userManager;
-                _roleManager = roleManager;
-            }
+                var smtpServer = _configuration["EmailSettings:SmtpServer"];
+                var smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]);
+                var smtpUsername = _configuration["EmailSettings:SmtpUsername"];
+                var smtpPassword = _configuration["EmailSettings:SmtpPassword"];
+                var senderEmail = _configuration["EmailSettings:SenderEmail"];
+                var senderName = _configuration["EmailSettings:SenderName"];
 
-            public async Task SendEmailAsync(string email, string subject, string message)
+                var client = new SmtpClient(smtpServer, smtpPort)
+                {
+                    Credentials = new NetworkCredential(smtpUsername, smtpPassword),
+                    EnableSsl = true
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(senderEmail, senderName),
+                    Subject = subject,
+                    Body = message,
+                    IsBodyHtml = true
+                };
+
+                mailMessage.To.Add(email);
+                await client.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
             {
-                try
-                {
-                    var smtpServer = _configuration["EmailSettings:SmtpServer"];
-                    var smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]);
-                    var smtpUsername = _configuration["EmailSettings:SmtpUsername"];
-                    var smtpPassword = _configuration["EmailSettings:SmtpPassword"];
-                    var senderEmail = _configuration["EmailSettings:SenderEmail"];
-                    var senderName = _configuration["EmailSettings:SenderName"];
-
-                    var client = new SmtpClient(smtpServer, smtpPort)
-                    {
-                        Credentials = new NetworkCredential(smtpUsername, smtpPassword),
-                        EnableSsl = true
-                    };
-
-                    var mailMessage = new MailMessage
-                    {
-                        From = new MailAddress(senderEmail, senderName),
-                        Subject = subject,
-                        Body = message,
-                        IsBodyHtml = true
-                    };
-
-                    mailMessage.To.Add(email);
-                    await client.SendMailAsync(mailMessage);
-                }
-                catch (Exception ex)
-                {
-                    // Log exception
-                    Console.WriteLine($"Error sending email: {ex.Message}");
-                    throw;
-                }
+                // Log exception
+                Console.WriteLine($"Error sending email: {ex.Message}");
+                throw;
             }
+        }
 
-        public async Task NotifyRolesAboutICRA(IPCU.Models.ICRA icra, string[] roleNames)
+        public async Task NotifyRolesAboutICRA(ICRA icra, string[] roleNames)
         {
             var usersToNotify = new List<ApplicationUser>();
 
@@ -74,6 +73,28 @@ namespace IPCU.Services
 
             // Prepare email content
             var subject = $"URGENT: ICRA Class {icra.PreventiveMeasures} Requires Immediate Attention";
+
+            // Add signature information section
+            var signatureSection = string.Empty;
+
+            signatureSection += "<h3>Signature Status:</h3><ul>";
+
+            if (!string.IsNullOrEmpty(icra.EngineeringSign))
+                signatureSection += $"<li><strong>Engineering Sign:</strong> {icra.EngineeringSign}</li>";
+            else
+                signatureSection += "<li><strong>Engineering Sign:</strong> <span class='highlight'>Not signed</span></li>";
+
+            if (!string.IsNullOrEmpty(icra.ICPSign))
+                signatureSection += $"<li><strong>ICP Sign:</strong> {icra.ICPSign}</li>";
+            else
+                signatureSection += "<li><strong>ICP Sign:</strong> <span class='highlight'>Not signed</span></li>";
+
+            if (!string.IsNullOrEmpty(icra.UnitAreaRep))
+                signatureSection += $"<li><strong>Unit Area Representative:</strong> {icra.UnitAreaRep}</li>";
+            else
+                signatureSection += "<li><strong>Unit Area Representative:</strong> <span class='highlight'>Not signed</span></li>";
+
+            signatureSection += "</ul>";
 
             var message = $@"
     <html>
@@ -100,6 +121,7 @@ namespace IPCU.Services
                 <li><strong>Contractor:</strong> {icra.ContractorRepresentativeName}</li>
                 <li><strong>Contact:</strong> {icra.TelephoneOrMobileNumber}</li>
             </ul>
+            {signatureSection}
             <p>Please review this ICRA submission as soon as possible.</p>
             <p><a href='{_configuration["ApplicationUrl"]}/ICRAs/Details/{icra.Id}'>Click here to view the full ICRA details</a></p>
         </div>
@@ -121,6 +143,5 @@ namespace IPCU.Services
                 await SendEmailAsync(icra.ConstructionEmail, subject, message);
             }
         }
-
     }
 }

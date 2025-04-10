@@ -1,0 +1,312 @@
+﻿@model IEnumerable<IPCU.Models.ICRA>
+@{
+    ViewData["Title"] = "Engineering ICRA Dashboard";
+}
+
+<div class="container-fluid mt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white">
+            <h2><i class="fas fa-hard-hat me-2"></i>Engineering ICRA Dashboard</h2>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card bg-warning text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="card-title">Pending High Risk</h5>
+                                    <p class="card-text">Class III-V ICRAs requiring signature</p>
+                                </div>
+                                <h2 class="display-4">@ViewBag.PendingCount</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="card-title">Pending Low Risk</h5>
+                                    <p class="card-text">Class I-II ICRAs requiring signature</p>
+                                </div>
+                                <h2 class="display-4">@ViewBag.LowRiskCount</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-success text-white">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="card-title">Completed</h5>
+                                    <p class="card-text">ICRAs with your signature added</p>
+                                </div>
+                                <h2 class="display-4">@ViewBag.CompletedCount</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="nav nav-tabs mb-3" id="icraTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="high-risk-tab" data-bs-toggle="tab" data-bs-target="#high-risk" type="button" role="tab" aria-controls="high-risk" aria-selected="true">
+                        <i class="fas fa-exclamation-triangle me-1"></i> High Risk (Class III-V)
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="low-risk-tab" data-bs-toggle="tab" data-bs-target="#low-risk" type="button" role="tab" aria-controls="low-risk" aria-selected="false">
+                        <i class="fas fa-check-circle me-1"></i> Low Risk (Class I-II)
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab" aria-controls="completed" aria-selected="false">
+                        <i class="fas fa-clipboard-check me-1"></i> Completed
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="icraTabContent">
+                <!-- High Risk ICRAs Tab -->
+                <div class="tab-pane fade show active" id="high-risk" role="tabpanel" aria-labelledby="high-risk-tab">
+                    <h3 class="mb-3">High Risk ICRAs Requiring Engineering Signature</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Project Reference</th>
+                                    <th>Project Name</th>
+                                    <th>Location</th>
+                                    <th>Risk Class</th>
+                                    <th>Start Date</th>
+                                    <th>Contractor</th>
+                                    <th>ICP Sign</th>
+                                    <th>Unit Area Rep</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.HighRiskICRAs != null && ViewBag.HighRiskICRAs.Count > 0)
+                                {
+                                    @foreach (var item in ViewBag.HighRiskICRAs)
+                                    {
+                                        <tr>
+                                            <td>@item.ProjectReferenceNumber</td>
+                                            <td>@item.ProjectNameAndDescription</td>
+                                            <td>@item.SpecificSiteOfActivity</td>
+                                            <td>
+                                                <span class="badge bg-danger">@item.PreventiveMeasures</span>
+                                            </td>
+                                            <td>@item.ProjectStartDate.ToShortDateString()</td>
+                                            <td>@item.ContractorRepresentativeName</td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(item.ICPSign))
+                                                {
+                                                    <span class="badge bg-success"><i class="fas fa-check"></i> Signed</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Pending</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(item.UnitAreaRep))
+                                                {
+                                                    <span class="badge bg-success"><i class="fas fa-check"></i> Signed</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Pending</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-action="EngineeringSign" asp-route-id="@item.Id" class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-signature me-1"></i> Sign
+                                                </a>
+                                                <a asp-controller="ICRAs" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                                    <i class="fas fa-info-circle me-1"></i> Details
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="9" class="text-center">No high-risk ICRAs requiring your signature at this time.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Low Risk ICRAs Tab -->
+                <div class="tab-pane fade" id="low-risk" role="tabpanel" aria-labelledby="low-risk-tab">
+                    <h3 class="mb-3">Low Risk ICRAs (Class I-II)</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Project Reference</th>
+                                    <th>Project Name</th>
+                                    <th>Location</th>
+                                    <th>Risk Class</th>
+                                    <th>Start Date</th>
+                                    <th>Contractor</th>
+                                    <th>ICP Sign</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.LowRiskICRAs != null && ViewBag.LowRiskICRAs.Count > 0)
+                                {
+                                    @foreach (var item in ViewBag.LowRiskICRAs)
+                                    {
+                                        <tr>
+                                            <td>@item.ProjectReferenceNumber</td>
+                                            <td>@item.ProjectNameAndDescription</td>
+                                            <td>@item.SpecificSiteOfActivity</td>
+                                            <td>
+                                                <span class="badge bg-info">@item.PreventiveMeasures</span>
+                                            </td>
+                                            <td>@(item.ProjectStartDate.HasValue ? item.ProjectStartDate.Value.ToShortDateString() : "Not specified")</td>
+                                            <td>@item.ContractorRepresentativeName</td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(item.ICPSign))
+                                                {
+                                                    <span class="badge bg-success"><i class="fas fa-check"></i> Signed</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Pending</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-action="EngineeringSign" asp-route-id="@item.Id" class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-signature me-1"></i> Sign
+                                                </a>
+                                                <a asp-controller="ICRAs" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                                    <i class="fas fa-info-circle me-1"></i> Details
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="8" class="text-center">No low-risk ICRAs requiring your signature at this time.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Completed ICRAs Tab -->
+                <div class="tab-pane fade" id="completed" role="tabpanel" aria-labelledby="completed-tab">
+                    <h3 class="mb-3">Completed ICRAs</h3>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Project Reference</th>
+                                    <th>Project Name</th>
+                                    <th>Location</th>
+                                    <th>Risk Class</th>
+                                    <th>Engineering Sign</th>
+                                    <th>ICP Sign</th>
+                                    <th>Unit Area Rep</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (ViewBag.CompletedICRAs != null && ViewBag.CompletedICRAs.Count > 0)
+                                {
+                                    @foreach (var item in ViewBag.CompletedICRAs)
+                                    {
+                                        <tr>
+                                            <td>@item.ProjectReferenceNumber</td>
+                                            <td>@item.ProjectNameAndDescription</td>
+                                            <td>@item.SpecificSiteOfActivity</td>
+                                            <td>
+                                                @if (item.PreventiveMeasures.Contains("3") ||
+                                               item.PreventiveMeasures.Contains("4") ||
+                                               item.PreventiveMeasures.Contains("5") ||
+                                               item.PreventiveMeasures.ToLower().Contains("class iii") ||
+                                               item.PreventiveMeasures.ToLower().Contains("class iv") ||
+                                               item.PreventiveMeasures.ToLower().Contains("class v"))
+                                                {
+                                                    <span class="badge bg-danger">@item.PreventiveMeasures</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-info">@item.PreventiveMeasures</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success"><i class="fas fa-check"></i> Signed</span>
+                                            </td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(item.ICPSign))
+                                                {
+                                                    <span class="badge bg-success"><i class="fas fa-check"></i> Signed</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Pending</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(item.UnitAreaRep))
+                                                {
+                                                    <span class="badge bg-success"><i class="fas fa-check"></i> Signed</span>
+                                                }
+                                                else if (item.PreventiveMeasures.Contains("3") ||
+                                                item.PreventiveMeasures.Contains("4") ||
+                                                item.PreventiveMeasures.Contains("5") ||
+                                                item.PreventiveMeasures.ToLower().Contains("class iii") ||
+                                                item.PreventiveMeasures.ToLower().Contains("class iv") ||
+                                                item.PreventiveMeasures.ToLower().Contains("class v"))
+                                                {
+                                                    <span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Pending</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary"><i class="fas fa-minus"></i> N/A</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <a asp-controller="ICRAs" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                                    <i class="fas fa-info-circle me-1"></i> Details
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="8" class="text-center">No completed ICRAs at this time.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
