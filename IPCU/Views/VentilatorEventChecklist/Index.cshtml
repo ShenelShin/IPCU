@@ -472,4 +472,25 @@
     // Also call the function on page load in case there's a selected value
     document.addEventListener('DOMContentLoaded', toggleMDROOrganism);
 
+    // IVAC
+
+    function toggleIVac3Checkbox() {
+        const ivac2Checkboxes = document.querySelectorAll('input[id="IVac2"]');
+        const ivac3 = document.getElementById("IVac3");
+
+        // Check if at least one IVac2 checkbox is checked
+        const shouldEnable = Array.from(ivac2Checkboxes).some(cb => cb.checked);
+
+        ivac3.disabled = !shouldEnable;
+
+        if (!shouldEnable) {
+            ivac3.checked = false;
+        }
+    }
+
+    // Run on load in case some checkboxes are pre-checked
+    document.addEventListener("DOMContentLoaded", function () {
+        toggleIVac3Checkbox();
+    });
+
 </script>
