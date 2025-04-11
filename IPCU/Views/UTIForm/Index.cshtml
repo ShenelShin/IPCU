@@ -197,58 +197,54 @@
             <p>Patient had an indwelling urinary catheter (IUC) that had been in place for more than 2 consecutive days in an inpatient location on the date of event AND was either:</p>
 
             <!-- Catheter Presence Options -->
-            <div class="form-group">
-                @Html.CheckBox("CatheterPresent", Model.CatheterPresent.GetValueOrDefault(), new { @id = "catheter-present" })
-                <label for="catheter-present">Present for any portion of the calendar day on the date of event</label>
-            </div>
+                <!-- Catheter Presence Options -->
+                <div class="form-group">
+                    @Html.CheckBox("CatheterPresent", Model.CatheterPresent.GetValueOrDefault(), new { @id = "catheter-present", @class = "catheter-option" })
+                    <label for="catheter-present">Present for any portion of the calendar day on the date of event</label>
+                </div>
 
-            <div class="form-group">
-                @Html.CheckBox("CatheterRemovedBeforeEvent", Model.CatheterRemovedBeforeEvent.GetValueOrDefault(), new { @id = "catheter-removed" })
-                <label for="catheter-removed">Removed the day before the date of event</label>
-            </div>
+                <div class="form-group">
+                    @Html.CheckBox("CatheterRemovedBeforeEvent", Model.CatheterRemovedBeforeEvent.GetValueOrDefault(), new { @id = "catheter-removed", @class = "catheter-option" })
+                    <label for="catheter-removed">Removed the day before the date of event</label>
+                </div>
+
 
             <hr />
 
             <!-- Symptoms Checkboxes -->
             <h4>Symptoms:</h4>
             <div class="form-group">
-                <div>
-                    @Html.CheckBox("HasFever", Model.HasFever.GetValueOrDefault(), new { @id = "has-fever" })
-                    <label for="has-fever">Fever</label>
+                    <div>
+                        @Html.CheckBox("HasFever", Model.HasFever.GetValueOrDefault(), new { @id = "has-fever", @class = "symptom", disabled = "disabled" })
+                        <label for="has-fever">Fever</label>
+                    </div>
+                    <div>
+                        @Html.CheckBox("HasSuprapubicTenderness", Model.HasSuprapubicTenderness.GetValueOrDefault(), new { @id = "has-suprapubic", @class = "symptom", disabled = "disabled" })
+                        <label for="has-suprapubic">Suprapubic tenderness</label>
+                    </div>
+                    <div>
+                        @Html.CheckBox("HasCostovertebralPain", Model.HasCostovertebralPain.GetValueOrDefault(), new { @id = "has-costovertebral", @class = "symptom", disabled = "disabled" })
+                        <label for="has-costovertebral">Costovertebral angle pain or tenderness</label>
+                    </div>
+                    <div>
+                        @Html.CheckBox("HasUrinaryUrgency", Model.HasUrinaryUrgency.GetValueOrDefault(), new { @id = "has-urgency", @class = "symptom", disabled = "disabled" })
+                        <label for="has-urgency">Urinary urgency</label>
+                    </div>
+                    <div>
+                        @Html.CheckBox("HasUrinaryFrequency", Model.HasUrinaryFrequency.GetValueOrDefault(), new { @id = "has-frequency", @class = "symptom", disabled = "disabled" })
+                        <label for="has-frequency">Urinary frequency</label>
+                    </div>
+                    <div>
+                        @Html.CheckBox("HasDysuria", Model.HasDysuria.GetValueOrDefault(), new { @id = "has-dysuria", @class = "symptom", disabled = "disabled" })
+                        <label for="has-dysuria">Dysuria</label>
+                    </div>
+                    <div>
+                        @Html.CheckBox("HasUrineCultureWithTwoSpecies", Model.HasUrineCultureWithTwoSpecies.GetValueOrDefault(), new { @id = "has-culture-two-species", @class = "symptom", disabled = "disabled" })
+                        <label for="has-culture-two-species">Patient has a urine culture with no more than two species of organisms identified, at least one of which is a bacterium of &gt;10<sup>5</sup> CFU/ml</label>
+                    </div>
                 </div>
 
-                <div>
-                    @Html.CheckBox("HasSuprapubicTenderness", Model.HasSuprapubicTenderness.GetValueOrDefault(), new { @id = "has-suprapubic" })
-                    <label for="has-suprapubic">Suprapubic tenderness</label>
-                </div>
 
-
-                <div>
-                    @Html.CheckBox("HasCostovertebralPain", Model.HasCostovertebralPain.GetValueOrDefault(), new { @id = "has-costovertebral" })
-                    <label for="has-costovertebral">Costovertebral angle pain or tenderness</label>
-                </div>
-
-                <div>
-                    @Html.CheckBox("HasUrinaryUrgency", Model.HasUrinaryUrgency.GetValueOrDefault(), new { @id = "has-urgency" })
-                    <label for="has-urgency">Urinary urgency</label>
-                </div>
-
-                <div>
-                    @Html.CheckBox("HasUrinaryFrequency", Model.HasUrinaryFrequency.GetValueOrDefault(), new { @id = "has-frequency" })
-                    <label for="has-frequency">Urinary frequency</label>
-                </div>
-
-                <div>
-                    @Html.CheckBox("HasDysuria", Model.HasDysuria.GetValueOrDefault(), new { @id = "has-dysuria" })
-                    <label for="has-dysuria">Dysuria</label>
-                </div>
-
-                <div>
-                    @Html.CheckBox("HasUrineCultureWithTwoSpecies", Model.HasUrineCultureWithTwoSpecies.GetValueOrDefault(), new { @id = "has-culture-two-species" })
-                    <label for="has-culture-two-species">Patient has a urine culture with no more than two species of organisms identified, at least one of which is a bacterium of &gt;10<sup>5</sup> CFU/ml</label>
-                </div>
-
-            </div>
 
             <hr />
 
@@ -256,16 +252,16 @@
             <h4>Culture Details:</h4>
             <table>
                 <tr>
-                    <td>
-                        @Html.LabelFor(m => m.CultureDate, "Culture Date:") <br />
-                        @Html.TextBoxFor(m => m.CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.CultureDate, "", new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        @Html.LabelFor(m => m.CultureResults, "Culture Results:") <br />
-                        @Html.TextAreaFor(m => m.CultureResults, new { rows = "3", cols = "30", @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.CultureResults, "", new { @class = "text-danger" })
-                    </td>
+                        <td>
+                            @Html.LabelFor(m => m.CultureDate, "Culture Date:") <br />
+                            @Html.TextBoxFor(m => m.CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control culture-input", disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.CultureDate, "", new { @class = "text-danger" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.CultureResults, "Culture Results:") <br />
+                            @Html.TextAreaFor(m => m.CultureResults, new { rows = "3", cols = "30", @class = "form-control culture-input", disabled = "disabled" })
+                            @Html.ValidationMessageFor(m => m.CultureResults, "", new { @class = "text-danger" })
+                        </td>
                 </tr>
             </table>
 
@@ -278,75 +274,70 @@
             <p><strong>Patient of any age, non-catheter-associated Urinary Tract Infection (non-CAUTI).</strong></p>
             <p>One (1) of the following is true: </p>
 
-            <div class="form-group">
-                @Html.CheckBox("SUTI1b_HadCatheterLessThan2Days", Model.SUTI1b_HadCatheterLessThan2Days.GetValueOrDefault(), new { @id = "suti1b-catheter-less" })
-                <label for="suti1b-catheter-less">Patient has/had an indwelling urinary catheter, but it has/had not been in place for more than 2 consecutive days in an inpatient location on the date of event, OR</label>
-            </div>
+                <!-- Catheter Status -->
+                <div class="form-group">
+                    @Html.CheckBox("SUTI1b_HadCatheterLessThan2Days", Model.SUTI1b_HadCatheterLessThan2Days.GetValueOrDefault(), new { @id = "suti1b-catheter-less", @class = "suti1b-catheter-option" })
+                    <label for="suti1b-catheter-less">Patient has/had an indwelling urinary catheter, but it has/had not been in place for more than 2 consecutive days in an inpatient location on the date of event, OR</label>
+                </div>
 
-            <div class="form-group">
-                @Html.CheckBox("SUTI1b_NoCatheterInPlace", Model.SUTI1b_NoCatheterInPlace.GetValueOrDefault(), new { @id = "suti1b-no-catheter" })
-                <label for="suti1b-no-catheter">Patient did not have an indwelling urinary catheter in place on the date of event nor day before the date</label>
-            </div>
+                <div class="form-group">
+                    @Html.CheckBox("SUTI1b_NoCatheterInPlace", Model.SUTI1b_NoCatheterInPlace.GetValueOrDefault(), new { @id = "suti1b-no-catheter", @class = "suti1b-catheter-option" })
+                    <label for="suti1b-no-catheter">Patient did not have an indwelling urinary catheter in place on the date of event nor day before the date</label>
+                </div>
 
             <hr />
 
             <!-- Symptoms Checkboxes -->
             <h4>Symptoms:</h4>
-            <div class="form-group">
-                @Html.CheckBox("SUTI1b_Fever", Model.SUTI1b_Fever.GetValueOrDefault(), new { @id = "suti1b-fever" })
-                <label for="suti1b-fever">Fever</label>
-            </div>
-
-            <div class="form-group">
-                @Html.CheckBox("SUTI1b_SuprapubicTenderness", Model.SUTI1b_SuprapubicTenderness.GetValueOrDefault(), new { @id = "suti1b-suprapubic" })
-                <label for="suti1b-suprapubic">Suprapubic tenderness</label>
-            </div>
-
-            <div class="form-group">
-                @Html.CheckBox("SUTI1b_CostovertebralPain", Model.SUTI1b_CostovertebralPain.GetValueOrDefault(), new { @id = "suti1b-costovertebral" })
-                <label for="suti1b-costovertebral">Costovertebral angle pain or tenderness</label>
-            </div>
-
-            <div class="form-group">
-                @Html.CheckBox("SUTI1b_UrinaryUrgency", Model.SUTI1b_UrinaryUrgency.GetValueOrDefault(), new { @id = "suti1b-urgency" })
-                <label for="suti1b-urgency">Urinary urgency</label>
-            </div>
-
-            <div class="form-group">
-                @Html.CheckBox("SUTI1b_UrinaryFrequency", Model.SUTI1b_UrinaryFrequency.GetValueOrDefault(), new { @id = "suti1b-frequency" })
-                <label for="suti1b-frequency">Urinary frequency</label>
-            </div>
-
-            <div class="form-group">
-                @Html.CheckBox("SUTI1b_Dysuria", Model.SUTI1b_Dysuria.GetValueOrDefault(), new { @id = "suti1b-dysuria" })
-                <label for="suti1b-dysuria">Dysuria</label>
-            </div>
+                <div class="form-group">
+                    @Html.CheckBox("SUTI1b_Fever", Model.SUTI1b_Fever.GetValueOrDefault(), new { @id = "suti1b-fever", @class = "suti1b-symptom", disabled = "disabled" })
+                    <label for="suti1b-fever">Fever</label>
+                </div>
+                <div class="form-group">
+                    @Html.CheckBox("SUTI1b_SuprapubicTenderness", Model.SUTI1b_SuprapubicTenderness.GetValueOrDefault(), new { @id = "suti1b-suprapubic", @class = "suti1b-symptom", disabled = "disabled" })
+                    <label for="suti1b-suprapubic">Suprapubic tenderness</label>
+                </div>
+                <div class="form-group">
+                    @Html.CheckBox("SUTI1b_CostovertebralPain", Model.SUTI1b_CostovertebralPain.GetValueOrDefault(), new { @id = "suti1b-costovertebral", @class = "suti1b-symptom", disabled = "disabled" })
+                    <label for="suti1b-costovertebral">Costovertebral angle pain or tenderness</label>
+                </div>
+                <div class="form-group">
+                    @Html.CheckBox("SUTI1b_UrinaryUrgency", Model.SUTI1b_UrinaryUrgency.GetValueOrDefault(), new { @id = "suti1b-urgency", @class = "suti1b-symptom", disabled = "disabled" })
+                    <label for="suti1b-urgency">Urinary urgency</label>
+                </div>
+                <div class="form-group">
+                    @Html.CheckBox("SUTI1b_UrinaryFrequency", Model.SUTI1b_UrinaryFrequency.GetValueOrDefault(), new { @id = "suti1b-frequency", @class = "suti1b-symptom", disabled = "disabled" })
+                    <label for="suti1b-frequency">Urinary frequency</label>
+                </div>
+                <div class="form-group">
+                    @Html.CheckBox("SUTI1b_Dysuria", Model.SUTI1b_Dysuria.GetValueOrDefault(), new { @id = "suti1b-dysuria", @class = "suti1b-symptom", disabled = "disabled" })
+                    <label for="suti1b-dysuria">Dysuria</label>
+                </div>
 
             <hr />
 
             <!-- Urine Culture -->
-            <div class="form-group">
-                @Html.CheckBox("SUTI1b_HasValidUrineCulture", Model.SUTI1b_HasValidUrineCulture.GetValueOrDefault(), new { @id = "suti1b-valid-culture" })
-                <label for="suti1b-valid-culture">
-                    Patient has a urine culture with no more than two species of organisms identified, at least one of which is a bacterium of >10<sup>5</sup> CFU/ml
-                </label>
-            </div>
-
+                <div class="form-group">
+                    @Html.CheckBox("SUTI1b_HasValidUrineCulture", Model.SUTI1b_HasValidUrineCulture.GetValueOrDefault(), new { @id = "suti1b-valid-culture", disabled = "disabled" })
+                    <label for="suti1b-valid-culture">
+                        Patient has a urine culture with no more than two species of organisms identified, at least one of which is a bacterium of &gt;10<sup>5</sup> CFU/ml
+                    </label>
+                </div>
 
             <!-- Culture Details -->
             <h4>Culture Details:</h4>
-            <table>
-                <tr>
-                    <td>
-                        @Html.LabelFor(m => m.SUTI1b_CultureDate, "Culture Date:") <br />
-                        @Html.TextBoxFor(m => m.SUTI1b_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
-                    </td>
-                    <td>
-                        @Html.LabelFor(m => m.SUTI1b_CultureResults, "Culture Results:") <br />
-                        @Html.TextAreaFor(m => m.SUTI1b_CultureResults, new { rows = "3", cols = "30", @class = "form-control" })
-                    </td>
-                </tr>
-            </table>
+                <table>
+                    <tr>
+                        <td>
+                            @Html.LabelFor(m => m.SUTI1b_CultureDate, "Culture Date:") <br />
+                            @Html.TextBoxFor(m => m.SUTI1b_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control suti1b-culture-input", disabled = "disabled" })
+                        </td>
+                        <td>
+                            @Html.LabelFor(m => m.SUTI1b_CultureResults, "Culture Results:") <br />
+                            @Html.TextAreaFor(m => m.SUTI1b_CultureResults, new { rows = "3", cols = "30", @class = "form-control suti1b-culture-input", disabled = "disabled" })
+                        </td>
+                    </tr>
+                </table>
         </fieldset>
     </div>
 
@@ -356,7 +347,7 @@
             <p><strong>CAUTI or Non-Cauti in patients 1 year of age or less</strong></p>
             <!-- Age Check -->
             <div class="form-group">
-                @Html.CheckBox("SUTI2_IsOneYearOrLess", Model.SUTI2_IsOneYearOrLess.GetValueOrDefault(), new { @id = "suti2-is-one-year-or-less" })
+                    @Html.CheckBox("SUTI2_IsOneYearOrLess", Model.SUTI2_IsOneYearOrLess.GetValueOrDefault(), new { @id = "suti2-is-one-year-or-less" })
                 <label for="suti2-is-one-year-or-less">Patient is ≤ 1 year of age(with or without indwelling urinary catheter)</label>
             </div>
 
@@ -365,46 +356,46 @@
             <!-- Symptoms -->
             <h4>Symptoms:</h4>
             <div class="form-group">
-                @Html.CheckBox("SUTI2_Fever", Model.SUTI2_Fever.GetValueOrDefault(), new { @id = "suti2-fever" })
+                    @Html.CheckBox("SUTI2_Fever", Model.SUTI2_Fever.GetValueOrDefault(), new { @id = "suti2-fever", @class = "suti2-symptom" })
                 <label for="suti2-fever">Fever (>38°C)</label>
             </div>
 
             <div class="form-group">
-                @Html.CheckBox("SUTI2_Hypothermia", Model.SUTI2_Hypothermia.GetValueOrDefault(), new { @id = "suti2-hypothermia" })
+                    @Html.CheckBox("SUTI2_Hypothermia", Model.SUTI2_Hypothermia.GetValueOrDefault(), new { @id = "suti2-hypothermia", @class = "suti2-symptom" })
                 <label for="suti2-hypothermia">Hypothermia (&lt;36°C core temperature)</label>
             </div>
 
             <div class="form-group">
-                @Html.CheckBox("SUTI2_Apnea", Model.SUTI2_Apnea.GetValueOrDefault(), new { @id = "suti2-apnea" })
+                    @Html.CheckBox("SUTI2_Apnea", Model.SUTI2_Apnea.GetValueOrDefault(), new { @id = "suti2-apnea", @class = "suti2-symptom" })
                 <label for="suti2-apnea">Apnea</label>
             </div>
 
             <div class="form-group">
-                @Html.CheckBox("SUTI2_Bradycardia", Model.SUTI2_Bradycardia.GetValueOrDefault(), new { @id = "suti2-bradycardia" })
-                <label for="suti2-bradycardia">Bradycardia</label>
+                    @Html.CheckBox("SUTI2_Bradycardia", Model.SUTI2_Bradycardia.GetValueOrDefault(), new { @id = "suti2-bradycardia", @class = "suti2-symptom" })
+                    <label for="suti2-bradycardia">Bradycardia</label>
             </div>
 
             <div class="form-group">
-                @Html.CheckBox("SUTI2_Lethargy", Model.SUTI2_Lethargy.GetValueOrDefault(), new { @id = "suti2-lethargy" })
-                <label for="suti2-lethargy">Lethargy</label>
+                    @Html.CheckBox("SUTI2_Lethargy", Model.SUTI2_Lethargy.GetValueOrDefault(), new { @id = "suti2-lethargy", @class = "suti2-symptom" })
+                    <label for="suti2-lethargy">Lethargy</label>
             </div>
 
             <div class="form-group">
-                @Html.CheckBox("SUTI2_Vomiting", Model.SUTI2_Vomiting.GetValueOrDefault(), new { @id = "suti2-vomiting" })
-                <label for="suti2-vomiting">Vomiting</label>
+                    @Html.CheckBox("SUTI2_Vomiting", Model.SUTI2_Vomiting.GetValueOrDefault(), new { @id = "suti2-vomiting", @class = "suti2-symptom" })
+                    <label for="suti2-vomiting">Vomiting</label>
             </div>
 
             <div class="form-group">
-                @Html.CheckBox("SUTI2_SuprapubicTenderness", Model.SUTI2_SuprapubicTenderness.GetValueOrDefault(), new { @id = "suti2-suprapubic" })
-                <label for="suti2-suprapubic">Suprapubic tenderness</label>
+                    @Html.CheckBox("SUTI2_SuprapubicTenderness", Model.SUTI2_SuprapubicTenderness.GetValueOrDefault(), new { @id = "suti2-suprapubic", @class = "suti2-symptom" })
+                    <label for="suti2-suprapubic">Suprapubic tenderness</label>
             </div>
 
             <hr />
 
             <!-- Urine Culture -->
             <div class="form-group">
-                @Html.CheckBox("SUTI2_HasValidUrineCulture", Model.SUTI2_HasValidUrineCulture.GetValueOrDefault(), new { @id = "suti2-valid-culture" })
-                <label for="suti2-valid-culture">
+                    @Html.CheckBox("SUTI2_HasValidUrineCulture", Model.SUTI2_HasValidUrineCulture.GetValueOrDefault(), new { @id = "suti2-valid-culture" })
+                    <label for="suti2-valid-culture">
                     Patient has a urine culture with no more than two species of organisms identified, at least one of which is a bacterium of >10<sup>5</sup> CFU/ml
                 </label>
             </div>
@@ -414,12 +405,12 @@
                 <tr>
                     <td>
                         @Html.LabelFor(m => m.SUTI2_CultureDate, "Culture Date:") <br />
-                        @Html.TextBoxFor(m => m.SUTI2_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
-                    </td>
+                            @Html.TextBoxFor(m => m.SUTI2_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control suti2-culture-input" })
+                        </td>
                     <td>
                         @Html.LabelFor(m => m.SUTI2_CultureResults, "Culture Results:") <br />
-                        @Html.TextAreaFor(m => m.SUTI2_CultureResults, new { rows = "3", cols = "30", @class = "form-control" })
-                    </td>
+                            @Html.TextAreaFor(m => m.SUTI2_CultureResults, new { rows = "3", cols = "30", @class = "form-control suti2-culture-input" })
+                        </td>
                 </tr>
             </table>
 
@@ -433,24 +424,24 @@
 
             <!-- No Symptoms -->
             <div class="form-group">
-                @Html.CheckBox("ABUTI_NoSymptoms", Model.ABUTI_NoSymptoms.GetValueOrDefault(), new { @id = "abuti-no-symptoms" })
-                <label for="abuti-no-symptoms">Patient with* or without an indwelling urinary catheter has no signs or symptoms of SUTI 1 or 2 according to age.</label>
+                    @Html.CheckBox("ABUTI_NoSymptoms", Model.ABUTI_NoSymptoms.GetValueOrDefault(), new { @id = "abuti-no-symptoms" })
+                    <label for="abuti-no-symptoms">Patient with* or without an indwelling urinary catheter has no signs or symptoms of SUTI 1 or 2 according to age.</label>
             </div>
 
             <hr />
 
             <!-- Urine Culture -->
             <div class="form-group">
-                @Html.CheckBox("ABUTI_ValidUrineCulture", Model.ABUTI_ValidUrineCulture.GetValueOrDefault(), new { @id = "abuti-valid-culture" })
-                <label for="abuti-valid-culture">
+                    @Html.CheckBox("ABUTI_ValidUrineCulture", Model.ABUTI_ValidUrineCulture.GetValueOrDefault(), new { @id = "abuti-valid-culture", @class = "abuti-culture-check" })
+                    <label for="abuti-valid-culture">
                     Patient has a urines culture with no more than two species of organisms identified, at least one of which is a bacterium of >10<sup>5CFU/ml
                 </label>
             </div>
 
             <!-- Organism Identified -->
             <div class="form-group">
-                @Html.CheckBox("ABUTI_OrganismIdentified", Model.ABUTI_OrganismIdentified.GetValueOrDefault(), new { @id = "abuti-organism-identified" })
-                <label for="abuti-organism-identified">Patient has organism identified** from blood specimen with at least matching bacterium to the bacterium at >100,000 CFU/ml identified in urine specimen OR is eligible for LCBI criterion 2 (without fever) and matching common commensal(s) in the urine.</label>
+                    @Html.CheckBox("ABUTI_OrganismIdentified", Model.ABUTI_OrganismIdentified.GetValueOrDefault(), new { @id = "abuti-organism-identified", @class = "abuti-culture-check" })
+                    <label for="abuti-organism-identified">Patient has organism identified** from blood specimen with at least matching bacterium to the bacterium at >100,000 CFU/ml identified in urine specimen OR is eligible for LCBI criterion 2 (without fever) and matching common commensal(s) in the urine.</label>
             </div>
 
             <hr />
@@ -463,12 +454,12 @@
                 <tr>
                     <td>
                         @Html.LabelFor(m => m.ABUTI_CultureDate, "Culture Date:") <br />
-                        @Html.TextBoxFor(m => m.ABUTI_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
-                    </td>
+                            @Html.TextBoxFor(m => m.ABUTI_CultureDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control abuti-culture-input" })
+                        </td>
                     <td>
                         @Html.LabelFor(m => m.ABUTI_CultureResults, "Culture Results:") <br />
-                        @Html.TextAreaFor(m => m.ABUTI_CultureResults, new { rows = "3", cols = "30", @class = "form-control" })
-                    </td>
+                            @Html.TextAreaFor(m => m.ABUTI_CultureResults, new { rows = "3", cols = "30", @class = "form-control abuti-culture-input" })
+                        </td>
                 </tr>
             </table>
 
@@ -557,5 +548,134 @@
             // Trigger once in case of page reload with pre-selected value
             toggleTransferField();
         });
+
+
+                function updateSymptomsAvailability() {
+                const catheterChecked = document.querySelector("#catheter-present").checked || document.querySelector("#catheter-removed").checked;
+                document.querySelectorAll(".symptom").forEach(el => {
+                    el.disabled = !catheterChecked;
+                    if (!catheterChecked) el.checked = false;
+                });
+                updateCultureInputsAvailability(); // Also disable Culture if symptoms got unchecked
+            }
+
+            function updateCultureInputsAvailability() {
+                const anySymptomChecked = Array.from(document.querySelectorAll(".symptom")).some(el => el.checked);
+                document.querySelectorAll(".culture-input").forEach(el => {
+                    el.disabled = !anySymptomChecked;
+                });
+            }
+
+            document.querySelectorAll(".catheter-option").forEach(el => {
+                el.addEventListener("change", updateSymptomsAvailability);
+            });
+
+            document.querySelectorAll(".symptom").forEach(el => {
+                el.addEventListener("change", updateCultureInputsAvailability);
+            });
+
+
+
+                    function updateSUTI1bSymptoms() {
+                const catheterChecked = document.querySelector("#suti1b-catheter-less").checked || document.querySelector("#suti1b-no-catheter").checked;
+                document.querySelectorAll(".suti1b-symptom").forEach(el => {
+                    el.disabled = !catheterChecked;
+                    if (!catheterChecked) el.checked = false;
+                });
+                updateSUTI1bCultureCheckbox();
+            }
+
+            function updateSUTI1bCultureCheckbox() {
+                const anySymptomChecked = Array.from(document.querySelectorAll(".suti1b-symptom")).some(el => el.checked);
+                const cultureCheckbox = document.querySelector("#suti1b-valid-culture");
+                cultureCheckbox.disabled = !anySymptomChecked;
+                if (!anySymptomChecked) cultureCheckbox.checked = false;
+                updateSUTI1bCultureInputs();
+            }
+
+            function updateSUTI1bCultureInputs() {
+                const validCultureChecked = document.querySelector("#suti1b-valid-culture").checked;
+                document.querySelectorAll(".suti1b-culture-input").forEach(el => {
+                    el.disabled = !validCultureChecked;
+                });
+            }
+
+            document.querySelectorAll(".suti1b-catheter-option").forEach(el => {
+                el.addEventListener("change", updateSUTI1bSymptoms);
+            });
+
+            document.querySelectorAll(".suti1b-symptom").forEach(el => {
+                el.addEventListener("change", updateSUTI1bCultureCheckbox);
+            });
+
+            document.querySelector("#suti1b-valid-culture").addEventListener("change", updateSUTI1bCultureInputs);
+
+
+
+
+                        function updateSUTI2SymptomsAvailability() {
+                const isUnderOne = document.querySelector("#suti2-is-one-year-or-less")?.checked;
+                document.querySelectorAll(".suti2-symptom").forEach(el => {
+                    el.disabled = !isUnderOne;
+                    if (!isUnderOne) el.checked = false;
+                });
+                updateSUTI2CultureCheckbox(); // Also update culture availability
+            }
+
+            function updateSUTI2CultureCheckbox() {
+                const anySymptomChecked = Array.from(document.querySelectorAll(".suti2-symptom")).some(el => el.checked);
+                const cultureCheckbox = document.querySelector("#suti2-valid-culture");
+                if (cultureCheckbox) {
+                    cultureCheckbox.disabled = !anySymptomChecked;
+                    if (!anySymptomChecked) cultureCheckbox.checked = false;
+                }
+                updateSUTI2CultureInputs();
+            }
+
+            function updateSUTI2CultureInputs() {
+                const cultureValid = document.querySelector("#suti2-valid-culture")?.checked;
+                document.querySelectorAll(".suti2-culture-input").forEach(el => {
+                    el.disabled = !cultureValid;
+                });
+            }
+
+            // Bind SUTI 2 events
+            document.querySelector("#suti2-is-one-year-or-less")?.addEventListener("change", updateSUTI2SymptomsAvailability);
+            document.querySelectorAll(".suti2-symptom").forEach(el => {
+                el.addEventListener("change", updateSUTI2CultureCheckbox);
+            });
+            document.querySelector("#suti2-valid-culture")?.addEventListener("change", updateSUTI2CultureInputs);
+                updateSUTI2SymptomsAvailability();
+            // Run on initial load
+            updateSymptomsAvailability();
+
+
+
+
+                        function updateABUTICultureCheckboxes() {
+                const noSymptoms = document.querySelector("#abuti-no-symptoms")?.checked;
+                document.querySelectorAll(".abuti-culture-check").forEach(el => {
+                    el.disabled = !noSymptoms;
+                    if (!noSymptoms) el.checked = false;
+                });
+                updateABUTICultureInputs(); // Update date/result fields too
+            }
+            function updateABUTICultureInputs() {
+                const culture = document.querySelector("#abuti-valid-culture")?.checked;
+                const organism = document.querySelector("#abuti-organism-identified")?.checked;
+                const enabled = culture || organism; // <-- changed from && to ||
+                document.querySelectorAll(".abuti-culture-input").forEach(el => {
+                    el.disabled = !enabled;
+                });
+            }
+
+            // Bind events
+            document.querySelector("#abuti-no-symptoms")?.addEventListener("change", updateABUTICultureCheckboxes);
+            document.querySelectorAll(".abuti-culture-check").forEach(el => {
+                el.addEventListener("change", updateABUTICultureInputs);
+            });
+
+            // Initial run
+            updateABUTICultureCheckboxes();
     </script>
 }

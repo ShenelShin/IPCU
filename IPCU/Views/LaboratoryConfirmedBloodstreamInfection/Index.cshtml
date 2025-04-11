@@ -264,13 +264,13 @@
             <tr>
                 <td style="border: 1px solid black; font-weight: bold;">Culture date:</td>
                 <td style="border: 1px solid black;">
-                    <input asp-for="CultureDate" type="date" class="form-control" />
+                        <input asp-for="CultureDate" type="date" class="form-control lcbi-culture-input" />
                 </td>
             </tr>
             <tr>
                 <td style="border: 1px solid black; font-weight: bold;">Culture results:</td>
                 <td style="border: 1px solid black;">
-                    <textarea asp-for="CultureResults" class="form-control"></textarea>
+                        <textarea asp-for="CultureResults" class="form-control lcbi-culture-input"></textarea>
                 </td>
             </tr>
         </table>
@@ -962,5 +962,25 @@
                 });
             });
 
+
+                        function updateLCBICultureInputs() {
+                const culture = document.querySelector("#IdentifiedByCulture")?.checked;
+                const nonCulture = document.querySelector("#IdentifiedByNonCulture")?.checked;
+                const notFromAnotherSite = document.querySelector("#OrganismNotFromAnotherSite")?.checked;
+
+                const enabled = culture || nonCulture || notFromAnotherSite;
+
+                document.querySelectorAll(".lcbi-culture-input").forEach(el => {
+                    el.disabled = !enabled;
+                });
+            }
+
+            // Bind change events
+            ["#IdentifiedByCulture", "#IdentifiedByNonCulture", "#OrganismNotFromAnotherSite"].forEach(selector => {
+                document.querySelector(selector)?.addEventListener("change", updateLCBICultureInputs);
+            });
+
+            // Run on page load
+            updateLCBICultureInputs();
     </script>
 }
