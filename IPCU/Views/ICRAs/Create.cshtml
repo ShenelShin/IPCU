@@ -1,8 +1,5 @@
 ﻿@model IPCU.Models.ICRA
 
-@{
-    ViewData["Title"] = "Create";
-}
 <style>
     .custom-radio:disabled {
         pointer-events: none; /* Prevent clicking */
@@ -10,9 +7,31 @@
         cursor: default; /* Default cursor */
     }
 </style>
-<h1>Create</h1>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-<h4>ICRA</h4>
+<div class="border border-black bg-white rounded-md p-4 space-y-4">
+    <!-- HEADER -->
+    <div class="grid grid-cols-3 items-center border border-black">
+        <!-- Left Logo -->
+        <div class="flex justify-center p-2 border-r border-black">
+            <img src="/images/nkti-left-logo.png" alt="Left Logo" class="h-20 w-auto" />
+        </div>
+        <!-- Center Text -->
+        <div class="text-center space-y-1 py-2">
+            <p class="text-sm font-bold uppercase">National Kidney and Transplant Institute</p>
+            <p class="text-sm">East Avenue, Quezon City</p>
+            <p class="text-sm font-bold uppercase pt-2">Infection Prevention and Control Unit</p>
+            <p class="text-sm font-bold uppercase border-t border-black pt-1">
+                INFECTION CONTROL RISK ASSESSMENT (ICRA) FORM
+                FOR CONSTRUCTION AND RENOVATION
+            </p>
+        </div>
+        <!-- Right Logo -->
+        <div class="flex justify-center p-2 border-l border-black">
+            <img src="/images/nkti-right-logo.png" alt="Right Logo" class="h-20 w-auto" />
+        </div>
+    </div>
+
 <hr />
 
         <form asp-action="Create">
@@ -31,7 +50,9 @@
                 </tr>
                 <tr>
                     <th>Specific Site of the Activity</th>
-                    <td colspan="3">@Html.TextBoxFor(m => m.SpecificSiteOfActivity, new { @class = "form-control" })</td>
+                    <td>@Html.TextBoxFor(m => m.SpecificSiteOfActivity, new { @class = "form-control" })</td>
+                    <th>Email</th>
+                    <td>@Html.TextBoxFor(m => m.ConstructionEmail, new { @class = "form-control" })</td>
                 </tr>
                 <tr>
                     <th>Scope of Work (Brief Summary):</th>
@@ -606,6 +627,9 @@
         </table>
     </div>
 
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
         </form>
 
 <div>

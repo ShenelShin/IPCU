@@ -1,11 +1,32 @@
 ﻿@model IPCU.Models.PostConstruction
 
-@{
-    ViewData["Title"] = "Create";
-}
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+<div class="border border-black bg-white rounded-md p-4 space-y-4">
+    <!-- HEADER -->
+    <div class="grid grid-cols-3 items-center border border-black">
+        <!-- Left Logo -->
+        <div class="flex justify-center p-2 border-r border-black">
+            <img src="/images/nkti-left-logo.png" alt="Left Logo" class="h-20 w-auto" />
+        </div>
+        <!-- Center Text -->
+        <div class="text-center space-y-1 py-2">
+            <p class="text-sm font-bold uppercase">National Kidney and Transplant Institute</p>
+            <p class="text-sm">East Avenue, Quezon City</p>
+            <p class="text-sm font-bold uppercase pt-2">Infection Prevention and Control Unit</p>
+            <p class="text-sm font-bold uppercase border-t border-black pt-1">
+                INFECTION PREVENTION AND CONTROL CONSTRUCTION SITE MONITORING TOOL
+            </p>
+        </div>
+        <!-- Right Logo -->
+        <div class="flex justify-center p-2 border-l border-black">
+            <img src="/images/nkti-right-logo.png" alt="Right Logo" class="h-20 w-auto" />
+        </div>
+    </div>
+
 
         <form asp-action="Create">
-            <h2 class="text-center">INFECTION PREVENTION AND CONTROL<br />CONSTRUCTION SITE MONITORING TOOL</h2>
+           
 
     <p><strong>Note:</strong> This form is used by Infection Control Professional or their Designate to ensure the post construction area is readyforpatient/ staff occupancy or turn-over.</p>
 
@@ -38,7 +59,6 @@
             </td>
                 </tr>
             </table>
-    <h4 class="mt-4">Preventive Measures</h4>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -50,15 +70,13 @@
                     DEFICIENCIES OR
                     COMMENTS
                 </th>
-                <th>DATE COMPLETED</th>
-
             </tr>
         </thead>
         <tbody>
             <tr><td colspan="5"><strong>Post Construction Cleaning</strong></td></tr>
             <tr>
                 <td>
-                    <label>
+                    <label >
                         Before hoarding removal, job site is clear of dust, construction
                         debris/ equipment. Area has been cleaned, including HEPA
                         vacuuming and/or wipe down of surfaces including hoarding to
@@ -78,9 +96,7 @@
                 <td>
                     <input asp-for="BeforeHoardingDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="BeforeHoardingDate" type="date" class="form-control" />
-                </td>
+                
             </tr>
             <tr>
                 <td>
@@ -101,9 +117,7 @@
                 <td>
                     <input asp-for="FacilityBasedDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="FacilityBasedDate" type="date" class="form-control" />
-                </td>
+                
             </tr>
             <tr>
                 <td>
@@ -126,9 +140,7 @@
                 <td>
                     <input asp-for="AfterRemovalDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="AfterRemovalDate" type="date" class="form-control" />
-                </td>
+                
             </tr>
             <tr>
                 <td>
@@ -149,9 +161,7 @@
                 <td>
                     <input asp-for="WhereRequiredlDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="WhereRequiredDate" type="date" class="form-control" />
-                </td>
+                
             </tr>
             <tr><td colspan="5"><strong>Finishes</strong></td></tr>
             <tr>
@@ -174,9 +184,7 @@
                 <td>
                     <input asp-for="AreaIsDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="AreaIsDate" type="date" class="form-control" />
-                </td>
+               
             </tr>
             <tr>
                 <td>
@@ -198,9 +206,7 @@
                 <td>
                     <input asp-for="IntegrityofWallsDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="IntegrityofWallsDate" type="date" class="form-control" />
-                </td>
+               
             </tr>
             <tr>
                 <td>
@@ -222,9 +228,7 @@
                 <td>
                     <input asp-for="SurfaceinPatientDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="SurfaceinPatientDate" type="date" class="form-control" />
-                </td>
+                
             </tr>
             <tr>
                 <td>
@@ -247,9 +251,7 @@
                 <td>
                     <input asp-for="AreaSurfacesDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="AreaSurfacesDate" type="date" class="form-control" />
-                </td>
+               
             </tr>
             <tr><td colspan="5"><strong>Infrastructure</strong></td></tr>
             <tr>
@@ -272,9 +274,7 @@
                 <td>
                     <input asp-for="IfPlumbinghasbeenAffectedDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="IfPlumbinghasbeenAffectedDate" type="date" class="form-control" />
-                </td>
+               
             </tr>
              <tr>
                 <td>
@@ -295,9 +295,7 @@
                 <td>
                     <input asp-for="PlumbingifAffectedDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="PlumbingifAffectedDate" type="date" class="form-control" />
-                </td>
+                
             </tr>
              <tr>
                 <td>
@@ -318,9 +316,7 @@
                 <td>
                     <input asp-for="CorrectHandWashingDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="CorrectHandWashingDate" type="date" class="form-control" />
-                </td>
+                
             </tr>
              <tr>
                 <td>
@@ -341,9 +337,7 @@
                 <td>
                     <input asp-for="FaucetAeratorsDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="FaucetAeratorsDate" type="date" class="form-control" />
-                </td>
+                
             </tr>
              <tr>
                 <td>
@@ -364,9 +358,7 @@
                 <td>
                     <input asp-for="CeilingTilesDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="CeilingTilesDate" type="date" class="form-control" />
-                </td>
+               
             </tr>
              <tr>
                 <td>
@@ -387,9 +379,7 @@
                 <td>
                     <input asp-for="HVACSystemsDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="HVACSystemsDate" type="date" class="form-control" />
-                </td>
+               
             </tr>
              <tr>
                 <td>
@@ -411,9 +401,7 @@
                 <td>
                     <input asp-for="CorrectRoomPressurizationDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="CorrectRoomPressurizationDate" type="date" class="form-control" />
-                </td>
+       
             </tr>
             <tr>
                 <td>
@@ -435,51 +423,10 @@
                 <td>
                     <input asp-for="AllMechanicalSpacesDC" class="form-control" />
                 </td>
-                <td>
-                    <input asp-for="AllMechanicalSpacesDate" type="date" class="form-control" />
-                </td>
+               
             </tr>
         </tbody>
     </table>
-    <h4 class="mt-5">Reported to:</h4>
-    <table class="table borderless" style="width: 100%; margin-top: 30px;">
-        <tr>
-            <td>
-                <strong>Contractor/Supplier Representative</strong><br />
-                Signature over printed name and Date signed<br />
-                <input asp-for="ContractorSign" class="form-control" />
-            </td>
-            <td>
-                <strong>NKTI Engineering Staff Representative</strong><br />
-                Signature over printed name and Date signed<br />
-                <input asp-for="EngineeringSign" class="form-control" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <strong>Infection Control Representative</strong><br />
-                Signature over printed name and Date signed<br />
-                <input asp-for="ICPSign" class="form-control" />
-            </td>
-            <td>
-                <strong>Unit/Area Representative</strong><br />
-                Signature over printed name and Date signed<br />
-                <input asp-for="UnitAreaRep" class="form-control" />
-            </td>
-        </tr>
-    </table>
-
-    <div class="mt-4 d-flex justify-content-between align-items-end">
-        <div style="border: 2px solid #000; padding: 15px; width: 50%; font-size: 0.9rem;">
-            This form is used for compliance and quality monitoring by the infection control professional<br />
-            or other member of the multidisciplinary team to monitor preventive measures required<br />
-            during construction/renovation activities.<br />
-            <strong>Failure to observe the measures, as discussed, might result to penalty or other actions necessary.</strong>
-        </div>
-        <div style="text-align: right; font-style: italic;">
-            IPC-WIF-014c_ver1
-        </div>
-    </div>
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
