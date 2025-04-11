@@ -347,10 +347,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <div style="display: flex; align-items: flex-start; gap: 10px;">
-                            <input asp-for="GITAbscess2" class="form-check-input" type="checkbox" id="GITAbscess2" style="margin-top: 5px;" />
-                            <label for="GITAbscess2" style="max-width: 1400px;">
-                                Abscess or other evidence of gastrointestinal infection on gross anatomic or histopathologic exam, <b>AND</b> organism(s) identified from blood by a culture or non-culture based microbiologic testing method
+                        <div style="display: flex; align-items: start; gap: 10px; max-width: 1400px;">
+                            <input asp-for="GITAbscess2" class="form-check-input" type="checkbox" id="GITAbscess2" style="margin-top: 3px; flex-shrink: 0;" />
+                            <label for="GITAbscess2" style="line-height: 1.4;">
+                                Abscess or other evidence of gastrointestinal infection on gross anatomic or histopathologic exam, <strong>AND</strong> organism(s) identified from blood by a culture or non-culture based microbiologic testing method
                             </label>
                         </div>
                     </td>
@@ -441,10 +441,10 @@
                 </tr>
                 <tr>
                     <td>
-                        <div style="display: flex; align-items: flex-start; gap: 10px;">
-                            <input asp-for="GITmicrobiologic" class="form-check-input" type="checkbox" id="GITmicrobiologic" style="margin-top: 5px;" />
-                            <label for="GITmicrobiologic" style="max-width: 1400px;">
-                                Organism(s) identified from blood by a culture or non-culture based microbiologic testing method, <b>AND</b> imaging test evidence definitive for gastrointestinal infection
+                        <div style="display: flex; align-items: start; gap: 10px; max-width: 1400px;">
+                            <input asp-for="GITmicrobiologic" class="form-check-input" type="checkbox" id="GITmicrobiologic" style="margin-top: 3px; flex-shrink: 0;" />
+                            <label for="GITmicrobiologic" style="line-height: 1.4;">
+                                Organism(s) identified from blood by a culture or non-culture based microbiologic testing method, <strong>AND</strong> imaging test evidence definitive for gastrointestinal infection
                             </label>
                         </div>
                     </td>
@@ -598,6 +598,8 @@
 </form>
 
 <script>
+
+    // Dispostion
     function toggleDispositionDateField() {
         const dispositionDropdown = document.getElementById('DispositionDropdown');
         const transferRow = document.getElementById('DispositionTransferRow');
@@ -611,7 +613,7 @@
             document.querySelector('[asp-for="DispositionTransfer"]').value = '';
         }
     }
-
+    // MDRO
     function toggleMDROOrganism() {
         const mdroDropdown = document.getElementById('MDRODropdown');
         const organismContainer = document.getElementById('mdroOrganismContainer');
@@ -622,6 +624,208 @@
             organismContainer.style.display = 'none';
         }
     }
+
+    // GE
+
+        document.addEventListener("DOMContentLoaded", function () {
+        const diarrheaCheckbox = document.getElementById("GEdiarrhea");
+        const symptomIds = ["GENausea", "GEVomiting", "GENAbdominal", "GENFever", "GENHeadache"];
+        const labTestIds = ["GENpenteric1", "GENenteric2", "GENantibody"];
+
+        const symptomCheckboxes = symptomIds.map(id => document.getElementById(id));
+        const labTestCheckboxes = labTestIds.map(id => document.getElementById(id));
+
+        function toggleSymptomCheckboxes() {
+            const shouldEnable = diarrheaCheckbox.checked;
+            symptomCheckboxes.forEach(cb => {
+                if (cb) {
+                    cb.disabled = !shouldEnable;
+                    if (!shouldEnable) {
+                        cb.checked = false;
+                    }
+                }
+            });
+
+            // Also update lab tests if symptoms are disabled
+            toggleLabTestCheckboxes();
+        }
+
+        function toggleLabTestCheckboxes() {
+            // Only check symptom count if they are enabled
+            const enabledSymptoms = symptomCheckboxes.filter(cb => !cb.disabled);
+            const checkedCount = enabledSymptoms.filter(cb => cb.checked).length;
+            const shouldEnable = checkedCount >= 2;
+
+            labTestCheckboxes.forEach(cb => {
+                if (cb) {
+                    cb.disabled = !shouldEnable;
+                    if (!shouldEnable) {
+                        cb.checked = false;
+                    }
+                }
+            });
+        }
+
+        // Add listeners
+        diarrheaCheckbox.addEventListener("change", toggleSymptomCheckboxes);
+        symptomCheckboxes.forEach(cb => {
+            if (cb) {
+                cb.addEventListener("change", toggleLabTestCheckboxes);
+            }
+        });
+
+        // Run everything on load
+        toggleSymptomCheckboxes();
+    });
+    /// End GE
+
+    // GIT
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Criteria 1 checkboxes
+        const criteria1Checkboxes = [
+            document.getElementById("GITAbscess1"),
+            document.getElementById("GITAbscess2"),
+            document.getElementById("GITblood")
+        ];
+
+        // Criteria 2 checkboxes
+        const criteria2Checkboxes = [
+            document.getElementById("GITFEVER"),
+            document.getElementById("GITNausea"),
+            document.getElementById("GITVomiting"),
+            document.getElementById("GITPainTend"),
+            document.getElementById("GITOdynophagia"),
+            document.getElementById("GITDysphagia")
+        ];
+
+        // Criteria 3 checkboxes
+        const criteria3Checkboxes = [
+            document.getElementById("GITDrain"),
+            document.getElementById("GITGram"),
+            document.getElementById("GITmicrobiologic"),
+            document.getElementById("GITgastrointestinal")
+        ];
+
+        // Function to update the enabled/disabled state of Criteria 2 checkboxes
+        function updateCriteria2State() {
+            const checkedCountCriteria1 = criteria1Checkboxes.filter(cb => cb.checked).length;
+            criteria2Checkboxes.forEach(cb => {
+                cb.disabled = checkedCountCriteria1 < 1; // Enable if at least 1 Criteria 1 checkbox is checked
+                if (cb.disabled) {
+                    cb.checked = false; // Uncheck if disabled
+                }
+            });
+        }
+
+        // Function to update the enabled/disabled state of Criteria 3 checkboxes
+        function updateCriteria3State() {
+            const checkedCountCriteria2 = criteria2Checkboxes.filter(cb => cb.checked).length;
+            criteria3Checkboxes.forEach(cb => {
+                cb.disabled = checkedCountCriteria2 < 2; // Enable if at least 2 Criteria 2 checkboxes are checked
+                if (cb.disabled) {
+                    cb.checked = false; // Uncheck if disabled
+                }
+            });
+        }
+
+        // Event listener for Criteria 1 checkboxes
+        criteria1Checkboxes.forEach(cb => {
+            cb.addEventListener("change", function() {
+                updateCriteria2State();
+                updateCriteria3State();
+            });
+        });
+
+        // Event listener for Criteria 2 checkboxes
+        criteria2Checkboxes.forEach(cb => {
+            cb.addEventListener("change", updateCriteria3State);
+        });
+
+        // Initialize the state of Criteria 2 and Criteria 3 on page load
+        updateCriteria2State();
+        updateCriteria3State();
+    });
+
+    // GIT END
+
+    // IAB
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Criteria 1
+        const IABorganismCheckbox = document.getElementById("IABorganism");
+
+        // Criteria 2
+        const IABAbscess1Checkbox = document.getElementById("IABAbscess1");
+        const IABAbscess2Checkbox = document.getElementById("IABAbscess2");
+
+        // Criteria 3
+        const criteria3Checkboxes = [
+            document.getElementById("IABFever"),
+            document.getElementById("IABNausea"),
+            document.getElementById("IABVomiting"),
+            document.getElementById("IABAbdominal"),
+            document.getElementById("IABtransaminase"),
+            document.getElementById("IABJaundice")
+        ];
+
+        // Criteria 4
+        const criteria4Checkboxes = Array.from(document.querySelectorAll('input[id="IABOrgintraabdominal"]'));
+
+        // Enable/Disable Criteria 2 based on Criteria 1
+        function toggleCriteria2() {
+            const shouldEnable = IABorganismCheckbox.checked;
+            IABAbscess1Checkbox.disabled = !shouldEnable;
+            IABAbscess2Checkbox.disabled = !shouldEnable;
+
+            if (!shouldEnable) {
+                IABAbscess1Checkbox.checked = false;
+                IABAbscess2Checkbox.checked = false;
+            }
+
+            toggleCriteria3();
+        }
+
+        // Enable/Disable Criteria 3 based on Criteria 2
+        function toggleCriteria3() {
+            const enable = IABAbscess1Checkbox.checked || IABAbscess2Checkbox.checked;
+
+            criteria3Checkboxes.forEach(cb => {
+                cb.disabled = !enable;
+                if (!enable) cb.checked = false;
+            });
+
+            toggleCriteria4();
+        }
+
+        // Enable/Disable Criteria 4 based on Criteria 3
+        function toggleCriteria4() {
+            const checkedCount = criteria3Checkboxes.filter(cb => cb.checked).length;
+            const enable = checkedCount >= 2;
+
+            criteria4Checkboxes.forEach(cb => {
+                cb.disabled = !enable;
+                if (!enable) cb.checked = false;
+            });
+        }
+
+        // Event Listeners
+        IABorganismCheckbox.addEventListener("change", toggleCriteria2);
+        IABAbscess1Checkbox.addEventListener("change", toggleCriteria3);
+        IABAbscess2Checkbox.addEventListener("change", toggleCriteria3);
+
+        criteria3Checkboxes.forEach(cb => {
+            cb.addEventListener("change", toggleCriteria4);
+        });
+
+        // Initial state setup
+        toggleCriteria2();
+        toggleCriteria3();
+        toggleCriteria4();
+    });
+
+    // IAB END
+
 
     // Also call the function on page load in case there's a selected value
     document.addEventListener('DOMContentLoaded', toggleMDROOrganism);
