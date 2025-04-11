@@ -160,7 +160,7 @@
         </div>
 
         <!-- Hidden AND + Organism Checkbox -->
-        <div id="burn-and-section" style="display: none;">
+        <div id="burn-and-section">
             <p><strong>AND</strong></p>
             <div>
                 @Html.CheckBoxFor(m => m.BurnOrganismIdentified, new { @id = "burn-organism-identified" })
@@ -169,7 +169,7 @@
         </div>
 
         <!-- Hidden Culture Date + Result Section -->
-        <div id="burn-culture-section" style="display: none;">
+        <div id="burn-culture-section">
             <table>
                 <tr>
                         <td>
@@ -206,7 +206,7 @@
         </div>
 
         <!-- Hidden AND Section -->
-        <div id="decubitus-and-section" style="display: none;">
+        <div id="decubitus-and-section">
             <p><strong>AND</strong></p>
             <div>
                 @Html.CheckBoxFor(m => m.DecubitusOrganismIdentified, new { @id = "decubitus-organism" })
@@ -215,7 +215,7 @@
         </div>
 
         <!-- Hidden Culture Table Section -->
-        <div id="decubitus-culture-section" style="display: none;">
+        <div id="decubitus-culture-section">
             <table>
                 <tr>
                         <td>
@@ -257,7 +257,7 @@
         </div>
 
         <!-- Hidden Culture Table Section -->
-        <div id="st-culture-section" style="display: none;">
+        <div id="st-culture-section">
             <table>
                 <tr>
                     <td>
@@ -299,7 +299,7 @@
         </div>
 
         <!-- Localized Symptoms -->
-        <div id="localized-symptoms-section" style="display: none;">
+        <div id="localized-symptoms-section">
             <p><strong>At least two (2) of localized signs/symptoms:</strong></p>
             <div>@Html.CheckBoxFor(m => m.LocalizedPainTenderness, new { @class = "localized-checkbox" }) @Html.Label("Pain* or tenderness*")</div>
             <div>@Html.CheckBoxFor(m => m.LocalizedSwelling, new { @class = "localized-checkbox" }) @Html.Label("Swelling*")</div>
@@ -307,7 +307,7 @@
             <div>@Html.CheckBoxFor(m => m.LocalizedHeat, new { @class = "localized-checkbox" }) @Html.Label("Heat*")</div>
 
             <!-- AND Section -->
-            <div id="and-section" style="display: none;">
+            <div id="and-section">
                 <p><strong>AND at least one (1) of:</strong></p>
                 <div>@Html.CheckBoxFor(m => m.OrganismIdentifiedFromAspiration) @Html.Label("Organism(s) identified from aspirate or drainage from affected site by a culture or non-culture based testing method")</div>
                 <div>@Html.CheckBoxFor(m => m.MultinucleatedGiantCellsSeen) @Html.Label("Multinucleated giant cells seen on microscopic examination of affected tissue")</div>
@@ -335,166 +335,139 @@
     <p style="color:green;">@TempData["Success"]</p>
 }
 @section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        function checkTriggerCheckboxes() {
-            let anyChecked = $('.trigger-checkbox').is(':checked');
-            if (anyChecked) {
-                $('#localized-symptoms-section').slideDown();
-            } else {
-                $('#localized-symptoms-section').slideUp();
-                $('#and-section').slideUp(); // Also hide AND section if main criteria unchecked
-                $('.localized-checkbox').prop('checked', false); // Uncheck localized checkboxes
-            }
-        }
-
-        function checkLocalizedCheckboxes() {
-            let checkedCount = $('.localized-checkbox:checked').length;
-            if (checkedCount >= 2) {
-                $('#and-section').slideDown();
-            } else {
-                $('#and-section').slideUp();
-            }
-        }
-
-        $(document).ready(function () {
-            // Initial checks in case of pre-checked values
-            checkTriggerCheckboxes();
-            checkLocalizedCheckboxes();
-
-            // Event handler for first group
-            $('.trigger-checkbox').change(function () {
-                checkTriggerCheckboxes();
-            });
-
-            // Event handler for localized symptoms checkboxes
-            $('.localized-checkbox').change(function () {
-                checkLocalizedCheckboxes();
-            });
-        });
-
-
-        //Soft Tissue
-
-        function checkSTTriggerCheckboxes() {
-            let anyChecked = $('.st-trigger-checkbox').is(':checked');
-            if (anyChecked) {
-                $('#st-culture-section').slideDown();
-            } else {
-                $('#st-culture-section').slideUp();
-            }
-        }
-
-        $(document).ready(function () {
-            checkSTTriggerCheckboxes(); // Initial check (in case pre-checked)
-
-            $('.st-trigger-checkbox').change(function () {
-                checkSTTriggerCheckboxes();
-            });
-        });
-
-
-        //decu
-         function checkDecubitusSymptoms() {
-            let checkedCount = $('.decubitus-symptom:checked').length;
-            if (checkedCount >= 2) {
-                $('#decubitus-and-section').slideDown();
-            } else {
-                $('#decubitus-and-section').slideUp();
-                $('#decubitus-culture-section').slideUp();
-                $('#decubitus-organism').prop('checked', false);
-            }
-        }
-
-        $(document).ready(function () {
-            // Initial check (in case pre-filled)
-            checkDecubitusSymptoms();
-
-            // Checkboxes change event
-            $('.decubitus-symptom').change(function () {
-                checkDecubitusSymptoms();
-            });
-
-            // Organism checkbox event
-            $('#decubitus-organism').change(function () {
-                if ($(this).is(':checked')) {
-                    $('#decubitus-culture-section').slideDown();
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            function checkTriggerCheckboxes() {
+                let anyChecked = $('.trigger-checkbox').is(':checked');
+                if (anyChecked) {
+                    $('#localized-symptoms-section').slideDown();
+                    $('#localized-symptoms-section :input').prop('disabled', false);
                 } else {
-                    $('#decubitus-culture-section').slideUp();
+                    $('#localized-symptoms-section').slideDown(); // still show
+                    $('#localized-symptoms-section :input').prop('disabled', true);
+                    $('#and-section').slideDown(); // still show
+                    $('#and-section :input').prop('disabled', true);
+                    $('.localized-checkbox').prop('checked', false);
                 }
-            });
-        });
-
-        //burn
-         $(document).ready(function () {
-
-            // Check if BurnAppearanceChange is checked on load (pre-fill cases)
-            if ($('#burn-appearance-change').is(':checked')) {
-                $('#burn-and-section').show();
             }
 
-            // Check if BurnOrganismIdentified is checked on load
-            if ($('#burn-organism-identified').is(':checked')) {
-                $('#burn-culture-section').show();
+            function checkLocalizedCheckboxes() {
+                let checkedCount = $('.localized-checkbox:checked').length;
+                if (checkedCount >= 2) {
+                    $('#and-section').slideDown();
+                    $('#and-section :input').prop('disabled', false);
+                } else {
+                    $('#and-section').slideDown(); // still show
+                    $('#and-section :input').prop('disabled', true);
+                }
             }
 
-            // First checkbox event
-            $('#burn-appearance-change').change(function () {
-                if ($(this).is(':checked')) {
-                    $('#burn-and-section').slideDown();
-                } else {
-                    $('#burn-and-section').slideUp();
-                    $('#burn-organism-identified').prop('checked', false);
-                    $('#burn-culture-section').slideUp();
+            function checkSTTriggerCheckboxes() {
+                let anyChecked = $('.st-trigger-checkbox').is(':checked');
+                $('#st-culture-section').slideDown(); // Always show
+                $('#st-culture-section :input').prop('disabled', !anyChecked);
+            }
+
+            function checkDecubitusSymptoms() {
+                let checkedCount = $('.decubitus-symptom:checked').length;
+                $('#decubitus-and-section').slideDown(); // Always show
+                $('#decubitus-and-section :input').prop('disabled', checkedCount < 2);
+
+                if (checkedCount < 2) {
+                    $('#decubitus-culture-section').slideDown(); // Still show
+                    $('#decubitus-culture-section :input').prop('disabled', true);
+                    $('#decubitus-organism').prop('checked', false);
                 }
-            });
+            }
 
-            // Second checkbox event
-            $('#burn-organism-identified').change(function () {
-                if ($(this).is(':checked')) {
-                    $('#burn-culture-section').slideDown();
-                } else {
-                    $('#burn-culture-section').slideUp();
-                }
-            });
-        });
+            function setupBurnSections() {
+                $('#burn-and-section, #burn-culture-section').show();
 
-                    $(document).ready(function () {
+                // Initial load
+                $('#burn-and-section :input').prop('disabled', !$('#burn-appearance-change').is(':checked'));
+                $('#burn-culture-section :input').prop('disabled', !$('#burn-organism-identified').is(':checked'));
 
-            // Define the function
+                // Events
+                $('#burn-appearance-change').change(function () {
+                    $('#burn-and-section :input').prop('disabled', !$(this).is(':checked'));
+                    if (!$(this).is(':checked')) {
+                        $('#burn-organism-identified').prop('checked', false);
+                        $('#burn-culture-section :input').prop('disabled', true);
+                    }
+                });
+
+                $('#burn-organism-identified').change(function () {
+                    $('#burn-culture-section :input').prop('disabled', !$(this).is(':checked'));
+                });
+            }
+
             function toggleInfectionSections() {
                 // First hide all sections
                 $('#section-burn, #section-decu, #section-st, #section-skin').hide();
 
-                // Then check which checkboxes are checked
+                // Then show sections if their InfectionType checkbox is checked
                 $('input[name="InfectionType"]:checked').each(function () {
                     let val = $(this).val();
                     switch (val) {
                         case "BURN":
-                            $('#section-burn').show();
+                            $('#section-burn').slideDown();
+                            $('#section-burn .section-checkbox').prop('disabled', true); // keep disabled initially
                             break;
                         case "DECU":
-                            $('#section-decu').show();
+                            $('#section-decu').slideDown();
+                            $('#section-decu .section-checkbox').prop('disabled', true);
                             break;
                         case "ST":
-                            $('#section-st').show(); 
+                            $('#section-st').slideDown();
+                            $('#section-st .section-checkbox').prop('disabled', true);
                             break;
                         case "SKIN":
-                            $('#section-skin').show();
+                            $('#section-skin').slideDown();
+                            $('#section-skin .section-checkbox').prop('disabled', true);
                             break;
+                    }
+                });
+
+                // Optionally hide sections and disable checkboxes for those not selected
+                const allSections = ['#section-burn', '#section-decu', '#section-st', '#section-skin'];
+                allSections.forEach(section => {
+                    if (!$(section).is(':visible')) {
+                        $(section + ' .section-checkbox').prop('disabled', true);
                     }
                 });
             }
 
-            // CALL the function initially (important for pre-filled cases)
-            toggleInfectionSections();
 
-            // Set event handler for InfectionType checkbox change
-            $('input[name="InfectionType"]').change(function () {
+            // === Initialize on DOM ready ===
+            $(document).ready(function () {
+                // General infection type section toggler
                 toggleInfectionSections();
+                $('input[name="InfectionType"]').change(toggleInfectionSections);
+
+                // Trigger & Localized
+                checkTriggerCheckboxes();
+                $('.trigger-checkbox').change(checkTriggerCheckboxes);
+
+                checkLocalizedCheckboxes();
+                $('.localized-checkbox').change(checkLocalizedCheckboxes);
+
+                // Soft Tissue
+                checkSTTriggerCheckboxes();
+                $('.st-trigger-checkbox').change(checkSTTriggerCheckboxes);
+
+                // Decubitus
+                checkDecubitusSymptoms();
+                $('.decubitus-symptom').change(checkDecubitusSymptoms);
+                $('#decubitus-organism').change(function () {
+                    $('#decubitus-culture-section').slideDown(); // Always visible
+                    $('#decubitus-culture-section :input').prop('disabled', !$(this).is(':checked'));
+                });
+
+                // Burn
+                setupBurnSections();
             });
-        }); 
-    </script>
+        </script>
+
     <script>
         $(document).ready(function () {
             $("#mdroCheckbox").change(function () {
