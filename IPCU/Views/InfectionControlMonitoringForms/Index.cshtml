@@ -3,7 +3,11 @@
 
 
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
+    <style>
+        .big-radio {
+            transform: scale(1);
+            margin: 0 10px;
+        }</style>
 
 <form asp-action="Submit" method="post">
 
@@ -80,173 +84,102 @@
             <tr>
                 <th>Item</th>
                 <th>Finding</th>
+                    <th>Remarks</th>
                 <th>Action Done</th>
-                <th>Remarks</th>
+                
             </tr>
         </thead>
-        <tbody>
-            <!-- Section Header: Patient Exam/Treatment Rooms -->
-            <tr>
-                <td colspan="4"><strong>Patient Exam/Treatment Rooms:</strong></td>
-            </tr>
-            <tr>
-                <td>Floors and walls clean</td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_FloorsWallsClean_Finding" value="C" /> C
-                    <input type="radio" name="PatientExamRoom_FloorsWallsClean_Finding" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_FloorsWallsClean_ActionDone" value="CAC" /> CAC
-                    <input type="radio" name="PatientExamRoom_FloorsWallsClean_ActionDone" value="FU" /> FU
-                    <input type="radio" name="PatientExamRoom_FloorsWallsClean_ActionDone" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="PatientExamRoom_FloorsWallsClean_Remarks" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-                <td>Cubicle curtains clean and free of tears</td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_CurtainsClean_Finding" value="C" /> C
-                    <input type="radio" name="PatientExamRoom_CurtainsClean_Finding" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_CurtainsClean_ActionDone" value="CAC" /> CAC
-                    <input type="radio" name="PatientExamRoom_CurtainsClean_ActionDone" value="FU" /> FU
-                    <input type="radio" name="PatientExamRoom_CurtainsClean_ActionDone" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="PatientExamRoom_CurtainsClean_Remarks" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-                <td>Sink clean</td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_SinkClean_Finding" value="C" /> C
-                    <input type="radio" name="PatientExamRoom_SinkClean_Finding" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_SinkClean_ActionDone" value="CAC" /> CAC
-                    <input type="radio" name="PatientExamRoom_SinkClean_ActionDone" value="FU" /> FU
-                    <input type="radio" name="PatientExamRoom_SinkClean_ActionDone" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="PatientExamRoom_SinkClean_Remarks" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-                <td>Soap and Paper Towel Dispensers are stocked and working</td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_SoapDispenser_Finding" value="C" /> C
-                    <input type="radio" name="PatientExamRoom_SoapDispenser_Finding" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_SoapDispenser_ActionDone" value="CAC" /> CAC
-                    <input type="radio" name="PatientExamRoom_SoapDispenser_ActionDone" value="FU" /> FU
-                    <input type="radio" name="PatientExamRoom_SoapDispenser_ActionDone" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="PatientExamRoom_SoapDispenser_Remarks" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-                <td>Alcohol Hand sanitizers are available</td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_AlcoholSanitizers_Finding" value="C" /> C
-                    <input type="radio" name="PatientExamRoom_AlcoholSanitizers_Finding" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_AlcoholSanitizers_ActionDone" value="CAC" /> CAC
-                    <input type="radio" name="PatientExamRoom_AlcoholSanitizers_ActionDone" value="FU" /> FU
-                    <input type="radio" name="PatientExamRoom_AlcoholSanitizers_ActionDone" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="PatientExamRoom_AlcoholSanitizers_Remarks" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-                <td>Gloves, PPE available as per policy</td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_PPEAvailable_Finding" value="C" /> C
-                    <input type="radio" name="PatientExamRoom_PPEAvailable_Finding" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_PPEAvailable_ActionDone" value="CAC" /> CAC
-                    <input type="radio" name="PatientExamRoom_PPEAvailable_ActionDone" value="FU" /> FU
-                    <input type="radio" name="PatientExamRoom_PPEAvailable_ActionDone" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="PatientExamRoom_PPEAvailable_Remarks" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-                <td>No supplies stored under sinks</td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_NoSuppliesUnderSinks_Finding" value="C" /> C
-                    <input type="radio" name="PatientExamRoom_NoSuppliesUnderSinks_Finding" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" value="CAC" /> CAC
-                    <input type="radio" name="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" value="FU" /> FU
-                    <input type="radio" name="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="PatientExamRoom_NoSuppliesUnderSinks_Remarks" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-                <td>No food or drink in Patient Care Areas</td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_NoFoodInCareAreas_Finding" value="C" /> C
-                    <input type="radio" name="PatientExamRoom_NoFoodInCareAreas_Finding" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="PatientExamRoom_NoFoodInCareAreas_ActionDone" value="CAC" /> CAC
-                    <input type="radio" name="PatientExamRoom_NoFoodInCareAreas_ActionDone" value="FU" /> FU
-                    <input type="radio" name="PatientExamRoom_NoFoodInCareAreas_ActionDone" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="PatientExamRoom_NoFoodInCareAreas_Remarks" class="form-control" />
-                </td>
-            </tr>
-            <tr>
-                <td colspan="4"><strong>Work Areas:</strong></td>
-            </tr>
-                @{
-                    var workAreaItems = new Dictionary<string, string>
-            {
-            { "Charts on its designated storage area when not in use", "ChartsStored" },
-            { "No food or drinks inside the work station", "NoFoodOrDrinks" },
-            { "Electric fans are functioning and are dust-free", "FansClean" },
-            { "Air condition units are functioning and dust-free", "ACClean" },
-            { "Exhaust fans are clean and dust-free", "ExhaustFansClean" },
-            { "Ceiling are in good condition and visibly clean", "CeilingClean" },
-            { "Walls are in good condition and visibly clean", "WallsClean" },
-            { "Counters are in good condition and visibly clean", "CountersClean" },
-            { "Floors are in good condition and visibly clean", "FloorsClean" },
-            { "Doors and windows are open, in good condition and visibly clean", "DoorsWindowsClean" },
-            { "Clean, odor-free bathroom", "CleanBathroom" }
-            };
-                }
+            <tbody>
+                <!-- Section Header: Patient Exam/Treatment Rooms -->
+                <tr>
+                    <td colspan="4"><strong>Patient Exam/Treatment Rooms:</strong></td>
+                </tr>
+              @{
+    var patientExamItems = new List<(string Label, string Field)>
+    {
+        ("Floors and walls clean", "PatientExamRoom_FloorsWallsClean"),
+        ("Cubicle curtains clean and free of tears", "PatientExamRoom_CurtainsClean"),
+        ("Sink clean", "PatientExamRoom_SinkClean"),
+        ("Soap and Paper Towel Dispensers are stocked and working", "PatientExamRoom_SoapDispenser"),
+        ("Alcohol Hand sanitizers are available", "PatientExamRoom_AlcoholSanitizers"),
+        ("Gloves, PPE available as per policy", "PatientExamRoom_PPEAvailable"),
+        ("No supplies stored under sinks", "PatientExamRoom_NoSuppliesUnderSinks"),
+        ("No food or drink in Patient Care Areas", "PatientExamRoom_NoFoodInCareAreas")
+    };
+}
+
+<tr><td colspan="5"><strong>Patient Exam/Treatment Rooms:</strong></td></tr>
+
+@foreach (var item in patientExamItems)
+{
+    var baseName = item.Field;
+    <tr>
+        <td>@item.Label</td>
+        <td>
+            <input type="radio" name="@($"{baseName}_Finding")" value="C" /> C
+            <input type="radio" name="@($"{baseName}_Finding")" value="NC" /> NC
+        </td>
+        <td>
+            <input type="text" name="@($"{baseName}_Remarks")" class="form-control" />
+        </td>
+        <td>
+            <input type="radio" name="@($"{baseName}_ActionDone")" value="CAC" /> CAC
+            <input type="radio" name="@($"{baseName}_ActionDone")" value="FU"
+                   class="action-radio" data-target="@baseName" /> FU
+            <input type="radio" name="@($"{baseName}_ActionDone")" value="NA" /> NA
+        </td>
+        <td>
+            <input type="date" name="@($"{baseName}_FuDate")" id="@($"{baseName}_FuDate")" class="form-control mt-1" disabled />
+            <input type="text" name="@($"{baseName}_FuRemarks")" id="@($"{baseName}_FuRemarks")" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+        </td>
+    </tr>
+}       
+
+                <tr>
+                    <td colspan="4"><strong>Work Areas:</strong></td>
+                </tr>
+                    @{
+                        var workAreaItems = new Dictionary<string, string>
+                {
+                { "Charts on its designated storage area when not in use", "ChartsStored" },
+                { "No food or drinks inside the work station", "NoFoodOrDrinks" },
+                { "Electric fans are functioning and are dust-free", "FansClean" },
+                { "Air condition units are functioning and dust-free", "ACClean" },
+                { "Exhaust fans are clean and dust-free", "ExhaustFansClean" },
+                { "Ceiling are in good condition and visibly clean", "CeilingClean" },
+                { "Walls are in good condition and visibly clean", "WallsClean" },
+                { "Counters are in good condition and visibly clean", "CountersClean" },
+                { "Floors are in good condition and visibly clean", "FloorsClean" },
+                { "Doors and windows are open, in good condition and visibly clean", "DoorsWindowsClean" },
+                { "Clean, odor-free bathroom", "CleanBathroom" }
+                };
+                    }
                 @foreach (var item in workAreaItems)
                 {
-                <tr>
-                    <td>@item.Key</td>
-                    <td>
-                        <input type="radio" name="@($"WorkArea_{item.Value}_Finding")" value="C" /> C
-                        <input type="radio" name="@($"WorkArea_{item.Value}_Finding")" value="NC" /> NC
-                    </td>
-                    <td>
-                        <input type="radio" name="@($"WorkArea_{item.Value}_ActionDone")" value="CAC" /> CAC
-                        <input type="radio" name="@($"WorkArea_{item.Value}_ActionDone")" value="FU" /> FU
-                        <input type="radio" name="@($"WorkArea_{item.Value}_ActionDone")" value="NA" /> NA
-                    </td>
-                    <td>
-                        <input type="text" name="@($"WorkArea_{item.Value}_Remarks")" class="form-control" />
-                    </td>
-                </tr>
+                    var baseName = $"WorkArea_{item.Value}";
+                    <tr>
+                        <td>@item.Key</td>
+                        <td>
+                            <input type="radio" name="@($"{baseName}_Finding")" value="C" /> C
+                            <input type="radio" name="@($"{baseName}_Finding")" value="NC" /> NC
+                        </td>
+                        <td>
+                            <input type="text" name="@($"{baseName}_Remarks")" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="CAC" class="action-radio" data-target="@baseName" /> CAC
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="FU" class="action-radio" data-target="@baseName" /> FU
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="NA" class="action-radio" data-target="@baseName" /> NA
+                        </td>
+                        <td>
+                            <input type="date" id="@($"{baseName}_FuDate")" name="@($"{baseName}_FuDate")" class="form-control mt-1" disabled />
+                            <input type="text" id="@($"{baseName}_FuRemarks")" name="@($"{baseName}_FuRemarks")" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                        </td>
+                    </tr>
                 }
-        </tbody>
+
+                    }
+            </tbody>
         <tbody>
             <tr>
                 <td colspan="4"><strong>Hallways:</strong></td>
@@ -258,24 +191,30 @@
             { "Free of obstruction and equipment", "NoObstruction" }
             };
             }
-            @foreach (var item in hallwayItems)
-            {
-                <tr>
-                    <td>@item.Key</td>
-                    <td>
-                        <input type="radio" name="@($"Hallway_{item.Value}_Finding")" value="C" /> C
-                        <input type="radio" name="@($"Hallway_{item.Value}_Finding")" value="NC" /> NC
-                    </td>
-                    <td>
-                        <input type="radio" name="@($"Hallway_{item.Value}_ActionDone")" value="CAC" /> CAC
-                        <input type="radio" name="@($"Hallway_{item.Value}_ActionDone")" value="FU" /> FU
-                        <input type="radio" name="@($"Hallway_{item.Value}_ActionDone")" value="NA" /> NA
-                    </td>
-                    <td>
-                        <input type="text" name="@($"Hallway_{item.Value}_Remarks")" class="form-control" />
-                    </td>
-                </tr>
-            }
+                @foreach (var item in hallwayItems)
+                {
+                    var baseName = $"Hallway_{item.Value}";
+                    <tr>
+                        <td>@item.Key</td>
+                        <td>
+                            <input type="radio" name="@($"{baseName}_Finding")" value="C" /> C
+                            <input type="radio" name="@($"{baseName}_Finding")" value="NC" /> NC
+                        </td>
+                        <td>
+                            <input type="text" name="@($"{baseName}_Remarks")" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="CAC" class="action-radio" data-target="@baseName" /> CAC
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="FU" class="action-radio" data-target="@baseName" /> FU
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="NA" class="action-radio" data-target="@baseName" /> NA
+                        </td>
+                        <td>
+                            <input type="date" id="@($"{baseName}_FuDate")" name="@($"{baseName}_FuDate")" class="form-control" disabled />
+                            <input type="text" id="@($"{baseName}_FuRemarks")" name="@($"{baseName}_FuRemarks")" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                        </td>
+                    </tr>
+                }
+
             <tr>
                 <td colspan="4"><strong>Waiting and Reception Areas:</strong></td>
             </tr>
@@ -287,24 +226,31 @@
             { "Food only in designated areas", "FoodInDesignatedArea" }
             };
             }
-            @foreach (var item in receptionItems)
-            {
-                <tr>
-                    <td>@item.Key</td>
-                    <td>
-                        <input type="radio" name="@($"WaitingArea_{item.Value}_Finding")" value="C" /> C
-                        <input type="radio" name="@($"WaitingArea_{item.Value}_Finding")" value="NC" /> NC
-                    </td>
-                    <td>
-                        <input type="radio" name="@($"WaitingArea_{item.Value}_ActionDone")" value="CAC" /> CAC
-                        <input type="radio" name="@($"WaitingArea_{item.Value}_ActionDone")" value="FU" /> FU
-                        <input type="radio" name="@($"WaitingArea_{item.Value}_ActionDone")" value="NA" /> NA
-                    </td>
-                    <td>
-                        <input type="text" name="@($"WaitingArea_{item.Value}_Remarks")" class="form-control" />
-                    </td>
-                </tr>
-            }
+                @foreach (var item in receptionItems)
+                {
+                    var baseName = $"WaitingArea_{item.Value}";
+                    <tr>
+                        <td>@item.Key</td>
+                        <td>
+                            <input type="radio" name="@($"{baseName}_Finding")" value="C" /> C
+                            <input type="radio" name="@($"{baseName}_Finding")" value="NC" /> NC
+                        </td>
+                        <td>
+                            <input type="text" name="@($"{baseName}_Remarks")" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="CAC" /> CAC
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="FU"
+                                   class="action-radio" data-target="@baseName" /> FU
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="NA" /> NA
+                        </td>
+                        <td>
+                            <input type="date" name="@($"{baseName}_FuDate")" id="@($"{baseName}_FuDate")" class="form-control" disabled />
+                            <input type="text" name="@($"{baseName}_FuRemarks")" id="@($"{baseName}_FuRemarks")" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                        </td>
+                    </tr>
+                }
+
             <!-- Section Header: Equipment and Non-Critical Items -->
             <tr>
                 <td colspan="4"><strong>Equipment and Non-Critical Items:</strong></td>
@@ -316,24 +262,31 @@
             { "Equipment storage is clean", "StorageClean" }
             };
             }
-            @foreach (var item in equipmentItems)
-            {
-                <tr>
-                    <td>@item.Key</td>
-                    <td>
-                        <input type="radio" name="@($"Equipment_{item.Value}_Finding")" value="C" /> C
-                        <input type="radio" name="@($"Equipment_{item.Value}_Finding")" value="NC" /> NC
-                    </td>
-                    <td>
-                        <input type="radio" name="@($"Equipment_{item.Value}_ActionDone")" value="CAC" /> CAC
-                        <input type="radio" name="@($"Equipment_{item.Value}_ActionDone")" value="FU" /> FU
-                        <input type="radio" name="@($"Equipment_{item.Value}_ActionDone")" value="NA" /> NA
-                    </td>
-                    <td>
-                        <input type="text" name="@($"Equipment_{item.Value}_Remarks")" class="form-control" />
-                    </td>
-                </tr>
-            }
+                @foreach (var item in equipmentItems)
+                {
+                    var baseName = $"Equipment_{item.Value}";
+                    <tr>
+                        <td>@item.Key</td>
+                        <td>
+                            <input type="radio" name="@($"{baseName}_Finding")" value="C" /> C
+                            <input type="radio" name="@($"{baseName}_Finding")" value="NC" /> NC
+                        </td>
+                        <td>
+                            <input type="text" name="@($"{baseName}_Remarks")" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="CAC" /> CAC
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="FU"
+                                   class="action-radio" data-target="@baseName" /> FU
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="NA" /> NA
+                        </td>
+                        <td>
+                            <input type="date" name="@($"{baseName}_FuDate")" id="@($"{baseName}_FuDate")" class="form-control" disabled />
+                            <input type="text" name="@($"{baseName}_FuRemarks")" id="@($"{baseName}_FuRemarks")" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                        </td>
+                    </tr>
+                }
+
             <!-- Section Header: Utility and Storage Rooms -->
             <tr>
                 <td colspan="4"><strong>Utility and Storage Rooms:</strong></td>
@@ -353,24 +306,31 @@
             { "Sterilized instruments and trays unopened, free of dust, tears", "SterileTraysClean" }
             };
             }
-            @foreach (var item in utilityItems)
-            {
-                <tr>
-                    <td>@item.Key</td>
-                    <td>
-                        <input type="radio" name="@($"UtilityRoom_{item.Value}_Finding")" value="C" /> C
-                        <input type="radio" name="@($"UtilityRoom_{item.Value}_Finding")" value="NC" /> NC
-                    </td>
-                    <td>
-                        <input type="radio" name="@($"UtilityRoom_{item.Value}_ActionDone")" value="CAC" /> CAC
-                        <input type="radio" name="@($"UtilityRoom_{item.Value}_ActionDone")" value="FU" /> FU
-                        <input type="radio" name="@($"UtilityRoom_{item.Value}_ActionDone")" value="NA" /> NA
-                    </td>
-                    <td>
-                        <input type="text" name="@($"UtilityRoom_{item.Value}_Remarks")" class="form-control" />
-                    </td>
-                </tr>
-            }
+                @foreach (var item in utilityItems)
+                {
+                    var baseName = $"UtilityRoom_{item.Value}";
+                    <tr>
+                        <td>@item.Key</td>
+                        <td>
+                            <input type="radio" name="@($"{baseName}_Finding")" value="C" /> C
+                            <input type="radio" name="@($"{baseName}_Finding")" value="NC" /> NC
+                        </td>
+                        <td>
+                            <input type="text" name="@($"{baseName}_Remarks")" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="CAC" /> CAC
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="FU"
+                                   class="action-radio" data-target="@baseName" /> FU
+                            <input type="radio" name="@($"{baseName}_ActionDone")" value="NA" /> NA
+                        </td>
+                        <td>
+                            <input type="date" name="@($"{baseName}_FuDate")" id="@($"{baseName}_FuDate")" class="form-control" disabled />
+                            <input type="text" name="@($"{baseName}_FuRemarks")" id="@($"{baseName}_FuRemarks")" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                        </td>
+                    </tr>
+                }
+
         </tbody>
         <!-- Section Header: Soiled Utility Rooms -->
         <tr>
@@ -385,24 +345,31 @@
         { "Soiled linen is bagged and appropriately placed for transport", "LinenBagged" }
         };
         }
-        @foreach (var item in soiledUtilityItems)
-        {
-            <tr>
-                <td>@item.Key</td>
-                <td>
-                    <input type="radio" name="@($"SoiledRoom_{item.Value}_Finding")" value="C" /> C
-                    <input type="radio" name="@($"SoiledRoom_{item.Value}_Finding")" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="@($"SoiledRoom_{item.Value}_ActionDone")" value="CAC" /> CAC
-                    <input type="radio" name="@($"SoiledRoom_{item.Value}_ActionDone")" value="FU" /> FU
-                    <input type="radio" name="@($"SoiledRoom_{item.Value}_ActionDone")" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="@($"SoiledRoom_{item.Value}_Remarks")" class="form-control" />
-                </td>
-            </tr>
-        }
+            @foreach (var item in soiledUtilityItems)
+            {
+                var baseName = $"SoiledRoom_{item.Value}";
+                <tr>
+                    <td>@item.Key</td>
+                    <td style="width: 135px;">
+                        <input type="radio" name="@($"{baseName}_Finding")" value="C" /> C
+                        <input type="radio" name="@($"{baseName}_Finding")" value="NC" /> NC
+                    </td>
+                    <td>
+                        <input type="text" name="@($"{baseName}_Remarks")" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="CAC" /> CAC
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="FU"
+                               class="action-radio" data-target="@baseName" /> FU
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="NA" /> NA
+                    </td>
+                    <td>
+                        <input type="date" name="@($"{baseName}_FuDate")" id="@($"{baseName}_FuDate")" class="form-control" disabled />
+                        <input type="text" name="@($"{baseName}_FuRemarks")" id="@($"{baseName}_FuRemarks")" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+            }
+
         <!-- Section Header: Waste Management -->
         <tr>
             <td colspan="4"><strong>Waste Management:</strong></td>
@@ -418,24 +385,31 @@
         { "Sharps containers are not overfilled, and locked if full", "SharpsNotOverfilled" }
         };
         }
-        @foreach (var item in wasteItems)
-        {
-            <tr>
-                <td>@item.Key</td>
-                <td>
-                    <input type="radio" name="@($"WasteMgmt_{item.Value}_Finding")" value="C" /> C
-                    <input type="radio" name="@($"WasteMgmt_{item.Value}_Finding")" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="@($"WasteMgmt_{item.Value}_ActionDone")" value="CAC" /> CAC
-                    <input type="radio" name="@($"WasteMgmt_{item.Value}_ActionDone")" value="FU" /> FU
-                    <input type="radio" name="@($"WasteMgmt_{item.Value}_ActionDone")" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="@($"WasteMgmt_{item.Value}_Remarks")" class="form-control" />
-                </td>
-            </tr>
-        }
+            @foreach (var item in wasteItems)
+            {
+                var baseName = $"WasteMgmt_{item.Value}";
+                <tr>
+                    <td>@item.Key</td>
+                    <td>
+                        <input type="radio" name="@($"{baseName}_Finding")" value="C" /> C
+                        <input type="radio" name="@($"{baseName}_Finding")" value="NC" /> NC
+                    </td>
+                    <td>
+                        <input type="text" name="@($"{baseName}_Remarks")" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="CAC" /> CAC
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="FU"
+                               class="action-radio" data-target="@baseName" /> FU
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="NA" /> NA
+                    </td>
+                    <td>
+                        <input type="date" name="@($"{baseName}_FuDate")" id="@($"{baseName}_FuDate")" class="form-control" disabled />
+                        <input type="text" name="@($"{baseName}_FuRemarks")" id="@($"{baseName}_FuRemarks")" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+            }
+
         <!-- Section Header: Refrigerators or Freezers -->
         <tr>
             <td colspan="4"><strong>Refrigerators or Freezers:</strong></td>
@@ -447,24 +421,31 @@
         { "Separate refrigerator designed for medications, specimens, food or drink", "Dedicated" }
         };
         }
-        @foreach (var item in fridgeItems)
-        {
-            <tr>
-                <td>@Html.Raw(item.Key)</td>
-                <td>
-                    <input type="radio" name="@($"Refrigerator_{item.Value}_Finding")" value="C" /> C
-                    <input type="radio" name="@($"Refrigerator_{item.Value}_Finding")" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="@($"Refrigerator_{item.Value}_ActionDone")" value="CAC" /> CAC
-                    <input type="radio" name="@($"Refrigerator_{item.Value}_ActionDone")" value="FU" /> FU
-                    <input type="radio" name="@($"Refrigerator_{item.Value}_ActionDone")" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="@($"Refrigerator_{item.Value}_Remarks")" class="form-control" />
-                </td>
-            </tr>
-        }
+            @foreach (var item in fridgeItems)
+            {
+                var baseName = $"Refrigerator_{item.Value}";
+                <tr>
+                    <td>@Html.Raw(item.Key)</td>
+                    <td>
+                        <input type="radio" name="@($"{baseName}_Finding")" value="C" /> C
+                        <input type="radio" name="@($"{baseName}_Finding")" value="NC" /> NC
+                    </td>
+                    <td>
+                        <input type="text" name="@($"{baseName}_Remarks")" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="CAC" /> CAC
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="FU"
+                               class="action-radio" data-target="@baseName" /> FU
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="NA" /> NA
+                    </td>
+                    <td>
+                        <input type="date" name="@($"{baseName}_FuDate")" id="@($"{baseName}_FuDate")" class="form-control" disabled />
+                        <input type="text" name="@($"{baseName}_FuRemarks")" id="@($"{baseName}_FuRemarks")" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+            }
+
         <!-- Section Header: Medications -->
         <tr>
             <td colspan="4"><strong>Medications:</strong></td>
@@ -477,24 +458,31 @@
         new { Label = "No loose syringes and needles observed", Field = "Medications_NoLooseNeedles" }
         };
         }
-        @foreach (var item in medsChecklist)
-        {
-            <tr>
-                <td>@item.Label</td>
-                <td>
-                    <input type="radio" name="@($"{item.Field}_Finding")" value="C" /> C
-                    <input type="radio" name="@($"{item.Field}_Finding")" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="CAC" /> CAC
-                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="FU" /> FU
-                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="@($"{item.Field}_Remarks")" class="form-control" />
-                </td>
-            </tr>
-        }
+            @foreach (var item in medsChecklist)
+            {
+                var baseName = item.Field;
+                <tr>
+                    <td>@item.Label</td>
+                    <td>
+                        <input type="radio" name="@($"{baseName}_Finding")" value="C" /> C
+                        <input type="radio" name="@($"{baseName}_Finding")" value="NC" /> NC
+                    </td>
+                    <td>
+                        <input type="text" name="@($"{baseName}_Remarks")" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="CAC" /> CAC
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="FU"
+                               class="action-radio" data-target="@baseName" /> FU
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="NA" /> NA
+                    </td>
+                    <td>
+                        <input type="date" name="@($"{baseName}_FuDate")" id="@($"{baseName}_FuDate")" class="form-control" disabled />
+                        <input type="text" name="@($"{baseName}_FuRemarks")" id="@($"{baseName}_FuRemarks")" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+            }
+
         <!-- Section Header: Miscellaneous -->
         <tr>
             <td colspan="4"><strong>Miscellaneous:</strong></td>
@@ -506,24 +494,31 @@
         new { Label = "Healthcare workers observed to follow proper respiratory hygiene and cough etiquette, including correct PPE use", Field = "Misc_StaffHygienePPE" }
         };
         }
-        @foreach (var item in miscItems)
-        {
-            <tr>
-                <td>@item.Label</td>
-                <td>
-                    <input type="radio" name="@($"{item.Field}_Finding")" value="C" /> C
-                    <input type="radio" name="@($"{item.Field}_Finding")" value="NC" /> NC
-                </td>
-                <td>
-                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="CAC" /> CAC
-                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="FU" /> FU
-                    <input type="radio" name="@($"{item.Field}_ActionDone")" value="NA" /> NA
-                </td>
-                <td>
-                    <input type="text" name="@($"{item.Field}_Remarks")" class="form-control" />
-                </td>
-            </tr>
-        }
+            @foreach (var item in miscItems)
+            {
+                var baseName = item.Field;
+                <tr>
+                    <td>@item.Label</td>
+                    <td>
+                        <input type="radio" name="@($"{baseName}_Finding")" value="C" /> C
+                        <input type="radio" name="@($"{baseName}_Finding")" value="NC" /> NC
+                    </td>
+                    <td>
+                        <input type="text" name="@($"{baseName}_Remarks")" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="CAC" /> CAC
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="FU"
+                               class="action-radio" data-target="@baseName" /> FU
+                        <input type="radio" name="@($"{baseName}_ActionDone")" value="NA" /> NA
+                    </td>
+                    <td>
+                        <input type="date" name="@($"{baseName}_FuDate")" id="@($"{baseName}_FuDate")" class="form-control" disabled />
+                        <input type="text" name="@($"{baseName}_FuRemarks")" id="@($"{baseName}_FuRemarks")" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+            }
+
     </table>
     <!-- Repeat similar table sections for Work Areas, Hallways, Waiting Area, etc. -->  
     <div class="form-group mt-4">
@@ -541,3 +536,55 @@
     </div>
 </form>
 <link href="~/css/site.css" rel="stylesheet" />
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const radios = document.querySelectorAll('.action-radio');
+
+        radios.forEach(radio => {
+            radio.addEventListener('change', function () {
+                const base = this.dataset.target;
+                const dateInput = document.getElementById(`${base}_FuDate`);
+                const remarksInput = document.getElementById(`${base}_FuRemarks`);
+
+                if (this.value === 'FU') {
+                    const today = new Date().toISOString().split('T')[0];
+                    if (!dateInput.value) {
+                        dateInput.value = today;
+                    }
+                    dateInput.disabled = false;
+                    remarksInput.disabled = false;
+                } else {
+                    dateInput.value = '';
+                    dateInput.disabled = true;
+                    remarksInput.value = '';
+                    remarksInput.disabled = true;
+                }
+            });
+        });
+
+        // On page load: handle pre-selected FU options
+        document.querySelectorAll('.action-radio:checked').forEach(radio => {
+            if (radio.value === 'FU') {
+                const base = radio.dataset.target;
+                const dateInput = document.getElementById(`${base}_FuDate`);
+                const remarksInput = document.getElementById(`${base}_FuRemarks`);
+                const today = new Date().toISOString().split('T')[0];
+
+                if (!dateInput.value) {
+                    dateInput.value = today;
+                }
+
+                dateInput.disabled = false;
+                remarksInput.disabled = false;
+            } else {
+                const base = radio.dataset.target;
+                const dateInput = document.getElementById(`${base}_FuDate`);
+                const remarksInput = document.getElementById(`${base}_FuRemarks`);
+                dateInput.value = '';
+                dateInput.disabled = true;
+                remarksInput.value = '';
+                remarksInput.disabled = true;
+            }
+        });
+    });
+</script>

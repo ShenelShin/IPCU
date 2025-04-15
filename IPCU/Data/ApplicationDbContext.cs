@@ -54,7 +54,7 @@ namespace IPCU.Data
         public DbSet<PatientMovement> PatientMovements { get; set; }
         public DbSet<PatientMovementDetail> PatientMovementDetails { get; set; }
         public DbSet<ConstructionSite> ConstructionSites { get; set; }
-
+ 
         public DbSet<InfectionControlMonitoringForm> InfectionControlMonitoringForms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
