@@ -1,486 +1,654 @@
 ﻿@model IPCU.Models.ICRA
 
-@{
-    ViewData["Title"] = "Details";
-}
+<style>
+    .custom-radio:disabled {
+        pointer-events: none; /* Prevent clicking */
+        opacity: 0.5; /* Keep it looking normal */
+        cursor: default; /* Default cursor */
+    }
+</style>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-<h1>Details</h1>
-
-<div>
-    <h4>ICRA</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProjectReferenceNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProjectReferenceNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProjectNameAndDescription)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProjectNameAndDescription)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContractorRepresentativeName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContractorRepresentativeName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TelephoneOrMobileNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TelephoneOrMobileNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SpecificSiteOfActivity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SpecificSiteOfActivity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ScopeOfWork)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ScopeOfWork)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProjectStartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProjectStartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EstimatedDuration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EstimatedDuration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ConstructionType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ConstructionType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientRiskGroup)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientRiskGroup)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PreventiveMeasures)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PreventiveMeasures)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Below_Noise)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Below_Noise)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Below_Vibration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Below_Vibration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Below_Dust)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Below_Dust)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Below_Ventilation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Below_Ventilation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Below_Pressuraztion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Below_Pressuraztion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Below_Data)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Below_Data)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Below_Mechanical)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Below_Mechanical)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Below_MedicalGas)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Below_MedicalGas)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Below_HotColdWater)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Below_HotColdWater)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Below_Other)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Below_Other)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Above_Noise)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Above_Noise)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Above_Vibration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Above_Vibration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Above_Dust)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Above_Dust)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Above_Ventilation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Above_Ventilation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Above_Pressuraztion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Above_Pressuraztion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Above_Data)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Above_Data)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Above_Mechanical)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Above_Mechanical)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Above_MedicalGas)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Above_MedicalGas)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Above_HotColdWater)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Above_HotColdWater)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Above_Other)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Above_Other)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lateral_Noise)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lateral_Noise)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lateral_Vibration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lateral_Vibration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lateral_Dust)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lateral_Dust)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lateral_Ventilation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lateral_Ventilation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lateral_Pressuraztion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lateral_Pressuraztion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lateral_Data)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lateral_Data)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lateral_Mechanical)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lateral_Mechanical)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lateral_MedicalGas)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lateral_MedicalGas)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lateral_HotColdWater)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lateral_HotColdWater)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Lateral_Other)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Lateral_Other)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Behind_Noise)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Behind_Noise)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Behind_Vibration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Behind_Vibration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Behind_Dust)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Behind_Dust)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Behind_Ventilation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Behind_Ventilation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Behind_Pressuraztion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Behind_Pressuraztion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Behind_Data)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Behind_Data)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Behind_Mechanical)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Behind_Mechanical)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Behind_MedicalGas)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Behind_MedicalGas)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Behind_HotColdWater)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Behind_HotColdWater)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Behind_Other)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Behind_Other)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Front_Noise)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Front_Noise)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Front_Vibration)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Front_Vibration)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Front_Dust)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Front_Dust)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Front_Ventilation)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Front_Ventilation)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Front_Pressuraztion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Front_Pressuraztion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Front_Data)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Front_Data)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Front_Mechanical)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Front_Mechanical)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Front_MedicalGas)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Front_MedicalGas)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Front_HotColdWater)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Front_HotColdWater)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Front_Other)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Front_Other)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RiskofWater)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RiskofWater)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Remarks_RiskofWater)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Remarks_RiskofWater)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ShouldWork)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ShouldWork)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Remarks_ShouldWork)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Remarks_ShouldWork)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CanSupplyAir)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CanSupplyAir)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Remarks_CanSupplyAir)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Remarks_CanSupplyAir)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.HaveTraffic)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.HaveTraffic)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Remarks_HaveTraffic)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Remarks_HaveTraffic)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CanPatientCare)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CanPatientCare)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Remarks_CanPatientCare)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Remarks_CanPatientCare)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AreMeasures)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AreMeasures)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Remarks_AreMeasures)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Remarks_AreMeasures)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AdditionalComments)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AdditionalComments)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContractorSign)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContractorSign)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EngineeringSign)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EngineeringSign)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ICPSign)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ICPSign)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UnitAreaRep)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UnitAreaRep)
-        </dd>
-    </dl>
+<div class="border border-black bg-white rounded-md p-4 space-y-4">
+    <!-- HEADER -->
+    <div class="grid grid-cols-3 items-center border border-black">
+        <!-- Left Logo -->
+        <div class="flex justify-center p-2 border-r border-black">
+            <img src="/images/nkti-left-logo.png" alt="Left Logo" class="h-20 w-auto" />
+        </div>
+        <!-- Center Text -->
+        <div class="text-center space-y-1 py-2">
+            <p class="text-sm font-bold uppercase">National Kidney and Transplant Institute</p>
+            <p class="text-sm">East Avenue, Quezon City</p>
+            <p class="text-sm font-bold uppercase pt-2">Infection Prevention and Control Unit</p>
+            <p class="text-sm font-bold uppercase border-t border-black pt-1">
+                INFECTION CONTROL RISK ASSESSMENT (ICRA) FORM
+                FOR CONSTRUCTION AND RENOVATION
+            </p>
+        </div>
+        <!-- Right Logo -->
+        <div class="flex justify-center p-2 border-l border-black">
+            <img src="/images/nkti-right-logo.png" alt="Right Logo" class="h-20 w-auto" />
+        </div>
+    </div>
 </div>
+<hr />
+
+<form asp-action="Create">
+    <table class="table table-bordered">
+        <tr>
+            <th>Project Reference Number:</th>
+            <td>@Html.TextBoxFor(m => m.ProjectReferenceNumber, new { @class = "form-control", @disabled = "disabled" })</td>
+            <th>Project/Activity Name and Description:</th>
+            <td>@Html.TextBoxFor(m => m.ProjectNameAndDescription, new { @class = "form-control", @disabled = "disabled" })</td>
+        </tr>
+        <tr>
+            <th>Contractor/Supplier Representative (Name):</th>
+            <td>@Html.TextBoxFor(m => m.ContractorRepresentativeName, new { @class = "form-control", @disabled = "disabled" })</td>
+            <th>Telephone/Mobile number:</th>
+            <td>@Html.TextBoxFor(m => m.TelephoneOrMobileNumber, new { @class = "form-control", @disabled = "disabled" })</td>
+        </tr>
+        <tr>
+            <th>Specific Site of the Activity</th>
+            <td>@Html.TextBoxFor(m => m.SpecificSiteOfActivity, new { @class = "form-control", @disabled = "disabled" })</td>
+            <th>Email</th>
+            <td>@Html.TextBoxFor(m => m.ConstructionEmail, new { @class = "form-control", @disabled = "disabled" })</td>
+        </tr>
+        <tr>
+            <th>Scope of Work (Brief Summary):</th>
+            <td colspan="3">@Html.TextAreaFor(m => m.ScopeOfWork, new { @class = "form-control", rows = 3, @disabled = "disabled" })</td>
+        </tr>
+        <tr>
+            <th>Project Start Date:</th>
+            <td>@Html.TextBoxFor(m => m.ProjectStartDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control", @disabled = "disabled" })</td>
+            <th>Estimated Duration:</th>
+            <td>@Html.TextBoxFor(m => m.EstimatedDuration, new { @class = "form-control", @disabled = "disabled" })</td>
+        </tr>
+    </table>
+
+
+
+
+    <table class="table table-bordered w-100">
+        <tr>
+            <td style="width:25%">
+                <div class="form-group">
+                    <label><strong>Construction Type</strong></label>
+
+                    <div>
+                        <label>
+                            <input type="radio" asp-for="ConstructionType" value="Type A" onclick="updatePreventiveMeasure()" disabled /> Type A
+                        </label><br />
+                        <label>
+                            <input type="radio" asp-for="ConstructionType" value="Type B" onclick="updatePreventiveMeasure()" disabled /> Type B
+                        </label><br />
+                        <label>
+                            <input type="radio" asp-for="ConstructionType" value="Type C" onclick="updatePreventiveMeasure()" disabled /> Type C
+                        </label><br />
+                        <label>
+                            <input type="radio" asp-for="ConstructionType" value="Type D" onclick="updatePreventiveMeasure()" disabled /> Type D
+                        </label>
+                    </div>
+
+                    <span asp-validation-for="ConstructionType" class="text-danger"></span>
+                </div>
+            </td>
+            <td style="width:25%">
+                <div class="form-group">
+                    <label><strong>Patient Risk Group</strong></label>
+
+                    <div>
+                        <label>
+                            <input type="radio" asp-for="PatientRiskGroup" value="Low" onclick="updatePreventiveMeasure()" disabled /> Low risk, non-patient care
+                        </label><br />
+                        <label>
+                            <input type="radio" asp-for="PatientRiskGroup" value="Medium" onclick="updatePreventiveMeasure()" disabled /> Medium risk, patient support
+                        </label><br />
+                        <label>
+                            <input type="radio" asp-for="PatientRiskGroup" value="High" onclick="updatePreventiveMeasure()" disabled /> High risk, patient care
+                        </label><br />
+                        <label>
+                            <input type="radio" asp-for="PatientRiskGroup" value="Highest" onclick="updatePreventiveMeasure()" disabled /> Highest risk, invasive, sterile or highly compromised care
+                        </label>
+                    </div>
+
+                    <span asp-validation-for="PatientRiskGroup" class="text-danger"></span>
+                </div>
+            </td>
+            <td style="width:25%">
+                <div class="form-group">
+                    <label><strong>Preventive Measures</strong></label>
+
+                    <div>
+                        <label>
+                            <input type="radio" asp-for="PreventiveMeasures" value="Class I" class="custom-radio" disabled /> Class I
+                        </label><br />
+                        <label>
+                            <input type="radio" asp-for="PreventiveMeasures" value="Class II" class="custom-radio" disabled /> Class II
+                        </label><br />
+                        <label>
+                            <input type="radio" asp-for="PreventiveMeasures" value="Class III" class="custom-radio" disabled /> Class III
+                        </label><br />
+                        <label>
+                            <input type="radio" asp-for="PreventiveMeasures" value="Class IV" class="custom-radio" disabled /> Class IV
+                        </label><br />
+                        <label>
+                            <input type="radio" asp-for="PreventiveMeasures" value="Class V" class="custom-radio" disabled /> Class V
+                        </label>
+                    </div>
+                    <input type="hidden" id="PreventiveMeasuresHidden" name="PreventiveMeasures" />
+
+                    <span asp-validation-for="PreventiveMeasures" class="text-danger"></span>
+                </div>
+            </td>
+            <td style="width:25%">
+                <label>
+                    *Infection Control approval will be required when the Construction Activity and Risk Level indicate that Class III or Class IV control
+                    procedures are necessary*
+                </label>
+            </td>
+        </tr>
+    </table>
+
+<table class="table table-bordered w-100 text-center">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Below</th>
+            <th>Above</th>
+            <th>Lateral</th>
+            <th>Behind</th>
+            <th>Front</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th>Risk group</th>
+            <td><input asp-for="RiskGroup_Below" class="form-control" disabled /></td>
+            <td><input asp-for="RiskGroup_Above" class="form-control" disabled /></td>
+            <td><input asp-for="RiskGroup_Lateral" class="form-control" disabled /></td>
+            <td><input asp-for="RiskGroup_Behind" class="form-control" disabled /></td>
+            <td><input asp-for="RiskGroup_Front" class="form-control" disabled /></td>
+        </tr>
+        <tr>
+            <th>Local number</th>
+            <td><input asp-for="LocalNumber_Below" class="form-control" disabled /></td>
+            <td><input asp-for="LocalNumber_Above" class="form-control" disabled /></td>
+            <td><input asp-for="LocalNumber_Lateral" class="form-control" disabled /></td>
+            <td><input asp-for="LocalNumber_Behind" class="form-control" disabled /></td>
+            <td><input asp-for="LocalNumber_Front" class="form-control" disabled /></td>
+        </tr>
+        <tr>
+            <th>Controls</th>
+            <td class="text-start">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Below_Noise" disabled /> Noise <br />
+                    <input class="form-check-input" asp-for="Below_Vibration" disabled /> Vibration<br />
+                    <input class="form-check-input" asp-for="Below_Dust" disabled /> Dust<br />
+                    <input class="form-check-input" asp-for="Below_Ventilation" disabled /> Ventilation<br />
+                    <input class="form-check-input" asp-for="Below_Pressuraztion" disabled /> Pressurization<br />
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Above_Noise" disabled /> Noise <br />
+                    <input class="form-check-input" asp-for="Above_Vibration" disabled /> Vibration<br />
+                    <input class="form-check-input" asp-for="Above_Dust" disabled /> Dust<br />
+                    <input class="form-check-input" asp-for="Above_Ventilation" disabled /> Ventilation<br />
+                    <input class="form-check-input" asp-for="Above_Pressuraztion" disabled /> Pressurization<br />
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Lateral_Noise" disabled /> Noise <br />
+                    <input class="form-check-input" asp-for="Lateral_Vibration" disabled /> Vibration<br />
+                    <input class="form-check-input" asp-for="Lateral_Dust" disabled /> Dust<br />
+                    <input class="form-check-input" asp-for="Lateral_Ventilation" disabled /> Ventilation<br />
+                    <input class="form-check-input" asp-for="Lateral_Pressuraztion" disabled /> Pressurization<br />
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Behind_Noise" disabled /> Noise <br />
+                    <input class="form-check-input" asp-for="Behind_Vibration" disabled /> Vibration<br />
+                    <input class="form-check-input" asp-for="Behind_Dust" disabled /> Dust<br />
+                    <input class="form-check-input" asp-for="Behind_Ventilation" disabled /> Ventilation<br />
+                    <input class="form-check-input" asp-for="Behind_Pressuraztion" disabled /> Pressurization<br />
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Front_Noise" disabled /> Noise <br />
+                    <input class="form-check-input" asp-for="Front_Vibration" disabled /> Vibration<br />
+                    <input class="form-check-input" asp-for="Front_Dust" disabled /> Dust<br />
+                    <input class="form-check-input" asp-for="Front_Ventilation" disabled /> Ventilation<br />
+                    <input class="form-check-input" asp-for="Front_Pressuraztion" disabled /> Pressurization<br />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>Systems Impacted</th>
+            <td class="text-start">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Below_Data" disabled /> Data <br />
+                    <input class="form-check-input" asp-for="Below_Mechanical" disabled /> Mechanical <br />
+                    <input class="form-check-input" asp-for="Below_MedicalGas" disabled /> Medical Gas <br />
+                    <input class="form-check-input" asp-for="Below_HotColdWater" disabled /> Hot/Cold water <br />
+                    <input class="form-check-input" asp-for="Below_Other" disabled /> Other <br />
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Above_Data" disabled /> Data <br />
+                    <input class="form-check-input" asp-for="Above_Mechanical" disabled /> Mechanical <br />
+                    <input class="form-check-input" asp-for="Above_MedicalGas" disabled /> Medical Gas <br />
+                    <input class="form-check-input" asp-for="Above_HotColdWater" disabled /> Hot/Cold water <br />
+                    <input class="form-check-input" asp-for="Above_Other" disabled /> Other <br />
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Lateral_Data" disabled /> Data <br />
+                    <input class="form-check-input" asp-for="Lateral_Mechanical" disabled /> Mechanical <br />
+                    <input class="form-check-input" asp-for="Lateral_MedicalGas" disabled /> Medical Gas <br />
+                    <input class="form-check-input" asp-for="Lateral_HotColdWater" disabled /> Hot/Cold water <br />
+                    <input class="form-check-input" asp-for="Lateral_Other" disabled /> Other <br />
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Behind_Data" disabled /> Data <br />
+                    <input class="form-check-input" asp-for="Behind_Mechanical" disabled /> Mechanical <br />
+                    <input class="form-check-input" asp-for="Behind_MedicalGas" disabled /> Medical Gas <br />
+                    <input class="form-check-input" asp-for="Behind_HotColdWater" disabled /> Hot/Cold water <br />
+                    <input class="form-check-input" asp-for="Behind_Other" disabled /> Other <br />
+                </div>
+            </td>
+            <td class="text-start">
+                <div class="form-check">
+                    <input class="form-check-input" asp-for="Front_Data" disabled /> Data <br />
+                    <input class="form-check-input" asp-for="Front_Mechanical" disabled /> Mechanical <br />
+                    <input class="form-check-input" asp-for="Front_MedicalGas" disabled /> Medical Gas <br />
+                    <input class="form-check-input" asp-for="Front_HotColdWater" disabled /> Hot/Cold water <br />
+                    <input class="form-check-input" asp-for="Front_Other" disabled /> Other <br />
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+    <table class="table table-bordered table-striped text-center w-100">
+        <thead>
+            <tr>
+                <th class="text-start" style="width:50%">
+                    <strong>OTHER PREVENTIVE MEASURES TO BE DISCUSSED</strong>
+                    (In addition to the enumerated measures per class, indicated at the back)
+                </th>
+                <th style="width:10%"><strong>YES/NO</strong></th>
+                <th class="text-start" style="width:40%"><strong>REMARKS</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-start">Risk for water damage, or will water be aerosolized during this work?</td>
+                <td>
+                    <div>
+                        <input type="radio" asp-for="RiskofWater" value="Yes" disabled /> Yes <br />
+                        <input type="radio" asp-for="RiskofWater" value="No" disabled /> No
+                    </div>
+                </td>
+                <td>
+                    <input asp-for="Remarks_RiskofWater" class="form-control" disabled />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-start">Work should be done during during patient care hours?</td>
+                <td>
+                    <div>
+                        <input type="radio" asp-for="ShouldWork" value="Yes" disabled /> Yes <br />
+                        <input type="radio" asp-for="ShouldWork" value="No" disabled /> No
+                    </div>
+                </td>
+                <td>
+                    <input asp-for="Remarks_ShouldWork" class="form-control" disabled />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-start">Can supply air be completely isolated?</td>
+                <td>
+                    <div>
+                        <input type="radio" asp-for="CanSupplyAir" value="Yes" disabled /> Yes <br />
+                        <input type="radio" asp-for="CanSupplyAir" value="No" disabled /> No
+                    </div>
+                </td>
+                <td>
+                    <input asp-for="Remarks_CanSupplyAir" class="form-control" disabled />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-start">Have traffice care equipment and supplies be relocated or protected from dust?</td>
+                <td>
+                    <div>
+                        <input type="radio" asp-for="HaveTraffic" value="Yes" disabled /> Yes <br />
+                        <input type="radio" asp-for="HaveTraffic" value="No" disabled /> No
+                    </div>
+                </td>
+                <td>
+                    <input asp-for="Remarks_HaveTraffic" class="form-control" disabled />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-start">Can patient care equipment and supplies relocated or protected from dust exposure?</td>
+                <td>
+                    <div>
+                        <input type="radio" asp-for="CanPatientCare" value="Yes" disabled /> Yes <br />
+                        <input type="radio" asp-for="CanPatientCare" value="No" disabled /> No
+                    </div>
+                </td>
+                <td>
+                    <input asp-for="Remarks_CanPatientCare" class="form-control" disabled />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-start">Are measures in place to contain construction contaminants?</td>
+                <td>
+                    <div>
+                        <input type="radio" asp-for="AreMeasures" value="Yes" disabled /> Yes <br />
+                        <input type="radio" asp-for="AreMeasures" value="No" disabled /> No
+                    </div>
+                </td>
+                <td>
+                    <input asp-for="Remarks_AreMeasures" class="form-control" disabled />
+                </td>
+            </tr>
+            <tr>
+                <td class="text-start" colspan="3">
+                    <strong>Additional Comments and Instructions:</strong>
+                    <input asp-for="AdditionalComments" class="form-control" disabled />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!--<h4 class="mt-5">Reported to:</h4>
+    <table class="table borderless" style="width: 100%; margin-top: 30px;">
+        <tr>
+            <td>
+                <strong>Contractor/Supplier Representative</strong><br />
+                Signature over printed name and Date signed<br />
+    @Html.TextBoxFor(m => m.ContractorSign, new { @class = "form-control" })
+            </td>
+            <td>
+                <strong>NKTI Engineering Staff Representative</strong><br />
+                Signature over printed name and Date signed<br />
+    @Html.TextBoxFor(m => m.EngineeringSign, new { @class = "form-control" })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Infection Control Representative</strong><br />
+                Signature over printed name and Date signed<br />
+    @Html.TextBoxFor(m => m.ICPSign, new { @class = "form-control" })
+            </td>
+            <td>
+                <strong>Unit/Area Representative</strong><br />
+                Signature over printed name and Date signed<br />
+    @Html.TextBoxFor(m => m.UnitAreaRep, new { @class = "form-control" })
+            </td>
+        </tr>
+    </table>
+        -->
+    <h1 class="mt-4 mb-3"><strong>INFECTION CONTROL RISK ASSESSMENT (ICRA) MATRIX REFERENCE</strong></h1>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered table-sm">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Construction Activity Type</th>
+                    <th>Description</th>
+                    <th>Patient Risk Group</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Type A</td>
+                    <td>
+                        <strong>Inspection and Non-Invasive Activities</strong><br />
+                        Includes, but is not limited to:<br />
+                        • Removal of ceiling tiles for visual inspection (limited to 1 tile per 50 square feet)<br />
+                        • Painting (but not sanding)<br />
+                        • Wallcovering, electrical trim work, minor plumbing activities which do not generate dust or require cutting of walls or access to ceilings other than for visual inspection.
+                    </td>
+                    <td>
+                        <strong>Low Risk:</strong> Non-patient care areas such as Office areas<br />
+                        <strong>Medium Risk:</strong> Outpatient and General Care Areas: Cardiology, Echocardiography, Endoscopy, Nuclear Medicine, Physical Therapy, Radiology/MRI, Respiratory Therapy<br />
+                        <strong>High Risk:</strong> In-patient units: CCU, Emergency Room, Labor and Delivery, Laboratories (specimen), Newborn Nursery, Outpatient Surgery, Pediatrics, Pharmacy, Post Anesthesia Care Unit, Surgical Units
+                    </td>
+                </tr>
+                <tr>
+                    <td>Type B</td>
+                    <td>
+                        <strong>Small-scale, short-duration activities which create minimal dust</strong><br />
+                        Includes, but is not limited to:<br />
+                        • Installation of telephone and computer cabling<br />
+                        • Access to chase spaces<br />
+                        • Cutting of walls or ceiling where dust migration can be controlled
+                    </td>
+                    <td>
+                        <strong>Highest Risk:</strong> Areas caring for immunocompromised patients, Burn Unit, Cardiac Catheterization Laboratory, Central Sterile Supply, Intensive Care Units, Medical Unit, Negative pressure isolation rooms, Oncology, Operating Rooms including C-section rooms
+                    </td>
+                </tr>
+                <tr>
+                    <td>Type C</td>
+                    <td>
+                        <strong>Work that generates a moderate to high level of dust or requires demolition/removal of any fixed building components or assemblies</strong><br />
+                        Includes, but is not limited to:<br />
+                        • Sanding of walls for painting or wall covering<br />
+                        • Removal of floor coverings, ceiling tiles, and casework<br />
+                        • New wall construction<br />
+                        • Minor ductwork or electrical work above ceilings<br />
+                        • Major cabling activities or any activity which cannot be completed within a single work shift
+                    </td>
+                    <td>
+                        Refer to matrix classification below
+                    </td>
+                </tr>
+                <tr>
+                    <td>Type D</td>
+                    <td>
+                        <strong>Major demolition and construction projects</strong><br />
+                        Includes, but is not limited to:<br />
+                        • Activities which require consecutive work shifts<br />
+                        • Requires heavy demolition or removal of a complete cabling system<br />
+                        • New construction
+                    </td>
+                    <td>
+                        Refer to matrix classification below
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h5 class="mt-4">ICRA Matrix Risk Classification</h5>
+        <table class="table table-bordered table-sm">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Patient Risk Group</th>
+                    <th>Type A</th>
+                    <th>Type B</th>
+                    <th>Type C</th>
+                    <th>Type D</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Low Risk</td>
+                    <td>I</td>
+                    <td>II</td>
+                    <td>II</td>
+                    <td>III/IV</td>
+                </tr>
+                <tr>
+                    <td>Medium Risk</td>
+                    <td>I</td>
+                    <td>II</td>
+                    <td>III</td>
+                    <td>IV</td>
+                </tr>
+                <tr>
+                    <td>High Risk</td>
+                    <td>I</td>
+                    <td>II</td>
+                    <td>III/IV<sup>2</sup></td>
+                    <td>IV</td>
+                </tr>
+                <tr>
+                    <td>Highest Risk</td>
+                    <td>II</td>
+                    <td>III/IV<sup>1</sup></td>
+                    <td>III/IV<sup>2</sup></td>
+                    <td>IV</td>
+                </tr>
+            </tbody>
+        </table>
+        <small>
+            <strong>Note:</strong>
+            <br />1: Higher class when working above ceiling.
+            <br />2: Higher class may be required based on duration, location, and potential impact of work.
+        </small>
+    </div>
+
+    <h3 class="mt-4 mb-3">Description of Required Infection Control Precautions by Class</h3>
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered table-sm">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Class</th>
+                    <th>During Construction Project</th>
+                    <th>Upon Completion of Project</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Class I</td>
+                    <td>
+                        1. Execute work by methods to minimize raising dust from construction operations.<br />
+                        2. Immediately replace any ceiling tile displaced for visual inspection.
+                    </td>
+                    <td>
+                        1. Clean work area upon completion of task.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Class II</td>
+                    <td>
+                        1. Provide active means to prevent airborne dust from dispersing into the atmosphere.<br />
+                        2. Water mist work surfaces to control dust while cutting.<br />
+                        3. Seal unused doors with duct tape.<br />
+                        4. Block off and seal air vents.<br />
+                        5. Place dust mat at entrance and exit of work area.<br />
+                        6. Remove or isolate HVAC system in areas where work is being performed.
+                    </td>
+                    <td>
+                        1. Wipe work surfaces with disinfectant.<br />
+                        2. Contain construction waste before transport in tightly covered containers.<br />
+                        3. Wet mop and/or vacuum with HEPA-filtered vacuum before leaving work area.<br />
+                        4. Remove isolation of HVAC system in areas where work is being performed.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Class III</td>
+                    <td>
+                        1. Remove or isolate HVAC system in area where work is being done to prevent contamination of duct system.<br />
+                        2. Complete all critical barriers (sheetrock, plywood, plastic) to seal area from non-work area or implement control cube method (cart with plastic covering and sealed connection to worksite with HEPA vacuum for vacuuming prior to exit) before construction begins.<br />
+                        3. Maintain negative air pressure within worksite utilizing HEPA-equipped air filtration units.<br />
+                        4. Contain construction waste before transport in tightly covered containers.<br />
+                        5. Cover transport receptacles or carts. Tape covering unless solid lid.
+                    </td>
+                    <td>
+                        1. Do not remove barriers from work area until completed project is inspected by the owner’s Safety Department and Infection Control Department and thoroughly cleaned by the owner’s Environmental Services Department.<br />
+                        2. Remove barrier materials carefully to minimize spreading of dirt and debris associated with construction.<br />
+                        3. Vacuum work area with HEPA-filtered vacuums.<br />
+                        4. Wet mop area with disinfectant.<br />
+                        5. Remove isolation of HVAC system in areas where work is being performed.
+                    </td>
+                </tr>
+                <tr>
+                    <td>Class IV</td>
+                    <td>
+                        1. Isolate HVAC system in area where work is being done to prevent contamination of duct system.<br />
+                        2. Complete all critical barriers (sheetrock, plywood, plastic) to seal area from non-work area or implement control cube method (cart with plastic covering and sealed connection to worksite with HEPA vacuum for vacuuming prior to exit) before construction begins.<br />
+                        3. Maintain negative air pressure within worksite utilizing HEPA-equipped air filtration units.<br />
+                        4. Seal holes, pipes, conduits, and punctures appropriately.<br />
+                        5. Construct anteroom and require all personnel to pass through this room so they can be vacuumed using a HEPA vacuum cleaner before leaving worksite, or they can wear cloth or paper coveralls that are removed each time they leave the worksite.<br />
+                        6. All personnel entering worksite are required to wear shoe covers. Shoe covers must be changed each time the worker exits the work area.<br />
+                        7. Do not remove barriers from work area until completed project is inspected by the owner’s Safety Department and Infection Control Department and thoroughly cleaned by the owner’s Environmental Services Department.
+                    </td>
+                    <td>
+                        1. Remove barrier material carefully to minimize spreading of dirt and debris associated with construction.<br />
+                        2. Contain construction waste before transport in tightly covered containers.<br />
+                        3. Cover transport receptacles or carts. Tape covering unless solid lid.<br />
+                        4. Vacuum work area with HEPA-filtered vacuums.<br />
+                        5. Wet mop area with disinfectant.<br />
+                        6. Remove isolation of HVAC system in areas where work is being performed.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // Define the preventive measures matrix based on construction type and patient risk
+        const preventiveMatrix = {
+            "Type A": { "Low": "I", "Medium": "I", "High": "I", "Highest": "III" },
+            "Type B": { "Low": "II", "Medium": "II", "High": "III", "Highest": "IV" },
+            "Type C": { "Low": "II", "Medium": "III", "High": "IV", "Highest": "V" },
+            "Type D": { "Low": "III", "Medium": "IV", "High": "V", "Highest": "V" }
+        };
+
+        function updatePreventiveMeasure() {
+            const constructionType = document.querySelector('input[name="ConstructionType"]:checked')?.value;
+            const patientRisk = document.querySelector('input[name="PatientRiskGroup"]:checked')?.value;
+
+            if (constructionType && patientRisk) {
+                const selectedClass = preventiveMatrix[constructionType][patientRisk];
+
+                // Uncheck all radio buttons for PreventiveMeasures
+                document.querySelectorAll('input[name="PreventiveMeasures"]').forEach(input => {
+                    input.checked = false;
+                });
+
+                // Check the correct radio button for display
+                const selectedInput = document.querySelector(`input[name="PreventiveMeasures"][value="Class ${selectedClass}"]`);
+                if (selectedInput) {
+                    selectedInput.checked = true;
+                }
+
+                // Update the hidden input to ensure value is submitted
+                document.getElementById('PreventiveMeasuresHidden').value = `Class ${selectedClass}`;
+            }
+        }
+
+        // Optional: initialize the form if values are already selected
+        document.addEventListener("DOMContentLoaded", () => {
+            updatePreventiveMeasure();
+        });
+    </script>
+
+}
+
