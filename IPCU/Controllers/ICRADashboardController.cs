@@ -156,57 +156,55 @@ namespace IPCU.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Engineering")]
-        public async Task<IActionResult> EngineeringSign(int id, [Bind("Id,EngineeringSign")] ICRA signModel)
+        public async Task<IActionResult> EngineeringSign(int id)
         {
-            if (id != signModel.Id)
-            {
-                return NotFound();
-            }
-
-            // Clear ModelState errors for properties we aren't binding
-            foreach (var key in ModelState.Keys.ToList())
-            {
-                if (key != "Id" && key != "EngineeringSign")
-                {
-                    ModelState.Remove(key);
-                }
-            }
-
             var icra = await _context.ICRA.FindAsync(id);
             if (icra == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (await TryUpdateModelAsync(icra, "",
+                x => x.EngineeringSign,
+                x => x.RiskGroup_Below, x => x.RiskGroup_Above, x => x.RiskGroup_Lateral, x => x.RiskGroup_Behind, x => x.RiskGroup_Front,
+                x => x.LocalNumber_Below, x => x.LocalNumber_Above, x => x.LocalNumber_Lateral, x => x.LocalNumber_Behind, x => x.LocalNumber_Front,
+                x => x.Below_Noise, x => x.Below_Vibration, x => x.Below_Dust, x => x.Below_Ventilation, x => x.Below_Pressuraztion, x => x.Below_Data,
+                x => x.Below_Mechanical, x => x.Below_MedicalGas, x => x.Below_HotColdWater, x => x.Below_Other,
+                x => x.Above_Noise, x => x.Above_Vibration, x => x.Above_Dust, x => x.Above_Ventilation, x => x.Above_Pressuraztion, x => x.Above_Data,
+                x => x.Above_Mechanical, x => x.Above_MedicalGas, x => x.Above_HotColdWater, x => x.Above_Other,
+                x => x.Lateral_Noise, x => x.Lateral_Vibration, x => x.Lateral_Dust, x => x.Lateral_Ventilation, x => x.Lateral_Pressuraztion, x => x.Lateral_Data,
+                x => x.Lateral_Mechanical, x => x.Lateral_MedicalGas, x => x.Lateral_HotColdWater, x => x.Lateral_Other,
+                x => x.Behind_Noise, x => x.Behind_Vibration, x => x.Behind_Dust, x => x.Behind_Ventilation, x => x.Behind_Pressuraztion, x => x.Behind_Data,
+                x => x.Behind_Mechanical, x => x.Behind_MedicalGas, x => x.Behind_HotColdWater, x => x.Behind_Other,
+                x => x.Front_Noise, x => x.Front_Vibration, x => x.Front_Dust, x => x.Front_Ventilation, x => x.Front_Pressuraztion, x => x.Front_Data,
+                x => x.Front_Mechanical, x => x.Front_MedicalGas, x => x.Front_HotColdWater, x => x.Front_Other,
+                x => x.RiskofWater, x => x.Remarks_RiskofWater, x => x.ShouldWork, x => x.Remarks_ShouldWork,
+                x => x.CanSupplyAir, x => x.Remarks_CanSupplyAir, x => x.HaveTraffic, x => x.Remarks_HaveTraffic,
+                x => x.CanPatientCare, x => x.Remarks_CanPatientCare, x => x.AreMeasures, x => x.Remarks_AreMeasures,
+                x => x.AdditionalComments))
             {
                 try
                 {
-                    // Update only the Engineering signature
-                    icra.EngineeringSign = signModel.EngineeringSign;
-                    _context.Update(icra);
                     await _context.SaveChangesAsync();
 
-                    // Notify Admin and ICN roles
+                    // Notify Admin and ICN after successful save
                     await _emailService.NotifyRolesAboutICRA(icra, new[] { "Admin", "ICN" });
 
-                    TempData["SuccessMessage"] = "Engineering signature added successfully and notification sent to Admin/ICN.";
+                    TempData["SuccessMessage"] = "Engineering signature and ICRA data updated successfully.";
+                    return RedirectToAction(nameof(Engineering));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ICRAExists(signModel.Id))
-                    {
+                    if (!ICRAExists(id))
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
-                return RedirectToAction(nameof(Engineering));
             }
+
             return View(icra);
         }
+
 
         // GET: ICRADashboard/AdminICNSign/5
         [Authorize(Roles = "Admin,ICN")]
@@ -230,39 +228,37 @@ namespace IPCU.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,ICN")]
-        public async Task<IActionResult> AdminICNSign(int id, [Bind("Id,ICPSign,UnitAreaRep")] ICRA signModel)
+        public async Task<IActionResult> AdminICNSign(int id)
         {
-            if (id != signModel.Id)
-            {
-                return NotFound();
-            }
-
-            // Clear ModelState errors for properties we aren't binding
-            foreach (var key in ModelState.Keys.ToList())
-            {
-                if (key != "Id" && key != "ICPSign" && key != "UnitAreaRep")
-                {
-                    ModelState.Remove(key);
-                }
-            }
-
             var icra = await _context.ICRA.FindAsync(id);
             if (icra == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            // Try to update only the allowed fields from the posted form data
+            if (await TryUpdateModelAsync(icra, "",
+                x => x.RiskGroup_Below, x => x.RiskGroup_Above, x => x.RiskGroup_Lateral, x => x.RiskGroup_Behind, x => x.RiskGroup_Front,
+                x => x.LocalNumber_Below, x => x.LocalNumber_Above, x => x.LocalNumber_Lateral, x => x.LocalNumber_Behind, x => x.LocalNumber_Front,
+                x => x.Below_Noise, x => x.Below_Vibration, x => x.Below_Dust, x => x.Below_Ventilation, x => x.Below_Pressuraztion, x => x.Below_Data,
+                x => x.Below_Mechanical, x => x.Below_MedicalGas, x => x.Below_HotColdWater, x => x.Below_Other,
+                x => x.Above_Noise, x => x.Above_Vibration, x => x.Above_Dust, x => x.Above_Ventilation, x => x.Above_Pressuraztion, x => x.Above_Data,
+                x => x.Above_Mechanical, x => x.Above_MedicalGas, x => x.Above_HotColdWater, x => x.Above_Other,
+                x => x.Lateral_Noise, x => x.Lateral_Vibration, x => x.Lateral_Dust, x => x.Lateral_Ventilation, x => x.Lateral_Pressuraztion, x => x.Lateral_Data,
+                x => x.Lateral_Mechanical, x => x.Lateral_MedicalGas, x => x.Lateral_HotColdWater, x => x.Lateral_Other,
+                x => x.Behind_Noise, x => x.Behind_Vibration, x => x.Behind_Dust, x => x.Behind_Ventilation, x => x.Behind_Pressuraztion, x => x.Behind_Data,
+                x => x.Behind_Mechanical, x => x.Behind_MedicalGas, x => x.Behind_HotColdWater, x => x.Behind_Other,
+                x => x.Front_Noise, x => x.Front_Vibration, x => x.Front_Dust, x => x.Front_Ventilation, x => x.Front_Pressuraztion, x => x.Front_Data,
+                x => x.Front_Mechanical, x => x.Front_MedicalGas, x => x.Front_HotColdWater, x => x.Front_Other,
+                x => x.RiskofWater, x => x.Remarks_RiskofWater, x => x.ShouldWork, x => x.Remarks_ShouldWork,
+                x => x.CanSupplyAir, x => x.Remarks_CanSupplyAir, x => x.HaveTraffic, x => x.Remarks_HaveTraffic,
+                x => x.CanPatientCare, x => x.Remarks_CanPatientCare, x => x.AreMeasures, x => x.Remarks_AreMeasures,
+                x => x.AdditionalComments, x => x.ICPSign, x => x.UnitAreaRep))
             {
                 try
                 {
-                    // Update only the ICP and UnitArea signatures
-                    icra.ICPSign = signModel.ICPSign;
-                    icra.UnitAreaRep = signModel.UnitAreaRep;
-                    _context.Update(icra);
                     await _context.SaveChangesAsync();
 
-                    // If Engineering sign is missing, notify them
                     if (string.IsNullOrEmpty(icra.EngineeringSign))
                     {
                         await _emailService.NotifyRolesAboutICRA(icra, new[] { "Engineering" });
@@ -272,10 +268,12 @@ namespace IPCU.Controllers
                     {
                         TempData["SuccessMessage"] = "Signatures added successfully.";
                     }
+
+                    return RedirectToAction(nameof(AdminICN));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ICRAExists(signModel.Id))
+                    if (!ICRAExists(id))
                     {
                         return NotFound();
                     }
@@ -284,10 +282,11 @@ namespace IPCU.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(AdminICN));
             }
+
             return View(icra);
         }
+
 
         // GET: ICRADashboard/ReviewLowRiskICRA/5
         [Authorize(Roles = "Admin,ICN")]
@@ -320,42 +319,52 @@ namespace IPCU.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,ICN")]
-        public async Task<IActionResult> ReviewLowRiskICRA(int id, [Bind("Id,ICPSign")] ICRA signModel)
+        public async Task<IActionResult> ReviewLowRiskICRA(int id)
         {
-            if (id != signModel.Id)
-            {
-                return NotFound();
-            }
-
-            // Clear ModelState errors for properties we aren't binding
-            foreach (var key in ModelState.Keys.ToList())
-            {
-                if (key != "Id" && key != "ICPSign")
-                {
-                    ModelState.Remove(key);
-                }
-            }
-
             var icra = await _context.ICRA.FindAsync(id);
             if (icra == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            // Try to update only the allowed fields from the posted form data
+            if (await TryUpdateModelAsync(icra, "",
+                x => x.RiskGroup_Below, x => x.RiskGroup_Above, x => x.RiskGroup_Lateral, x => x.RiskGroup_Behind, x => x.RiskGroup_Front,
+                x => x.LocalNumber_Below, x => x.LocalNumber_Above, x => x.LocalNumber_Lateral, x => x.LocalNumber_Behind, x => x.LocalNumber_Front,
+                x => x.Below_Noise, x => x.Below_Vibration, x => x.Below_Dust, x => x.Below_Ventilation, x => x.Below_Pressuraztion, x => x.Below_Data,
+                x => x.Below_Mechanical, x => x.Below_MedicalGas, x => x.Below_HotColdWater, x => x.Below_Other,
+                x => x.Above_Noise, x => x.Above_Vibration, x => x.Above_Dust, x => x.Above_Ventilation, x => x.Above_Pressuraztion, x => x.Above_Data,
+                x => x.Above_Mechanical, x => x.Above_MedicalGas, x => x.Above_HotColdWater, x => x.Above_Other,
+                x => x.Lateral_Noise, x => x.Lateral_Vibration, x => x.Lateral_Dust, x => x.Lateral_Ventilation, x => x.Lateral_Pressuraztion, x => x.Lateral_Data,
+                x => x.Lateral_Mechanical, x => x.Lateral_MedicalGas, x => x.Lateral_HotColdWater, x => x.Lateral_Other,
+                x => x.Behind_Noise, x => x.Behind_Vibration, x => x.Behind_Dust, x => x.Behind_Ventilation, x => x.Behind_Pressuraztion, x => x.Behind_Data,
+                x => x.Behind_Mechanical, x => x.Behind_MedicalGas, x => x.Behind_HotColdWater, x => x.Behind_Other,
+                x => x.Front_Noise, x => x.Front_Vibration, x => x.Front_Dust, x => x.Front_Ventilation, x => x.Front_Pressuraztion, x => x.Front_Data,
+                x => x.Front_Mechanical, x => x.Front_MedicalGas, x => x.Front_HotColdWater, x => x.Front_Other,
+                x => x.RiskofWater, x => x.Remarks_RiskofWater, x => x.ShouldWork, x => x.Remarks_ShouldWork,
+                x => x.CanSupplyAir, x => x.Remarks_CanSupplyAir, x => x.HaveTraffic, x => x.Remarks_HaveTraffic,
+                x => x.CanPatientCare, x => x.Remarks_CanPatientCare, x => x.AreMeasures, x => x.Remarks_AreMeasures,
+                x => x.AdditionalComments, x => x.ICPSign))
             {
                 try
                 {
-                    // Update only the ICP signature for low-risk ICRAs
-                    icra.ICPSign = signModel.ICPSign;
-                    _context.Update(icra);
                     await _context.SaveChangesAsync();
 
-                    TempData["SuccessMessage"] = "Low-risk ICRA reviewed and acknowledged successfully.";
+                    if (string.IsNullOrEmpty(icra.EngineeringSign))
+                    {
+                        await _emailService.NotifyRolesAboutICRA(icra, new[] { "Engineering" });
+                        TempData["SuccessMessage"] = "Signatures added successfully and notification sent to Engineering.";
+                    }
+                    else
+                    {
+                        TempData["SuccessMessage"] = "Signatures added successfully.";
+                    }
+
+                    return RedirectToAction(nameof(AdminICN));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ICRAExists(signModel.Id))
+                    if (!ICRAExists(id))
                     {
                         return NotFound();
                     }
@@ -364,7 +373,6 @@ namespace IPCU.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(AdminICN));
             }
             return View(icra);
         }

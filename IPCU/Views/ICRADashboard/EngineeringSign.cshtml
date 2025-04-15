@@ -85,6 +85,259 @@
 
             <form method="post">
                 <input type="hidden" name="Id" value="@Model.Id" />
+                <table class="table table-bordered w-100 text-center">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Below</th>
+                            <th>Above</th>
+                            <th>Lateral</th>
+                            <th>Behind</th>
+                            <th>Front</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Risk group</th>
+                            <td>
+                                <input asp-for="RiskGroup_Below" class="form-control" />
+                            </td>
+                            <td>
+                                <input asp-for="RiskGroup_Above" class="form-control" />
+                            </td>
+                            <td>
+                                <input asp-for="RiskGroup_Lateral" class="form-control" />
+                            </td>
+                            <td>
+                                <input asp-for="RiskGroup_Behind" class="form-control" />
+                            </td>
+                            <td>
+                                <input asp-for="RiskGroup_Front" class="form-control" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Local number</th>
+                            <td>
+                                <input asp-for="LocalNumber_Below" class="form-control" />
+                            </td>
+                            <td>
+                                <input asp-for="LocalNumber_Above" class="form-control" />
+                            </td>
+                            <td>
+                                <input asp-for="LocalNumber_Lateral" class="form-control" />
+                            </td>
+                            <td>
+                                <input asp-for="LocalNumber_Behind" class="form-control" />
+                            </td>
+                            <td>
+                                <input asp-for="LocalNumber_Front" class="form-control" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Controls</th>
+
+                            <td class="text-start">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Below_Noise" /> Noise <br />
+                                    <input class="form-check-input" asp-for="Below_Vibration" /> Vibration<br />
+                                    <input class="form-check-input" asp-for="Below_Dust" /> Dust<br />
+                                    <input class="form-check-input" asp-for="Below_Ventilation" /> Ventilation<br />
+                                    <input class="form-check-input" asp-for="Below_Pressuraztion" /> Pressurization<br />
+                                </div>
+                            </td>
+                            <td class="text-start">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Above_Noise" /> Noise <br />
+                                    <input class="form-check-input" asp-for="Above_Vibration" /> Vibration<br />
+                                    <input class="form-check-input" asp-for="Above_Dust" /> Dust<br />
+                                    <input class="form-check-input" asp-for="Above_Ventilation" /> Ventilation<br />
+                                    <input class="form-check-input" asp-for="Above_Pressuraztion" /> Pressurization<br />
+                                </div>
+                            </td>
+                            <td class="text-start">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Lateral_Noise" /> Noise <br />
+                                    <input class="form-check-input" asp-for="Lateral_Vibration" /> Vibration<br />
+                                    <input class="form-check-input" asp-for="Lateral_Dust" /> Dust<br />
+                                    <input class="form-check-input" asp-for="Lateral_Ventilation" /> Ventilation<br />
+                                    <input class="form-check-input" asp-for="Lateral_Pressuraztion" /> Pressurization<br />
+                                </div>
+                            </td>
+                            <td class="text-start">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Behind_Noise" /> Noise <br />
+                                    <input class="form-check-input" asp-for="Behind_Vibration" /> Vibration<br />
+                                    <input class="form-check-input" asp-for="Behind_Dust" /> Dust<br />
+                                    <input class="form-check-input" asp-for="Behind_Ventilation" /> Ventilation<br />
+                                    <input class="form-check-input" asp-for="Behind_Pressuraztion" /> Pressurization<br />
+                                </div>
+                            </td>
+                            <td class="text-start">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Front_Noise" /> Noise <br />
+                                    <input class="form-check-input" asp-for="Front_Vibration" /> Vibration<br />
+                                    <input class="form-check-input" asp-for="Front_Dust" /> Dust<br />
+                                    <input class="form-check-input" asp-for="Front_Ventilation" /> Ventilation<br />
+                                    <input class="form-check-input" asp-for="Front_Pressuraztion" /> Pressurization<br />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Systems Impacted</th>
+
+                            <td class="text-start">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Below_Data" /> Data <br />
+                                    <input class="form-check-input" asp-for="Below_Mechanical" /> Mechanical <br />
+                                    <input class="form-check-input" asp-for="Below_MedicalGas" /> Medical Gas <br />
+                                    <input class="form-check-input" asp-for="Below_HotColdWater" /> Hot/Cold water <br />
+                                    <input class="form-check-input" asp-for="Below_Other" /> Other <br />
+                                </div>
+                            </td>
+                            <td class="text-start">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Above_Data" /> Data <br />
+                                    <input class="form-check-input" asp-for="Above_Mechanical" /> Mechanical <br />
+                                    <input class="form-check-input" asp-for="Above_MedicalGas" /> Medical Gas <br />
+                                    <input class="form-check-input" asp-for="Above_HotColdWater" /> Hot/Cold water <br />
+                                    <input class="form-check-input" asp-for="Above_Other" /> Other <br />
+                                </div>
+                            </td>
+                            <td class="text-start">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Lateral_Data" /> Data <br />
+                                    <input class="form-check-input" asp-for="Lateral_Mechanical" /> Mechanical <br />
+                                    <input class="form-check-input" asp-for="Lateral_MedicalGas" /> Medical Gas <br />
+                                    <input class="form-check-input" asp-for="Lateral_HotColdWater" /> Hot/Cold water <br />
+                                    <input class="form-check-input" asp-for="Lateral_Other" /> Other <br />
+                                </div>
+                            </td>
+                            <td class="text-start">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Behind_Data" /> Data <br />
+                                    <input class="form-check-input" asp-for="Behind_Mechanical" /> Mechanical <br />
+                                    <input class="form-check-input" asp-for="Behind_MedicalGas" /> Medical Gas <br />
+                                    <input class="form-check-input" asp-for="Behind_HotColdWater" /> Hot/Cold water <br />
+                                    <input class="form-check-input" asp-for="Behind_Other" /> Other <br />
+                                </div>
+                            </td>
+                            <td class="text-start">
+                                <div class="form-check">
+                                    <input class="form-check-input" asp-for="Front_Data" /> Data <br />
+                                    <input class="form-check-input" asp-for="Front_Mechanical" /> Mechanical <br />
+                                    <input class="form-check-input" asp-for="Front_MedicalGas" /> Medical Gas <br />
+                                    <input class="form-check-input" asp-for="Front_HotColdWater" /> Hot/Cold water <br />
+                                    <input class="form-check-input" asp-for="Front_Other" /> Other <br />
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-striped text-center w-100">
+                    <thead>
+                        <tr>
+                            <th class="text-start" style="width:50%">
+                                <strong>OTHER PREVENTIVE MEASURES TO BE DISCUSSED</strong>
+                                (In addition to the enumerated measures per class, indicated at the back)
+                            </th>
+                            <th style="width:10%"><strong>YES/NO</strong></th>
+                            <th class="text-start" style="width:40%"><strong>REMARKS</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-start" style="width:50%">
+                                Risk for water damage, or will water be aerosolized during this work?
+                            </td>
+                            <td style="width:10%">
+                                <div>
+                                    <input type="radio" asp-for="RiskofWater" value="Yes" /> Yes <br />
+                                    <input type="radio" asp-for="RiskofWater" value="No" /> No
+                                </div>
+                            </td>
+                            <td style="width:40%">
+                                <input asp-for="Remarks_RiskofWater" class="form-control" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-start" style="width:50%">
+                                Work should be done during during patient care hours?
+                            </td>
+                            <td style="width:10%">
+                                <div>
+                                    <input type="radio" asp-for="ShouldWork" value="Yes" /> Yes <br />
+                                    <input type="radio" asp-for="ShouldWork" value="No" /> No
+                                </div>
+                            </td>
+                            <td style="width:40%">
+                                <input asp-for="Remarks_ShouldWork" class="form-control" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-start" style="width:50%">
+                                Can supply air be completely isolated?
+                            </td>
+                            <td style="width:10%">
+                                <div>
+                                    <input type="radio" asp-for="CanSupplyAir" value="Yes" /> Yes <br />
+                                    <input type="radio" asp-for="CanSupplyAir" value="No" /> No
+                                </div>
+                            </td>
+                            <td style="width:40%">
+                                <input asp-for="Remarks_CanSupplyAir" class="form-control" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-start" style="width:50%">
+                                Have traffice care equipment and supplies be relocated or protected from dust?
+                            </td>
+                            <td style="width:10%">
+                                <div>
+                                    <input type="radio" asp-for="HaveTraffic" value="Yes" /> Yes <br />
+                                    <input type="radio" asp-for="HaveTraffic" value="No" /> No
+                                </div>
+                            </td>
+                            <td style="width:40%">
+                                <input asp-for="Remarks_HaveTraffic" class="form-control" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-start" style="width:50%">
+                                Can patient care equipment and supplies
+                                relocated or protected from dust exposure?
+                            </td>
+                            <td style="width:10%">
+                                <div>
+                                    <input type="radio" asp-for="CanPatientCare" value="Yes" /> Yes <br />
+                                    <input type="radio" asp-for="CanPatientCare" value="No" /> No
+                                </div>
+                            </td>
+                            <td style="width:40%">
+                                <input asp-for="Remarks_CanPatientCare" class="form-control" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-start" style="width:50%">
+                                Are measures in place to contain construction contaminants?
+                            </td>
+                            <td style="width:10%">
+                                <div>
+                                    <input type="radio" asp-for="AreMeasures" value="Yes" /> Yes <br />
+                                    <input type="radio" asp-for="AreMeasures" value="No" /> No
+                                </div>
+                            </td>
+                            <td style="width:40%">
+                                <input asp-for="Remarks_AreMeasures" class="form-control" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-start" colspan="3">
+                                <strong>Additional Comments and Instructions:</strong>
+                                <input asp-for="AdditionalComments" class="form-control" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
                 <div class="mb-3">
                     <label for="EngineeringSign" class="form-label">Engineering Signature</label>

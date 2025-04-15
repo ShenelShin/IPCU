@@ -31,7 +31,7 @@
             <img src="/images/nkti-right-logo.png" alt="Right Logo" class="h-20 w-auto" />
         </div>
     </div>
-
+</div>
 <hr />
 
         <form asp-action="Create">
@@ -67,12 +67,10 @@
             </table>
 
 
-            <div class="container-fluid px-5">
-                <div class="row">
-                    <div class="col-12">
+           
                         <table class="table table-bordered w-100">
                             <tr>
-                                <td style="width: 100%;">
+                                <td style="width:25%">
                                     <div class="form-group">
                                         <label><strong>Construction Type</strong></label>
 
@@ -95,7 +93,7 @@
                                     </div>
 
                                 </td>
-                                <td style="width: 100%;">
+                                <td style="width:25%">
                                     <div class="form-group">
                                         <label><strong>Patient Risk Group</strong></label>
 
@@ -108,7 +106,7 @@
                                             </label><br />
                                             <label>
                                                 <input type="radio" asp-for="PatientRiskGroup" value="High" onclick="updatePreventiveMeasure()" /> High risk, patient care
-                                            </label>
+                                            </label><br />
                                             <label>
                                                 <input type="radio" asp-for="PatientRiskGroup" value="Highest" onclick="updatePreventiveMeasure()" /> Highest risk, invasive, sterile or highly compromised care
                                             </label>
@@ -117,7 +115,7 @@
                                         <span asp-validation-for="PatientRiskGroup" class="text-danger"></span>
                                     </div>
                                 </td>
-                                <td style="width: 100%;">
+                                <td style="width:25%">
                                     <div class="form-group">
                                         <label><strong>Preventive Measures</strong></label>
 
@@ -130,10 +128,10 @@
                                             </label><br />
                                             <label>
                                                 <input type="radio" asp-for="PreventiveMeasures" value="Class III" class="custom-radio" disabled /> Class III
-                                            </label>
+                                            </label><br />
                                             <label>
                                                 <input type="radio" asp-for="PreventiveMeasures" value="Class IV" class="custom-radio" disabled /> Class IV
-                                            </label>
+                                            </label><br />
                                             <label>
                                                 <input type="radio" asp-for="PreventiveMeasures" value="Class V" class="custom-radio" disabled /> Class V
                                             </label>
@@ -143,7 +141,7 @@
                                         <span asp-validation-for="PreventiveMeasures" class="text-danger"></span>
                                     </div>
                                 </td>
-                                <td style="width: 100%;">
+                                <td style="width:25%">
                                     <label>
                                         *Infection Control approval will berequired when the ConstructionActivity and Risk Level indicatethatClass III or Class IVcontrol
                                         procedures are necessary*
@@ -151,12 +149,7 @@
                                 </td>
                             </tr>
                         </table>
-                    </div>
-                </div>
-            </div>
-            <div class="container-fluid px-5">
-                <div class="row">
-                    <div class="col-12">
+
                         <table class="table table-bordered w-100 text-center">
                             <thead>
                                 <tr>
@@ -171,14 +164,38 @@
                             <tbody>
                                 <tr>
                                     <th>Risk group</th>
-                                    <td colspan="5">
-                                        <input asp-for="RiskGroup" class="form-control" />
+                                    <td>
+                                        <input asp-for="RiskGroup_Below" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="RiskGroup_Above" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="RiskGroup_Lateral" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="RiskGroup_Behind" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="RiskGroup_Front" class="form-control" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>Local number</th>
-                                    <td colspan="5">
-                                        <input asp-for="LocalNumber" class="form-control" />
+                                    <td>
+                                        <input asp-for="LocalNumber_Below" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="LocalNumber_Above" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="LocalNumber_Lateral" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="LocalNumber_Behind" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input asp-for="LocalNumber_Front" class="form-control" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -282,126 +299,115 @@
                             </tbody>
                         </table>
 
-                    </div>
-                </div>
-            </div>
-
-            <div class="container-fluid px-3">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="table-responsive">
+            
                             <table class="table table-bordered table-striped text-center w-100">
                                 <thead>
                                     <tr>
-                                        <th class="text-start" colspan="15">
+                                        <th class="text-start" style="width:50%">
                                             <strong>OTHER PREVENTIVE MEASURES TO BE DISCUSSED</strong>
                                             (In addition to the enumerated measures per class, indicated at the back)
                                         </th>
-                                        <th colspan="4"><strong>YES/NO</strong></th>
-                                        <th class="text-start" colspan="5"><strong>REMARKS</strong></th>
+                                        <th style="width:10%"><strong>YES/NO</strong></th>
+                                        <th class="text-start" style="width:40%"><strong>REMARKS</strong></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-start" colspan="15">
+                                        <td class="text-start" style="width:50%">
                                             Risk for water damage, or will water be aerosolized during this work?
                                         </td>
-                                        <td colspan="4">
+                                        <td style="width:10%">
                                             <div>
                                                 <input type="radio" asp-for="RiskofWater" value="Yes" /> Yes <br />
                                                 <input type="radio" asp-for="RiskofWater" value="No" /> No
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="width:40%">
                                             <input asp-for="Remarks_RiskofWater" class="form-control" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-start" colspan="15">
+                                        <td class="text-start" style="width:50%">
                                             Work should be done during during patient care hours?
                                         </td>
-                                        <td colspan ="4">
+                                        <td style="width:10%">
                                             <div>
                                                 <input type="radio" asp-for="ShouldWork" value="Yes" /> Yes <br />
                                                 <input type="radio" asp-for="ShouldWork" value="No" /> No
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="width:40%">
                                             <input asp-for="Remarks_ShouldWork" class="form-control" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-start" colspan="15">
+                                        <td class="text-start" style="width:50%">
                                             Can supply air be completely isolated?
                                         </td>
-                                        <td colspan="4">
+                                        <td style="width:10%">
                                             <div>
                                                 <input type="radio" asp-for="CanSupplyAir" value="Yes" /> Yes <br />
                                                 <input type="radio" asp-for="CanSupplyAir" value="No" /> No
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="width:40%">
                                             <input asp-for="Remarks_CanSupplyAir" class="form-control" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-start" colspan="15">
+                                        <td class="text-start" style="width:50%">
                                            Have traffice care equipment and supplies be relocated or protected from dust?
                                         </td>
-                                        <td colspan="4">
+                                        <td style="width:10%">
                                             <div>
                                                 <input type="radio" asp-for="HaveTraffic" value="Yes" /> Yes <br />
                                                 <input type="radio" asp-for="HaveTraffic" value="No" /> No
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="width:40%">
                                             <input asp-for="Remarks_HaveTraffic" class="form-control" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-start" colspan="15">
+                                        <td class="text-start" style="width:50%">
                                             Can patient care equipment and supplies
                                             relocated or protected from dust exposure?
                                         </td>
-                                        <td colspan="4">
+                                        <td style="width:10%">
                                             <div>
                                                 <input type="radio" asp-for="CanPatientCare" value="Yes" /> Yes <br />
                                                 <input type="radio" asp-for="CanPatientCare" value="No" /> No
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="width:40%">
                                             <input asp-for="Remarks_CanPatientCare" class="form-control" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="text-start" colspan="15">
+                                        <td class="text-start" style="width:50%">
                                             Are measures in place to contain construction contaminants?
                                         </td>
-                                        <td colspan="4">
+                                        <td style="width:10%">
                                             <div>
                                                 <input type="radio" asp-for="AreMeasures" value="Yes" /> Yes <br />
                                                 <input type="radio" asp-for="AreMeasures" value="No" /> No
                                             </div>
                                         </td>
-                                        <td>
+                                        <td style="width:40%">
                                             <input asp-for="Remarks_AreMeasures" class="form-control" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="20">
+                                        <td class="text-start" colspan="3">
                                            <strong>Additional Comments and Instructions:</strong>
                                             <input asp-for="AdditionalComments" class="form-control" />
-
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-    <h4 class="mt-5">Reported to:</h4>
+
+    <!--<h4 class="mt-5">Reported to:</h4>
     <table class="table borderless" style="width: 100%; margin-top: 30px;">
         <tr>
             <td>
@@ -428,8 +434,8 @@
             </td>
         </tr>
     </table>
-
-    <h3 class="mt-4 mb-3">INFECTION CONTROL RISK ASSESSMENT (ICRA) MATRIX REFERENCE</h3>
+        -->
+        <h1 class="mt-4 mb-3"><strong>INFECTION CONTROL RISK ASSESSMENT (ICRA) MATRIX REFERENCE</strong></h1>
     <div class="table-responsive mb-4">
         <table class="table table-bordered table-sm">
             <thead class="table-secondary">

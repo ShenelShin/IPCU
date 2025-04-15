@@ -68,16 +68,6 @@
                 <input asp-for="PreventiveMeasures" class="form-control" />
                 <span asp-validation-for="PreventiveMeasures" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="RiskGroup" class="control-label"></label>
-                <input asp-for="RiskGroup" class="form-control" />
-                <span asp-validation-for="RiskGroup" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LocalNumber" class="control-label"></label>
-                <input asp-for="LocalNumber" class="form-control" />
-                <span asp-validation-for="LocalNumber" class="text-danger"></span>
-            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="Below_Noise" /> @Html.DisplayNameFor(model => model.Below_Noise)

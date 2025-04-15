@@ -25,8 +25,16 @@ namespace IPCU.Models
         public string ConstructionType { get; set; }
         public string PatientRiskGroup { get; set; }
         public string PreventiveMeasures { get; set; }
-        public string RiskGroup { get; set; }
-        public string LocalNumber { get; set; }
+        public string? RiskGroup_Below { get; set; }
+        public string? RiskGroup_Above { get; set; }
+        public string? RiskGroup_Lateral { get; set; }
+        public string? RiskGroup_Behind { get; set; }
+        public string? RiskGroup_Front { get; set; }
+        public string? LocalNumber_Below { get; set; }
+        public string? LocalNumber_Above { get; set; }
+        public string? LocalNumber_Lateral { get; set; }
+        public string? LocalNumber_Behind { get; set; }
+        public string? LocalNumber_Front { get; set; }
         public bool Below_Noise { get; set; }
         public bool Below_Vibration { get; set; }
         public bool Below_Dust { get; set; }
