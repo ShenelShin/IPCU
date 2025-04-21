@@ -1,0 +1,161 @@
+﻿@model IEnumerable<IPCU.Models.VAEMonitoringChecklist>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AreaUnit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssessedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateandTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ObservedStaff)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HeadofBed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IfTracheostomy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrcalCare)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HandHygiene)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AfterCare)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SterileWater)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EnsuretoUse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Condensateinthe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IntubationKits)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CleanandDirty)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberofComplaint)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalObserved)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ComplianceRate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Accomplishedby)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReviewedandApproved)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaUnit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssessedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateandTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ObservedStaff)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HeadofBed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IfTracheostomy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrcalCare)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HandHygiene)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AfterCare)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SterileWater)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EnsuretoUse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Condensateinthe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IntubationKits)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CleanandDirty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberofComplaint)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalObserved)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ComplianceRate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Accomplishedby)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReviewedandApproved)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,255 @@
+﻿@model IPCU.Models.VAEMonitoringChecklist
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>VAEMonitoringChecklist</h4>
+
+        <form asp-action="Create">
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:10%">
+                        <span><strong>AREA/UNIT:</strong></span>
+                    </td>
+                    <td style="width:40%">
+                        <div class="form-group">
+                            <input asp-for="AreaUnit" class="form-control" />
+                            <span asp-validation-for="AreaUnit" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td style="width:20%">
+                        <span><strong>DATE AND TIME OF MONITORING</strong></span>
+                    </td>
+                     <td style="width:30%">
+                        <div class="form-group">
+                            <input asp-for="DateandTime" class="form-control" />
+                            <span asp-validation-for="DateandTime" class="text-danger"></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width:10%">
+                        <span><strong>ASSESSED BY: </strong></span>
+                    </td>
+                    <td style="width:30%">
+                        <div class="form-group">
+                            <input asp-for="AssessedBy" class="form-control" />
+                            <span asp-validation-for="AssessedBy" class="text-danger"></span>
+                        </div>
+                    </td>
+                    <td colspan="2" style="width:60%">
+                        <span>
+                            Regular monitoring with feedback of results to staff can maintain or improve adherence to Ventilator-Associated Events (VAE)
+                            precautions practices. Monitoring may be performed in any type of patient care location where patients are mechanically ventilated.
+                        </span>
+                    </td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td>
+
+                    </td>
+                </tr>
+            </table>
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width:20%">
+                        <span><strong>Patientm Name:</strong></span>
+                    </td>
+                    <td>
+                <input asp-for="PatientName" class="form-control" placeholder="Enter Patient name" />
+                <span asp-validation-for="PatientName" class="text-danger"></span>
+                    </td>
+                </tr>
+                 <tr>
+                     <td style="width:20%">
+                        <span><strong>Bed:</strong></span>
+                    </td>
+                    <td>
+                <input asp-for="Bed" class="form-control" placeholder="Enter Bed" />
+                <span asp-validation-for="Bed" class="text-danger"></span>
+                    </td>
+                </tr>
+                 <tr>
+                     <td style="width:20%">
+                        <span><strong>Observed Staff:</strong></span>
+                    </td>
+                    <td>
+                <input asp-for="ObservedStaff" class="form-control" placeholder="Enter Observed staff: " />
+                <span asp-validation-for="ObservedStaff" class="text-danger"></span>
+                    </td>
+                </tr>
+            </table>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="2" style="text-align: center;">VAE Prevention Practices</th>
+                <th colspan="2">
+                   
+                </th>
+            </tr>
+            <tr>
+                <th>#</th>
+                <th>Practice</th>
+                <th>Yes</th>
+                <th>No</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Head of bed is positioned at 30-45 degrees</td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="HeadofBed" value="Yes" id="HeadofBedYes" />
+                </td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="HeadofBed" value="No" id="HeadofBedNo" />
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>If tracheostomy or endotracheal tube is in use, ties are clean and secure</td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="IfTracheostomy" value="Yes" id="IfTracheostomyYes" />
+                </td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="IfTracheostomy" value="No" id="IfTracheostomyNo" />
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Oral care with tooth brushing is performed</td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="OrcalCare" value="Yes" id="OrcalCareYes" />
+                </td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="OrcalCare" value="No" id="OrcalCareNo" />
+                </td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>Hand hygiene is performed and gloves are donned before providing any care</td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="HandHygiene" value="Yes" id="HandHygieneYes" />
+                </td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="HandHygiene" value="No" id="HandHygieneNo" />
+                </td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>After care, gloves are removed and hand hygiene is performed before the next task</td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="AfterCare" value="Yes" id="AfterCareYes" />
+                </td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="AfterCare" value="No" id="AfterCareNo" />
+                </td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>Sterile water is used to rinse reusable respiratory equipment</td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="SterileWater" value="Yes" id="SterileWaterYes" />
+                </td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="SterileWater" value="No" id="SterileWaterNo" />
+                </td>
+            </tr>
+            <tr>
+                <td>7</td>
+                <td>Ensure to use sterile water every suction episode, and dispose container after use</td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="EnsuretoUse" value="Yes" id="EnsuretoUseYes" />
+                </td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="EnsuretoUse" value="No" id="EnsuretoUseNo" />
+                </td>
+            </tr>
+            <tr>
+                <td>8</td>
+                <td>Condensate in the ventilatory circuit is removed, and tubing is below the mouth to keep condensate from draining into the patient</td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="Condensateinthe" value="Yes" id="Condensateinthees" />
+                </td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="Condensateinthe" value="No" id="CondensateintheNo" />
+                </td>
+            </tr>
+            <tr>
+                <td>9</td>
+                <td>Intubation kits are appropriately stored in a clean area</td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="IntubationKits" value="Yes" id="IntubationKitsYes" />
+                </td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="IntubationKits" value="No" id="IntubationKitsNo" />
+                </td>
+            </tr>
+            <tr>
+                <td>10</td>
+                <td>Clean and dirty respiratory equipment are stored in separate areas</td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="CleanandDirty" value="Yes" id="CleanandDirtyYes" />
+                </td>
+                <td>
+                    <input class="form-check-input" type="radio" asp-for="CleanandDirty" value="No" id="CleanandDirtyNo" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: right;"><strong>REMARKS/Other Observations</strong></td>
+                <td colspan="2">
+                    <textarea asp-for="Remarks" class="form-control" style="width: 100%;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: right;"><strong>NUMBER OF COMPLIANT ACTION</strong></td>
+                <td colspan="2">
+                    <input asp-for="NumberofComplaint" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: right;"><strong>TOTAL OBSERVED</strong></td>
+                <td colspan="2">
+                    <input asp-for="TotalObserved" class="form-control" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align: right;"><strong>COMPLIANCE RATE (%)</strong></td>
+                <td colspan="2">
+                    <input asp-for="ComplianceRate" class="form-control" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <span>Note: If practice could not be observed (i.e., cell is blank), do not count in total number observed. </span>
+ 
+    
+            
+     
+            <div class="form-group">
+                <label asp-for="Accomplishedby" class="control-label"></label>
+                <input asp-for="Accomplishedby" class="form-control" />
+                <span asp-validation-for="Accomplishedby" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewedandApproved" class="control-label"></label>
+                <input asp-for="ReviewedandApproved" class="form-control" />
+                <span asp-validation-for="ReviewedandApproved" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
