@@ -1,0 +1,254 @@
+﻿@model IPCU.Models.SSIP
+
+@{
+    ViewBag.Title = "Surgical Site Infection Prevention Checklist";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+<div class="border border-black bg-white rounded-md p-4 space-y-4">
+    <!-- HEADER -->
+    <div class="grid grid-cols-3 items-center border border-black">
+        <!-- Left Logo -->
+        <div class="flex justify-center p-2 border-r border-black">
+            <img src="/images/nkti-left-logo.png" alt="Left Logo" class="h-20 w-auto" />
+        </div>
+        <!-- Center Text -->
+        <div class="text-center space-y-1 py-2">
+            <p class="text-sm font-bold uppercase">National Kidney and Transplant Institute</p>
+            <p class="text-sm">East Avenue, Quezon City</p>
+            <p class="text-sm font-bold uppercase pt-2">Infection Prevention and Control Unit</p>
+            <p class="text-sm font-bold uppercase border-t border-black pt-1">LABORATORY CONFIRMED BLOODSTREAM INFECTION (LCBI) CHECKLIST</p>
+        </div>
+        <!-- Right Logo -->
+        <div class="flex justify-center p-2 border-l border-black">
+            <img src="/images/nkti-right-logo.png" alt="Right Logo" class="h-20 w-auto" />
+        </div>
+    </div>
+
+<form asp-action="SubmitSSIP" method="post">
+    <fieldset class="border p-3 rounded shadow-sm mb-4">
+        <legend class="w-auto px-2">Patient Information</legend>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Name of Patient:</label>
+            <div class="col-sm-3">
+                <input asp-for="PatientLastName" class="form-control" placeholder="Last Name" />
+            </div>
+            <div class="col-sm-3">
+                <input asp-for="PatientFirstName" class="form-control" placeholder="First Name" />
+            </div>
+            <div class="col-sm-3">
+                <input asp-for="PatientMiddleName" class="form-control" placeholder="Middle Name" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Patient Diagnosis:</label>
+            <div class="col-sm-9">
+                <input asp-for="PatientDiagnosis" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Hospital Number:</label>
+            <div class="col-sm-3">
+                <input asp-for="HospitalNumber" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Date of Birth:</label>
+            <div class="col-sm-3">
+                <input asp-for="DateOfBirth" type="date" class="form-control" />
+            </div>
+            <label class="col-sm-1 col-form-label">Age:</label>
+            <div class="col-sm-2">
+                <input asp-for="Age" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Operation:</label>
+            <div class="col-sm-9">
+                <input asp-for="Operation" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Surgeon(s):</label>
+            <div class="col-sm-9">
+                <input asp-for="Surgeon" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Nurse(s):</label>
+            <div class="col-sm-9">
+                <input asp-for="Nurse" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">OR Location:</label>
+            <div class="col-sm-9">
+                <input asp-for="ORLocation" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Sex/Gender:</label>
+            <div class="col-sm-9 d-flex align-items-center gap-3">
+                <div class="form-check">
+                    <input type="radio" asp-for="SexGender" value="Male" class="form-check-input" id="genderMale" />
+                    <label class="form-check-label" for="genderMale">Male</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" asp-for="SexGender" value="Female" class="form-check-input" id="genderFemale" />
+                    <label class="form-check-label" for="genderFemale">Female</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <label class="col-sm-3 col-form-label">Classification:</label>
+            <div class="col-sm-9 d-flex align-items-center gap-3">
+                <div class="form-check">
+                    <input type="radio" asp-for="Classification" value="Pay" class="form-check-input" id="classificationPay" />
+                    <label class="form-check-label" for="classificationPay">Pay</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" asp-for="Classification" value="Service" class="form-check-input" id="classificationService" />
+                    <label class="form-check-label" for="classificationService">Service</label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+
+    <hr />
+
+        <p style="background-color: #f2f2f2; padding: 10px;">
+            <i>
+                If there is a deviation in any of the critical steps, immediately notify the operator. If a correction is required, make a check
+                mark in the “Yes with Reminder” column and note the correction in the comment space. Report uncorrected deviations and
+                complications. Contact the attending if any item on the check list is not adhered to or if there are any concerns.
+            </i>
+        </p>
+        <br />
+
+    <fieldset>
+
+
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                        <th>Surgical Site Bundle</th>
+                    <th>Yes</th>
+                    <th>Yes, with reminder (Remarks)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                        <td><strong>1. Antimicrobial prophylaxis performed.</strong></td>
+                        <td class="text-center align-middle"><input asp-for="AntimicrobialProphylaxisYes" type="checkbox" /></td>
+                    <td><input asp-for="AntimicrobialProphylaxisReminder" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                        <td><strong>2. Surgical hand scrub performed.</strong></td>
+                        <td class="text-center align-middle"><input asp-for="SurgicalHandScrubYes" type="checkbox" /></td>
+                    <td><input asp-for="SurgicalHandScrubReminder" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                        <td><strong>3. Appropriate PPE worn.</strong></td>
+                        <td class="text-center align-middle"><input asp-for="AppropriatePPEYes" type="checkbox" /></td>
+                    <td><input asp-for="AppropriatePPEReminder" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                        <td><strong>4. Patient covered with a drape.</strong></td>
+                        <td class="text-center align-middle"><input asp-for="PatientCoveredYes" type="checkbox" /></td>
+                    <td><input asp-for="PatientCoveredReminder" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                        <td><strong>5. Drape separates surgical instruments, equipment and supplies.</strong></td>
+                        <td class="text-center align-middle"><input asp-for="DrapeSeparatesInstrumentsYes" type="checkbox" /></td>
+                    <td><input asp-for="DrapeSeparatesInstrumentsReminder" type="text" class="form-control" /></td>
+                </tr>
+                    <tr>
+                        <td>
+                            <strong>6. Proper ventilation maintained throughout surgery.</strong><br />
+                            <ul class="mb-0 ps-4">
+                                <li>&#8226; Positive pressure maintained</li>
+                                <li>&#8226; Minimum of 15 air exchanges per hour (3 of which must be fresh air)</li>
+                                <li>&#8226; Filtering air through two filters that provide 90% efficiency</li>
+                                <li>&#8226; Air introduced near the ceiling and exits near floor</li>
+                            </ul>
+                        </td>
+                        <td class="text-center align-middle"><input asp-for="ProperVentilationYes" type="checkbox" /></td>
+                        <td class="text-center align-middle"><input asp-for="ProperVentilationReminder" type="text" class="form-control" /></td>
+                    </tr>
+                <tr>
+                        <td><strong>7. Surfaces and environment cleaned prior to surgery.</strong></td>
+                        <td class="text-center align-middle"><input asp-for="SurfacesCleanedYes" type="checkbox" /></td>
+                    <td><input asp-for="SurfacesCleanedReminder" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                        <td><strong>8. Surgical instruments properly sterilized.</strong></td>
+                        <td class="text-center align-middle"><input asp-for="InstrumentsSterilizedYes" type="checkbox" /></td>
+                    <td><input asp-for="InstrumentsSterilizedReminder" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                        <td><strong>9. Foot traffic kept to a minimum.</strong></td>
+                        <td class="text-center align-middle"><input asp-for="FootTrafficMinimizedYes" type="checkbox" /></td>
+                    <td><input asp-for="FootTrafficMinimizedReminder" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                        <td><strong>10. Patient skin cleaned prior to surgery.</strong></td>
+                        <td class="text-center align-middle"><input asp-for="SkinCleanedPriorYes" type="checkbox" /></td>
+                    <td><input asp-for="SkinCleanedPriorReminder" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                        <td><strong>11. Hair removed with depilatory or clippers.</strong></td>
+                        <td class="text-center align-middle"><input asp-for="HairRemovedYes" type="checkbox" /></td>
+                    <td><input asp-for="HairRemovedReminder" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                        <td><strong>12. Blood glucose levels monitored and maintained (&lt;200 mg/dL).</strong></td>
+                        <td class="text-center align-middle"><input asp-for="BloodGlucoseMonitoredYes" type="checkbox" /></td>
+                    <td><input asp-for="BloodGlucoseMonitoredReminder" type="text" class="form-control" /></td>
+                </tr>
+                    <tr>
+                        <td>
+                            <strong>13. Postoperative wound care performed.</strong><br />
+                            <ul class="mb-0 ps-4">
+                                <li>&#8226; Maintain sterile dressing on wound 24–48 hours after surgery</li>
+                                <li>&#8226; Change dressing every 2–4 hours until wound no longer drains or is clearer</li>
+                                <li>&#8226; Change dressings 1–2 times a day after this</li>
+                            </ul>
+                        </td>
+                        <td class="text-center align-middle">
+                            <input asp-for="PostOpWoundCareYes" type="checkbox" />
+                        </td>
+                        <td class="text-center align-middle">
+                            <input asp-for="PostOpWoundCareReminder" type="text" class="form-control" />
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+    </fieldset>
+
+    <div>
+        <strong>Procedure Notes:</strong><br />
+        <textarea asp-for="procedurenotes" rows="4" cols="70" class="form-control"></textarea>
+    </div>
+
+    <br />
+    <div>
+        <label><strong>Observer:</strong></label><br />
+        <i>Signature over printed name and date signed</i>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
