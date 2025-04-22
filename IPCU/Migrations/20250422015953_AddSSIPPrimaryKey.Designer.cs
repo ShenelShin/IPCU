@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250415024653_furemarksdate")]
-    partial class furemarksdate
+    [Migration("20250422015953_AddSSIPPrimaryKey")]
+    partial class AddSSIPPrimaryKey
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -3677,6 +3677,150 @@ namespace IPCU.Migrations
                     b.ToTable("PreTestNonClinicals");
                 });
 
+            modelBuilder.Entity("IPCU.Models.SSIP", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AntimicrobialProphylaxisReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("AntimicrobialProphylaxisYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("AppropriatePPEReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("AppropriatePPEYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BloodGlucoseMonitoredReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("BloodGlucoseMonitoredYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Classification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DrapeSeparatesInstrumentsReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("DrapeSeparatesInstrumentsYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FootTrafficMinimizedReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("FootTrafficMinimizedYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("HairRemovedReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("HairRemovedYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("HospitalNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InstrumentsSterilizedReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("InstrumentsSterilizedYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nurse")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ORLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Operation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientCoveredReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PatientCoveredYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PatientDiagnosis")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientFirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientLastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientMiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostOpWoundCareReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PostOpWoundCareYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProperVentilationReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ProperVentilationYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SexGender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SkinCleanedPriorReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SkinCleanedPriorYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SurfacesCleanedReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SurfacesCleanedYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Surgeon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SurgicalHandScrubReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SurgicalHandScrubYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("procedurenotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SSIP");
+                });
+
             modelBuilder.Entity("IPCU.Models.SSTInfectionModel", b =>
                 {
                     b.Property<int>("SSTID")
@@ -4835,6 +4979,100 @@ namespace IPCU.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usi");
+                });
+
+            modelBuilder.Entity("IPCU.Models.VAEMonitoringChecklist", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Accomplishedby")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AfterCare")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AreaUnit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AssessedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Bed")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CleanandDirty")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float?>("ComplianceRate")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Condensateinthe")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateandTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EnsuretoUse")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HandHygiene")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HeadofBed")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IfTracheostomy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IntubationKits")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NumberofComplaint")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ObservedStaff")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrcalCare")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReviewedandApproved")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SterileWater")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TotalObserved")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VAEMonitoringChecklist");
                 });
 
             modelBuilder.Entity("IPCU.Models.VentilatorEventChecklist", b =>

@@ -159,7 +159,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("AntibioticId");
 
-                    b.ToTable("tbantibiotics");
+                    b.ToTable("tbantibiotics", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.CardiovascularSystemInfection", b =>
@@ -299,7 +299,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CardiovascularSystemInfection");
+                    b.ToTable("CardiovascularSystemInfection", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.ConstructionSite", b =>
@@ -493,7 +493,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("CSID");
 
-                    b.ToTable("ConstructionSites");
+                    b.ToTable("ConstructionSites", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.DeviceConnected", b =>
@@ -526,7 +526,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("HospNum");
 
-                    b.ToTable("DeviceConnected");
+                    b.ToTable("DeviceConnected", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.Diagnostics", b =>
@@ -559,7 +559,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("HospNum");
 
-                    b.ToTable("tbdiagnostics");
+                    b.ToTable("tbdiagnostics", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.DiagnosticsTreatment", b =>
@@ -582,7 +582,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("DiagId");
 
-                    b.ToTable("tbdiagnosticstreatments");
+                    b.ToTable("tbdiagnosticstreatments", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.EvaluationViewModel", b =>
@@ -689,7 +689,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EvaluationViewModel");
+                    b.ToTable("EvaluationViewModel", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.FitTestingForm", b =>
@@ -787,7 +787,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FitTestingForm");
+                    b.ToTable("FitTestingForm", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.FitTestingFormHistory", b =>
@@ -853,7 +853,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("FitTestingFormId");
 
-                    b.ToTable("FitTestingFormHistory");
+                    b.ToTable("FitTestingFormHistory", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.GIInfectionChecklist", b =>
@@ -1046,7 +1046,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GIInfectionChecklists");
+                    b.ToTable("GIInfectionChecklists", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.HHActivity", b =>
@@ -1090,7 +1090,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("HHId");
 
-                    b.ToTable("HHActivities");
+                    b.ToTable("HHActivities", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.HandHygieneComplianceSummary", b =>
@@ -1130,7 +1130,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("SummaryId");
 
-                    b.ToTable("HandHygieneComplianceSummary");
+                    b.ToTable("HandHygieneComplianceSummary", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.HandHygieneForm", b =>
@@ -1206,7 +1206,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("HHId");
 
-                    b.ToTable("HandHygieneForms");
+                    b.ToTable("HandHygieneForms", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.ICRA", b =>
@@ -1503,7 +1503,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ICRA");
+                    b.ToTable("ICRA", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.InfectionControl.Models.InfectionControlMonitoringForm", b =>
@@ -2401,7 +2401,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InfectionControlMonitoringForm");
+                    b.ToTable("InfectionControlMonitoringForm", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.LaboratoryConfirmedBSI", b =>
@@ -2609,7 +2609,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LaboratoryConfirmedBSI");
+                    b.ToTable("LaboratoryConfirmedBSI", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.Patient", b =>
@@ -2663,7 +2663,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("IdNum");
 
-                    b.ToTable("tbpatient");
+                    b.ToTable("tbpatient", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.PatientForm", b =>
@@ -2725,7 +2725,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PatientForms");
+                    b.ToTable("PatientForms", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.PatientMaster", b =>
@@ -2807,7 +2807,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("HospNum");
 
-                    b.ToTable("tbmaster");
+                    b.ToTable("tbmaster", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.PatientMovement", b =>
@@ -2867,7 +2867,7 @@ namespace IPCU.Migrations
                     b.HasIndex("MovementDate", "Area")
                         .IsUnique();
 
-                    b.ToTable("tbPatientMovement");
+                    b.ToTable("tbPatientMovement", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.PatientMovementDetail", b =>
@@ -2920,7 +2920,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("MovementId");
 
-                    b.ToTable("tbPatientMovementDetail");
+                    b.ToTable("tbPatientMovementDetail", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.PediatricVAEChecklist", b =>
@@ -3017,7 +3017,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PediatricVAEChecklist");
+                    b.ToTable("PediatricVAEChecklist", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.Pneumonia", b =>
@@ -3324,7 +3324,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pneumonias");
+                    b.ToTable("Pneumonias", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.PostConstruction", b =>
@@ -3483,7 +3483,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PostConstruction");
+                    b.ToTable("PostConstruction", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.PostTestClinical", b =>
@@ -3530,7 +3530,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PostTestClinicals");
+                    b.ToTable("PostTestClinicals", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.PostTestNonClinical", b =>
@@ -3577,7 +3577,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PostTestNonCLinicals");
+                    b.ToTable("PostTestNonCLinicals", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.PreTestClinical", b =>
@@ -3624,7 +3624,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PreTestClinicals");
+                    b.ToTable("PreTestClinicals", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.PreTestNonClinical", b =>
@@ -3671,7 +3671,151 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PreTestNonClinicals");
+                    b.ToTable("PreTestNonClinicals", (string)null);
+                });
+
+            modelBuilder.Entity("IPCU.Models.SSIP", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AntimicrobialProphylaxisReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("AntimicrobialProphylaxisYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("AppropriatePPEReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("AppropriatePPEYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BloodGlucoseMonitoredReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("BloodGlucoseMonitoredYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Classification")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DrapeSeparatesInstrumentsReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("DrapeSeparatesInstrumentsYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FootTrafficMinimizedReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("FootTrafficMinimizedYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("HairRemovedReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("HairRemovedYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("HospitalNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InstrumentsSterilizedReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("InstrumentsSterilizedYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nurse")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ORLocation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Operation")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientCoveredReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PatientCoveredYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PatientDiagnosis")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientFirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientLastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PatientMiddleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostOpWoundCareReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PostOpWoundCareYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProperVentilationReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ProperVentilationYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SexGender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SkinCleanedPriorReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SkinCleanedPriorYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SurfacesCleanedReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SurfacesCleanedYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Surgeon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SurgicalHandScrubReminder")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("SurgicalHandScrubYes")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("procedurenotes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SSIP", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.SSTInfectionModel", b =>
@@ -3839,7 +3983,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("SSTID");
 
-                    b.ToTable("SSTInfectionModels");
+                    b.ToTable("SSTInfectionModels", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.SurgicalSiteInfectionChecklist", b =>
@@ -4125,7 +4269,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SurgicalSiteInfectionChecklist");
+                    b.ToTable("SurgicalSiteInfectionChecklist", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.TCSkillsChecklist", b =>
@@ -4246,7 +4390,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TCSkillsChecklist");
+                    b.ToTable("TCSkillsChecklist", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.Trainee", b =>
@@ -4304,7 +4448,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Trainees");
+                    b.ToTable("Trainees", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.TrainingEvaluation", b =>
@@ -4423,7 +4567,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TrainingEvaluation");
+                    b.ToTable("TrainingEvaluation", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.TrainingSummary", b =>
@@ -4494,7 +4638,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TrainingSummaries");
+                    b.ToTable("TrainingSummaries", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.UTIFormModel", b =>
@@ -4696,7 +4840,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UTIModels");
+                    b.ToTable("UTIModels", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.Usi", b =>
@@ -4831,7 +4975,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usi");
+                    b.ToTable("Usi", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.VAEMonitoringChecklist", b =>
@@ -4925,7 +5069,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VAEMonitoringChecklist");
+                    b.ToTable("VAEMonitoringChecklist", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.VentilatorEventChecklist", b =>
@@ -5078,7 +5222,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VentilatorEventChecklists");
+                    b.ToTable("VentilatorEventChecklists", (string)null);
                 });
 
             modelBuilder.Entity("IPCU.Models.VitalSigns", b =>
@@ -5109,7 +5253,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("HospNum");
 
-                    b.ToTable("VitalSigns");
+                    b.ToTable("VitalSigns", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

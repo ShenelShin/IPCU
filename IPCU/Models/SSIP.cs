@@ -2,6 +2,7 @@
 {
     public class SSIP
     {
+        public int Id { get; set; }
         public string PatientLastName { get; set; }
         public string PatientFirstName { get; set; }
         public string PatientMiddleName { get; set; }
