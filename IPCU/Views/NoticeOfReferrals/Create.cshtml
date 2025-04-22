@@ -1,0 +1,156 @@
+﻿@model IPCU.Models.NoticeOfReferral
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Notice Of Referral</h4>
+
+        <form asp-action="Create">
+    <table class="table table-bordered">
+
+           <tr>
+                <td>
+                    <span><strong>NAME OF PATIENT</strong></span>
+                </td>
+                <td colspan="3">
+                    <div class="d-flex gap-2">
+                        <input asp-for="PatientFirstName" class="form-control" placeholder="First Name" />
+                        <input asp-for="PatientMiddleName" class="form-control" placeholder="Middle Name" />
+                        <input asp-for="PatientLastName" class="form-control" placeholder="Last Name" />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+               <td>
+                    <span><strong>AREA/ROOM</strong></span>
+                </td>
+                <td>
+                    <div class="d-flex gap-2">
+                    <input asp-for="AreaUnit" class="form-control" placeholder="AREA/ROOM" />
+                    </div>
+                </td>
+                <td>
+                    <span><strong>AGE/SEX</strong></span>
+                </td>
+                <td>
+                    <div class="d-flex gap-2">
+                    <input asp-for="Age" class="form-control" placeholder="Age" />
+                    <select asp-for="Sex" class="form-control">
+                        <option value="">-- Select Sex --</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+
+                </div>
+                </td>
+            </tr>
+        <tr>
+            <td>
+                <span>
+                    <strong>
+                        DATE OF
+                        ADMISSION
+                    </strong>
+                </span>
+            </td>
+            <td>
+                <div class="d-flex gap-2">
+                    <input asp-for="DOA" type="date" class="form-control" />
+                </div>
+            </td>
+            <td>
+                <span>
+                    <strong>
+                        DATE OF DISCHARGE
+                        (LAST ADMISSION)
+                    </strong>
+                </span>
+            </td>
+            <td>
+                <div class="d-flex gap-2">
+                    <input asp-for="DOD" type="date" class="form-control" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>
+                    <strong>
+                        INITIAL DIAGNOSIS
+                    </strong>
+                </span>
+            </td>
+            <td colspan="3">
+                <div class="d-flex gap-2">
+                    <input asp-for="InitialDiagnosis" class="form-control" />
+                </div>
+            </td>
+            
+        </tr>
+    </table>
+    <table class="table table-bordered">
+        <tr>
+            <td>
+                <input class="form-check-input" asp-for="HAAT" />
+                <span style="font-size: 18px;">HAAT Referral</span> <br />
+
+                <input class="form-check-input" asp-for="Communicable" />
+                <span style="font-size: 18px;">Communicable / Infectious Disease (Suspect or Confirmed)</span> <br />
+
+                <input class="form-check-input" asp-for="Fever" />
+                <span style="font-size: 18px;">Fever, 2 days after admission</span> <br />
+
+                <input class="form-check-input" asp-for="PostOp" />
+                <span style="font-size: 18px;">Post-operative Fever (within 1 month)</span> <br />
+
+                <input class="form-check-input" asp-for="ReAdmitted" />
+                <span style="font-size: 18px;">Patient re-admitted within 1 week</span> <br />
+
+                <input class="form-check-input" asp-for="Laboratory" />
+                <span style="font-size: 18px;">Laboratory Result (AFB positive, MDROs such as VRE, ESBL, Clostridium difficile)</span> <br />
+
+                <input class="form-check-input" asp-for="Radiology" />
+                <span style="font-size: 18px;">Radiology Report (PTB)</span> <br />
+            </td>
+        </tr>
+
+        
+    </table>
+    <span style="font-style: italic; font-size: smaller;">
+        Note: Please forward slip within 8 hours to IPCU Office.<br />
+        In case the IPC Nurse is not on duty, refer to IDS on duty
+    </span>
+
+  
+    <div class="form-group">
+        <span><strong>Referred by:</strong></span>
+        <div style="display: flex; gap: 10px; margin-top: 5px;">
+            <input asp-for="Referredby" class="form-control" style="width: 50%;" />
+            <input asp-for="ReferredbyDnT" type="date" class="form-control" style="width: 50%;" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <span><strong>Received by:</strong></span>
+        <div style="display: flex; gap: 10px; margin-top: 5px;">
+            <input asp-for="Receivedby" class="form-control" style="width: 50%;" />
+            <input asp-for="ReceivedbyDnT" type="date" class="form-control" style="width: 50%;" />
+        </div>
+    </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

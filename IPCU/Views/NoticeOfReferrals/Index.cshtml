@@ -1,0 +1,143 @@
+﻿@model IEnumerable<IPCU.Models.NoticeOfReferral>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientMiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AreaUnit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sex)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DOD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InitialDiagnosis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HAAT)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Communicable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fever)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostOp)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReAdmitted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Laboratory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Radiology)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Referredby)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReferredbyDnT)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Receivedby)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReceivedbyDnT)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientMiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaUnit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sex)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DOD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InitialDiagnosis)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HAAT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Communicable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fever)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostOp)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReAdmitted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Laboratory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Radiology)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Referredby)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReferredbyDnT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Receivedby)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReceivedbyDnT)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

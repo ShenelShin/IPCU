@@ -1,0 +1,124 @@
+﻿@model IPCU.Models.NoticeOfReferral
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>NoticeOfReferral</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="PatientLastName" class="control-label"></label>
+                <input asp-for="PatientLastName" class="form-control" />
+                <span asp-validation-for="PatientLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientFirstName" class="control-label"></label>
+                <input asp-for="PatientFirstName" class="form-control" />
+                <span asp-validation-for="PatientFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientMiddleName" class="control-label"></label>
+                <input asp-for="PatientMiddleName" class="form-control" />
+                <span asp-validation-for="PatientMiddleName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AreaUnit" class="control-label"></label>
+                <input asp-for="AreaUnit" class="form-control" />
+                <span asp-validation-for="AreaUnit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Age" class="control-label"></label>
+                <input asp-for="Age" class="form-control" />
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sex" class="control-label"></label>
+                <input asp-for="Sex" class="form-control" />
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DOD" class="control-label"></label>
+                <input asp-for="DOD" class="form-control" />
+                <span asp-validation-for="DOD" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InitialDiagnosis" class="control-label"></label>
+                <input asp-for="InitialDiagnosis" class="form-control" />
+                <span asp-validation-for="InitialDiagnosis" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="HAAT" /> @Html.DisplayNameFor(model => model.HAAT)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Communicable" /> @Html.DisplayNameFor(model => model.Communicable)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Fever" /> @Html.DisplayNameFor(model => model.Fever)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="PostOp" /> @Html.DisplayNameFor(model => model.PostOp)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="ReAdmitted" /> @Html.DisplayNameFor(model => model.ReAdmitted)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Laboratory" /> @Html.DisplayNameFor(model => model.Laboratory)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Radiology" /> @Html.DisplayNameFor(model => model.Radiology)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Referredby" class="control-label"></label>
+                <input asp-for="Referredby" class="form-control" />
+                <span asp-validation-for="Referredby" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReferredbyDnT" class="control-label"></label>
+                <input asp-for="ReferredbyDnT" class="form-control" />
+                <span asp-validation-for="ReferredbyDnT" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Receivedby" class="control-label"></label>
+                <input asp-for="Receivedby" class="form-control" />
+                <span asp-validation-for="Receivedby" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReceivedbyDnT" class="control-label"></label>
+                <input asp-for="ReceivedbyDnT" class="form-control" />
+                <span asp-validation-for="ReceivedbyDnT" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

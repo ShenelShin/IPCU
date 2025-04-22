@@ -87,6 +87,7 @@ namespace IPCU.Data
 
         public DbSet<IPCU.Models.InfectionControl.Models.InfectionControlMonitoringForm> InfectionControlMonitoringForm { get; set; } = default!;
         public DbSet<IPCU.Models.VAEMonitoringChecklist> VAEMonitoringChecklist { get; set; } = default!;
+        public DbSet<IPCU.Models.NoticeOfReferral> NoticeOfReferral { get; set; } = default!;
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);
