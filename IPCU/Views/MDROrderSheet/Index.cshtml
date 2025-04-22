@@ -1,0 +1,190 @@
+﻿@model IPCU.Models.MDROrderSheet
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+@using (Html.BeginForm("Index", "MDROrderSheet", FormMethod.Post))
+{
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative my-4">
+            @TempData["Message"]
+        </div>
+    }
+    @Html.AntiForgeryToken()
+
+    <div class="border border-black bg-white rounded-md p-4 space-y-4">
+        <!-- HEADER -->
+        <div class="grid grid-cols-3 items-center border border-black">
+            <div class="flex justify-center p-2 border-r border-black">
+                <img src="/images/nkti-left-logo.png" alt="Left Logo" class="h-20 w-auto" />
+            </div>
+            <div class="text-center space-y-1 py-2">
+                <p class="text-sm font-bold uppercase">National Kidney and Transplant Institute</p>
+                <p class="text-sm">East Avenue, Quezon City</p>
+                <p class="text-sm font-bold uppercase pt-2">Infection Prevention and Control Unit</p>
+                <p class="text-sm font-bold uppercase border-t border-black pt-1">MULTI-DRUG RESISTANT ORGANISM ORDER SHEET</p>
+            </div>
+            <div class="flex justify-center p-2 border-l border-black">
+                <img src="/images/nkti-right-logo.png" alt="Right Logo" class="h-20 w-auto" />
+            </div>
+        </div>
+
+        <hr />
+
+        <fieldset class="border p-3 rounded shadow-sm mb-4">
+            <legend class="w-auto px-2">Patient Information</legend>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Name of Patient:</label>
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(m => m.PatientLastName, new { @class = "form-control", placeholder = "Last Name" })
+                </div>
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(m => m.PatientFirstName, new { @class = "form-control", placeholder = "First Name" })
+                </div>
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(m => m.PatientMiddleName, new { @class = "form-control", placeholder = "Middle Name" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Patient Diagnosis:</label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(m => m.Diagnosis, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Hospital Number:</label>
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(m => m.HospitalNumber, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Date of Birth:</label>
+                <div class="col-sm-3">
+                    @Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control" })
+                </div>
+                <label class="col-sm-1 col-form-label">Age:</label>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(m => m.Age, new { @class = "form-control", type = "number" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Specimen Type:</label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(m => m.SpecimenType, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Date and Time of Collection:</label>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.CollectionDateTime, "{0:yyyy-MM-ddTHH:mm}", new { @type = "datetime-local", @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Sex/Gender:</label>
+                <div class="col-sm-9 d-flex align-items-center gap-3">
+                    <div class="form-check me-3">
+                        @Html.RadioButtonFor(m => m.Sex, "Male", new { @class = "form-check-input", id = "sexMale" })
+                        <label class="form-check-label" for="sexMale">Male</label>
+                    </div>
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.Sex, "Female", new { @class = "form-check-input", id = "sexFemale" })
+                        <label class="form-check-label" for="sexFemale">Female</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <label class="col-sm-3 col-form-label">Classification:</label>
+                <div class="col-sm-9 d-flex align-items-center gap-3">
+                    <div class="form-check me-3">
+                        @Html.RadioButtonFor(m => m.Classification, "Pay", new { @class = "form-check-input", id = "classificationPay" })
+                        <label class="form-check-label" for="classificationPay">Pay</label>
+                    </div>
+                    <div class="form-check">
+                        @Html.RadioButtonFor(m => m.Classification, "Service", new { @class = "form-check-input", id = "classificationService" })
+                        <label class="form-check-label" for="classificationService">Service</label>
+                    </div>
+                </div>
+            </div>
+            <h4 class="mt-6 font-bold">Pathogen:</h4>
+            <div class="grid grid-cols-3 gap-2">
+                <div class="flex items-center space-x-2">
+                    @Html.CheckBoxFor(m => m.IsMRSA)
+                    <label class="mb-0">MRSA</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    @Html.CheckBoxFor(m => m.IsVRE)
+                    <label class="mb-0">VRE</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    @Html.CheckBoxFor(m => m.IsMRSE)
+                    <label class="mb-0">MRSE</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    @Html.CheckBoxFor(m => m.IsESBL)
+                    <label class="mb-0">ESBL</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    @Html.CheckBoxFor(m => m.IsCRE)
+                    <label class="mb-0">CRE</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    @Html.CheckBoxFor(m => m.IsMDRSpneu)
+                    <label class="mb-0">MDR-S.pneu</label>
+                </div>
+                <div class="flex items-center space-x-2">
+                    @Html.CheckBoxFor(m => m.IsMDRGNB)
+                    <label class="mb-0">MDR-GNB</label>
+                </div>
+            </div>
+
+
+        </fieldset>
+
+      
+        <h4 class="mt-6 font-bold">Items to be Carried Out</h4>
+        <ul class="space-y-1">
+            <li>@Html.CheckBoxFor(m => m.ExplainSituationToPatient) Explain situation to patient and family</li>
+            <li>@Html.CheckBoxFor(m => m.PlaceInSingleRoom) Place patient in a single room</li>
+            <li>@Html.CheckBoxFor(m => m.PutContactSignage) Put CONTACT precaution signage</li>
+            <li>@Html.CheckBoxFor(m => m.LimitVisitors) Limit visitors</li>
+            <li>@Html.CheckBoxFor(m => m.DedicateEquipment) Dedicate equipment</li>
+            <li>@Html.CheckBoxFor(m => m.EnsureHandRubAvailability) Ensure availability of hand rubs</li>
+            <li>@Html.CheckBoxFor(m => m.EnsurePPEAvailability) Ensure availability of PPEs</li>
+            <li>@Html.CheckBoxFor(m => m.AssignDedicatedStaff) Assign dedicated staff</li>
+            <li>@Html.CheckBoxFor(m => m.DiscardPPEBeforeExit) Discard PPEs before exit</li>
+        </ul>
+
+        <h5 class="mt-6 font-bold">Environmental Measures</h5>
+        <ul class="space-y-1">
+            <li>@Html.CheckBoxFor(m => m.DisinfectHorizontalSurfaces) Disinfect all horizontal surfaces <strong>every shift</strong></li>
+            <li>@Html.CheckBoxFor(m => m.DisinfectHighTouchAreas) Disinfect high-touch areas <strong>every shift</strong></li>
+            <li>@Html.CheckBoxFor(m => m.TerminalCleaning) Terminal cleaning <strong>after patient discharge</strong></li>
+            <li>@Html.CheckBoxFor(m => m.LiftPrecautionsWithIPCApproval) Lift precautions upon IPC/IDS approval</li>
+        </ul>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+            <div>
+                <label>Physician Signature and Date</label>
+                @Html.TextBoxFor(m => m.PhysicianSignatureAndDate, new { @class = "form-input border rounded w-full" })
+            </div>
+            <div>
+                <label>Nurse Signature and Date</label>
+                @Html.TextBoxFor(m => m.NurseSignatureAndDate, new { @class = "form-input border rounded w-full" })
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">
+                Submit
+            </button>
+        </div>
+    </div>
+}
