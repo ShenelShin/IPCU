@@ -1,0 +1,143 @@
+﻿@model IEnumerable<IPCU.Models.DailyCentralLineMaintenanceChecklist>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AreaOrUnit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateAndTimeOfMonitoring)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AssessedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Patient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InitialPlacement)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Implanted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Injection)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dateadministration)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Necessityassessed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Injectionsites)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Capschanged)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Insertionsite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dressingintact)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dressingchanged)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Remarks)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumCompliant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalObserved)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ComplianceRate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AreaOrUnit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateAndTimeOfMonitoring)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AssessedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Patient)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InitialPlacement)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Implanted)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Injection)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dateadministration)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Necessityassessed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Injectionsites)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capschanged)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Insertionsite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dressingintact)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dressingchanged)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remarks)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumCompliant)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalObserved)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ComplianceRate)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

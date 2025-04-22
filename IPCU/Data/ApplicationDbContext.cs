@@ -58,6 +58,7 @@ namespace IPCU.Data
  
         public DbSet<InfectionControlMonitoringForm> InfectionControlMonitoringForms { get; set; }
         public DbSet<SSIP> SSIP { get; set; }
+        public DbSet<DailyCentralLineMaintenanceChecklist> DailyCentralLineMaintenanceChecklists { get; set; }
 
         public DbSet<MDROrderSheet> MDROrderSheets { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250422082531_DailyCentralLineMaintenanceChecklist")]
+    partial class DailyCentralLineMaintenanceChecklist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -519,7 +522,7 @@ namespace IPCU.Migrations
                     b.Property<bool>("Capschanged")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("ComplianceRate")
+                    b.Property<int>("ComplianceRate")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DateAndTimeOfMonitoring")
@@ -552,7 +555,7 @@ namespace IPCU.Migrations
                     b.Property<bool>("Necessityassessed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("NumCompliant")
+                    b.Property<int>("NumCompliant")
                         .HasColumnType("int");
 
                     b.Property<string>("Patient")
@@ -560,9 +563,10 @@ namespace IPCU.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Remarks")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TotalObserved")
+                    b.Property<int>("TotalObserved")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

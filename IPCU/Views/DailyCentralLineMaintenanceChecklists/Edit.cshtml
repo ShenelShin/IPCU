@@ -1,0 +1,124 @@
+﻿@model IPCU.Models.DailyCentralLineMaintenanceChecklist
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>DailyCentralLineMaintenanceChecklist</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="AreaOrUnit" class="control-label"></label>
+                <input asp-for="AreaOrUnit" class="form-control" />
+                <span asp-validation-for="AreaOrUnit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateAndTimeOfMonitoring" class="control-label"></label>
+                <input asp-for="DateAndTimeOfMonitoring" class="form-control" />
+                <span asp-validation-for="DateAndTimeOfMonitoring" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssessedBy" class="control-label"></label>
+                <input asp-for="AssessedBy" class="form-control" />
+                <span asp-validation-for="AssessedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Patient" class="control-label"></label>
+                <input asp-for="Patient" class="form-control" />
+                <span asp-validation-for="Patient" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bed" class="control-label"></label>
+                <input asp-for="Bed" class="form-control" />
+                <span asp-validation-for="Bed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InitialPlacement" class="control-label"></label>
+                <input asp-for="InitialPlacement" class="form-control" />
+                <span asp-validation-for="InitialPlacement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Implanted" class="control-label"></label>
+                <input asp-for="Implanted" class="form-control" />
+                <span asp-validation-for="Implanted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Injection" class="control-label"></label>
+                <input asp-for="Injection" class="form-control" />
+                <span asp-validation-for="Injection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dateadministration" class="control-label"></label>
+                <input asp-for="Dateadministration" class="form-control" />
+                <span asp-validation-for="Dateadministration" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Necessityassessed" /> @Html.DisplayNameFor(model => model.Necessityassessed)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Injectionsites" /> @Html.DisplayNameFor(model => model.Injectionsites)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Capschanged" /> @Html.DisplayNameFor(model => model.Capschanged)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Insertionsite" /> @Html.DisplayNameFor(model => model.Insertionsite)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Dressingintact" /> @Html.DisplayNameFor(model => model.Dressingintact)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Dressingchanged" /> @Html.DisplayNameFor(model => model.Dressingchanged)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Remarks" class="control-label"></label>
+                <input asp-for="Remarks" class="form-control" />
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumCompliant" class="control-label"></label>
+                <input asp-for="NumCompliant" class="form-control" />
+                <span asp-validation-for="NumCompliant" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalObserved" class="control-label"></label>
+                <input asp-for="TotalObserved" class="form-control" />
+                <span asp-validation-for="TotalObserved" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ComplianceRate" class="control-label"></label>
+                <input asp-for="ComplianceRate" class="form-control" />
+                <span asp-validation-for="ComplianceRate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
