@@ -19,6 +19,9 @@ namespace IPCU.Services
 
         public async Task<MonthlyHaiReportData> GenerateMonthlyReportAsync(int year, int month)
         {
+            var startDate = new DateTime(year, month, 1);
+            var endDate = startDate.AddMonths(1).AddDays(-1);
+
             var report = new MonthlyHaiReportData
             {
                 Year = year,
@@ -29,32 +32,14 @@ namespace IPCU.Services
                 SiteSpecificInfections = new List<HaiCaseData>()
             };
 
-            // Get first and last day of the month
-            var startDate = new DateTime(year, month, 1);
-            var endDate = startDate.AddMonths(1).AddDays(-1);
-
-            // Calculate device days
             var deviceDays = await CalculateDeviceDaysAsync(startDate, endDate);
-
-            // Get HAI cases
-            var haiCases = await GetHaiCasesAsync(startDate, endDate);
-
-            // Calculate patient days (can be discharge days depending on your implementation)
+            var haiCounts = await GetHaiCountsAsync(startDate, endDate);
             var patientDays = await CalculatePatientDaysAsync(startDate, endDate);
 
-            // Populate device-associated infections
-            PopulateDeviceAssociatedInfections(report, haiCases, deviceDays);
-
-            // Populate ventilator-associated events
-            PopulateVentilatorAssociatedEvents(report, haiCases, deviceDays);
-
-            // Populate non-device associated infections
-            PopulateNonDeviceAssociatedInfections(report, haiCases, patientDays);
-
-            // Populate site-specific infections
-            PopulateSiteSpecificInfections(report, haiCases, patientDays);
-
-            // Calculate totals
+            PopulateDeviceAssociatedInfections(report, haiCounts, deviceDays);
+            PopulateVentilatorAssociatedEvents(report, haiCounts, deviceDays);
+            PopulateNonDeviceAssociatedInfections(report, haiCounts, patientDays);
+            PopulateSiteSpecificInfections(report, haiCounts, patientDays);
             CalculateTotals(report, patientDays);
 
             return report;
@@ -64,17 +49,19 @@ namespace IPCU.Services
         {
             var deviceDays = new Dictionary<string, int>();
 
-            // Query all devices that were connected during the period
             var devices = await _context.DeviceConnected
-                .Where(d =>
-                    (d.DeviceInsert <= endDate) &&
-                    (d.DeviceRemove == null || d.DeviceRemove >= startDate))
+                .Where(d => d.DeviceInsert <= endDate &&
+                           (d.DeviceRemove == null || d.DeviceRemove >= startDate))
                 .ToListAsync();
 
-            // Calculate days for each device type
             foreach (var device in devices)
             {
-                int days = CalculateDeviceDaysInPeriod(device, startDate, endDate);
+                var effectiveStart = device.DeviceInsert > startDate ? device.DeviceInsert : startDate;
+                var effectiveEnd = device.DeviceRemove.HasValue && device.DeviceRemove < endDate
+                    ? device.DeviceRemove.Value
+                    : endDate;
+
+                var days = (effectiveEnd - effectiveStart).Days + 1;
 
                 if (!deviceDays.ContainsKey(device.DeviceType))
                     deviceDays[device.DeviceType] = 0;
@@ -85,262 +72,457 @@ namespace IPCU.Services
             return deviceDays;
         }
 
-        private int CalculateDeviceDaysInPeriod(DeviceConnected device, DateTime startDate, DateTime endDate)
+        private async Task<Dictionary<string, int>> GetHaiCountsAsync(DateTime startDate, DateTime endDate)
         {
-            // Calculate the intersection of the device period with the reporting period
-            var effectiveStartDate = device.DeviceInsert > startDate ? device.DeviceInsert : startDate;
-            var effectiveEndDate = device.DeviceRemove.HasValue && device.DeviceRemove < endDate
-                ? device.DeviceRemove.Value
-                : endDate;
+            var counts = new Dictionary<string, int>();
 
-            // Calculate days (inclusive of start and end date)
-            return (effectiveEndDate - effectiveStartDate).Days + 1;
-        }
+            // Initialize all infection type counters
+            var infectionTypes = new[] {
+        "PVAP", "CLABSI", "CAUTI", "VAE", "SSI", "BSI", "CVS", "UTI",
+        "Pneumonia", "USI", "GI", "SST", "BJI", "CNS", "EENT", "REPR",
+        "PD_Peritonitis", "CDI", "GE", "LRI", "ST", "SKIN", "DECU", "VASC",
+        "SIP", "DIP", "OS", "PNEU1", "PNEU2", "PNEU3", "VAC", "IVAC"
+    };
 
-        private async Task<List<PatientMaster>> GetHaiCasesAsync(DateTime startDate, DateTime endDate)
-        {
-            // Get all patients with HAI status true
-            return await _context.PatientMasters
-                .Where(p => p.HaiStatus == true)
-                .Join(_context.Patients,
-                      pm => pm.HospNum,
-                      p => p.HospNum,
-                      (pm, p) => new { PatientMaster = pm, Patient = p })
-                .Where(x =>
-                    x.Patient.AdmDate.HasValue &&
-                    x.Patient.AdmDate <= endDate &&
-                    (x.Patient.DeathDate == null || x.Patient.DeathDate >= startDate))
-                .Select(x => x.PatientMaster)
+            foreach (var type in infectionTypes)
+                counts[type] = 0;
+
+            // Count PVAP directly from PediatricVAEChecklist table
+            counts["PVAP"] = await _context.PediatricVAEChecklist
+                .Where(f => f.DateCreated >= startDate && f.DateCreated <= endDate)
+                .CountAsync();
+
+            // Count VAE and subtypes
+            var vaeCases = await _context.VentilatorEventChecklists
+                .Where(f => f.DateCreated >= startDate && f.DateCreated <= endDate)
                 .ToListAsync();
+
+            counts["VAE"] = vaeCases.Count;
+            counts["VAC"] = vaeCases.Count(v => v.TypeClass == "VAC");
+            counts["IVAC"] = vaeCases.Count(v => v.TypeClass == "IVAC");
+
+            // Count BSI and CLABSI
+            var bsiCases = await _context.LaboratoryConfirmedBSI
+                .Where(f => f.DateCreated >= startDate && f.DateCreated <= endDate)
+                .ToListAsync();
+
+            counts["BSI"] = bsiCases.Count;
+            counts["CLABSI"] = bsiCases.Count(f => f.centralline == "ForMedications");
+
+            // BJI, CNS, EENT, REPR, LRI from BSI forms based on TypeClass
+            counts["BJI"] = bsiCases.Count(f => f.TypeClass == "BJI");
+            counts["CNS"] = bsiCases.Count(f => f.TypeClass == "CNS");
+            counts["EENT"] = bsiCases.Count(f => f.TypeClass == "EENT");
+            counts["REPR"] = bsiCases.Count(f => f.TypeClass == "REPR");
+            counts["LRI"] = bsiCases.Count(f => f.TypeClass == "LRI");
+
+            // Count UTI and CAUTI
+            var utiCases = await _context.UTIModels
+                .Where(f => f.DateCreated >= startDate && f.DateCreated <= endDate)
+                .ToListAsync();
+
+            counts["UTI"] = utiCases.Count;
+            counts["CAUTI"] = utiCases.Count(f => f.CatheterPresent == true);
+
+            // Count SSI and subtypes
+            var ssiCases = await _context.SurgicalSiteInfectionChecklist
+                .Where(f => f.DateCreated >= startDate && f.DateCreated <= endDate)
+                .ToListAsync();
+
+            counts["SSI"] = ssiCases.Count;
+            counts["SIP"] = ssiCases.Count(f => f.TypeClass == "SIP");
+            counts["DIP"] = ssiCases.Count(f => f.TypeClass == "DIP");
+            counts["OS"] = ssiCases.Count(f => f.TypeClass == "OS");
+
+            // Count Pneumonia and subtypes
+            var pneumoniaCases = await _context.Pneumonias
+                .Where(f => f.DateCreated >= startDate && f.DateCreated <= endDate)
+                .ToListAsync();
+
+            counts["Pneumonia"] = pneumoniaCases.Count;
+            counts["PNEU1"] = pneumoniaCases.Count(f => f.TypeClass == "PNEU1");
+            counts["PNEU2"] = pneumoniaCases.Count(f => f.TypeClass == "PNEU2");
+            counts["PNEU3"] = pneumoniaCases.Count(f => f.TypeClass == "PNEU3");
+
+            // Count GI infections and subtypes
+            var giCases = await _context.GIInfectionChecklists
+                .Where(f => f.DateCreated >= startDate && f.DateCreated <= endDate)
+                .ToListAsync();
+
+            counts["GI"] = giCases.Count;
+            counts["CDI"] = giCases.Count(f => f.TypeClass == "CDI");
+            counts["GE"] = giCases.Count(f => f.TypeClass == "GE");
+
+            // Count SST infections and subtypes
+            var sstCases = await _context.SSTInfectionModels
+                .Where(f => f.DateCreated >= startDate && f.DateCreated <= endDate)
+                .ToListAsync();
+
+            counts["SST"] = sstCases.Count;
+            counts["ST"] = sstCases.Count(f => f.InfectionType == "SoftTissue");
+            counts["SKIN"] = sstCases.Count(f => f.InfectionType == "Skin");
+            counts["DECU"] = sstCases.Count(f => f.InfectionType == "Decubitus");
+
+            // Count CVS infections and VASC subtype
+            var cvsCases = await _context.CardiovascularSystemInfection
+                .Where(f => f.DateCreated >= startDate && f.DateCreated <= endDate)
+                .ToListAsync();
+
+            counts["CVS"] = cvsCases.Count;
+            counts["VASC"] = cvsCases.Count(f => f.TypeClass == "Vascular");
+
+            // Count USI directly
+            counts["USI"] = await _context.Usi
+                .Where(f => f.DateCreated >= startDate && f.DateCreated <= endDate)
+                .CountAsync();
+
+            return counts;
         }
 
         private async Task<int> CalculatePatientDaysAsync(DateTime startDate, DateTime endDate)
         {
-            // This can be either discharge days or patient days
-            // Here we're calculating patient days based on admission/discharge dates
             var patients = await _context.Patients
-                .Where(p =>
-                    p.AdmDate.HasValue &&
-                    p.AdmDate <= endDate &&
-                    (p.DeathDate == null || p.DeathDate >= startDate))
+                .Where(p => p.AdmDate.HasValue &&
+                            p.AdmDate <= endDate &&
+                            (p.DeathDate == null || p.DeathDate >= startDate))
                 .ToListAsync();
 
-            int patientDays = 0;
-
+            int totalDays = 0;
             foreach (var patient in patients)
             {
-                var effectiveStartDate = patient.AdmDate > startDate ? patient.AdmDate.Value : startDate;
-                var effectiveEndDate = patient.DeathDate.HasValue && patient.DeathDate < endDate
+                var effectiveStart = patient.AdmDate > startDate ? patient.AdmDate.Value : startDate;
+                var effectiveEnd = patient.DeathDate.HasValue && patient.DeathDate < endDate
                     ? patient.DeathDate.Value
                     : endDate;
 
-                patientDays += (effectiveEndDate - effectiveStartDate).Days + 1;
+                totalDays += (effectiveEnd - effectiveStart).Days + 1;
             }
 
-            return patientDays;
+            return totalDays;
         }
 
-        private void PopulateDeviceAssociatedInfections(MonthlyHaiReportData report, List<PatientMaster> haiCases, Dictionary<string, int> deviceDays)
+        private void PopulateDeviceAssociatedInfections(MonthlyHaiReportData report,
+            Dictionary<string, int> haiCounts, Dictionary<string, int> deviceDays)
         {
-            // For now we're just setting up the structure with device days
-            // In a real implementation, you would categorize the HAI cases by type
-
             // PVAP
+            int pvapCount = haiCounts["PVAP"];
+            int mvDays = deviceDays.GetValueOrDefault("MV");
             report.DeviceAssociatedInfections.Add(new HaiCaseData
             {
                 InfectionType = "Possible Ventilator Associated Pneumonia (PVAP)",
-                CaseCount = 0, // This would be filtered from haiCases
-                DeviceDays = deviceDays.ContainsKey("MV") ? deviceDays["MV"] : 0,
-                Rate = 0 // Will be calculated when actual cases are added
+                CaseCount = pvapCount,
+                DeviceDays = mvDays,
+                Rate = CalculateRate(pvapCount, mvDays, 1000)
             });
 
             // CLABSI
+            int clabsiCount = haiCounts["BSI"] - haiCounts["CLABSI"];
+            int clDays = deviceDays.GetValueOrDefault("CL");
             report.DeviceAssociatedInfections.Add(new HaiCaseData
             {
                 InfectionType = "Central line-associated Bloodstream Infection (CLABSI)",
-                CaseCount = 0, // This would be filtered from haiCases
-                DeviceDays = deviceDays.ContainsKey("CL") ? deviceDays["CL"] : 0,
-                Rate = 0 // Will be calculated when actual cases are added
+                CaseCount = clabsiCount,
+                DeviceDays = clDays,
+                Rate = CalculateRate(clabsiCount, clDays, 1000)
             });
 
             // CAUTI
+            int cautiCount = haiCounts["CAUTI"];
+            int ucDays = deviceDays.GetValueOrDefault("IUC");
             report.DeviceAssociatedInfections.Add(new HaiCaseData
             {
                 InfectionType = "Catheter-associated Urinary Tract Infection (CAUTI)",
-                CaseCount = 0, // This would be filtered from haiCases
-                DeviceDays = deviceDays.ContainsKey("IUC") ? deviceDays["IUC"] : 0,
-                Rate = 0 // Will be calculated when actual cases are added
+                CaseCount = cautiCount,
+                DeviceDays = ucDays,
+                Rate = CalculateRate(cautiCount, ucDays, 1000)
             });
         }
 
-        private void PopulateVentilatorAssociatedEvents(MonthlyHaiReportData report, List<PatientMaster> haiCases, Dictionary<string, int> deviceDays)
+        private void PopulateVentilatorAssociatedEvents(MonthlyHaiReportData report,
+            Dictionary<string, int> haiCounts, Dictionary<string, int> deviceDays)
         {
-            int mvDays = deviceDays.ContainsKey("MV") ? deviceDays["MV"] : 0;
+            int mvDays = deviceDays.GetValueOrDefault("MV");
+            int vacCount = haiCounts["VAC"];
+            int ivacCount = haiCounts["IVAC"];
+            int pvapCount = haiCounts["PVAP"];
 
-            // VAC
             report.VentilatorAssociatedEvents.Add(new HaiCaseData
             {
                 InfectionType = "Ventilator Associated Condition (VAC)",
-                CaseCount = 0,
+                CaseCount = vacCount,
                 DeviceDays = mvDays,
-                Rate = 0
+                Rate = CalculateRate(vacCount, mvDays, 1000)
             });
 
-            // IVAC
-            report.VentilatorAssociatedEvents.Add(new HaiCaseData
-            {
-                InfectionType = "Infection-related Ventilator Associated Complication (IVAC)",
-                CaseCount = 0,
-                DeviceDays = mvDays,
-                Rate = 0
-            });
-
-            // PVAP
             report.VentilatorAssociatedEvents.Add(new HaiCaseData
             {
                 InfectionType = "Possible Ventilator Associated Pneumonia (PVAP)",
-                CaseCount = 0,
+                CaseCount = pvapCount,
                 DeviceDays = mvDays,
-                Rate = 0
+                Rate = CalculateRate(pvapCount, mvDays, 1000)
             });
 
-            // VAE Rate
+            // Total VAE Rate
+            int totalVae = vacCount + ivacCount + pvapCount;
             report.VentilatorAssociatedEvents.Add(new HaiCaseData
             {
                 InfectionType = "VAE Rate per 1000",
-                CaseCount = 0,
+                CaseCount = totalVae,
                 DeviceDays = mvDays,
-                Rate = 0
+                Rate = CalculateRate(totalVae, mvDays, 1000)
             });
         }
 
-        private void PopulateNonDeviceAssociatedInfections(MonthlyHaiReportData report, List<PatientMaster> haiCases, int patientDays)
+        private void PopulateNonDeviceAssociatedInfections(MonthlyHaiReportData report,
+            Dictionary<string, int> haiCounts, int patientDays)
         {
-            // This would normally be populated from a form or database with manual inputs
-            // For now, we're just creating the structure
-
             // SSI
             report.NonDeviceAssociatedInfections.Add(new HaiCaseData
             {
                 InfectionType = "Surgical Site Infections (SSI)",
-                CaseCount = 0,
-                DeviceDays = patientDays, // Using patient days here
-                Rate = 0
+                CaseCount = haiCounts["SSI"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["SSI"], patientDays)
             });
 
-            // PD Peritonitis
+            // SSI Breakdown
             report.NonDeviceAssociatedInfections.Add(new HaiCaseData
             {
-                InfectionType = "PD Peritonitis (rate)",
-                CaseCount = 0,
-                DeviceDays = 0, // Manual input
-                Rate = 0
+                InfectionType = "Superficial incisional (SIP, SIS)",
+                CaseCount = haiCounts["SIP"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["SIP"], patientDays)
             });
 
-            // Add other non-device associated infections
-            var nonDeviceTypes = new[]
+            report.NonDeviceAssociatedInfections.Add(new HaiCaseData
             {
-                "PD Peritonitis (device days)",
-                "Superficial incisional (SIP, SIS)",
-                "Organ/Space SSI",
-                "Deep Incisional Primary (DIP, DIS)",
-                "Non-VAP or Pneumonia",
-                "PNU1",
-                "PNU2",
-                "Laboratory confirmed Blood Stream Infections (BSI)",
-                "Non-CAUTI (SUTI 1b)"
-            };
+                InfectionType = "Deep Incisional Primary (DIP, DIS)",
+                CaseCount = haiCounts["DIP"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["DIP"], patientDays)
+            });
 
-            foreach (var type in nonDeviceTypes)
+            report.NonDeviceAssociatedInfections.Add(new HaiCaseData
             {
-                report.NonDeviceAssociatedInfections.Add(new HaiCaseData
-                {
-                    InfectionType = type,
-                    CaseCount = 0,
-                    DeviceDays = type == "Non-CAUTI (SUTI 1b)" ? patientDays : 0, // Most are manual inputs
-                    Rate = 0
-                });
-            }
+                InfectionType = "Organ/Space SSI",
+                CaseCount = haiCounts["OS"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["OS"], patientDays)
+            });
+
+            //// PD Peritonitis - Uncommented
+            //int pdDays = _context.PeritonealDialysisRecords
+            //    .Where(p => p.DateCreated >= new DateTime(report.Year, report.Month, 1) &&
+            //               p.DateCreated <= new DateTime(report.Year, report.Month, 1).AddMonths(1).AddDays(-1))
+            //    .Sum(p => p.DialysisDays);
+
+            //report.NonDeviceAssociatedInfections.Add(new HaiCaseData
+            //{
+            //    InfectionType = "PD Peritonitis (rate)",
+            //    CaseCount = haiCounts["PD_Peritonitis"],
+            //    DeviceDays = pdDays,
+            //    Rate = CalculateRate(haiCounts["PD_Peritonitis"], pdDays)
+            //});
+
+            //report.NonDeviceAssociatedInfections.Add(new HaiCaseData
+            //{
+            //    InfectionType = "PD Peritonitis (device days)",
+            //    CaseCount = 0,
+            //    DeviceDays = pdDays,
+            //    Rate = 0
+            //});
+
+            // Non-VAP Pneumonia
+            int nonVapCount = haiCounts["Pneumonia"];
+            report.NonDeviceAssociatedInfections.Add(new HaiCaseData
+            {
+                InfectionType = "Non-VAP Pneumonia",
+                CaseCount = nonVapCount,
+                DeviceDays = patientDays,
+                Rate = CalculateRate(nonVapCount, patientDays)
+            });
+
+            // Non-CLABSI BSI
+            int nonClabsiCount = haiCounts["BSI"] - haiCounts["CLABSI"];
+            report.NonDeviceAssociatedInfections.Add(new HaiCaseData
+            {
+                InfectionType = "Non-CLABSI BSI",
+                CaseCount = nonClabsiCount,
+                DeviceDays = patientDays,
+                Rate = CalculateRate(nonClabsiCount, patientDays)
+            });
+
+            // Non-CAUTI UTI
+            int nonCautiCount = haiCounts["UTI"] - haiCounts["CAUTI"];
+            report.NonDeviceAssociatedInfections.Add(new HaiCaseData
+            {
+                InfectionType = "Non-CAUTI UTI (SUTI 1b)",
+                CaseCount = nonCautiCount,
+                DeviceDays = patientDays,
+                Rate = CalculateRate(nonCautiCount, patientDays)
+            });
         }
 
-        private void PopulateSiteSpecificInfections(MonthlyHaiReportData report, List<PatientMaster> haiCases, int patientDays)
+        private void PopulateSiteSpecificInfections(MonthlyHaiReportData report,
+            Dictionary<string, int> haiCounts, int patientDays)
         {
-            // Site-specific infections are usually manual inputs
-            var siteSpecificTypes = new[]
+            // Bone and Joint
+            report.SiteSpecificInfections.Add(new HaiCaseData
             {
-                "Bone and Joint Infection (BJI)",
-                "Cardiovascular (CVS) System Infection",
-                "CVS-VASC",
-                "Central Nervous System (CNS)",
-                "Eye, Ear, Nose Throat, or Mouth (EENT)",
-                "Gastrointestinal System Infection (GI)",
-                "CDI- Clostridioides difficile",
-                "GE-Gastroenteritis",
-                "Lower Respiratory Infection (LRI)",
-                "Reproductive Tract Infection (REPR)",
-                "Skin and Soft Tissue (SST) Infection",
-                "ST-Soft Tissue Infection",
-                "SKIN-Skin infection",
-                "DECU",
-                "Urinary System Infection (USI)"
-            };
+                InfectionType = "Bone and Joint Infection (BJI)",
+                CaseCount = haiCounts["BJI"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["BJI"], patientDays)
+            });
 
-            foreach (var type in siteSpecificTypes)
+            // CVS
+            report.SiteSpecificInfections.Add(new HaiCaseData
             {
-                report.SiteSpecificInfections.Add(new HaiCaseData
-                {
-                    InfectionType = type,
-                    CaseCount = 0,
-                    DeviceDays = patientDays, // Using patient days for denominator
-                    Rate = 0
-                });
-            }
+                InfectionType = "Cardiovascular (CVS) System Infection",
+                CaseCount = haiCounts["CVS"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["CVS"], patientDays)
+            });
+
+            // CVS-VASC
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "CVS-VASC",
+                CaseCount = haiCounts["VASC"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["VASC"], patientDays)
+            });
+
+            // CNS
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "Central Nervous System (CNS)",
+                CaseCount = haiCounts["CNS"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["CNS"], patientDays)
+            });
+
+            // EENT
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "Eye, Ear, Nose Throat, or Mouth (EENT)",
+                CaseCount = haiCounts["EENT"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["EENT"], patientDays)
+            });
+
+            // GI
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "Gastrointestinal System Infection (GI)",
+                CaseCount = haiCounts["GI"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["GI"], patientDays)
+            });
+
+            // CDI
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "CDI- Clostridioides difficile",
+                CaseCount = haiCounts["CDI"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["CDI"], patientDays)
+            });
+
+            // GE
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "GE-Gastroenteritis",
+                CaseCount = haiCounts["GE"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["GE"], patientDays)
+            });
+
+            // LRI
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "Lower Respiratory Infection (LRI)",
+                CaseCount = haiCounts["LRI"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["LRI"], patientDays)
+            });
+
+            // REPR
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "Reproductive Tract Infection (REPR)",
+                CaseCount = haiCounts["REPR"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["REPR"], patientDays)
+            });
+
+            // SST
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "SST",
+                CaseCount = haiCounts["SST"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["SST"], patientDays)
+            });
+
+            // ST
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "SST",
+                CaseCount = haiCounts["ST"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["ST"], patientDays)
+            });
+
+            // SKIN
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "SST",
+                CaseCount = haiCounts["SKIN"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["SKIN"], patientDays)
+            });
+
+            // DECU
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "DECU",
+                CaseCount = haiCounts["DECU"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["DECU"], patientDays)
+            });
+
+            // USI
+            report.SiteSpecificInfections.Add(new HaiCaseData
+            {
+                InfectionType = "Urinary System Infection (USI)",
+                CaseCount = haiCounts["USI"],
+                DeviceDays = patientDays,
+                Rate = CalculateRate(haiCounts["USI"], patientDays)
+            });
         }
 
         private void CalculateTotals(MonthlyHaiReportData report, int patientDays)
         {
-            // Calculate rates for each infection
-            foreach (var infection in report.DeviceAssociatedInfections)
-            {
-                if (infection.DeviceDays > 0)
-                    infection.Rate = (decimal)infection.CaseCount * 1000 / infection.DeviceDays;
-            }
-
-            foreach (var infection in report.VentilatorAssociatedEvents)
-            {
-                if (infection.DeviceDays > 0)
-                    infection.Rate = (decimal)infection.CaseCount * 1000 / infection.DeviceDays;
-            }
-
-            foreach (var infection in report.NonDeviceAssociatedInfections)
-            {
-                if (infection.DeviceDays > 0)
-                    infection.Rate = (decimal)infection.CaseCount * 100 / infection.DeviceDays;
-            }
-
-            foreach (var infection in report.SiteSpecificInfections)
-            {
-                if (infection.DeviceDays > 0)
-                    infection.Rate = (decimal)infection.CaseCount * 100 / infection.DeviceDays;
-            }
-
-            // Calculate totals
+            // Device Associated Total
             report.DeviceAssociatedTotal = new HaiCaseData
             {
                 InfectionType = "Device-associated",
                 CaseCount = report.DeviceAssociatedInfections.Sum(i => i.CaseCount),
                 DeviceDays = patientDays,
-                Rate = patientDays > 0 ? (decimal)report.DeviceAssociatedInfections.Sum(i => i.CaseCount) * 100 / patientDays : 0
+                Rate = CalculateRate(report.DeviceAssociatedInfections.Sum(i => i.CaseCount), patientDays)
             };
 
+            // Non-Device Associated Total
             report.NonDeviceAssociatedTotal = new HaiCaseData
             {
                 InfectionType = "Non-Device associated",
                 CaseCount = report.NonDeviceAssociatedInfections.Sum(i => i.CaseCount),
                 DeviceDays = patientDays,
-                Rate = patientDays > 0 ? (decimal)report.NonDeviceAssociatedInfections.Sum(i => i.CaseCount) * 100 / patientDays : 0
+                Rate = CalculateRate(report.NonDeviceAssociatedInfections.Sum(i => i.CaseCount), patientDays)
             };
 
+            // SSI Total
             report.SsiTotal = new HaiCaseData
             {
                 InfectionType = "Surgical Site Infections (SSI)",
@@ -348,76 +530,274 @@ namespace IPCU.Services
                     .Where(i => i.InfectionType.Contains("SSI") || i.InfectionType.Contains("incisional"))
                     .Sum(i => i.CaseCount),
                 DeviceDays = patientDays,
-                Rate = patientDays > 0 ? (decimal)report.NonDeviceAssociatedInfections
-                    .Where(i => i.InfectionType.Contains("SSI") || i.InfectionType.Contains("incisional"))
-                    .Sum(i => i.CaseCount) * 100 / patientDays : 0
+                Rate = CalculateRate(
+                    report.NonDeviceAssociatedInfections
+                        .Where(i => i.InfectionType.Contains("SSI") || i.InfectionType.Contains("incisional"))
+                        .Sum(i => i.CaseCount),
+                    patientDays)
             };
 
-            // Overall HAI rate
+            // Overall HAI Rate
             report.OverallHaiRate = new HaiCaseData
             {
                 InfectionType = "OVERALL HAI RATE (DBM)",
-                CaseCount = report.DeviceAssociatedInfections.Sum(i => i.CaseCount) +
-                           report.NonDeviceAssociatedInfections.Sum(i => i.CaseCount) +
+                CaseCount = report.DeviceAssociatedTotal.CaseCount +
+                           report.NonDeviceAssociatedTotal.CaseCount +
                            report.SiteSpecificInfections.Sum(i => i.CaseCount),
                 DeviceDays = patientDays,
-                Rate = patientDays > 0 ? (decimal)(report.DeviceAssociatedInfections.Sum(i => i.CaseCount) +
-                        report.NonDeviceAssociatedInfections.Sum(i => i.CaseCount) +
-                        report.SiteSpecificInfections.Sum(i => i.CaseCount)) * 100 / patientDays : 0
+                Rate = CalculateRate(
+                    report.DeviceAssociatedTotal.CaseCount +
+                    report.NonDeviceAssociatedTotal.CaseCount +
+                    report.SiteSpecificInfections.Sum(i => i.CaseCount),
+                    patientDays)
             };
 
-            // DOH rate (Device-Based and SSI)
+            // DOH Rate
             report.DohRate = new HaiCaseData
             {
                 InfectionType = "DOH RATE (Device-Based, and SSI)",
-                CaseCount = report.DeviceAssociatedInfections.Sum(i => i.CaseCount) +
-                           report.NonDeviceAssociatedInfections
-                               .Where(i => i.InfectionType.Contains("SSI") || i.InfectionType.Contains("incisional"))
-                               .Sum(i => i.CaseCount),
+                CaseCount = report.DeviceAssociatedTotal.CaseCount + report.SsiTotal.CaseCount,
                 DeviceDays = patientDays,
-                Rate = patientDays > 0 ? (decimal)(report.DeviceAssociatedInfections.Sum(i => i.CaseCount) +
-                        report.NonDeviceAssociatedInfections
-                            .Where(i => i.InfectionType.Contains("SSI") || i.InfectionType.Contains("incisional"))
-                            .Sum(i => i.CaseCount)) * 100 / patientDays : 0
+                Rate = CalculateRate(
+                    report.DeviceAssociatedTotal.CaseCount + report.SsiTotal.CaseCount,
+                    patientDays)
             };
+        }
+
+        private decimal CalculateRate(int numerator, int denominator, int multiplier = 100)
+        {
+            return denominator > 0 ? (decimal)numerator * multiplier / denominator : 0;
         }
 
         public async Task<QuarterlyHaiReportData> GenerateQuarterlyReportAsync(int year, int quarter)
         {
-            // Calculate the months in the quarter
             int startMonth = (quarter - 1) * 3 + 1;
-
             var monthlyReports = new List<MonthlyHaiReportData>();
 
-            // Generate monthly reports for all months in the quarter
             for (int i = 0; i < 3; i++)
             {
                 monthlyReports.Add(await GenerateMonthlyReportAsync(year, startMonth + i));
             }
 
-            // Create quarterly report
-            var quarterlyReport = new QuarterlyHaiReportData
+            return new QuarterlyHaiReportData
             {
                 Year = year,
                 Quarter = quarter,
                 MonthlyReports = monthlyReports,
-                TotalPatientDays = monthlyReports.Sum(r => r.DeviceAssociatedTotal.DeviceDays)
+                TotalPatientDays = monthlyReports.Sum(r => r.DeviceAssociatedTotal.DeviceDays),
+                QuarterlyRate = CalculateRate(
+                    monthlyReports.Sum(r => r.OverallHaiRate.CaseCount),
+                    monthlyReports.Sum(r => r.DeviceAssociatedTotal.DeviceDays))
             };
-
-            // Calculate aggregated quarterly data
-            CalculateQuarterlyTotals(quarterlyReport);
-
-            return quarterlyReport;
         }
 
-        private void CalculateQuarterlyTotals(QuarterlyHaiReportData report)
+        public async Task<AnnualHaiReportData> GenerateAnnualReportAsync(int year)
         {
-            int totalCases = report.MonthlyReports.Sum(r => r.OverallHaiRate.CaseCount);
-            int totalPatientDays = report.TotalPatientDays;
+            var monthlyReports = new List<MonthlyHaiReportData>();
 
-            report.QuarterlyRate = totalPatientDays > 0
-                ? (decimal)totalCases * 100 / totalPatientDays
-                : 0;
+            // Generate reports for all 12 months
+            for (int month = 1; month <= 12; month++)
+            {
+                monthlyReports.Add(await GenerateMonthlyReportAsync(year, month));
+            }
+
+            // Create quarterly reports for reference
+            var quarterlyReports = new List<QuarterlyHaiReportData>();
+            for (int quarter = 1; quarter <= 4; quarter++)
+            {
+                quarterlyReports.Add(await GenerateQuarterlyReportAsync(year, quarter));
+            }
+
+            // Calculate annual totals and rates
+            int totalPatientDays = monthlyReports.Sum(r => r.DeviceAssociatedTotal.DeviceDays);
+            int totalDeviceAssociatedInfections = monthlyReports.Sum(r => r.DeviceAssociatedTotal.CaseCount);
+            int totalNonDeviceAssociatedInfections = monthlyReports.Sum(r => r.NonDeviceAssociatedTotal.CaseCount);
+            int totalSsiInfections = monthlyReports.Sum(r => r.SsiTotal.CaseCount);
+            int totalSiteSpecificInfections = monthlyReports.Sum(r =>
+                r.SiteSpecificInfections.Sum(i => i.CaseCount));
+            int totalInfections = totalDeviceAssociatedInfections + totalNonDeviceAssociatedInfections + totalSiteSpecificInfections;
+
+            // Calculate device days
+            var deviceDaysByType = new Dictionary<string, int>();
+            foreach (var month in monthlyReports)
+            {
+                foreach (var infection in month.DeviceAssociatedInfections)
+                {
+                    if (!deviceDaysByType.ContainsKey(infection.InfectionType))
+                        deviceDaysByType[infection.InfectionType] = 0;
+
+                    deviceDaysByType[infection.InfectionType] += infection.DeviceDays;
+                }
+            }
+
+            // Create annual summary data
+            var annualDeviceAssociatedSummary = new List<HaiCaseData>();
+            var annualVaeSummary = new List<HaiCaseData>();
+            var annualNonDeviceAssociatedSummary = new List<HaiCaseData>();
+            var annualSiteSpecificSummary = new List<HaiCaseData>();
+
+            // Aggregate device-associated infections
+            var deviceTypes = monthlyReports.SelectMany(m => m.DeviceAssociatedInfections)
+                .Select(i => i.InfectionType)
+                .Distinct();
+
+            foreach (var deviceType in deviceTypes)
+            {
+                int caseCount = monthlyReports.Sum(m =>
+                    m.DeviceAssociatedInfections
+                     .FirstOrDefault(i => i.InfectionType == deviceType)?.CaseCount ?? 0);
+                int deviceDays = deviceDaysByType.GetValueOrDefault(deviceType, 0);
+
+                annualDeviceAssociatedSummary.Add(new HaiCaseData
+                {
+                    InfectionType = deviceType,
+                    CaseCount = caseCount,
+                    DeviceDays = deviceDays,
+                    Rate = CalculateRate(caseCount, deviceDays, 1000)
+                });
+            }
+
+            // Aggregate VAE data
+            var vaeTypes = monthlyReports.SelectMany(m => m.VentilatorAssociatedEvents)
+                .Select(i => i.InfectionType)
+                .Distinct();
+
+            foreach (var vaeType in vaeTypes)
+            {
+                int caseCount = monthlyReports.Sum(m =>
+                    m.VentilatorAssociatedEvents
+                     .FirstOrDefault(i => i.InfectionType == vaeType)?.CaseCount ?? 0);
+                int deviceDays = monthlyReports.Sum(m =>
+                    m.VentilatorAssociatedEvents
+                     .FirstOrDefault(i => i.InfectionType == vaeType)?.DeviceDays ?? 0);
+
+                annualVaeSummary.Add(new HaiCaseData
+                {
+                    InfectionType = vaeType,
+                    CaseCount = caseCount,
+                    DeviceDays = deviceDays,
+                    Rate = CalculateRate(caseCount, deviceDays, 1000)
+                });
+            }
+
+            // Aggregate non-device-associated infections
+            var nonDeviceTypes = monthlyReports.SelectMany(m => m.NonDeviceAssociatedInfections)
+                .Select(i => i.InfectionType)
+                .Distinct();
+
+            foreach (var infectionType in nonDeviceTypes)
+            {
+                int caseCount = monthlyReports.Sum(m =>
+                    m.NonDeviceAssociatedInfections
+                     .FirstOrDefault(i => i.InfectionType == infectionType)?.CaseCount ?? 0);
+
+                annualNonDeviceAssociatedSummary.Add(new HaiCaseData
+                {
+                    InfectionType = infectionType,
+                    CaseCount = caseCount,
+                    DeviceDays = totalPatientDays,
+                    Rate = CalculateRate(caseCount, totalPatientDays)
+                });
+            }
+
+            // Aggregate site-specific infections
+            var siteTypes = monthlyReports.SelectMany(m => m.SiteSpecificInfections)
+                .Select(i => i.InfectionType)
+                .Distinct();
+
+            foreach (var siteType in siteTypes)
+            {
+                int caseCount = monthlyReports.Sum(m =>
+                    m.SiteSpecificInfections
+                     .FirstOrDefault(i => i.InfectionType == siteType)?.CaseCount ?? 0);
+
+                annualSiteSpecificSummary.Add(new HaiCaseData
+                {
+                    InfectionType = siteType,
+                    CaseCount = caseCount,
+                    DeviceDays = totalPatientDays,
+                    Rate = CalculateRate(caseCount, totalPatientDays)
+                });
+            }
+
+            // Create the summary totals
+            var deviceAssociatedTotal = new HaiCaseData
+            {
+                InfectionType = "Device-associated",
+                CaseCount = totalDeviceAssociatedInfections,
+                DeviceDays = totalPatientDays,
+                Rate = CalculateRate(totalDeviceAssociatedInfections, totalPatientDays)
+            };
+
+            var nonDeviceAssociatedTotal = new HaiCaseData
+            {
+                InfectionType = "Non-Device associated",
+                CaseCount = totalNonDeviceAssociatedInfections,
+                DeviceDays = totalPatientDays,
+                Rate = CalculateRate(totalNonDeviceAssociatedInfections, totalPatientDays)
+            };
+
+            var ssiTotal = new HaiCaseData
+            {
+                InfectionType = "Surgical Site Infections (SSI)",
+                CaseCount = totalSsiInfections,
+                DeviceDays = totalPatientDays,
+                Rate = CalculateRate(totalSsiInfections, totalPatientDays)
+            };
+
+            var overallHaiRate = new HaiCaseData
+            {
+                InfectionType = "OVERALL HAI RATE (DBM)",
+                CaseCount = totalInfections,
+                DeviceDays = totalPatientDays,
+                Rate = CalculateRate(totalInfections, totalPatientDays)
+            };
+
+            var dohRate = new HaiCaseData
+            {
+                InfectionType = "DOH RATE (Device-Based, and SSI)",
+                CaseCount = totalDeviceAssociatedInfections + totalSsiInfections,
+                DeviceDays = totalPatientDays,
+                Rate = CalculateRate(totalDeviceAssociatedInfections + totalSsiInfections, totalPatientDays)
+            };
+
+            // Return annual report data
+            return new AnnualHaiReportData
+            {
+                Year = year,
+                MonthlyReports = monthlyReports,
+                QuarterlyReports = quarterlyReports,
+                AnnualDeviceAssociatedInfections = annualDeviceAssociatedSummary,
+                AnnualVentilatorAssociatedEvents = annualVaeSummary,
+                AnnualNonDeviceAssociatedInfections = annualNonDeviceAssociatedSummary,
+                AnnualSiteSpecificInfections = annualSiteSpecificSummary,
+                DeviceAssociatedTotal = deviceAssociatedTotal,
+                NonDeviceAssociatedTotal = nonDeviceAssociatedTotal,
+                SsiTotal = ssiTotal,
+                OverallHaiRate = overallHaiRate,
+                DohRate = dohRate,
+                TotalPatientDays = totalPatientDays
+            };
+        }
+
+        public class AnnualHaiReportData
+        {
+            public int Year { get; set; }
+            public List<MonthlyHaiReportData> MonthlyReports { get; set; }
+            public List<QuarterlyHaiReportData> QuarterlyReports { get; set; }
+
+            public List<HaiCaseData> AnnualDeviceAssociatedInfections { get; set; }
+            public List<HaiCaseData> AnnualVentilatorAssociatedEvents { get; set; }
+            public List<HaiCaseData> AnnualNonDeviceAssociatedInfections { get; set; }
+            public List<HaiCaseData> AnnualSiteSpecificInfections { get; set; }
+
+            public HaiCaseData DeviceAssociatedTotal { get; set; }
+            public HaiCaseData NonDeviceAssociatedTotal { get; set; }
+            public HaiCaseData SsiTotal { get; set; }
+            public HaiCaseData OverallHaiRate { get; set; }
+            public HaiCaseData DohRate { get; set; }
+
+            public int TotalPatientDays { get; set; }
         }
     }
 }
