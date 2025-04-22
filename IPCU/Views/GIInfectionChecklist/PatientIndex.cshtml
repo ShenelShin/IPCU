@@ -1,40 +1,32 @@
-﻿@{
-    ViewData["Title"] = "Patient Index";
+﻿@model IEnumerable<IPCU.Models.InfectionControl.Models.InfectionControlMonitoringForm>
+@using IPCU.Models.InfectionControl.Models
+@{
+    ViewData["Title"] = "Environmental Cleaning and Disinfection";
+    var allForms = ViewBag.AllForms as List<InfectionControlMonitoringForm>;
 }
-
-<h2>Patient Index</h2> <!-- GI -->
-
+<h2>
+    Environmental Cleaning and Disinfection
+    Assessment and Monitoring Form
+</h2>
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Full Name</th>
-            <th>Hospital Number</th>
-            <th>Date of Birth</th>
-            <th>Age</th>
-            <th>Unit/Ward Area</th>
-            <th>Main Service</th>
-            <th>Date of Event</th>
-            <th>Investigator</th>
-            <th>Date of Admission</th>
-            <th>Action</th> <!-- New column for the Details link -->
+            <th>Area/Unit</th>
+            <th>Date and Time of Monitoring</th>
+            <th>Assessed by</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var patient in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@($"{patient.Lname}, {patient.Fname} {patient.Mname}")</td>
-                <td>@patient.HospitalNumber</td>
-                <td>@patient.DateOfBirth?.ToString("yyyy-MM-dd")</td>
-                <td>@patient.Age</td>
-                <td>@patient.UnitWardArea</td>
-                <td>@patient.MainService</td>
-                <td>@patient.DateOfEvent?.ToString("yyyy-MM-dd")</td>
-                <td>@patient.Investigator</td>
-                <td>@patient.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
+                <td>@item.AreaOrUnit</td>
+                <td>@item.DateAndTimeOfMonitoring.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@item.AssessedBy</td>
                 <td>
-                    <a asp-controller="GIInfectionChecklist" asp-action="Details" asp-route-id="@patient.Id" class="btn btn-info">
-                        View Details
+                    <a asp-controller="InfectionControlMonitoringForms" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">
+                        Edit
                     </a>
                 </td>
             </tr>
