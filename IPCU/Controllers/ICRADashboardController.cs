@@ -381,5 +381,77 @@ namespace IPCU.Controllers
         {
             return _context.ICRA.Any(e => e.Id == id);
         }
+
+        [Authorize(Roles = "Admin,ICN")]
+        public async Task<IActionResult> ICRAChecklists(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var icra = await _context.ICRA.FindAsync(id);
+            if (icra == null)
+            {
+                return NotFound();
+            }
+
+            // Get all TCSkillsChecklists for this ICRA using ICRAId field
+            var checklists = await _context.TCSkillsChecklist
+                .Where(c => c.ICRAId == icra.Id)
+                .ToListAsync();
+
+            // Check if a post-construction form exists for this ICRA
+            var postConstruction = await _context.PostConstruction
+                .FirstOrDefaultAsync(p => p.ICRAId == icra.Id);
+
+            // Check if the ICRA has at least one checklist (we'll use this to enable/disable the post-construction button)
+            var hasChecklists = checklists.Any();
+
+            ViewBag.ICRA = icra;
+            ViewBag.HasPostConstruction = postConstruction != null;
+            ViewBag.PostConstructionId = postConstruction?.Id;
+            ViewBag.HasChecklists = hasChecklists;
+
+            return View(checklists);
+        }
+
+        // GET: ICRADashboard/CreateChecklist/5
+        [Authorize(Roles = "Admin,ICN")]
+        public async Task<IActionResult> CreateChecklist(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var icra = await _context.ICRA.FindAsync(id);
+            if (icra == null)
+            {
+                return NotFound();
+            }
+
+            // Check if the ICRA is completed
+            if (string.IsNullOrEmpty(icra.EngineeringSign) ||
+                string.IsNullOrEmpty(icra.ICPSign) ||
+                string.IsNullOrEmpty(icra.UnitAreaRep))
+            {
+                TempData["ErrorMessage"] = "Cannot create checklists for an incomplete ICRA. All required signatures must be present.";
+                return RedirectToAction("Details", "ICRAs", new { id });
+            }
+
+            // Check if a post-construction form already exists
+            var postConstructionExists = await _context.PostConstruction
+                .AnyAsync(p => p.ICRAId == id);
+
+            if (postConstructionExists)
+            {
+                TempData["ErrorMessage"] = "Cannot create new checklists after post-construction phase has been completed.";
+                return RedirectToAction("ICRAChecklists", new { id });
+            }
+
+            // Redirect to TCSkillsChecklists Create action with the ICRA ID
+            return RedirectToAction("Create", "TCSkillsChecklists", new { icraId = icra.Id });
+        }
     }
 }

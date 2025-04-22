@@ -305,6 +305,12 @@
                                                 <a asp-controller="ICRAs" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
                                                     <i class="fas fa-info-circle me-1"></i> Details
                                                 </a>
+                                                <a asp-action="ICRAChecklists" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                                                    <i class="fas fa-clipboard-list me-1"></i> Checklists
+                                                </a>
+                                                <a asp-controller="PostConstructions" asp-action="Create" asp-route-icraId="@item.Id" class="btn btn-primary btn-sm">
+                                                    <i class="fas fa-building me-1"></i> Post-Construction
+                                                </a>
                                             </td>
                                         </tr>
                                     }

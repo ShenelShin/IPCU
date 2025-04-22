@@ -3,275 +3,243 @@
 @{
     ViewData["Title"] = "Create";
 }
-<!-- Bootstrap CSS (You can include this in the head section of your layout if not already included) -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
 
 <h1>Create</h1>
-
 <h4>TCSkillsChecklist</h4>
-<hr />
 
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
-            <table class="table table-bordered">
-                <tr>
-                    <td width="50%">
-                        <div class="form-group">
-                            <label asp-for="Area" class="control-label">AREA:</label>
-                            <input asp-for="Area" class="form-control" />
-                            <span asp-validation-for="Area" class="text-danger"></span>
-                        </div>
-                    </td>
-                    <td width="50%">
-                        <div class="form-group">
-                            <label asp-for="Date" class="control-label">DATE/TIME (mm/dd/yyyy):</label>
-                            <input asp-for="Date" class="form-control" />
-                            <span asp-validation-for="Date" class="text-danger"></span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="50%">
-                        <div class="form-group">
-                            <label asp-for="ObserverName" class="control-label">OBSERVER (Name):</label>
-                            <input asp-for="ObserverName" class="form-control" />
-                            <span asp-validation-for="ObserverName" class="text-danger"></span>
-                        </div>
-                    </td>
-                    <td></td>
-                </tr>
-            </table>
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="mt-3">
-                <p><strong>Instructions:</strong> Put [✓] if done, [x] if not, or indicate N/A if not applicable.</p>
+    <!-- Hidden field for ICRA ID -->
+    <input type="hidden" asp-for="ICRAId" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Area" class="control-label">AREA:</label>
+                <input asp-for="Area" class="form-control" />
+                <span asp-validation-for="Area" class="text-danger"></span>
             </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">ICRA Reference #:</label>
+                <input value="@ViewBag.ICRANumber" class="form-control" readonly />
+            </div>
+        </div>
+    </div>
 
-    <table class="table table-bordered">
-        <tr>
-            <td>
-                <!--  1. PREPARATION AND SETUP-->
-                <div class="form-group">
-                    <label><strong>1. PREPARATION AND SETUP</strong></label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsEquipmentAndCartPrepared" /> @Html.DisplayNameFor(model => model.IsEquipmentAndCartPrepared)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsCleaningSolutionPrepared" /> @Html.DisplayNameFor(model => model.IsCleaningSolutionPrepared)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsProperAttireAndPPEWorn" /> @Html.DisplayNameFor(model => model.IsProperAttireAndPPEWorn)
-                    </label>
-                </div>
-            </td>
-        </tr>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Date" class="control-label">DATE/TIME (mm/dd/yyyy):</label>
+                <input asp-for="Date" class="form-control" type="datetime-local" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="ObserverName" class="control-label">OBSERVER (Name):</label>
+                <input asp-for="ObserverName" class="form-control" />
+                <span asp-validation-for="ObserverName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
 
-        <tr>
-            <td>
-                <!-- 2. BASICPROCEDURES-->
-                <div class="form-group">
-                    <label><strong>2. BASIC PROCEDURES</strong></label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsHandHygieneAndGlovesDone" /> @Html.DisplayNameFor(model => model.IsHandHygieneAndGlovesDone)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsSignageChecked" /> @Html.DisplayNameFor(model => model.IsSignageChecked)
-                    </label>
-                </div>
-            </td>
-        </tr>
+    <div class="alert alert-info mt-3">
+        <strong>Instructions:</strong> Put [✓] if done, [x] if not, or indicate N/A if not applicable.
+    </div>
 
-        <tr>
-            <td>
-                <!-- 3. PATIENT ROOM CLEANING PROCEDURES-->
-                <div class="form-group">
-                    <label><strong>3. PATIENT ROOM CLEANING PROCEDURES</strong></label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsSpillSoakedWithSolution" /> @Html.DisplayNameFor(model => model.IsSpillSoakedWithSolution)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsWallsCleaned" /> @Html.DisplayNameFor(model => model.IsWallsCleaned)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsDoorFrameWiped" /> @Html.DisplayNameFor(model => model.IsDoorFrameWiped)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsWindowSillAndWindowCleaned" /> @Html.DisplayNameFor(model => model.IsWindowSillAndWindowCleaned)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsHighTouchAreasWiped" /> @Html.DisplayNameFor(model => model.IsHighTouchAreasWiped)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsVerticalSurfacesWiped" /> @Html.DisplayNameFor(model => model.IsVerticalSurfacesWiped)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsLooseDebrisPickedUp" /> @Html.DisplayNameFor(model => model.IsLooseDebrisPickedUp)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsRoomFloorMopped" /> @Html.DisplayNameFor(model => model.IsRoomFloorMopped)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsUsedClothsDisposed" /> @Html.DisplayNameFor(model => model.IsUsedClothsDisposed)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsWasteContainersEmptied" /> @Html.DisplayNameFor(model => model.IsWasteContainersEmptied)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsInfectiousWasteRemoved" /> @Html.DisplayNameFor(model => model.IsInfectiousWasteRemoved)
-                    </label>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <!--  4. BATHROOM CLEANING -->
-                <div class="form-group">
-                    <label><strong>4. BATHROOM CLEANING</strong></label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsMirrorCleaned" /> @Html.DisplayNameFor(model => model.IsMirrorCleaned)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsSinkAreaCleaned" /> @Html.DisplayNameFor(model => model.IsSinkAreaCleaned)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsFaucetAndHandlesCleaned" /> @Html.DisplayNameFor(model => model.IsFaucetAndHandlesCleaned)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsToiletAndFlushHandlesCleaned" /> @Html.DisplayNameFor(model => model.IsToiletAndFlushHandlesCleaned)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsOtherBathroomSurfacesCleaned" /> @Html.DisplayNameFor(model => model.IsOtherBathroomSurfacesCleaned)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsBathroomFloorScrubbed" /> @Html.DisplayNameFor(model => model.IsBathroomFloorScrubbed)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsColorCodedWasteEmptied" /> @Html.DisplayNameFor(model => model.IsColorCodedWasteEmptied)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsPPERemoved" /> @Html.DisplayNameFor(model => model.IsPPERemoved)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsHandHygieneAfterPPE" /> @Html.DisplayNameFor(model => model.IsHandHygieneAfterPPE)
-                    </label>
-                </div>
-                <div class="form-group form-check">
-                    <label class="form-check-label">
-                        <input class="form-check-input" asp-for="IsGlovesRemovedAndHandHygieneDone" /> @Html.DisplayNameFor(model => model.IsGlovesRemovedAndHandHygieneDone)
-                    </label>
-                </div>
-            </td>
-        </tr>
-    </table>      
-    
-    <div style="text-align: center; margin: 0 auto; max-width: 100%; padding: 10px;">
-    <table class="table table-bordered" style="width: 100%; margin: 0 auto;">
-        <tr>
-            <td colspan="2" style="text-align: center; font-weight: bold;">VALIDATION WITH FLUORESCENCE MARKERS</td>
-        </tr>
-        <tr>
-            <td width="50%" style="padding: 10px;">
-                <div class="form-group">
-                    <label asp-for="PreCleaningItems" class="control-label"></label>
-                    <textarea asp-for="PreCleaningItems" class="form-control"></textarea>
-                    <span asp-validation-for="PreCleaningItems" class="text-danger"></span>
-                </div>
-            </td>
-            <td width="50%" style="padding: 10px;">
-                <div class="form-group">
-                    <label asp-for="PostCleaningItems" class="control-label"></label>
-                    <textarea asp-for="PostCleaningItems" class="form-control"></textarea>
-                    <span asp-validation-for="PostCleaningItems" class="text-danger"></span>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" style="padding: 10px;">
-                <div class="form-group">
-                    <strong><label asp-for="RecommendationsOrActions" class="control-label"></label></strong>
-                    <textarea asp-for="RecommendationsOrActions" class="form-control"></textarea>
-                    <span asp-validation-for="RecommendationsOrActions" class="text-danger"></span>
-                </div>
-            </td>
-        </tr>
-    </table>
-</div>
+    <!-- Section 1: PREPARATION AND SETUP -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5>1. PREPARATION AND SETUP</h5>
+        </div>
+        <div class="card-body">
+            <div class="form-check mb-2">
+                <input asp-for="IsEquipmentAndCartPrepared" class="form-check-input" />
+                <label asp-for="IsEquipmentAndCartPrepared" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsCleaningSolutionPrepared" class="form-check-input" />
+                <label asp-for="IsCleaningSolutionPrepared" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsProperAttireAndPPEWorn" class="form-check-input" />
+                <label asp-for="IsProperAttireAndPPEWorn" class="form-check-label"></label>
+            </div>
+        </div>
+    </div>
 
+    <!-- Section 2: BASIC PROCEDURES -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5>2. BASIC PROCEDURES</h5>
+        </div>
+        <div class="card-body">
+            <div class="form-check mb-2">
+                <input asp-for="IsHandHygieneAndGlovesDone" class="form-check-input" />
+                <label asp-for="IsHandHygieneAndGlovesDone" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsSignageChecked" class="form-check-input" />
+                <label asp-for="IsSignageChecked" class="form-check-label"></label>
+            </div>
+        </div>
+    </div>
 
-    <div class="form-group" style="max-width: 300px;">
+    <!-- Section 3: PATIENT ROOM CLEANING PROCEDURES -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5>3. PATIENT ROOM CLEANING PROCEDURES</h5>
+        </div>
+        <div class="card-body">
+            <div class="form-check mb-2">
+                <input asp-for="IsSpillSoakedWithSolution" class="form-check-input" />
+                <label asp-for="IsSpillSoakedWithSolution" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsWallsCleaned" class="form-check-input" />
+                <label asp-for="IsWallsCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsDoorFrameWiped" class="form-check-input" />
+                <label asp-for="IsDoorFrameWiped" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsWindowSillAndWindowCleaned" class="form-check-input" />
+                <label asp-for="IsWindowSillAndWindowCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsHighTouchAreasWiped" class="form-check-input" />
+                <label asp-for="IsHighTouchAreasWiped" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsVerticalSurfacesWiped" class="form-check-input" />
+                <label asp-for="IsVerticalSurfacesWiped" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsLooseDebrisPickedUp" class="form-check-input" />
+                <label asp-for="IsLooseDebrisPickedUp" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsRoomFloorMopped" class="form-check-input" />
+                <label asp-for="IsRoomFloorMopped" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsUsedClothsDisposed" class="form-check-input" />
+                <label asp-for="IsUsedClothsDisposed" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsWasteContainersEmptied" class="form-check-input" />
+                <label asp-for="IsWasteContainersEmptied" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsInfectiousWasteRemoved" class="form-check-input" />
+                <label asp-for="IsInfectiousWasteRemoved" class="form-check-label"></label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4: BATHROOM CLEANING -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5>4. BATHROOM CLEANING</h5>
+        </div>
+        <div class="card-body">
+            <div class="form-check mb-2">
+                <input asp-for="IsMirrorCleaned" class="form-check-input" />
+                <label asp-for="IsMirrorCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsSinkAreaCleaned" class="form-check-input" />
+                <label asp-for="IsSinkAreaCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsFaucetAndHandlesCleaned" class="form-check-input" />
+                <label asp-for="IsFaucetAndHandlesCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsToiletAndFlushHandlesCleaned" class="form-check-input" />
+                <label asp-for="IsToiletAndFlushHandlesCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsOtherBathroomSurfacesCleaned" class="form-check-input" />
+                <label asp-for="IsOtherBathroomSurfacesCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsBathroomFloorScrubbed" class="form-check-input" />
+                <label asp-for="IsBathroomFloorScrubbed" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsColorCodedWasteEmptied" class="form-check-input" />
+                <label asp-for="IsColorCodedWasteEmptied" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsPPERemoved" class="form-check-input" />
+                <label asp-for="IsPPERemoved" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsHandHygieneAfterPPE" class="form-check-input" />
+                <label asp-for="IsHandHygieneAfterPPE" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsGlovesRemovedAndHandHygieneDone" class="form-check-input" />
+                <label asp-for="IsGlovesRemovedAndHandHygieneDone" class="form-check-label"></label>
+            </div>
+        </div>
+    </div>
+
+    <!-- VALIDATION WITH FLUORESCENCE MARKERS -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5>VALIDATION WITH FLUORESCENCE MARKERS</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PreCleaningItems" class="control-label">Pre-cleaning areas/items</label>
+                        <textarea asp-for="PreCleaningItems" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="PreCleaningItems" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PostCleaningItems" class="control-label">Post-cleaning</label>
+                        <textarea asp-for="PostCleaningItems" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="PostCleaningItems" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="RecommendationsOrActions" class="control-label">Recommendations / Actions Taken</label>
+                <textarea asp-for="RecommendationsOrActions" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="RecommendationsOrActions" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
         <label asp-for="UnitAreaStaffSignature" class="control-label">Unit Area Staff Signature</label>
-        <input asp-for="UnitAreaStaffSignature" class="form-control" style="font-size: 0.875rem;" />
+        <input asp-for="UnitAreaStaffSignature" class="form-control" />
         <span asp-validation-for="UnitAreaStaffSignature" class="text-danger"></span>
     </div>
 
-    <div class="form-group" style="max-width: 300px;">
+    <div class="form-group">
         <label asp-for="DateOfObservation" class="control-label">Date of Observation</label>
-        <input asp-for="DateOfObservation" class="form-control" style="font-size: 0.875rem;" />
+        <input asp-for="DateOfObservation" class="form-control" type="date" />
         <span asp-validation-for="DateOfObservation" class="text-danger"></span>
     </div>
 
-    <div class="form-group" style="max-width: 300px;">
-        <button type="submit" class="btn btn-primary" style="font-size: 0.875rem;">Create</button>
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
     </div>
-
-        </form>
-
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</form>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

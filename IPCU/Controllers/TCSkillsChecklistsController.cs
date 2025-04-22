@@ -20,8 +20,20 @@ namespace IPCU.Controllers
         }
 
         // GET: TCSkillsChecklists
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? icraId)
         {
+            // If an ICRA ID is provided, filter checklists by that ICRA
+            if (icraId.HasValue)
+            {
+                var icra = await _context.ICRA.FindAsync(icraId.Value);
+                if (icra != null)
+                {
+                    ViewBag.ICRA = icra;
+                    return View(await _context.TCSkillsChecklist.Where(c => c.ICRAId == icraId.Value).ToListAsync());
+                }
+            }
+
+            // Otherwise, return all checklists
             return View(await _context.TCSkillsChecklist.ToListAsync());
         }
 
@@ -44,24 +56,80 @@ namespace IPCU.Controllers
         }
 
         // GET: TCSkillsChecklists/Create
-        public IActionResult Create()
+        public IActionResult Create(int? icraId)
         {
-            return View();
-        }
+            var checklist = new TCSkillsChecklist();
 
-        // POST: TCSkillsChecklists/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+            if (icraId.HasValue)
+            {
+                var icra = _context.ICRA.Find(icraId.Value);
+                if (icra != null)
+                {
+                    checklist.ICRAId = icra.Id;
+                    ViewBag.ICRANumber = icra.ProjectReferenceNumber; // Add this line
+                    checklist.Area = icra.SpecificSiteOfActivity;
+                    checklist.Date = DateTime.Now;
+                    checklist.DateOfObservation = DateTime.Now;
+                }
+            }
+
+            return View(checklist);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Area,ObserverName,Date,IsEquipmentAndCartPrepared,IsCleaningSolutionPrepared,IsProperAttireAndPPEWorn,IsHandHygieneAndGlovesDone,IsSignageChecked,IsSpillSoakedWithSolution,IsWallsCleaned,IsDoorFrameWiped,IsWindowSillAndWindowCleaned,IsHighTouchAreasWiped,IsVerticalSurfacesWiped,IsLooseDebrisPickedUp,IsRoomFloorMopped,IsUsedClothsDisposed,IsWasteContainersEmptied,IsInfectiousWasteRemoved,IsMirrorCleaned,IsSinkAreaCleaned,IsFaucetAndHandlesCleaned,IsToiletAndFlushHandlesCleaned,IsOtherBathroomSurfacesCleaned,IsBathroomFloorScrubbed,IsColorCodedWasteEmptied,IsPPERemoved,IsHandHygieneAfterPPE,IsGlovesRemovedAndHandHygieneDone,PreCleaningItems,PostCleaningItems,RecommendationsOrActions,UnitAreaStaffSignature,DateOfObservation")] TCSkillsChecklist tCSkillsChecklist)
+        public async Task<IActionResult> Create([Bind("Id,ICRAId,Area,ObserverName,Date,IsEquipmentAndCartPrepared,IsCleaningSolutionPrepared,IsProperAttireAndPPEWorn,IsHandHygieneAndGlovesDone,IsSignageChecked,IsSpillSoakedWithSolution,IsWallsCleaned,IsDoorFrameWiped,IsWindowSillAndWindowCleaned,IsHighTouchAreasWiped,IsVerticalSurfacesWiped,IsLooseDebrisPickedUp,IsRoomFloorMopped,IsUsedClothsDisposed,IsWasteContainersEmptied,IsInfectiousWasteRemoved,IsMirrorCleaned,IsSinkAreaCleaned,IsFaucetAndHandlesCleaned,IsToiletAndFlushHandlesCleaned,IsOtherBathroomSurfacesCleaned,IsBathroomFloorScrubbed,IsColorCodedWasteEmptied,IsPPERemoved,IsHandHygieneAfterPPE,IsGlovesRemovedAndHandHygieneDone,PreCleaningItems,PostCleaningItems,RecommendationsOrActions,UnitAreaStaffSignature,DateOfObservation")] TCSkillsChecklist tCSkillsChecklist)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(tCSkillsChecklist);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    // Find the ICRA and attach it to the context
+                    if (tCSkillsChecklist.ICRAId > 0)
+                    {
+                        // Set the ICRA to null to avoid validation issues
+                        tCSkillsChecklist.ICRA = null;
+                    }
+
+                    _context.Add(tCSkillsChecklist);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    // Log the error
+                    ModelState.AddModelError("", "Unable to save changes. " + ex.Message);
+
+                    // If there's an inner exception, add it too
+                    if (ex.InnerException != null)
+                    {
+                        ModelState.AddModelError("", "Details: " + ex.InnerException.Message);
+                    }
+                }
             }
+            else
+            {
+                // Add all validation errors to ModelState for debugging
+                var errors = ModelState
+                    .Where(x => x.Value.Errors.Count > 0)
+                    .Select(x => new { Key = x.Key, Errors = x.Value.Errors.Select(e => e.ErrorMessage).ToList() })
+                    .ToList();
+
+                foreach (var error in errors)
+                {
+                    ModelState.AddModelError("", $"Field: {error.Key}, Errors: {string.Join(", ", error.Errors)}");
+                }
+            }
+
+            // If we get here, something went wrong - repopulate ICRA data for the view
+            if (tCSkillsChecklist.ICRAId > 0)
+            {
+                var icra = _context.ICRA.Find(tCSkillsChecklist.ICRAId);
+                if (icra != null)
+                {
+                    ViewBag.ICRANumber = icra.ProjectReferenceNumber;
+                }
+            }
+
             return View(tCSkillsChecklist);
         }
 
