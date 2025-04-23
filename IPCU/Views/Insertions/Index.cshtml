@@ -1,0 +1,311 @@
+﻿@model IEnumerable<IPCU.Models.Insertion>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientMiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sex)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Birthday)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatientDiagnosis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.HospitalNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReasonforInsertion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProcedureOperator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberofLumens)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProcedureLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CatheterType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Classification)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Optimal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExplainWhyAlternate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Left)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Right)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnatomyIs)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ChestWall)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.COPD)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Emergency)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Anesthesiologist)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Coagulopathy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dialysis)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OperatorTraining)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ObtainInformedConsent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ObtainInformedConsentReminder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConfirmHandHygiene)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConfirmHandHygieneReminder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UseFullBarrier)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UseFullBarrierReminder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PerformSkin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PerformSkinReminder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AllowSite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AllowSiteReminder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UseSterile)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UseSterileReminder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Maintain)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaintainReminder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Monitor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MonitorReminder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CleanBlood)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CleanBloodReminder)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProcedureNotes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Observer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Operator)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientMiddleName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sex)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Birthday)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PatientDiagnosis)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HospitalNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReasonforInsertion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProcedureOperator)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberofLumens)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProcedureLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CatheterType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Classification)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Optimal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExplainWhyAlternate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Left)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Right)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnatomyIs)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ChestWall)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.COPD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Emergency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Anesthesiologist)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Coagulopathy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dialysis)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OperatorTraining)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ObtainInformedConsent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ObtainInformedConsentReminder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConfirmHandHygiene)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConfirmHandHygieneReminder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UseFullBarrier)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UseFullBarrierReminder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PerformSkin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PerformSkinReminder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllowSite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AllowSiteReminder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UseSterile)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UseSterileReminder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Maintain)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaintainReminder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Monitor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MonitorReminder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CleanBlood)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CleanBloodReminder)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProcedureNotes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Operator)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

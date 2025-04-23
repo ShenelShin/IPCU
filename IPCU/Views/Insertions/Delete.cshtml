@@ -1,0 +1,303 @@
+﻿@model IPCU.Models.Insertion
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Insertion</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientLastName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientLastName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientFirstName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientFirstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientMiddleName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientMiddleName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Age)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Sex)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Sex)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Birthday)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Birthday)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientDiagnosis)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientDiagnosis)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HospitalNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HospitalNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ReasonforInsertion)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ReasonforInsertion)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProcedureOperator)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProcedureOperator)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumberofLumens)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumberofLumens)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProcedureLocation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProcedureLocation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CatheterType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CatheterType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Classification)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Classification)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Optimal)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Optimal)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ExplainWhyAlternate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ExplainWhyAlternate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Left)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Left)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Right)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Right)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AnatomyIs)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AnatomyIs)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ChestWall)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ChestWall)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.COPD)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.COPD)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Emergency)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Emergency)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Anesthesiologist)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Anesthesiologist)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Coagulopathy)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Coagulopathy)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Dialysis)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Dialysis)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OperatorTraining)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.OperatorTraining)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ObtainInformedConsent)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ObtainInformedConsent)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ObtainInformedConsentReminder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ObtainInformedConsentReminder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ConfirmHandHygiene)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ConfirmHandHygiene)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ConfirmHandHygieneReminder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ConfirmHandHygieneReminder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UseFullBarrier)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UseFullBarrier)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UseFullBarrierReminder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UseFullBarrierReminder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PerformSkin)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PerformSkin)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PerformSkinReminder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PerformSkinReminder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AllowSite)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AllowSite)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AllowSiteReminder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AllowSiteReminder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UseSterile)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UseSterile)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UseSterileReminder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UseSterileReminder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Maintain)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Maintain)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MaintainReminder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MaintainReminder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Monitor)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Monitor)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.MonitorReminder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.MonitorReminder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CleanBlood)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CleanBlood)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CleanBloodReminder)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CleanBloodReminder)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProcedureNotes)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProcedureNotes)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Observer)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Observer)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Operator)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Operator)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

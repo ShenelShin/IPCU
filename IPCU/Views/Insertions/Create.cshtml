@@ -1,0 +1,405 @@
+﻿@model IPCU.Models.Insertion
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Insertion</h4>
+
+        <form asp-action="Create">
+            <table class="table table-bordered">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <tr>
+            <td>
+                <span><strong>NAME OF PATIENT</strong></span>
+            </td>
+            <td colspan="5">
+                <div class="d-flex gap-2">
+                    <input asp-for="PatientFirstName" class="form-control" placeholder="First Name" />
+                    <input asp-for="PatientMiddleName" class="form-control" placeholder="Middle Name" />
+                    <input asp-for="PatientLastName" class="form-control" placeholder="Last Name" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span><strong>Patient Diagnosis:</strong></span>
+            </td>
+            <td colspan="5">
+                <input asp-for="PatientDiagnosis" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span><strong>Hospital Number:</strong></span>
+            </td>
+            <td colspan="2">
+                <input asp-for="HospitalNumber" class="form-control" />
+            </td>
+            <td>
+                <span><strong>Procedure location:</strong></span>
+            </td>
+            <td colspan="2">
+                <input asp-for="ProcedureLocation" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span><strong>Date of Birth:</strong></span>
+            </td>
+            <td>
+                <input asp-for="Birthday" type="date" class="form-control" />
+            </td>
+            <td>
+                <span><strong>Age:</strong></span>
+            </td>
+            <td>
+                <input asp-for="Age" class="form-control" />
+            </td>
+            <td>
+                <span><strong>Sex/Gender:</strong></span>
+            </td>
+            <td>
+                <select asp-for="Sex" class="form-control text-center">
+                    <option value="">-- Select Sex --</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span><strong>Reason for Insertion:</strong></span>
+            </td>
+            <td colspan="2">
+                <select asp-for="ReasonforInsertion" class="form-control text-center">
+                    <option value="">-- Select Insertion --</option>
+                    <option value="Elective">Elective</option>
+                    <option value="Malfunction">Malfunction</option>
+                    <option value="Emergent">Emergent</option>
+                </select>
+            </td>
+            <td>
+                <span><strong>Catheter Type:</strong></span>
+            </td>
+            <td colspan="2">
+                <select asp-for="CatheterType" class="form-control text-center">
+                    <option value="">-- Select Type --</option>
+                    <option value="Dialysis">Dialysis</option>
+                    <option value="Central Venous">Central Venous</option>
+                    <option value="PICC">PICC</option>
+                    <option value="PA">PA</option>
+                    <option value="Port">Port</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span><strong>Procedure Operator:</strong></span>
+            </td>
+            <td colspan="3">
+                <input asp-for="ProcedureOperator" class="form-control" />
+            </td>
+            <td>
+                <span><strong>Classification:</strong></span>
+            </td>
+            <td colspan="1">
+                <select asp-for="Classification" class="form-control text-center">
+                    <option value="">-- Select --</option>
+                    <option value="Pay">Pay</option>
+                    <option value="Service">Service</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span><strong>Number of Lumens:</strong></span>
+            </td>
+            <td colspan="5">
+                <input asp-for="NumberofLumens" class="form-control" />
+            </td>
+        </tr>
+    </table>
+    <div style="border: 1px solid black; background-color: #e6e6e6; padding: 10px; font-style: italic; font-family: Arial, sans-serif; margin: 20px auto;">
+        If there is a deviation in any of the critical steps, immediately notify the operator and stop the procedure.
+        If a correction is required, make a check mark in the “Yes with Reminder” column and note the correction in the comment space.
+        Report uncorrected deviations and complications of line placement.
+        Contact the attending if any item on the checklist is not adhered to or if there are any concerns.
+        Return this completed form to the designated person in your area.
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    <span>ESSENTIAL ELEMENTS FOR THE CENTRAL LINE BUNDLE</span>
+                </th>
+                <th style="width: 60px; text-align: center;">
+                    <span>YES</span>
+                </th>
+                <th>
+                    <span>
+                        Yes, with reminder
+                    </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span><strong>Optimal catheter site selection:</strong></span>
+                    <ul style="margin-left: 20px; padding-left: 20px;">
+                        <li>IJ is the preferred site for central lines over femoral</li>
+                        <li>Explain why alternate is used. </li>
+                    </ul>
+                    <textarea asp-for="ExplainWhyAlternate" class="form-control" rows="3" placeholder="Explain"></textarea>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="Optimal" />
+                </td>
+                <td>
+                    <span>Body site:</span><br />
+                    <input class="form-check-input" asp-for="Left" /> @Html.DisplayNameFor(model => model.Left)
+                    <input class="form-check-input" asp-for="Right" /> @Html.DisplayNameFor(model => model.Right)
+                    <br />
+                    <div class="row">
+                        <div class="col-md-6 d-flex align-items-center">
+                            <input class="form-check-input me-1" asp-for="AnatomyIs" />
+                            <span>Anatomy is distorted, prior to surgery</span>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <input class="form-check-input me-1" asp-for="Anesthesiologist" />
+                            <span>Anesthesiologist placed</span>
+                        </div>
+
+                        <div class="col-md-6 d-flex align-items-center">
+                            <input class="form-check-input me-1" asp-for="ChestWall" />
+                            <span>Chest wall infection</span>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <input class="form-check-input me-1" asp-for="Coagulopathy" />
+                            <span>Coagulopathy</span>
+                        </div>
+
+                        <div class="col-md-6 d-flex align-items-center">
+                            <input class="form-check-input me-1" asp-for="COPD" />
+                            <span>COPD severe/lung disease</span>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <input class="form-check-input me-1" asp-for="Dialysis" />
+                            <span>Dialysis line placed</span>
+                        </div>
+
+                        <div class="col-md-6 d-flex align-items-center">
+                            <input class="form-check-input me-1" asp-for="Emergency" />
+                            <span>Emergency</span>
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <input class="form-check-input me-1" asp-for="OperatorTraining" />
+                            <span>Operator training</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <span>
+                        <strong>
+                            I. BEFORE THE PROCEDURE
+                        </strong>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>
+                        1. Obtain informed consent.
+                    </span>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="ObtainInformedConsent" />
+                </td>
+                <td>
+                    <textarea asp-for="ObtainInformedConsentReminder" class="form-control"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>
+                        2. Confirm hand hygiene immediately prior to the procedure.
+                    </span>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="ConfirmHandHygiene" />
+                </td>
+                <td>
+                    <textarea asp-for="ConfirmHandHygieneReminder" class="form-control"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>
+                        3. Use full-barrier precautions:
+                    </span>
+                    <ul style="margin-left: 20px; padding-left: 20px;">
+                        <li>
+                            Operator: Cap, mask, sterile gown and gloves, eye
+                            protection
+                        </li>
+                        <li>
+                            Assistant: Cap, mask, isolation gown and gloves, eye
+                            protection (if at risk for entering sterile field, use
+                            sterile gown and gloves)
+                        </li>
+                        <li>
+                            Supervisor/Observer: Cap, mask, sterile gown and
+                            gloves, eye protection
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="UseFullBarrier" />
+                </td>
+                <td>
+                    <textarea asp-for="UseFullBarrierReminder" class="form-control"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>
+                        4. Perform skin antisepsis using chlorhexidine/povidone
+                        iodine solution.
+                    </span>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="PerformSkin" />
+                </td>
+                <td>
+                    <textarea asp-for="PerformSkinReminder" class="form-control"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>
+                        5. Allow site to dry.
+                    </span>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="AllowSite" />
+                </td>
+                <td>
+                    <textarea asp-for="AllowSiteReminder" class="form-control"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>
+                        6. Use sterile technique to drape patient from head to toe.
+                    </span>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="UseSterile" />
+                </td>
+                <td>
+                    <textarea asp-for="UseSterileReminder" class="form-control"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <span><strong>II. DURING THE PROCEDURE </strong></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>
+                        7. Maintain a sterile field.
+                    </span>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="Maintain" />
+                </td>
+                <td>
+                    <textarea asp-for="MaintainReminder" class="form-control"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>
+                        8. Monitor that catheter were not cut.
+                    </span>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="Monitor" />
+                </td>
+                <td>
+                    <textarea asp-for="MonitorReminder" class="form-control"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <span>
+                        <strong>
+                            III. AFTER INSERTION
+                        </strong>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>
+                        9. Clean blood from the site using antiseptic agent
+                        (chlorhexidine/povidone iodine) and apply sterile dressing.
+                    </span>
+                </td>
+                <td>
+                    <input class="form-check-input" asp-for="CleanBlood" />
+                </td>
+                <td>
+                    <textarea asp-for="CleanBloodReminder" class="form-control"></textarea>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <span>
+        <strong>
+            PROCEDURE NOTES
+        </strong>
+    </span>
+    <textarea asp-for="ProcedureNotes" class="form-control"></textarea>
+<br />
+
+
+    <div class="row text-center mt-4">
+        <div class="col-md-6">
+            <div class="form-group">
+                <input asp-for="Observer" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 text-center" style="border-bottom: 2px solid #000;" />
+                <strong>Observer</strong><br />
+                <small class="text-muted">Signature over printed name and Date signed</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <input asp-for="Operator" class="form-control border-top-0 border-start-0 border-end-0 rounded-0 text-center" style="border-bottom: 2px solid #000;" />
+                <strong>Operator</strong><br />
+                <small class="text-muted">Signature over printed name and Date signed</small>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+        </form>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
