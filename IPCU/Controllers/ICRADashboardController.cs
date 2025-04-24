@@ -71,8 +71,6 @@ namespace IPCU.Controllers
             return View(allPendingICRAs);
         }
 
-        // GET: ICRADashboard/AdminICN
-        // GET: ICRADashboard/AdminICN
         [Authorize(Roles = "Admin,ICN")]
         public async Task<IActionResult> AdminICN()
         {
@@ -102,7 +100,7 @@ namespace IPCU.Controllers
                 .ToListAsync();
 
             // All completed ICRAs (both high and low risk)
-            var completedICRAs = await _context.ICRA
+            var allCompletedICRAs = await _context.ICRA
                 .Where(i => ((i.PreventiveMeasures.Contains("3") ||
                             i.PreventiveMeasures.Contains("4") ||
                             i.PreventiveMeasures.Contains("5") ||
@@ -119,12 +117,25 @@ namespace IPCU.Controllers
                             !string.IsNullOrEmpty(i.ICPSign)))
                 .ToListAsync();
 
+            // Get all post-construction records
+            var postConstructions = await _context.PostConstruction.ToListAsync();
+
+            // Create view models for completed ICRAs with post-construction info
+            var completedICRAs = allCompletedICRAs.Select(icra => new CompletedICRAViewModel
+            {
+                ICRA = icra,
+                HasPostConstruction = postConstructions.Any(pc => pc.ICRAId == icra.Id),
+                PostConstructionId = postConstructions.FirstOrDefault(pc => pc.ICRAId == icra.Id)?.Id
+            }).ToList();
+
+            // Get count of ICRAs with post-construction forms
+            var postConstructionCount = completedICRAs.Count(c => c.HasPostConstruction);
+
             ViewBag.PendingCount = highRiskICRAs.Count;
             ViewBag.LowRiskCount = lowRiskICRAs.Count;
             ViewBag.CompletedCount = completedICRAs.Count;
+            ViewBag.PostConstructionCount = postConstructionCount;
             ViewBag.CompletedICRAs = completedICRAs;
-
-            // Send separate lists to the view
             ViewBag.HighRiskICRAs = highRiskICRAs;
             ViewBag.LowRiskICRAs = lowRiskICRAs;
 
