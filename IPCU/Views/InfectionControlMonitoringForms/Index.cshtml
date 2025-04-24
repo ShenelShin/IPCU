@@ -108,7 +108,7 @@
     };
 }
 
-<tr><td colspan="5"><strong>Patient Exam/Treatment Rooms:</strong></td></tr>
+
 
 @foreach (var item in patientExamItems)
 {
@@ -564,27 +564,32 @@
 
         // On page load: handle pre-selected FU options
         document.querySelectorAll('.action-radio:checked').forEach(radio => {
+            const base = radio.dataset.target;
+            const dateInput = document.getElementById(`${base}_FuDate`);
+            const remarksInput = document.getElementById(`${base}_FuRemarks`);
             if (radio.value === 'FU') {
-                const base = radio.dataset.target;
-                const dateInput = document.getElementById(`${base}_FuDate`);
-                const remarksInput = document.getElementById(`${base}_FuRemarks`);
                 const today = new Date().toISOString().split('T')[0];
-
                 if (!dateInput.value) {
                     dateInput.value = today;
                 }
-
                 dateInput.disabled = false;
                 remarksInput.disabled = false;
             } else {
-                const base = radio.dataset.target;
-                const dateInput = document.getElementById(`${base}_FuDate`);
-                const remarksInput = document.getElementById(`${base}_FuRemarks`);
                 dateInput.value = '';
                 dateInput.disabled = true;
                 remarksInput.value = '';
                 remarksInput.disabled = true;
             }
         });
+
+        // ✅ Enable all inputs before form submission
+        const form = document.querySelector('form'); // update selector if needed
+        if (form) {
+            form.addEventListener('submit', function () {
+                form.querySelectorAll('input:disabled').forEach(input => {
+                    input.disabled = false;
+                });
+            });
+        }
     });
 </script>
