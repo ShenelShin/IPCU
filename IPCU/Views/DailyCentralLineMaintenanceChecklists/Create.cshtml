@@ -1,0 +1,197 @@
+﻿@model IPCU.Models.DailyCentralLineMaintenanceChecklist
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Daily Central Line Maintenance Checklist</h4>
+
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <table class="table table-bordered">
+                <tr>
+                    <td style="width: 10%;">
+                        <label asp-for="AreaOrUnit" class="control-label">AREA/UNIT:</label>
+                    </td>
+                    <td style="width: 50%;">
+                        <input asp-for="AreaOrUnit" class="form-control" />
+                        <span asp-validation-for="AreaOrUnit" class="text-danger"></span>
+                    </td>
+                    <td style="width: 40%;" rowspan="2">
+                        <label asp-for="DateAndTimeOfMonitoring" class="control-label">DATE AND TIME OF MONITORING</label>
+                        <input asp-for="DateAndTimeOfMonitoring" type="date" class="form-control" />
+                        <span asp-validation-for="DateAndTimeOfMonitoring" class="text-danger"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label asp-for="AssessedBy" class="control-label">ASSESSED BY:</label>
+                    </td>
+                    <td>
+                        <input asp-for="AssessedBy" class="form-control" />
+                        <span asp-validation-for="AssessedBy" class="text-danger"></span>
+                        <div class="small text-muted mt-2">
+                            Regular monitoring with feedback of results to staff can maintain or improve adherence to Central Line Prevention Bundle. Monitoring may be performed in any type of patient care location where patients are mechanically ventilated.
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <div class="alert alert-secondary">
+                <strong>Instructions:</strong> Observe at least 3-5 patients on a ventilator. Identify observed staff as nursing (RN) or respiratory therapy (RT). Observe each practice and check a box if adherent. In the column on the right, record the total number of "✓" for adherent practices observed and the total number of observations. Calculate adherence percentage in the last row.
+            </div>
+
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th colspan="2" class="text-center bg-light">CLABSI Prevention Practices</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="width: 50%;">
+                    <label asp-for="Patient" class="control-label">Patient:</label>
+                    <input asp-for="Patient" class="form-control form-control-sm d-inline-block" style="width: 60%;" />
+                    <span asp-validation-for="Patient" class="text-danger"></span>
+                </td>
+                <td style="width: 50%;">
+                    <label asp-for="Bed" class="control-label">Bed:</label>
+                    <input asp-for="Bed" class="form-control form-control-sm d-inline-block" style="width: 60%;" />
+                    <span asp-validation-for="Bed" class="text-danger"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><label asp-for="InitialPlacement"></label></td>
+                <td><input asp-for="InitialPlacement" type="date" class="form-control form-control-sm" /></td>
+            </tr>
+            <tr>
+                <td><label asp-for="Implanted"></label></td>
+                <td><input asp-for="Implanted" type="date" class="form-control form-control-sm" /></td>
+            </tr>
+            <tr>
+                <td><label asp-for="Injection"></label></td>
+                <td><input asp-for="Injection" type="date" class="form-control form-control-sm" /></td>
+            </tr>
+            <tr>
+                <td><label asp-for="Dateadministration"></label></td>
+                <td><input asp-for="Dateadministration" type="date" class="form-control form-control-sm" /></td>
+            </tr>
+
+            @* Yes/No radio buttons *@
+            <tr>
+                <td>
+                    1. Necessity assessed; if no longer necessary, remove,
+                    indicating details of removal in the records (including
+                    date, location, and signature and name of operator
+                    undertaking removal).
+                </td>
+                <td>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Necessityassessed" class="form-check-input" value="true" /> Yes
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Necessityassessed" class="form-check-input" value="false" /> No
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>2. Injection sites are covered by caps or valves</td>
+                <td>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Injectionsites" class="form-check-input" value="true" /> Yes
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Injectionsites" class="form-check-input" value="false" /> No
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>3. Caps changed today</td>
+                <td>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Capschanged" class="form-check-input" value="true" /> Yes
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Capschanged" class="form-check-input" value="false" /> No
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>4. Insertion site without infection</td>
+                <td>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Insertionsite" class="form-check-input" value="true" /> Yes
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Insertionsite" class="form-check-input" value="false" /> No
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>5. Dressing is intact</td>
+                <td>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Dressingintact" class="form-check-input" value="true" /> Yes
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Dressingintact" class="form-check-input" value="false" /> No
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>6. Dressing changed weekly or when soiled</td>
+                <td>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Dressingchanged" class="form-check-input" value="true" /> Yes
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" asp-for="Dressingchanged" class="form-check-input" value="false" /> No
+                    </div>
+                </td>
+            </tr>
+
+            @* Remarks Section *@
+            <tr>
+                <td colspan="2" class="font-weight-bold">REMARKS/Other Observations</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <textarea asp-for="Remarks" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                </td>
+            </tr>
+
+            @* Summary Fields *@
+            <tr>
+                <td><label asp-for="NumCompliant"></label></td>
+                <td><input asp-for="NumCompliant" type="number" class="form-control form-control-sm" /></td>
+            </tr>
+            <tr>
+                <td><label asp-for="TotalObserved"></label></td>
+                <td><input asp-for="TotalObserved" type="number" class="form-control form-control-sm" /></td>
+            </tr>
+            <tr>
+                <td><label asp-for="ComplianceRate"></label></td>
+                <td><input asp-for="ComplianceRate" type="number" class="form-control form-control-sm" /></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+        <div class="form-group" style="max-width: 300px;">
+            <button type="submit" class="btn btn-primary" style="font-size: 0.875rem;">Submit</button>
+        </div>
+        </form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
