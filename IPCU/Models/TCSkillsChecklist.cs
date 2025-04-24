@@ -1,10 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IPCU.Models
 {
     public class TCSkillsChecklist
     {
         public int Id { get; set; }
+        // Add this property to create the relationship with ICRA
+        public int ICRAId { get; set; }
+
+        // Add this navigation property to enable EF Core to establish the relationship
+        [ForeignKey("ICRAId")]
+        public virtual ICRA? ICRA { get; set; }
+
         public string Area { get; set; }             
         public string ObserverName { get; set; }      
         public DateTime Date { get; set; }            // 2024-04-05  // 10:45

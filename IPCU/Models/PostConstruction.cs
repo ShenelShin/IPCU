@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -8,6 +9,10 @@ namespace IPCU.Models
     {
         [Key]
         public int Id { get; set; }
+
+        public int ICRAId { get; set; }
+        [ForeignKey("ICRAId")]
+        public virtual ICRA? ICRA { get; set; }
         public string ProjectReferenceNumber { get; set; }
         public string ProjectNameAndDescription { get; set; }
         public string SpecificSiteOfActivity { get; set; }

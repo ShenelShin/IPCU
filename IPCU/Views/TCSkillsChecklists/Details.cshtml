@@ -3,7 +3,15 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<!-- Add this section near the top of your Details view -->
+<div class="mb-3">
+    <h4>Associated ICRA</h4>
+    <div>
+        <a asp-controller="ICRAs" asp-action="Details" asp-route-id="@Model.ICRAId">
+            View ICRA #@Model.ICRAId
+        </a>
+    </div>
+</div>
 <h1>Details</h1>
 
 <div>

@@ -23,7 +23,34 @@
             <img src="/images/nkti-right-logo.png" alt="Right Logo" class="h-20 w-auto" />
         </div>
     </div>
+    <form asp-action="Create">
+        <!-- Error Summary Display -->
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                <h4>Error</h4>
+                <ul>
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
 
+        <!-- Display missing fields if any -->
+        @if (ViewBag.MissingFields != null)
+        {
+            <div class="alert alert-warning">
+                <h4>Missing Required Fields</h4>
+                <p>Please fill in the following required fields: @ViewBag.MissingFields</p>
+            </div>
+        }
+
+        <p><strong>Note:</strong> This form is used by Infection Control Professional or their Designate to ensure the post construction area is ready for patient/ staff occupancy or turn-over.</p>
+
+        <!-- Rest of your form content -->
+    </form>
 
         <form asp-action="Create">
            
@@ -36,7 +63,8 @@
             <td>
                 <input asp-for="ProjectReferenceNumber" class="form-control" />
             </td>
-                    <th>Project/Activity Name and Description:</th>
+                <input type="hidden" asp-for="ICRAId" />
+                <th>Project/Activity Name and Description:</th>
             <td>
                 <input asp-for="ProjectNameAndDescription" class="form-control" />
             </td>
