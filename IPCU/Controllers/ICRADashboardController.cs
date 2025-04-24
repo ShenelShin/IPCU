@@ -464,5 +464,76 @@ namespace IPCU.Controllers
             // Redirect to TCSkillsChecklists Create action with the ICRA ID
             return RedirectToAction("Create", "TCSkillsChecklists", new { icraId = icra.Id });
         }
+
+        [Authorize(Roles = "Admin,ICN,Engineering")]
+        public async Task<IActionResult> ExportICRA(int id)
+        {
+            var icra = await _context.ICRA.FindAsync(id);
+            if (icra == null)
+            {
+                return NotFound();
+            }
+
+            var reportService = HttpContext.RequestServices.GetRequiredService<IReportService>();
+            var reportBytes = reportService.GenerateICRAReport(icra);
+
+            return File(reportBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"ICRA_Report_{icra.ProjectReferenceNumber}.xlsx");
+        }
+
+        [Authorize(Roles = "Admin,ICN")]
+        public async Task<IActionResult> ExportChecklist(int id)
+        {
+            var checklist = await _context.TCSkillsChecklist.FindAsync(id);
+            if (checklist == null)
+            {
+                return NotFound();
+            }
+
+            var reportService = HttpContext.RequestServices.GetRequiredService<IReportService>();
+            var reportBytes = reportService.GenerateTCSkillsChecklistReport(checklist);
+
+            return File(reportBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"Cleaning_Checklist_{checklist.Area}_{checklist.Date:yyyyMMdd}.xlsx");
+        }
+
+        [Authorize(Roles = "Admin,ICN")]
+        public async Task<IActionResult> ExportPostConstruction(int id)
+        {
+            var postConstruction = await _context.PostConstruction.FindAsync(id);
+            if (postConstruction == null)
+            {
+                return NotFound();
+            }
+
+            var reportService = HttpContext.RequestServices.GetRequiredService<IReportService>();
+            var reportBytes = reportService.GeneratePostConstructionReport(postConstruction);
+
+            return File(reportBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"Post_Construction_{postConstruction.ProjectReferenceNumber}.xlsx");
+        }
+
+        [Authorize(Roles = "Admin,ICN")]
+        public async Task<IActionResult> ExportCombinedReport(int id)
+        {
+            var icra = await _context.ICRA.FindAsync(id);
+            if (icra == null)
+            {
+                return NotFound();
+            }
+
+            var checklists = await _context.TCSkillsChecklist
+                .Where(c => c.ICRAId == id)
+                .ToListAsync();
+
+            var postConstruction = await _context.PostConstruction
+                .FirstOrDefaultAsync(p => p.ICRAId == id);
+
+            var reportService = HttpContext.RequestServices.GetRequiredService<IReportService>();
+            var reportBytes = reportService.GenerateCombinedReport(icra, checklists, postConstruction);
+
+            return File(reportBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"Combined_Report_{icra.ProjectReferenceNumber}.xlsx");
+        }
     }
 }

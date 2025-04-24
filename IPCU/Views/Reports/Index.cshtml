@@ -1,0 +1,116 @@
+﻿@model List<IPCU.Models.ICRA>
+@{
+    ViewData["Title"] = "ICRA Report Selection";
+}
+<div class="container mt-4">
+    <h1>Select ICRAs for Report</h1>
+    <p>Choose one or more ICRAs below to include in the Excel report.</p>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    <form asp-action="GenerateExcel" method="post">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="selectAll" />
+                        </th>
+                        <th>ID</th>
+                        <th>Project Reference</th>
+                        <th>Project Name</th>
+                        <th>Location</th>
+                        <th>Contractor</th>
+                        <th>Risk Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="selectedICRAs" value="@item.Id" class="icra-checkbox" />
+                            </td>
+                            <td>@item.Id</td>
+                            <td>@item.ProjectReferenceNumber</td>
+                            <td>@item.ProjectNameAndDescription</td>
+                            <td>@item.SpecificSiteOfActivity</td>
+                            <td>@item.ContractorRepresentativeName</td>
+                            <td>
+                                @{
+                                    string riskLevel = "Unknown";
+                                    var preventiveMeasures = item.PreventiveMeasures?.ToLower() ?? "";
+
+                                    if (preventiveMeasures.Contains("5") || preventiveMeasures.Contains("class v"))
+                                        riskLevel = "Class V (Highest)";
+                                    else if (preventiveMeasures.Contains("4") || preventiveMeasures.Contains("class iv"))
+                                        riskLevel = "Class IV";
+                                    else if (preventiveMeasures.Contains("3") || preventiveMeasures.Contains("class iii"))
+                                        riskLevel = "Class III";
+                                    else if (preventiveMeasures.Contains("2") || preventiveMeasures.Contains("class ii"))
+                                        riskLevel = "Class II";
+                                    else if (preventiveMeasures.Contains("1") || preventiveMeasures.Contains("class i"))
+                                        riskLevel = "Class I (Lowest)";
+                                }
+                                @riskLevel
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group mt-3">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <span id="selectedCount" class="text-muted">0 ICRAs selected</span>
+                </div>
+                <div>
+                    <a asp-action="Index" class="btn btn-secondary mr-2">Back to Reports</a>
+                    <button type="submit" class="btn btn-success" id="generateBtn" disabled>Generate Excel Report</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Select all checkbox functionality
+            $("#selectAll").change(function () {
+                $(".icra-checkbox").prop('checked', $(this).prop('checked'));
+                updateSelectedCount();
+                updateGenerateButton();
+            });
+
+            // Individual checkbox change event
+            $(".icra-checkbox").change(function () {
+                updateSelectedCount();
+                updateGenerateButton();
+
+                // Update select all checkbox state
+                if ($(".icra-checkbox:checked").length === $(".icra-checkbox").length) {
+                    $("#selectAll").prop('checked', true);
+                } else {
+                    $("#selectAll").prop('checked', false);
+                }
+            });
+
+            // Update count display
+            function updateSelectedCount() {
+                var count = $(".icra-checkbox:checked").length;
+                $("#selectedCount").text(count + (count === 1 ? " ICRA selected" : " ICRAs selected"));
+            }
+
+            // Enable/disable generate button based on selection
+            function updateGenerateButton() {
+                var count = $(".icra-checkbox:checked").length;
+                $("#generateBtn").prop('disabled', count === 0);
+            }
+        });
+    </script>
+}

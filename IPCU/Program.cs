@@ -28,6 +28,8 @@ builder.Services.AddScoped<HAIDischargeExcelService>();
 builder.Services.AddScoped<HaiReportService>();
 builder.Services.AddScoped<HaiExcelExportService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddScoped<IReportService, ReportService>();
+
 
 
 
