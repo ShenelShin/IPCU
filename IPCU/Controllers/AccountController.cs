@@ -18,10 +18,14 @@ public class AccountController : Controller
     // Register GET
     public IActionResult Register() => View();
 
-    // Register POST
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
+        if (model.Password != model.ConfirmPassword)
+        {
+            ModelState.AddModelError("ConfirmPassword", "The password and confirmation password do not match.");
+        }
+
         if (ModelState.IsValid)
         {
             var user = new ApplicationUser
@@ -35,18 +39,23 @@ public class AccountController : Controller
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
+
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Dashboard", "Home");
+                return RedirectToAction("Index", "Home");
             }
+
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error.Description);
             }
         }
+
         return View(model);
     }
+
+
 
     // Login GET
     public IActionResult Login() => View();
@@ -62,7 +71,9 @@ public class AccountController : Controller
             {
                 return RedirectToAction("Index", "Home");
             }
-            ModelState.AddModelError("", "Invalid login attempt.");
+
+            // Add error message to ViewData
+            ViewData["ErrorMessage"] = "Invalid login attempt. Please check your email and password.";
         }
         return View(model);
     }
@@ -74,4 +85,5 @@ public class AccountController : Controller
         await _signInManager.SignOutAsync();
         return RedirectToAction("Login", "Account");
     }
+
 }
