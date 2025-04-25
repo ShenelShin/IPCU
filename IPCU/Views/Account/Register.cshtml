@@ -12,7 +12,21 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/2913/2913977.png" alt="Hospital Logo" width="80">
                 <h4 class="mt-2 text-primary fw-bold">IPCU SYSTEM</h4>
             </div>
-
+       
+            <!-- OR use this for classic Bootstrap-style -->
+            @* Shows only model-level (not per-field) validation errors *@
+            <partial name="_ValidationScriptsPartial" />
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    </ul>
+                </div>
+            }
             <div class="card-body p-4">
                 <h5 class="text-center text-secondary">Create a new account</h5>
                 <form asp-action="Register" method="post">
@@ -34,12 +48,16 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold"><i class="fa fa-lock"></i> Password</label>
-                        <input asp-for="Password" type="password" class="form-control shadow-sm rounded-3" placeholder="Enter Password" />
+                        <input asp-for="Password" type="password" class="form-control shadow-sm rounded-3" placeholder="Enter Password" id="Password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold"><i class="fa fa-lock"></i> Confirm Password</label>
-                        <input asp-for="ConfirmPassword" type="password" class="form-control shadow-sm rounded-3" placeholder="Confirm Password" />
+                        <input asp-for="ConfirmPassword" type="password" class="form-control shadow-sm rounded-3" placeholder="Confirm Password" id="ConfirmPassword" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        <div id="passwordMatchMessage" class="mt-1"></div>
                     </div>
+
                     <button type="submit" class="btn btn-success w-100 py-2 fw-semibold shadow-sm">Register</button>
                 </form>
             </div>
@@ -55,3 +73,27 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const password = document.getElementById('Password');
+        const confirmPassword = document.getElementById('ConfirmPassword');
+        const message = document.getElementById('passwordMatchMessage');
+
+        function checkPasswords() {
+            if (confirmPassword.value === '') {
+                message.innerHTML = '';
+                return;
+            }
+
+            if (password.value === confirmPassword.value) {
+                message.innerHTML = '<span class="text-success"><i class="fa fa-check-circle"></i> Passwords match</span>';
+            } else {
+                message.innerHTML = '<span class="text-danger"><i class="fa fa-times-circle"></i> Passwords do not match</span>';
+            }
+        }
+
+        password.addEventListener('input', checkPasswords);
+        confirmPassword.addEventListener('input', checkPasswords);
+    </script>
+}
