@@ -23,9 +23,13 @@ namespace IPCU.Models
         public bool Laboratory { get; set; }
         public bool Radiology { get; set; }
         public string? Referredby { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? ReferredbyDnT { get; set; }
 
         public string? Receivedby { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? ReceivedbyDnT { get; set; }
     }
 }

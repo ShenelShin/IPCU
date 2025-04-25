@@ -3,117 +3,158 @@
 @{
     ViewData["Title"] = "Edit";
 }
+<style>
+    table input,
+    table select,
+    table textarea {
+        pointer-events: none;
+        background-color: #f9f9f9;
+        border: none;
+        color: #333;
+    }
 
-<h1>Edit</h1>
+</style>
+<h1>Acknowledge Referral</h1>
 
 <h4>NoticeOfReferral</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+
         <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="PatientLastName" class="control-label"></label>
-                <input asp-for="PatientLastName" class="form-control" />
-                <span asp-validation-for="PatientLastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PatientFirstName" class="control-label"></label>
-                <input asp-for="PatientFirstName" class="form-control" />
-                <span asp-validation-for="PatientFirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PatientMiddleName" class="control-label"></label>
-                <input asp-for="PatientMiddleName" class="form-control" />
-                <span asp-validation-for="PatientMiddleName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AreaUnit" class="control-label"></label>
-                <input asp-for="AreaUnit" class="form-control" />
-                <span asp-validation-for="AreaUnit" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Age" class="control-label"></label>
-                <input asp-for="Age" class="form-control" />
-                <span asp-validation-for="Age" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Sex" class="control-label"></label>
-                <input asp-for="Sex" class="form-control" />
-                <span asp-validation-for="Sex" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DOD" class="control-label"></label>
-                <input asp-for="DOD" class="form-control" />
-                <span asp-validation-for="DOD" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="InitialDiagnosis" class="control-label"></label>
-                <input asp-for="InitialDiagnosis" class="form-control" />
-                <span asp-validation-for="InitialDiagnosis" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="HAAT" /> @Html.DisplayNameFor(model => model.HAAT)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Communicable" /> @Html.DisplayNameFor(model => model.Communicable)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Fever" /> @Html.DisplayNameFor(model => model.Fever)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="PostOp" /> @Html.DisplayNameFor(model => model.PostOp)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ReAdmitted" /> @Html.DisplayNameFor(model => model.ReAdmitted)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Laboratory" /> @Html.DisplayNameFor(model => model.Laboratory)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Radiology" /> @Html.DisplayNameFor(model => model.Radiology)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Referredby" class="control-label"></label>
-                <input asp-for="Referredby" class="form-control" />
-                <span asp-validation-for="Referredby" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReferredbyDnT" class="control-label"></label>
-                <input asp-for="ReferredbyDnT" class="form-control" />
-                <span asp-validation-for="ReferredbyDnT" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Receivedby" class="control-label"></label>
-                <input asp-for="Receivedby" class="form-control" />
-                <span asp-validation-for="Receivedby" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReceivedbyDnT" class="control-label"></label>
-                <input asp-for="ReceivedbyDnT" class="form-control" />
-                <span asp-validation-for="ReceivedbyDnT" class="text-danger"></span>
-            </div>
+    <table class="table table-bordered">
+
+        <tr>
+            <td>
+                <span><strong>NAME OF PATIENT</strong></span>
+            </td>
+            <td colspan="3">
+                <div class="d-flex gap-2">
+                    <input asp-for="PatientFirstName" class="form-control" placeholder="First Name" />
+                    <input asp-for="PatientMiddleName" class="form-control" placeholder="Middle Name" />
+                    <input asp-for="PatientLastName" class="form-control" placeholder="Last Name" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span><strong>AREA/ROOM</strong></span>
+            </td>
+            <td>
+                <div class="d-flex gap-2">
+                    <input asp-for="AreaUnit" class="form-control" placeholder="AREA/ROOM" />
+                </div>
+            </td>
+            <td>
+                <span><strong>AGE/SEX</strong></span>
+            </td>
+            <td>
+                <div class="d-flex gap-2">
+                    <input asp-for="Age" class="form-control" placeholder="Age" />
+                    <select asp-for="Sex" class="form-control">
+                        <option value="">-- Select Sex --</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>
+                    <strong>
+                        DATE OF
+                        ADMISSION
+                    </strong>
+                </span>
+            </td>
+            <td>
+                <div class="d-flex gap-2">
+                    <input asp-for="DOA" type="date" class="form-control" />
+                </div>
+            </td>
+            <td>
+                <span>
+                    <strong>
+                        DATE OF DISCHARGE
+                        (LAST ADMISSION)
+                    </strong>
+                </span>
+            </td>
+            <td>
+                <div class="d-flex gap-2">
+                    <input asp-for="DOD" type="date" class="form-control" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span>
+                    <strong>
+                        INITIAL DIAGNOSIS
+                    </strong>
+                </span>
+            </td>
+            <td colspan="3">
+                <div class="d-flex gap-2">
+                    <input asp-for="InitialDiagnosis" class="form-control" />
+                </div>
+            </td>
+
+        </tr>
+    </table>
+    <table class="table table-bordered">
+        <tr>
+            <td>
+                <input class="form-check-input" asp-for="HAAT" />
+                <span style="font-size: 18px;">HAAT Referral</span> <br />
+
+                <input class="form-check-input" asp-for="Communicable" />
+                <span style="font-size: 18px;">Communicable / Infectious Disease (Suspect or Confirmed)</span> <br />
+
+                <input class="form-check-input" asp-for="Fever" />
+                <span style="font-size: 18px;">Fever, 2 days after admission</span> <br />
+
+                <input class="form-check-input" asp-for="PostOp" />
+                <span style="font-size: 18px;">Post-operative Fever (within 1 month)</span> <br />
+
+                <input class="form-check-input" asp-for="ReAdmitted" />
+                <span style="font-size: 18px;">Patient re-admitted within 1 week</span> <br />
+
+                <input class="form-check-input" asp-for="Laboratory" />
+                <span style="font-size: 18px;">Laboratory Result (AFB positive, MDROs such as VRE, ESBL, Clostridium difficile)</span> <br />
+
+                <input class="form-check-input" asp-for="Radiology" />
+                <span style="font-size: 18px;">Radiology Report (PTB)</span> <br />
+            </td>
+        </tr>
+
+
+    </table>
+    <span style="font-style: italic; font-size: smaller;">
+        Note: Please forward slip within 8 hours to IPCU Office.<br />
+        In case the IPC Nurse is not on duty, refer to IDS on duty
+    </span>
+
+
+    <div class="form-group">
+        <span><strong>Referred by:</strong></span>
+        <div style="display: flex; gap: 10px; margin-top: 5px;">
+            <input asp-for="Referredby" class="form-control" style="width: 50%;" disabled/>
+            <input asp-for="ReferredbyDnT" type="date" class="form-control" style="width: 50%;" disabled />
+        </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom: 8px;">
+        <span><strong>Received by:</strong></span>
+        <div style="display: flex; gap: 10px; margin-top: 5px;">
+            <input asp-for="Receivedby" class="form-control" style="width: 50%;" />
+            <input asp-for="ReceivedbyDnT" type="date" class="form-control" style="width: 50%;" required/>
+        </div>
+    </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-</div>
 
 <div>
     <a asp-action="Index">Back to List</a>
