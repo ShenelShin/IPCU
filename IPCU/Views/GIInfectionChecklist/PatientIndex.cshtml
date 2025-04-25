@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IPCU.Models.InfectionControl.Models.InfectionControlMonitoringForm>
+﻿@model IEnumerable<IPCU.Models.GIInfectionChecklist>
 @using IPCU.Models.InfectionControl.Models
 @{
     ViewData["Title"] = "Environmental Cleaning and Disinfection";
@@ -11,9 +11,10 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>Area/Unit</th>
-            <th>Date and Time of Monitoring</th>
-            <th>Assessed by</th>
+            <th>Hospital Number</th>
+            <th>Patient Name</th>
+            <th>Investigator</th>
+            <th>Admission Date</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -21,13 +22,14 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.AreaOrUnit</td>
-                <td>@item.DateAndTimeOfMonitoring.ToString("yyyy-MM-dd HH:mm")</td>
-                <td>@item.AssessedBy</td>
+                <td>@item.HospitalNumber</td>
+                <td>@($"{item.Fname} {item.Mname} {item.Lname}")</td>
+                <td>@item.Investigator</td>
                 <td>
-                    <a asp-controller="InfectionControlMonitoringForms" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">
-                        Edit
-                    </a>
+                    @(item.DateOfAdmission?.ToString("yyyy-MM-dd") ?? "N/A")
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">View</a>
                 </td>
             </tr>
         }
