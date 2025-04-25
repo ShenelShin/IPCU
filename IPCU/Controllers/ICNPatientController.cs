@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using IPCU.Data;
 using OfficeOpenXml.Style;
 using OfficeOpenXml;
+using IPCU.Services;
 
 namespace IPCU.Controllers
 {
@@ -609,6 +610,27 @@ namespace IPCU.Controllers
         public IActionResult DeviceMonitoringReport()
         {
             return RedirectToAction("Index", "DeviceMonitoringReport");
+        }
+
+        // Action method to generate and return the PDF for download
+        public IActionResult GenerateMechanicalVentilatorPDF()
+        {
+            return this.GenerateMechanicalVentilatorMonitoringPDF();
+        }
+
+        // Action method to generate and show the PDF in browser (print-friendly)
+        public IActionResult PrintMechanicalVentilatorPDF()
+        {
+            var service = new MechanicalVentilatorReportService();
+            var pdfData = service.GenerateMechanicalVentilatorReport();
+
+            // Return with inline content disposition to display in browser
+            return File(
+                pdfData,
+                "application/pdf",
+                $"MechanicalVentilatorMonitoring_{DateTime.Now:yyyyMMdd}.pdf",
+                true // Set inline disposition
+            );
         }
 
         // Add this action method to ICNPatientController
