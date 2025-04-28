@@ -8,6 +8,7 @@
     }
 </style>
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <div class="border border-black bg-white rounded-md p-4 space-y-4">
     <!-- HEADER -->
@@ -631,6 +632,14 @@
                 </tr>
             </tbody>
         </table>
+        <!-- Explanation Modal -->
+        <div class="modal fade" id="explanationModal" tabindex="-1" aria-labelledby="explanationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <!-- Content will be dynamically inserted -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="form-group">
@@ -677,6 +686,130 @@
                 document.getElementById('PreventiveMeasuresHidden').value = `Class ${selectedClass}`;
             }
         }
+
+
+                // Add this to the existing script section at the bottom of your form
+
+        function updatePreventiveMeasure() {
+            const constructionType = document.querySelector('input[name="ConstructionType"]:checked')?.value;
+            const patientRisk = document.querySelector('input[name="PatientRiskGroup"]:checked')?.value;
+
+            if (constructionType && patientRisk) {
+                const selectedClass = preventiveMatrix[constructionType][patientRisk];
+
+                // Uncheck all radio buttons for PreventiveMeasures
+                document.querySelectorAll('input[name="PreventiveMeasures"]').forEach(input => {
+                    input.checked = false;
+                });
+
+                // Check the correct radio button for display
+                const selectedInput = document.querySelector(`input[name="PreventiveMeasures"][value="Class ${selectedClass}"]`);
+                if (selectedInput) {
+                    selectedInput.checked = true;
+                }
+
+                // Update the hidden input to ensure value is submitted
+                document.getElementById('PreventiveMeasuresHidden').value = `Class ${selectedClass}`;
+
+                // Show explanation popup
+                showExplanationPopup(constructionType, patientRisk, selectedClass);
+            }
+        }
+
+        // Add this function to show the explanation popup
+        function showExplanationPopup(constructionType, patientRisk, classNumber) {
+            // Get descriptions for the selected options
+            const constructionDescriptions = {
+                "Type A": "Inspection and Non-Invasive Activities - Includes ceiling tile removal for visual inspection, painting (not sanding), wallcovering, electrical trim work, minor plumbing that doesn't generate dust.",
+                "Type B": "Small-scale, short-duration activities which create minimal dust - Includes telephone/computer cabling installation, access to chase spaces, cutting walls where dust can be controlled.",
+                "Type C": "Work that generates moderate to high dust or requires demolition - Includes wall sanding, floor covering removal, ceiling tile removal, new wall construction, minor ductwork above ceilings.",
+                "Type D": "Major demolition and construction projects - Includes activities requiring consecutive work shifts, heavy demolition, complete cabling system removal, new construction."
+            };
+
+            const riskDescriptions = {
+                "Low": "Non-patient care areas such as office areas",
+                "Medium": "Outpatient and general care areas (cardiology, radiology, physical therapy, etc.)",
+                "High": "In-patient units (CCU, ER, labor & delivery, laboratories, surgical units, etc.)",
+                "Highest": "Areas caring for immunocompromised patients (burn unit, ICUs, operating rooms, oncology, etc.)"
+            };
+
+            const classDescriptions = {
+                "I": "Basic dust control measures including minimizing dust and immediate replacement of ceiling tiles.",
+                "II": "Active dust control measures including water misting, sealing doors, blocking vents, dust mats, and HVAC isolation.",
+                "III": "Advanced controls including HVAC isolation, critical barriers, negative air pressure with HEPA filtration, and contained waste transport.",
+                "IV": "Maximum precautions including all Class III measures plus anteroom construction, HEPA vacuuming of personnel, shoe covers, and rigorous cleaning.",
+                "V": "Maximum precautions with additional oversight - highest level of infection control during construction."
+            };
+
+            // Create popup content
+            let popupContent = `
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">ICRA Class ${classNumber} Selected</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Your selections:</strong></p>
+                    <ul>
+                        <li><strong>Construction Activity:</strong> ${constructionType}</li>
+                        <li><strong>Patient Risk Group:</strong> ${patientRisk}</li>
+                    </ul>
+
+                    <p><strong>Based on the ICRA Matrix, these selections require Class ${classNumber} precautions.</strong></p>
+
+                    <div class="alert alert-info">
+                        <p><strong>Construction Type:</strong> ${constructionDescriptions[constructionType]}</p>
+                        <p><strong>Patient Risk Group:</strong> ${riskDescriptions[patientRisk]}</p>
+                        <p><strong>Class ${classNumber} Measures:</strong> ${classDescriptions[classNumber]}</p>
+                    </div>
+
+                    <p>For full details on the required precautions, please refer to the ICRA Matrix Reference at the bottom of this form.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            `;
+
+            // Create or update modal
+            let explanationModal = document.getElementById('explanationModal');
+
+            if (!explanationModal) {
+                // Create modal if it doesn't exist
+                const modalDiv = document.createElement('div');
+                modalDiv.innerHTML = `
+                    <div class="modal fade" id="explanationModal" tabindex="-1" aria-labelledby="explanationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                ${popupContent}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modalDiv.firstChild);
+                explanationModal = document.getElementById('explanationModal');
+            } else {
+                // Update existing modal content
+                explanationModal.querySelector('.modal-content').innerHTML = popupContent;
+            }
+
+            // Show the modal
+            const bsModal = new bootstrap.Modal(explanationModal);
+            bsModal.show();
+        }
+
+        // Make sure we have Bootstrap's Modal JavaScript
+        // If you don't have Bootstrap JS included already, add this at the top of the script section:
+        // document.addEventListener("DOMContentLoaded", () => {
+        //     if (typeof bootstrap === 'undefined') {
+        //         const script = document.createElement('script');
+        //         script.src = "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js";
+        //         document.head.appendChild(script);
+        //         script.onload = function() {
+        //             updatePreventiveMeasure(); // Initialize after loading Bootstrap
+        //         };
+        //     } else {
+        //         updatePreventiveMeasure(); // Initialize immediately if Bootstrap is already loaded
+        //     }
+        // });
 
         // Optional: initialize the form if values are already selected
         document.addEventListener("DOMContentLoaded", () => {
