@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using IPCU.Data;
 using OfficeOpenXml.Style;
 using OfficeOpenXml;
+using IPCU.Services;
 
 namespace IPCU.Controllers
 {
@@ -611,6 +612,27 @@ namespace IPCU.Controllers
             return RedirectToAction("Index", "DeviceMonitoringReport");
         }
 
+        // Action method to generate and return the PDF for download
+        public IActionResult GenerateMechanicalVentilatorPDF()
+        {
+            return this.GenerateMechanicalVentilatorMonitoringPDF();
+        }
+
+        // Action method to generate and show the PDF in browser (print-friendly)
+        public IActionResult PrintMechanicalVentilatorPDF()
+        {
+            var service = new MechanicalVentilatorReportService();
+            var pdfData = service.GenerateMechanicalVentilatorReport();
+
+            // Return with inline content disposition to display in browser
+            return File(
+                pdfData,
+                "application/pdf",
+                $"MechanicalVentilatorMonitoring_{DateTime.Now:yyyyMMdd}.pdf",
+                true // Set inline disposition
+            );
+        }
+
         // Add this action method to ICNPatientController
         // Modify your UpdateHaiStatus method like this:
         [HttpPost]
@@ -699,7 +721,6 @@ namespace IPCU.Controllers
             }
         }
 
-        // Add this action method to ICNPatientController
         public async Task<IActionResult> HaiChecklist(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -735,9 +756,9 @@ namespace IPCU.Controllers
                 .Where(m => m.HospNum == patient.HospNum)
                 .FirstOrDefaultAsync();
 
-            if (patientMaster == null || !patientMaster.HaiStatus)
+            if (patientMaster == null)
             {
-                // Redirect to details if patient doesn't have HAI status
+                // Redirect to details if patient doesn't exist
                 return RedirectToAction(nameof(Details), new { id });
             }
 
@@ -757,12 +778,33 @@ namespace IPCU.Controllers
                                          HaiStatus = m.HaiStatus,
                                          HaiCount = m.HaiCount
                                      })
-                               .FirstOrDefaultAsync();
+                                .FirstOrDefaultAsync();
 
             patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
 
-            // Return the HAI checklist view (which you'll create later)
-            return View(patientInfo);
+            // Get connected devices for this patient
+            var connectedDevices = await _context.DeviceConnected
+                .Where(d => d.HospNum == patient.HospNum)
+                .ToListAsync();
+
+            // Create device flags for conditional display of infection forms
+            var deviceFlags = new HAIDeviceFlags
+            {
+                HasCentralLine = connectedDevices.Any(d => d.DeviceType == "CL"),
+                HasIndwellingUrinaryCatheter = connectedDevices.Any(d => d.DeviceType == "IUC"),
+                HasMechanicalVentilator = connectedDevices.Any(d => d.DeviceType == "MV"),
+                // Add more device flags as needed
+            };
+
+            // Create the view model with both patient info and device flags
+            var viewModel = new HAIChecklistViewModel
+            {
+                Patient = patientInfo,
+                DeviceFlags = deviceFlags
+            };
+
+            // Return the HAI checklist view
+            return View(viewModel);
         }
 
 
