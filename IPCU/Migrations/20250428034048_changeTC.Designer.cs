@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250428034048_changeTC")]
+    partial class changeTC
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,6 +303,200 @@ namespace IPCU.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CardiovascularSystemInfection");
+                });
+
+            modelBuilder.Entity("IPCU.Models.ConstructionSite", b =>
+                {
+                    b.Property<int>("CSID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CSID"));
+
+                    b.Property<string>("AirHandlingUnitRunningComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AirHandlingUnitRunningSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AirhandlingAirExhaustedToAppropriateAreaComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AirhandlingAirExhaustedToAppropriateAreaSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AirhandlingMaintenanceLabelVisibleComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AirhandlingMaintenanceLabelVisibleSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AirhandlingNegativeAirMonitoredComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AirhandlingNegativeAirMonitoredSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AirhandlingWindowsClosedBehindBarrierComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AirhandlingWindowsClosedBehindBarrierSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BarrierDoorsSealedComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BarrierDoorsSealedSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BarrierFloorCleanComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BarrierFloorCleanSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BarrierICRA")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BarrierICRAComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BarrierTapeAdheringComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BarrierTapeAdheringSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BarrierWalkOffMatsComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BarrierWalkOffMatsSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContractorRepresentativeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContractorSign")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DresscodeProtectiveClothingWornComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DresscodeProtectiveClothingWornSelection")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DresscodeWorkersClothingCleanUponExitingComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DresscodeWorkersClothingCleanUponExitingSelection")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EngineeringSign")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EstimatedDuration")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ICPSign")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectNameAndDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectReferenceNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ProjectStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ProjectareaAirVentsSealedOrDuctworkCappedComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectareaAirVentsSealedOrDuctworkCappedSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectareaDebrisRemovedInCoveredContainerDailyComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectareaDebrisRemovedInCoveredContainerDailySelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectareaDesignatedConstructionRouteOrMapPostedComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectareaDesignatedConstructionRouteOrMapPostedSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectareaHEPAFilteredVacuumOnJobsiteComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectareaHEPAFilteredVacuumOnJobsiteSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectareaRoutineCleaningDoneOnSiteComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectareaRoutineCleaningDoneOnSiteSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectareaTrashInAppropriateContainerComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProjectareaTrashInAppropriateContainerSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ScopeOfWork")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SpecificSiteOfActivity")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TelephoneOrMobileNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrafficcontrolDoorsAndExitsFreeOfDebrisComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrafficcontrolDoorsAndExitsFreeOfDebrisSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrafficcontrolRestrictedToConstructionWorkersComments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrafficcontrolRestrictedToConstructionWorkersSelection")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnitAreaRep")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CSID");
+
+                    b.ToTable("ConstructionSites");
                 });
 
             modelBuilder.Entity("IPCU.Models.DailyCentralLineMaintenanceChecklist", b =>
@@ -4717,127 +4914,6 @@ namespace IPCU.Migrations
                     b.HasIndex("ICRAId");
 
                     b.ToTable("TCSkillsChecklist");
-                });
-
-            modelBuilder.Entity("IPCU.Models.TCSkillsChecklistReal", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Area")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateOfObservation")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsBathroomFloorScrubbed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsCleaningSolutionPrepared")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsColorCodedWasteEmptied")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDoorFrameWiped")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsEquipmentAndCartPrepared")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFaucetAndHandlesCleaned")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsGlovesRemovedAndHandHygieneDone")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsHandHygieneAfterPPE")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsHandHygieneAndGlovesDone")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsHighTouchAreasWiped")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsInfectiousWasteRemoved")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsLooseDebrisPickedUp")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsMirrorCleaned")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsOtherBathroomSurfacesCleaned")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsPPERemoved")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsProperAttireAndPPEWorn")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsRoomFloorMopped")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSignageChecked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSinkAreaCleaned")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSpillSoakedWithSolution")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsToiletAndFlushHandlesCleaned")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsUsedClothsDisposed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsVerticalSurfacesWiped")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsWallsCleaned")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsWasteContainersEmptied")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsWindowSillAndWindowCleaned")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ObserverName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostCleaningItems")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreCleaningItems")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RecommendationsOrActions")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnitAreaStaffSignature")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TCSkillsChecklistReal");
                 });
 
             modelBuilder.Entity("IPCU.Models.Trainee", b =>

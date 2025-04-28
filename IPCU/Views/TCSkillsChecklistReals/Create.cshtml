@@ -1,0 +1,237 @@
+﻿@model IPCU.Models.TCSkillsChecklistReal
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+<h4>TCSkillsChecklist</h4>
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Area" class="control-label">AREA:</label>
+                <input asp-for="Area" class="form-control" />
+                <span asp-validation-for="Area" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Date" class="control-label">DATE/TIME (mm/dd/yyyy):</label>
+                <input asp-for="Date" class="form-control" type="datetime-local" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="ObserverName" class="control-label">OBSERVER (Name):</label>
+                <input asp-for="ObserverName" class="form-control" />
+                <span asp-validation-for="ObserverName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info mt-3">
+        <strong>Instructions:</strong> Put [✓] if done, [x] if not, or indicate N/A if not applicable.
+    </div>
+
+    <!-- Section 1: PREPARATION AND SETUP -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5>1. PREPARATION AND SETUP</h5>
+        </div>
+        <div class="card-body">
+            <div class="form-check mb-2">
+                <input asp-for="IsEquipmentAndCartPrepared" class="form-check-input" />
+                <label asp-for="IsEquipmentAndCartPrepared" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsCleaningSolutionPrepared" class="form-check-input" />
+                <label asp-for="IsCleaningSolutionPrepared" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsProperAttireAndPPEWorn" class="form-check-input" />
+                <label asp-for="IsProperAttireAndPPEWorn" class="form-check-label"></label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: BASIC PROCEDURES -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5>2. BASIC PROCEDURES</h5>
+        </div>
+        <div class="card-body">
+            <div class="form-check mb-2">
+                <input asp-for="IsHandHygieneAndGlovesDone" class="form-check-input" />
+                <label asp-for="IsHandHygieneAndGlovesDone" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsSignageChecked" class="form-check-input" />
+                <label asp-for="IsSignageChecked" class="form-check-label"></label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: PATIENT ROOM CLEANING PROCEDURES -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5>3. PATIENT ROOM CLEANING PROCEDURES</h5>
+        </div>
+        <div class="card-body">
+            <div class="form-check mb-2">
+                <input asp-for="IsSpillSoakedWithSolution" class="form-check-input" />
+                <label asp-for="IsSpillSoakedWithSolution" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsWallsCleaned" class="form-check-input" />
+                <label asp-for="IsWallsCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsDoorFrameWiped" class="form-check-input" />
+                <label asp-for="IsDoorFrameWiped" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsWindowSillAndWindowCleaned" class="form-check-input" />
+                <label asp-for="IsWindowSillAndWindowCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsHighTouchAreasWiped" class="form-check-input" />
+                <label asp-for="IsHighTouchAreasWiped" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsVerticalSurfacesWiped" class="form-check-input" />
+                <label asp-for="IsVerticalSurfacesWiped" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsLooseDebrisPickedUp" class="form-check-input" />
+                <label asp-for="IsLooseDebrisPickedUp" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsRoomFloorMopped" class="form-check-input" />
+                <label asp-for="IsRoomFloorMopped" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsUsedClothsDisposed" class="form-check-input" />
+                <label asp-for="IsUsedClothsDisposed" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsWasteContainersEmptied" class="form-check-input" />
+                <label asp-for="IsWasteContainersEmptied" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsInfectiousWasteRemoved" class="form-check-input" />
+                <label asp-for="IsInfectiousWasteRemoved" class="form-check-label"></label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4: BATHROOM CLEANING -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5>4. BATHROOM CLEANING</h5>
+        </div>
+        <div class="card-body">
+            <div class="form-check mb-2">
+                <input asp-for="IsMirrorCleaned" class="form-check-input" />
+                <label asp-for="IsMirrorCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsSinkAreaCleaned" class="form-check-input" />
+                <label asp-for="IsSinkAreaCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsFaucetAndHandlesCleaned" class="form-check-input" />
+                <label asp-for="IsFaucetAndHandlesCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsToiletAndFlushHandlesCleaned" class="form-check-input" />
+                <label asp-for="IsToiletAndFlushHandlesCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsOtherBathroomSurfacesCleaned" class="form-check-input" />
+                <label asp-for="IsOtherBathroomSurfacesCleaned" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsBathroomFloorScrubbed" class="form-check-input" />
+                <label asp-for="IsBathroomFloorScrubbed" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsColorCodedWasteEmptied" class="form-check-input" />
+                <label asp-for="IsColorCodedWasteEmptied" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsPPERemoved" class="form-check-input" />
+                <label asp-for="IsPPERemoved" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsHandHygieneAfterPPE" class="form-check-input" />
+                <label asp-for="IsHandHygieneAfterPPE" class="form-check-label"></label>
+            </div>
+            <div class="form-check mb-2">
+                <input asp-for="IsGlovesRemovedAndHandHygieneDone" class="form-check-input" />
+                <label asp-for="IsGlovesRemovedAndHandHygieneDone" class="form-check-label"></label>
+            </div>
+        </div>
+    </div>
+
+    <!-- VALIDATION WITH FLUORESCENCE MARKERS -->
+    <div class="card mb-3">
+        <div class="card-header bg-primary text-white">
+            <h5>VALIDATION WITH FLUORESCENCE MARKERS</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PreCleaningItems" class="control-label">Pre-cleaning areas/items</label>
+                        <textarea asp-for="PreCleaningItems" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="PreCleaningItems" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="PostCleaningItems" class="control-label">Post-cleaning</label>
+                        <textarea asp-for="PostCleaningItems" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="PostCleaningItems" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mt-3">
+                <label asp-for="RecommendationsOrActions" class="control-label">Recommendations / Actions Taken</label>
+                <textarea asp-for="RecommendationsOrActions" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="RecommendationsOrActions" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="UnitAreaStaffSignature" class="control-label">Unit Area Staff Signature</label>
+        <input asp-for="UnitAreaStaffSignature" class="form-control" />
+        <span asp-validation-for="UnitAreaStaffSignature" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DateOfObservation" class="control-label">Date of Observation</label>
+        <input asp-for="DateOfObservation" class="form-control" type="date" />
+        <span asp-validation-for="DateOfObservation" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-4">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

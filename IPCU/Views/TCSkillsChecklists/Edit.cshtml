@@ -5,238 +5,286 @@
 }
 
 <h1>Edit</h1>
-<h4>TCSkillsChecklist</h4>
 
-<form asp-action="Edit">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<h4>Consss</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="ICRAId" />
 
-    <!-- Hidden field for ICRA ID -->
-    <input type="hidden" asp-for="ICRAId" />
-
-    <div class="row">
-        <div class="col-md-6">
             <div class="form-group">
-                <label asp-for="Area" class="control-label">AREA:</label>
-                <input asp-for="Area" class="form-control" />
-                <span asp-validation-for="Area" class="text-danger"></span>
+                <label asp-for="ProjectReferenceNumber" class="control-label"></label>
+                <input asp-for="ProjectReferenceNumber" class="form-control" />
+                <span asp-validation-for="ProjectReferenceNumber" class="text-danger"></span>
             </div>
-        </div>
-        <div class="col-md-6">
             <div class="form-group">
-                <label class="control-label">ICRA Reference #:</label>
-                <input value="@ViewBag.ICRANumber" class="form-control" readonly />
+                <label asp-for="ProjectNameAndDescription" class="control-label"></label>
+                <input asp-for="ProjectNameAndDescription" class="form-control" />
+                <span asp-validation-for="ProjectNameAndDescription" class="text-danger"></span>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
             <div class="form-group">
-                <label asp-for="Date" class="control-label">DATE/TIME (mm/dd/yyyy):</label>
-                <input asp-for="Date" class="form-control" type="datetime-local" />
-                <span asp-validation-for="Date" class="text-danger"></span>
+                <label asp-for="ContractorRepresentativeName" class="control-label"></label>
+                <input asp-for="ContractorRepresentativeName" class="form-control" />
+                <span asp-validation-for="ContractorRepresentativeName" class="text-danger"></span>
             </div>
-        </div>
-        <div class="col-md-6">
             <div class="form-group">
-                <label asp-for="ObserverName" class="control-label">OBSERVER (Name):</label>
-                <input asp-for="ObserverName" class="form-control" />
-                <span asp-validation-for="ObserverName" class="text-danger"></span>
+                <label asp-for="TelephoneOrMobileNumber" class="control-label"></label>
+                <input asp-for="TelephoneOrMobileNumber" class="form-control" />
+                <span asp-validation-for="TelephoneOrMobileNumber" class="text-danger"></span>
             </div>
-        </div>
+            <div class="form-group">
+                <label asp-for="SpecificSiteOfActivity" class="control-label"></label>
+                <input asp-for="SpecificSiteOfActivity" class="form-control" />
+                <span asp-validation-for="SpecificSiteOfActivity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ScopeOfWork" class="control-label"></label>
+                <input asp-for="ScopeOfWork" class="form-control" />
+                <span asp-validation-for="ScopeOfWork" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectStartDate" class="control-label"></label>
+                <input asp-for="ProjectStartDate" class="form-control" />
+                <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EstimatedDuration" class="control-label"></label>
+                <input asp-for="EstimatedDuration" class="form-control" />
+                <span asp-validation-for="EstimatedDuration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BarrierICRA" class="control-label"></label>
+                <input asp-for="BarrierICRA" class="form-control" />
+                <span asp-validation-for="BarrierICRA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BarrierICRAComments" class="control-label"></label>
+                <input asp-for="BarrierICRAComments" class="form-control" />
+                <span asp-validation-for="BarrierICRAComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BarrierDoorsSealedSelection" class="control-label"></label>
+                <input asp-for="BarrierDoorsSealedSelection" class="form-control" />
+                <span asp-validation-for="BarrierDoorsSealedSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BarrierDoorsSealedComments" class="control-label"></label>
+                <input asp-for="BarrierDoorsSealedComments" class="form-control" />
+                <span asp-validation-for="BarrierDoorsSealedComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BarrierFloorCleanSelection" class="control-label"></label>
+                <input asp-for="BarrierFloorCleanSelection" class="form-control" />
+                <span asp-validation-for="BarrierFloorCleanSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BarrierFloorCleanComments" class="control-label"></label>
+                <input asp-for="BarrierFloorCleanComments" class="form-control" />
+                <span asp-validation-for="BarrierFloorCleanComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BarrierWalkOffMatsSelection" class="control-label"></label>
+                <input asp-for="BarrierWalkOffMatsSelection" class="form-control" />
+                <span asp-validation-for="BarrierWalkOffMatsSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BarrierWalkOffMatsComments" class="control-label"></label>
+                <input asp-for="BarrierWalkOffMatsComments" class="form-control" />
+                <span asp-validation-for="BarrierWalkOffMatsComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BarrierTapeAdheringSelection" class="control-label"></label>
+                <input asp-for="BarrierTapeAdheringSelection" class="form-control" />
+                <span asp-validation-for="BarrierTapeAdheringSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BarrierTapeAdheringComments" class="control-label"></label>
+                <input asp-for="BarrierTapeAdheringComments" class="form-control" />
+                <span asp-validation-for="BarrierTapeAdheringComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirhandlingWindowsClosedBehindBarrierSelection" class="control-label"></label>
+                <input asp-for="AirhandlingWindowsClosedBehindBarrierSelection" class="form-control" />
+                <span asp-validation-for="AirhandlingWindowsClosedBehindBarrierSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirhandlingWindowsClosedBehindBarrierComments" class="control-label"></label>
+                <input asp-for="AirhandlingWindowsClosedBehindBarrierComments" class="form-control" />
+                <span asp-validation-for="AirhandlingWindowsClosedBehindBarrierComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirhandlingNegativeAirMonitoredSelection" class="control-label"></label>
+                <input asp-for="AirhandlingNegativeAirMonitoredSelection" class="form-control" />
+                <span asp-validation-for="AirhandlingNegativeAirMonitoredSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirhandlingNegativeAirMonitoredComments" class="control-label"></label>
+                <input asp-for="AirhandlingNegativeAirMonitoredComments" class="form-control" />
+                <span asp-validation-for="AirhandlingNegativeAirMonitoredComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirHandlingUnitRunningSelection" class="control-label"></label>
+                <input asp-for="AirHandlingUnitRunningSelection" class="form-control" />
+                <span asp-validation-for="AirHandlingUnitRunningSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirHandlingUnitRunningComments" class="control-label"></label>
+                <input asp-for="AirHandlingUnitRunningComments" class="form-control" />
+                <span asp-validation-for="AirHandlingUnitRunningComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirhandlingMaintenanceLabelVisibleSelection" class="control-label"></label>
+                <input asp-for="AirhandlingMaintenanceLabelVisibleSelection" class="form-control" />
+                <span asp-validation-for="AirhandlingMaintenanceLabelVisibleSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirhandlingMaintenanceLabelVisibleComments" class="control-label"></label>
+                <input asp-for="AirhandlingMaintenanceLabelVisibleComments" class="form-control" />
+                <span asp-validation-for="AirhandlingMaintenanceLabelVisibleComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirhandlingAirExhaustedToAppropriateAreaSelection" class="control-label"></label>
+                <input asp-for="AirhandlingAirExhaustedToAppropriateAreaSelection" class="form-control" />
+                <span asp-validation-for="AirhandlingAirExhaustedToAppropriateAreaSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AirhandlingAirExhaustedToAppropriateAreaComments" class="control-label"></label>
+                <input asp-for="AirhandlingAirExhaustedToAppropriateAreaComments" class="form-control" />
+                <span asp-validation-for="AirhandlingAirExhaustedToAppropriateAreaComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaHEPAFilteredVacuumOnJobsiteSelection" class="control-label"></label>
+                <input asp-for="ProjectareaHEPAFilteredVacuumOnJobsiteSelection" class="form-control" />
+                <span asp-validation-for="ProjectareaHEPAFilteredVacuumOnJobsiteSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaHEPAFilteredVacuumOnJobsiteComments" class="control-label"></label>
+                <input asp-for="ProjectareaHEPAFilteredVacuumOnJobsiteComments" class="form-control" />
+                <span asp-validation-for="ProjectareaHEPAFilteredVacuumOnJobsiteComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaDebrisRemovedInCoveredContainerDailySelection" class="control-label"></label>
+                <input asp-for="ProjectareaDebrisRemovedInCoveredContainerDailySelection" class="form-control" />
+                <span asp-validation-for="ProjectareaDebrisRemovedInCoveredContainerDailySelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaDebrisRemovedInCoveredContainerDailyComments" class="control-label"></label>
+                <input asp-for="ProjectareaDebrisRemovedInCoveredContainerDailyComments" class="form-control" />
+                <span asp-validation-for="ProjectareaDebrisRemovedInCoveredContainerDailyComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaDesignatedConstructionRouteOrMapPostedSelection" class="control-label"></label>
+                <input asp-for="ProjectareaDesignatedConstructionRouteOrMapPostedSelection" class="form-control" />
+                <span asp-validation-for="ProjectareaDesignatedConstructionRouteOrMapPostedSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaDesignatedConstructionRouteOrMapPostedComments" class="control-label"></label>
+                <input asp-for="ProjectareaDesignatedConstructionRouteOrMapPostedComments" class="form-control" />
+                <span asp-validation-for="ProjectareaDesignatedConstructionRouteOrMapPostedComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaTrashInAppropriateContainerSelection" class="control-label"></label>
+                <input asp-for="ProjectareaTrashInAppropriateContainerSelection" class="form-control" />
+                <span asp-validation-for="ProjectareaTrashInAppropriateContainerSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaTrashInAppropriateContainerComments" class="control-label"></label>
+                <input asp-for="ProjectareaTrashInAppropriateContainerComments" class="form-control" />
+                <span asp-validation-for="ProjectareaTrashInAppropriateContainerComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaRoutineCleaningDoneOnSiteSelection" class="control-label"></label>
+                <input asp-for="ProjectareaRoutineCleaningDoneOnSiteSelection" class="form-control" />
+                <span asp-validation-for="ProjectareaRoutineCleaningDoneOnSiteSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaRoutineCleaningDoneOnSiteComments" class="control-label"></label>
+                <input asp-for="ProjectareaRoutineCleaningDoneOnSiteComments" class="form-control" />
+                <span asp-validation-for="ProjectareaRoutineCleaningDoneOnSiteComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaAirVentsSealedOrDuctworkCappedSelection" class="control-label"></label>
+                <input asp-for="ProjectareaAirVentsSealedOrDuctworkCappedSelection" class="form-control" />
+                <span asp-validation-for="ProjectareaAirVentsSealedOrDuctworkCappedSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProjectareaAirVentsSealedOrDuctworkCappedComments" class="control-label"></label>
+                <input asp-for="ProjectareaAirVentsSealedOrDuctworkCappedComments" class="form-control" />
+                <span asp-validation-for="ProjectareaAirVentsSealedOrDuctworkCappedComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrafficcontrolRestrictedToConstructionWorkersSelection" class="control-label"></label>
+                <input asp-for="TrafficcontrolRestrictedToConstructionWorkersSelection" class="form-control" />
+                <span asp-validation-for="TrafficcontrolRestrictedToConstructionWorkersSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrafficcontrolRestrictedToConstructionWorkersComments" class="control-label"></label>
+                <input asp-for="TrafficcontrolRestrictedToConstructionWorkersComments" class="form-control" />
+                <span asp-validation-for="TrafficcontrolRestrictedToConstructionWorkersComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrafficcontrolDoorsAndExitsFreeOfDebrisSelection" class="control-label"></label>
+                <input asp-for="TrafficcontrolDoorsAndExitsFreeOfDebrisSelection" class="form-control" />
+                <span asp-validation-for="TrafficcontrolDoorsAndExitsFreeOfDebrisSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TrafficcontrolDoorsAndExitsFreeOfDebrisComments" class="control-label"></label>
+                <input asp-for="TrafficcontrolDoorsAndExitsFreeOfDebrisComments" class="form-control" />
+                <span asp-validation-for="TrafficcontrolDoorsAndExitsFreeOfDebrisComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DresscodeProtectiveClothingWornSelection" class="control-label"></label>
+                <input asp-for="DresscodeProtectiveClothingWornSelection" class="form-control" />
+                <span asp-validation-for="DresscodeProtectiveClothingWornSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DresscodeProtectiveClothingWornComments" class="control-label"></label>
+                <input asp-for="DresscodeProtectiveClothingWornComments" class="form-control" />
+                <span asp-validation-for="DresscodeProtectiveClothingWornComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DresscodeWorkersClothingCleanUponExitingSelection" class="control-label"></label>
+                <input asp-for="DresscodeWorkersClothingCleanUponExitingSelection" class="form-control" />
+                <span asp-validation-for="DresscodeWorkersClothingCleanUponExitingSelection" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DresscodeWorkersClothingCleanUponExitingComments" class="control-label"></label>
+                <input asp-for="DresscodeWorkersClothingCleanUponExitingComments" class="form-control" />
+                <span asp-validation-for="DresscodeWorkersClothingCleanUponExitingComments" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContractorSign" class="control-label"></label>
+                <input asp-for="ContractorSign" class="form-control" />
+                <span asp-validation-for="ContractorSign" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EngineeringSign" class="control-label"></label>
+                <input asp-for="EngineeringSign" class="form-control" />
+                <span asp-validation-for="EngineeringSign" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ICPSign" class="control-label"></label>
+                <input asp-for="ICPSign" class="form-control" />
+                <span asp-validation-for="ICPSign" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitAreaRep" class="control-label"></label>
+                <input asp-for="UnitAreaRep" class="form-control" />
+                <span asp-validation-for="UnitAreaRep" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
+</div>
 
-    <div class="alert alert-info mt-3">
-        <strong>Instructions:</strong> Put [✓] if done, [x] if not, or indicate N/A if not applicable.
-    </div>
-
-    <!-- Section 1: PREPARATION AND SETUP -->
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5>1. PREPARATION AND SETUP</h5>
-        </div>
-        <div class="card-body">
-            <div class="form-check mb-2">
-                <input asp-for="IsEquipmentAndCartPrepared" class="form-check-input" />
-                <label asp-for="IsEquipmentAndCartPrepared" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsCleaningSolutionPrepared" class="form-check-input" />
-                <label asp-for="IsCleaningSolutionPrepared" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsProperAttireAndPPEWorn" class="form-check-input" />
-                <label asp-for="IsProperAttireAndPPEWorn" class="form-check-label"></label>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section 2: BASIC PROCEDURES -->
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5>2. BASIC PROCEDURES</h5>
-        </div>
-        <div class="card-body">
-            <div class="form-check mb-2">
-                <input asp-for="IsHandHygieneAndGlovesDone" class="form-check-input" />
-                <label asp-for="IsHandHygieneAndGlovesDone" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsSignageChecked" class="form-check-input" />
-                <label asp-for="IsSignageChecked" class="form-check-label"></label>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section 3: PATIENT ROOM CLEANING PROCEDURES -->
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5>3. PATIENT ROOM CLEANING PROCEDURES</h5>
-        </div>
-        <div class="card-body">
-            <div class="form-check mb-2">
-                <input asp-for="IsSpillSoakedWithSolution" class="form-check-input" />
-                <label asp-for="IsSpillSoakedWithSolution" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsWallsCleaned" class="form-check-input" />
-                <label asp-for="IsWallsCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsDoorFrameWiped" class="form-check-input" />
-                <label asp-for="IsDoorFrameWiped" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsWindowSillAndWindowCleaned" class="form-check-input" />
-                <label asp-for="IsWindowSillAndWindowCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsHighTouchAreasWiped" class="form-check-input" />
-                <label asp-for="IsHighTouchAreasWiped" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsVerticalSurfacesWiped" class="form-check-input" />
-                <label asp-for="IsVerticalSurfacesWiped" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsLooseDebrisPickedUp" class="form-check-input" />
-                <label asp-for="IsLooseDebrisPickedUp" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsRoomFloorMopped" class="form-check-input" />
-                <label asp-for="IsRoomFloorMopped" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsUsedClothsDisposed" class="form-check-input" />
-                <label asp-for="IsUsedClothsDisposed" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsWasteContainersEmptied" class="form-check-input" />
-                <label asp-for="IsWasteContainersEmptied" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsInfectiousWasteRemoved" class="form-check-input" />
-                <label asp-for="IsInfectiousWasteRemoved" class="form-check-label"></label>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section 4: BATHROOM CLEANING -->
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5>4. BATHROOM CLEANING</h5>
-        </div>
-        <div class="card-body">
-            <div class="form-check mb-2">
-                <input asp-for="IsMirrorCleaned" class="form-check-input" />
-                <label asp-for="IsMirrorCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsSinkAreaCleaned" class="form-check-input" />
-                <label asp-for="IsSinkAreaCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsFaucetAndHandlesCleaned" class="form-check-input" />
-                <label asp-for="IsFaucetAndHandlesCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsToiletAndFlushHandlesCleaned" class="form-check-input" />
-                <label asp-for="IsToiletAndFlushHandlesCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsOtherBathroomSurfacesCleaned" class="form-check-input" />
-                <label asp-for="IsOtherBathroomSurfacesCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsBathroomFloorScrubbed" class="form-check-input" />
-                <label asp-for="IsBathroomFloorScrubbed" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsColorCodedWasteEmptied" class="form-check-input" />
-                <label asp-for="IsColorCodedWasteEmptied" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsPPERemoved" class="form-check-input" />
-                <label asp-for="IsPPERemoved" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsHandHygieneAfterPPE" class="form-check-input" />
-                <label asp-for="IsHandHygieneAfterPPE" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsGlovesRemovedAndHandHygieneDone" class="form-check-input" />
-                <label asp-for="IsGlovesRemovedAndHandHygieneDone" class="form-check-label"></label>
-            </div>
-        </div>
-    </div>
-
-    <!-- VALIDATION WITH FLUORESCENCE MARKERS -->
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5>VALIDATION WITH FLUORESCENCE MARKERS</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="PreCleaningItems" class="control-label">Pre-cleaning areas/items</label>
-                        <textarea asp-for="PreCleaningItems" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="PreCleaningItems" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="PostCleaningItems" class="control-label">Post-cleaning</label>
-                        <textarea asp-for="PostCleaningItems" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="PostCleaningItems" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group mt-3">
-                <label asp-for="RecommendationsOrActions" class="control-label">Recommendations / Actions Taken</label>
-                <textarea asp-for="RecommendationsOrActions" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="RecommendationsOrActions" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="UnitAreaStaffSignature" class="control-label">Unit Area Staff Signature</label>
-        <input asp-for="UnitAreaStaffSignature" class="form-control" />
-        <span asp-validation-for="UnitAreaStaffSignature" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="DateOfObservation" class="control-label">Date of Observation</label>
-        <input asp-for="DateOfObservation" class="form-control" type="date" />
-        <span asp-validation-for="DateOfObservation" class="text-danger"></span>
-    </div>
-
-    <div class="form-group mt-4">
-        <button type="submit" class="btn btn-primary">Edit</button>
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-    </div>
-</form>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
 @section Scripts {
     @{

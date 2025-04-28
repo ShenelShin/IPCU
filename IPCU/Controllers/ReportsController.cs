@@ -233,13 +233,13 @@ namespace IPCU.Controllers
                             detailWorksheet.Cells[row, 1].Style.Font.Bold = true;
 
                             detailWorksheet.Cells[row + 1, 1].Value = "Date";
-                            detailWorksheet.Cells[row + 1, 2].Value = checklist.Date.ToShortDateString();
+                            detailWorksheet.Cells[row + 1, 2].Value = checklist.ProjectStartDate;
 
-                            detailWorksheet.Cells[row + 2, 1].Value = "Area";
-                            detailWorksheet.Cells[row + 2, 2].Value = checklist.Area;
+                            detailWorksheet.Cells[row + 2, 1].Value = "Project Name And Description";
+                            detailWorksheet.Cells[row + 2, 2].Value = checklist.ProjectNameAndDescription;
 
-                            detailWorksheet.Cells[row + 3, 1].Value = "Observer";
-                            detailWorksheet.Cells[row + 3, 2].Value = checklist.ObserverName;
+                            detailWorksheet.Cells[row + 3, 1].Value = "Contractor Representative Name";
+                            detailWorksheet.Cells[row + 3, 2].Value = checklist.ContractorRepresentativeName;
 
                             row += 5;
                         }
@@ -373,12 +373,12 @@ namespace IPCU.Controllers
                     {
                         checklistWorksheet.Cells[row, 1].Value = checklist.Id;
                         checklistWorksheet.Cells[row, 2].Value = checklist.ICRAId;
-                        checklistWorksheet.Cells[row, 3].Value = checklist.Area;
-                        checklistWorksheet.Cells[row, 4].Value = checklist.ObserverName;
-                        checklistWorksheet.Cells[row, 5].Value = checklist.Date;
-                        checklistWorksheet.Cells[row, 6].Value = checklist.PreCleaningItems;
-                        checklistWorksheet.Cells[row, 7].Value = checklist.PostCleaningItems;
-                        checklistWorksheet.Cells[row, 8].Value = checklist.RecommendationsOrActions;
+                        checklistWorksheet.Cells[row, 3].Value = checklist.ContractorRepresentativeName;
+                        checklistWorksheet.Cells[row, 4].Value = checklist.ContractorRepresentativeName;
+                        checklistWorksheet.Cells[row, 5].Value = checklist.ContractorRepresentativeName;
+                        checklistWorksheet.Cells[row, 6].Value = checklist.ContractorRepresentativeName;
+                        checklistWorksheet.Cells[row, 7].Value = checklist.ContractorRepresentativeName;
+                        checklistWorksheet.Cells[row, 8].Value = checklist.ContractorRepresentativeName;
 
                         row++;
                     }

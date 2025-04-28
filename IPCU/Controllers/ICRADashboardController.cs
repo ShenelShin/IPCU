@@ -482,20 +482,19 @@ namespace IPCU.Controllers
         }
 
         [Authorize(Roles = "Admin,ICN")]
-        public async Task<IActionResult> ExportChecklist(int id)
-        {
-            var checklist = await _context.TCSkillsChecklist.FindAsync(id);
-            if (checklist == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> ExportChecklist(int id)
+        //{
+        //    var checklist = await _context.TCSkillsChecklist.FindAsync(id);
+        //    if (checklist == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var reportService = HttpContext.RequestServices.GetRequiredService<IReportService>();
-            var reportBytes = reportService.GenerateTCSkillsChecklistReport(checklist);
+        //    var reportService = HttpContext.RequestServices.GetRequiredService<IReportService>();
+        //   // var reportBytes = reportService.GenerateTCSkillsChecklistReport(checklist);
 
-            return File(reportBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                $"Cleaning_Checklist_{checklist.Area}_{checklist.Date:yyyyMMdd}.xlsx");
-        }
+        //    return File(reportBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.xlsx");
+        //}
 
         [Authorize(Roles = "Admin,ICN")]
         public async Task<IActionResult> ExportPostConstruction(int id)

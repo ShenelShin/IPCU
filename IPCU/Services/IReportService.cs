@@ -8,7 +8,7 @@ namespace IPCU.Services
     public interface IReportService
     {
         byte[] GenerateICRAReport(ICRA icra);
-        byte[] GenerateTCSkillsChecklistReport(TCSkillsChecklist checklist);
+        //byte[] GenerateTCSkillsChecklistReport(TCSkillsChecklist checklist);
         byte[] GeneratePostConstructionReport(PostConstruction postConstruction);
         byte[] GenerateCombinedReport(ICRA icra, List<TCSkillsChecklist> checklists, PostConstruction postConstruction);
     }
@@ -120,94 +120,94 @@ namespace IPCU.Services
             }
         }
 
-        public byte[] GenerateTCSkillsChecklistReport(TCSkillsChecklist checklist)
-        {
-            using (var package = new ExcelPackage())
-            {
-                var worksheet = package.Workbook.Worksheets.Add("TC Skills Checklist");
+        //public byte[] GenerateTCSkillsChecklistReport(TCSkillsChecklist checklist)
+        //{
+        //    using (var package = new ExcelPackage())
+        //    {
+        //        var worksheet = package.Workbook.Worksheets.Add("TC Skills Checklist");
 
-                // Set basic styling
-                worksheet.Cells.Style.Font.Name = "Calibri";
-                worksheet.Cells.Style.Font.Size = 11;
+        //        // Set basic styling
+        //        worksheet.Cells.Style.Font.Name = "Calibri";
+        //        worksheet.Cells.Style.Font.Size = 11;
 
-                // Header
-                worksheet.Cells["A1"].Value = "Terminal Cleaning Skills Checklist";
-                worksheet.Cells["A1:D1"].Merge = true;
-                worksheet.Cells["A1"].Style.Font.Bold = true;
-                worksheet.Cells["A1"].Style.Font.Size = 16;
-                worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+        //        // Header
+        //        worksheet.Cells["A1"].Value = "Terminal Cleaning Skills Checklist";
+        //        worksheet.Cells["A1:D1"].Merge = true;
+        //        worksheet.Cells["A1"].Style.Font.Bold = true;
+        //        worksheet.Cells["A1"].Style.Font.Size = 16;
+        //        worksheet.Cells["A1"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
-                // Basic Information
-                worksheet.Cells["A3"].Value = "Area:";
-                worksheet.Cells["B3"].Value = checklist.Area;
-                worksheet.Cells["A4"].Value = "Observer Name:";
-                worksheet.Cells["B4"].Value = checklist.ObserverName;
-                worksheet.Cells["A5"].Value = "Date:";
-                worksheet.Cells["B5"].Value = checklist.Date.ToString("yyyy-MM-dd");
-                worksheet.Cells["A6"].Value = "Date of Observation:";
-                worksheet.Cells["B6"].Value = checklist.DateOfObservation.ToString("yyyy-MM-dd");
+        //        // Basic Information
+        //        worksheet.Cells["A3"].Value = "Area:";
+        //        worksheet.Cells["B3"].Value = checklist.ProjectReferenceNumber;
+        //        worksheet.Cells["A4"].Value = "Observer Name:";
+        //        worksheet.Cells["B4"].Value = checklist.ProjectReferenceNumber;
+        //        worksheet.Cells["A5"].Value = "Date:";
+        //        worksheet.Cells["B5"].Value = checklist.ProjectReferenceNumber;
+        //        worksheet.Cells["A6"].Value = "Date of Observation:";
+        //        worksheet.Cells["B6"].Value = checklist.ProjectReferenceNumber;
 
-                // Sections
-                AddChecklistSection(worksheet, 8, "1. PREPARATION AND SETUP", new List<string>
-                {
-                    "Prepare equipment and cleaning cart with everything needed",
-                    "Prepare properly diluted cleaning solution (1:100)",
-                    "Don appropriate attire and Personal and Protective Equipment (PPE)"
-                }, new List<bool>
-                {
-                    checklist.IsEquipmentAndCartPrepared,
-                    checklist.IsCleaningSolutionPrepared,
-                    checklist.IsProperAttireAndPPEWorn
-                });
+        //        // Sections
+        //        AddChecklistSection(worksheet, 8, "1. PREPARATION AND SETUP", new List<string>
+        //        {
+        //            "Prepare equipment and cleaning cart with everything needed",
+        //            "Prepare properly diluted cleaning solution (1:100)",
+        //            "Don appropriate attire and Personal and Protective Equipment (PPE)"
+        //        }, new List<bool>
+        //        {
+        //            checklist.IsEquipmentAndCartPrepared,
+        //            checklist.IsCleaningSolutionPrepared,
+        //            checklist.IsProperAttireAndPPEWorn
+        //        });
 
-                AddChecklistSection(worksheet, 13, "2. BASIC PROCEDURES", new List<string>
-                {
-                    "Perform hand hygiene and don gloves before entering the room",
-                    "Be aware of signage that indicates special precaution"
-                }, new List<bool>
-                {
-                    checklist.IsHandHygieneAndGlovesDone,
-                    checklist.IsSignageChecked
-                });
+        //        AddChecklistSection(worksheet, 13, "2. BASIC PROCEDURES", new List<string>
+        //        {
+        //            "Perform hand hygiene and don gloves before entering the room",
+        //            "Be aware of signage that indicates special precaution"
+        //        }, new List<bool>
+        //        {
+        //            checklist.IsHandHygieneAndGlovesDone,
+        //            checklist.IsSignageChecked
+        //        });
 
-                AddChecklistSection(worksheet, 17, "3. PATIENT ROOM CLEANING PROCEDURES", new List<string>
-                {
-                    "If with spills, soak spill using 1:10 dilution of hypochlorite solution and leave in contact for 2–5 minutes",
-                    "Clean walls using disposable cloths",
-                    "Wipe door frame",
-                    // Add all other items from section 3
-                }, new List<bool>
-                {
-                    checklist.IsSpillSoakedWithSolution,
-                    checklist.IsWallsCleaned,
-                    checklist.IsDoorFrameWiped,
-                    // Add all other bool values from section 3
-                });
+        //        AddChecklistSection(worksheet, 17, "3. PATIENT ROOM CLEANING PROCEDURES", new List<string>
+        //        {
+        //            "If with spills, soak spill using 1:10 dilution of hypochlorite solution and leave in contact for 2–5 minutes",
+        //            "Clean walls using disposable cloths",
+        //            "Wipe door frame",
+        //            // Add all other items from section 3
+        //        }, new List<bool>
+        //        {
+        //            checklist.IsSpillSoakedWithSolution,
+        //            checklist.IsWallsCleaned,
+        //            checklist.IsDoorFrameWiped,
+        //            // Add all other bool values from section 3
+        //        });
 
-                // Add other sections similarly...
+        //        // Add other sections similarly...
 
-                // Notes
-                int notesRow = 40; // Adjust based on your content
-                worksheet.Cells[$"A{notesRow}"].Value = "Pre-cleaning areas/items:";
-                worksheet.Cells[$"B{notesRow}"].Value = checklist.PreCleaningItems;
-                notesRow++;
-                worksheet.Cells[$"A{notesRow}"].Value = "Post-cleaning:";
-                worksheet.Cells[$"B{notesRow}"].Value = checklist.PostCleaningItems;
-                notesRow++;
-                worksheet.Cells[$"A{notesRow}"].Value = "Recommendations/Actions Taken:";
-                worksheet.Cells[$"B{notesRow}"].Value = checklist.RecommendationsOrActions;
-                notesRow++;
+        //        // Notes
+        //        int notesRow = 40; // Adjust based on your content
+        //        worksheet.Cells[$"A{notesRow}"].Value = "Pre-cleaning areas/items:";
+        //        worksheet.Cells[$"B{notesRow}"].Value = checklist.PreCleaningItems;
+        //        notesRow++;
+        //        worksheet.Cells[$"A{notesRow}"].Value = "Post-cleaning:";
+        //        worksheet.Cells[$"B{notesRow}"].Value = checklist.PostCleaningItems;
+        //        notesRow++;
+        //        worksheet.Cells[$"A{notesRow}"].Value = "Recommendations/Actions Taken:";
+        //        worksheet.Cells[$"B{notesRow}"].Value = checklist.RecommendationsOrActions;
+        //        notesRow++;
 
-                // Signature
-                worksheet.Cells[$"A{notesRow}"].Value = "Unit/Area Staff (Name and Signature):";
-                worksheet.Cells[$"B{notesRow}"].Value = checklist.UnitAreaStaffSignature;
+        //        // Signature
+        //        worksheet.Cells[$"A{notesRow}"].Value = "Unit/Area Staff (Name and Signature):";
+        //        worksheet.Cells[$"B{notesRow}"].Value = checklist.UnitAreaStaffSignature;
 
-                // Auto-fit columns
-                worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
+        //        // Auto-fit columns
+        //        worksheet.Cells[worksheet.Dimension.Address].AutoFitColumns();
 
-                return package.GetAsByteArray();
-            }
-        }
+        //        return package.GetAsByteArray();
+        //    }
+        //}
 
         public byte[] GeneratePostConstructionReport(PostConstruction postConstruction)
         {

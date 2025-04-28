@@ -92,8 +92,7 @@ namespace IPCU.Controllers
             var checklist = new TCSkillsChecklist
             {
                 ICRAId = icra.Id,
-                Area = icra.SpecificSiteOfActivity,
-                Date = DateTime.Now
+                SpecificSiteOfActivity = icra.SpecificSiteOfActivity,
             };
 
             ViewBag.ICRA = icra;

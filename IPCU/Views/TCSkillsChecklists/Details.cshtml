@@ -3,247 +3,334 @@
 @{
     ViewData["Title"] = "Details";
 }
-<style>
-    table input,
-    table select,
-    table textarea {
-        pointer-events: none;
-        background-color: #f9f9f9;
-        border: none;
-        color: #333;
-    }
 
-</style>
 <h1>Details</h1>
-<h4>TCSkillsChecklist</h4>
-<table>
 
-    <!-- Hidden field for ICRA ID -->
-    <input type="hidden" asp-for="ICRAId" />
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="Area" class="control-label">AREA:</label>
-                <input asp-for="Area" class="form-control" />
-                <span asp-validation-for="Area" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label class="control-label">ICRA Reference #:</label>
-                <input value="@ViewBag.ICRANumber" class="form-control" readonly />
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="Date" class="control-label">DATE/TIME (mm/dd/yyyy):</label>
-                <input asp-for="Date" class="form-control" type="datetime-local" />
-                <span asp-validation-for="Date" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label asp-for="ObserverName" class="control-label">OBSERVER (Name):</label>
-                <input asp-for="ObserverName" class="form-control" />
-                <span asp-validation-for="ObserverName" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="alert alert-info mt-3">
-        <strong>Instructions:</strong> Put [✓] if done, [x] if not, or indicate N/A if not applicable.
-    </div>
-
-    <!-- Section 1: PREPARATION AND SETUP -->
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5>1. PREPARATION AND SETUP</h5>
-        </div>
-        <div class="card-body">
-            <div class="form-check mb-2">
-                <input asp-for="IsEquipmentAndCartPrepared" class="form-check-input" />
-                <label asp-for="IsEquipmentAndCartPrepared" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsCleaningSolutionPrepared" class="form-check-input" />
-                <label asp-for="IsCleaningSolutionPrepared" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsProperAttireAndPPEWorn" class="form-check-input" />
-                <label asp-for="IsProperAttireAndPPEWorn" class="form-check-label"></label>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section 2: BASIC PROCEDURES -->
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5>2. BASIC PROCEDURES</h5>
-        </div>
-        <div class="card-body">
-            <div class="form-check mb-2">
-                <input asp-for="IsHandHygieneAndGlovesDone" class="form-check-input" />
-                <label asp-for="IsHandHygieneAndGlovesDone" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsSignageChecked" class="form-check-input" />
-                <label asp-for="IsSignageChecked" class="form-check-label"></label>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section 3: PATIENT ROOM CLEANING PROCEDURES -->
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5>3. PATIENT ROOM CLEANING PROCEDURES</h5>
-        </div>
-        <div class="card-body">
-            <div class="form-check mb-2">
-                <input asp-for="IsSpillSoakedWithSolution" class="form-check-input" />
-                <label asp-for="IsSpillSoakedWithSolution" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsWallsCleaned" class="form-check-input" />
-                <label asp-for="IsWallsCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsDoorFrameWiped" class="form-check-input" />
-                <label asp-for="IsDoorFrameWiped" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsWindowSillAndWindowCleaned" class="form-check-input" />
-                <label asp-for="IsWindowSillAndWindowCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsHighTouchAreasWiped" class="form-check-input" />
-                <label asp-for="IsHighTouchAreasWiped" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsVerticalSurfacesWiped" class="form-check-input" />
-                <label asp-for="IsVerticalSurfacesWiped" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsLooseDebrisPickedUp" class="form-check-input" />
-                <label asp-for="IsLooseDebrisPickedUp" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsRoomFloorMopped" class="form-check-input" />
-                <label asp-for="IsRoomFloorMopped" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsUsedClothsDisposed" class="form-check-input" />
-                <label asp-for="IsUsedClothsDisposed" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsWasteContainersEmptied" class="form-check-input" />
-                <label asp-for="IsWasteContainersEmptied" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsInfectiousWasteRemoved" class="form-check-input" />
-                <label asp-for="IsInfectiousWasteRemoved" class="form-check-label"></label>
-            </div>
-        </div>
-    </div>
-
-    <!-- Section 4: BATHROOM CLEANING -->
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5>4. BATHROOM CLEANING</h5>
-        </div>
-        <div class="card-body">
-            <div class="form-check mb-2">
-                <input asp-for="IsMirrorCleaned" class="form-check-input" />
-                <label asp-for="IsMirrorCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsSinkAreaCleaned" class="form-check-input" />
-                <label asp-for="IsSinkAreaCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsFaucetAndHandlesCleaned" class="form-check-input" />
-                <label asp-for="IsFaucetAndHandlesCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsToiletAndFlushHandlesCleaned" class="form-check-input" />
-                <label asp-for="IsToiletAndFlushHandlesCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsOtherBathroomSurfacesCleaned" class="form-check-input" />
-                <label asp-for="IsOtherBathroomSurfacesCleaned" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsBathroomFloorScrubbed" class="form-check-input" />
-                <label asp-for="IsBathroomFloorScrubbed" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsColorCodedWasteEmptied" class="form-check-input" />
-                <label asp-for="IsColorCodedWasteEmptied" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsPPERemoved" class="form-check-input" />
-                <label asp-for="IsPPERemoved" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsHandHygieneAfterPPE" class="form-check-input" />
-                <label asp-for="IsHandHygieneAfterPPE" class="form-check-label"></label>
-            </div>
-            <div class="form-check mb-2">
-                <input asp-for="IsGlovesRemovedAndHandHygieneDone" class="form-check-input" />
-                <label asp-for="IsGlovesRemovedAndHandHygieneDone" class="form-check-label"></label>
-            </div>
-        </div>
-    </div>
-
-    <!-- VALIDATION WITH FLUORESCENCE MARKERS -->
-    <div class="card mb-3">
-        <div class="card-header bg-primary text-white">
-            <h5>VALIDATION WITH FLUORESCENCE MARKERS</h5>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="PreCleaningItems" class="control-label">Pre-cleaning areas/items</label>
-                        <textarea asp-for="PreCleaningItems" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="PreCleaningItems" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label asp-for="PostCleaningItems" class="control-label">Post-cleaning</label>
-                        <textarea asp-for="PostCleaningItems" class="form-control" rows="3"></textarea>
-                        <span asp-validation-for="PostCleaningItems" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group mt-3">
-                <label asp-for="RecommendationsOrActions" class="control-label">Recommendations / Actions Taken</label>
-                <textarea asp-for="RecommendationsOrActions" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="RecommendationsOrActions" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="UnitAreaStaffSignature" class="control-label">Unit Area Staff Signature</label>
-        <input asp-for="UnitAreaStaffSignature" class="form-control" />
-        <span asp-validation-for="UnitAreaStaffSignature" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="DateOfObservation" class="control-label">Date of Observation</label>
-        <input asp-for="DateOfObservation" class="form-control" type="date" />
-        <span asp-validation-for="DateOfObservation" class="text-danger"></span>
-    </div>
-
-</table>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+<div>
+    <h4>Consss</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ICRA)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ICRA.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectReferenceNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectReferenceNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectNameAndDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectNameAndDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ContractorRepresentativeName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ContractorRepresentativeName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TelephoneOrMobileNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TelephoneOrMobileNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.SpecificSiteOfActivity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.SpecificSiteOfActivity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ScopeOfWork)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ScopeOfWork)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectStartDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectStartDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EstimatedDuration)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EstimatedDuration)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BarrierICRA)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BarrierICRA)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BarrierICRAComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BarrierICRAComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BarrierDoorsSealedSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BarrierDoorsSealedSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BarrierDoorsSealedComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BarrierDoorsSealedComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BarrierFloorCleanSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BarrierFloorCleanSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BarrierFloorCleanComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BarrierFloorCleanComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BarrierWalkOffMatsSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BarrierWalkOffMatsSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BarrierWalkOffMatsComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BarrierWalkOffMatsComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BarrierTapeAdheringSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BarrierTapeAdheringSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BarrierTapeAdheringComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BarrierTapeAdheringComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AirhandlingWindowsClosedBehindBarrierSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AirhandlingWindowsClosedBehindBarrierSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AirhandlingWindowsClosedBehindBarrierComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AirhandlingWindowsClosedBehindBarrierComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AirhandlingNegativeAirMonitoredSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AirhandlingNegativeAirMonitoredSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AirhandlingNegativeAirMonitoredComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AirhandlingNegativeAirMonitoredComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AirHandlingUnitRunningSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AirHandlingUnitRunningSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AirHandlingUnitRunningComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AirHandlingUnitRunningComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AirhandlingMaintenanceLabelVisibleSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AirhandlingMaintenanceLabelVisibleSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AirhandlingMaintenanceLabelVisibleComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AirhandlingMaintenanceLabelVisibleComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AirhandlingAirExhaustedToAppropriateAreaSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AirhandlingAirExhaustedToAppropriateAreaSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AirhandlingAirExhaustedToAppropriateAreaComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AirhandlingAirExhaustedToAppropriateAreaComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaHEPAFilteredVacuumOnJobsiteSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaHEPAFilteredVacuumOnJobsiteSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaHEPAFilteredVacuumOnJobsiteComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaHEPAFilteredVacuumOnJobsiteComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaDebrisRemovedInCoveredContainerDailySelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaDebrisRemovedInCoveredContainerDailySelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaDebrisRemovedInCoveredContainerDailyComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaDebrisRemovedInCoveredContainerDailyComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaDesignatedConstructionRouteOrMapPostedSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaDesignatedConstructionRouteOrMapPostedSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaDesignatedConstructionRouteOrMapPostedComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaDesignatedConstructionRouteOrMapPostedComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaTrashInAppropriateContainerSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaTrashInAppropriateContainerSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaTrashInAppropriateContainerComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaTrashInAppropriateContainerComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaRoutineCleaningDoneOnSiteSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaRoutineCleaningDoneOnSiteSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaRoutineCleaningDoneOnSiteComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaRoutineCleaningDoneOnSiteComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaAirVentsSealedOrDuctworkCappedSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaAirVentsSealedOrDuctworkCappedSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProjectareaAirVentsSealedOrDuctworkCappedComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProjectareaAirVentsSealedOrDuctworkCappedComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TrafficcontrolRestrictedToConstructionWorkersSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TrafficcontrolRestrictedToConstructionWorkersSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TrafficcontrolRestrictedToConstructionWorkersComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TrafficcontrolRestrictedToConstructionWorkersComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TrafficcontrolDoorsAndExitsFreeOfDebrisSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TrafficcontrolDoorsAndExitsFreeOfDebrisSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TrafficcontrolDoorsAndExitsFreeOfDebrisComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.TrafficcontrolDoorsAndExitsFreeOfDebrisComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DresscodeProtectiveClothingWornSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DresscodeProtectiveClothingWornSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DresscodeProtectiveClothingWornComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DresscodeProtectiveClothingWornComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DresscodeWorkersClothingCleanUponExitingSelection)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DresscodeWorkersClothingCleanUponExitingSelection)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DresscodeWorkersClothingCleanUponExitingComments)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DresscodeWorkersClothingCleanUponExitingComments)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ContractorSign)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ContractorSign)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EngineeringSign)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EngineeringSign)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ICPSign)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ICPSign)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UnitAreaRep)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UnitAreaRep)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

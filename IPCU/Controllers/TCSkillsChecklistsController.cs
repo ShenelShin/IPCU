@@ -66,10 +66,14 @@ namespace IPCU.Controllers
                 if (icra != null)
                 {
                     checklist.ICRAId = icra.Id;
-                    ViewBag.ICRANumber = icra.ProjectReferenceNumber; // Add this line
-                    checklist.Area = icra.SpecificSiteOfActivity;
-                    checklist.Date = DateTime.Now;
-                    checklist.DateOfObservation = DateTime.Now;
+                    checklist.ProjectReferenceNumber = icra.ProjectReferenceNumber; 
+                    checklist.SpecificSiteOfActivity = icra.SpecificSiteOfActivity;
+                    checklist.ProjectNameAndDescription = icra.ProjectNameAndDescription;
+                    checklist.ContractorRepresentativeName = icra.ContractorRepresentativeName;
+                    checklist.TelephoneOrMobileNumber = icra.TelephoneOrMobileNumber;
+                    checklist.ProjectStartDate = icra.ProjectStartDate;
+                    checklist.ScopeOfWork = icra.ScopeOfWork;
+                    checklist.EstimatedDuration = icra.EstimatedDuration;
                 }
             }
 
@@ -77,7 +81,7 @@ namespace IPCU.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ICRAId,Area,ObserverName,Date,IsEquipmentAndCartPrepared,IsCleaningSolutionPrepared,IsProperAttireAndPPEWorn,IsHandHygieneAndGlovesDone,IsSignageChecked,IsSpillSoakedWithSolution,IsWallsCleaned,IsDoorFrameWiped,IsWindowSillAndWindowCleaned,IsHighTouchAreasWiped,IsVerticalSurfacesWiped,IsLooseDebrisPickedUp,IsRoomFloorMopped,IsUsedClothsDisposed,IsWasteContainersEmptied,IsInfectiousWasteRemoved,IsMirrorCleaned,IsSinkAreaCleaned,IsFaucetAndHandlesCleaned,IsToiletAndFlushHandlesCleaned,IsOtherBathroomSurfacesCleaned,IsBathroomFloorScrubbed,IsColorCodedWasteEmptied,IsPPERemoved,IsHandHygieneAfterPPE,IsGlovesRemovedAndHandHygieneDone,PreCleaningItems,PostCleaningItems,RecommendationsOrActions,UnitAreaStaffSignature,DateOfObservation")] TCSkillsChecklist tCSkillsChecklist)
+        public async Task<IActionResult> Create([Bind("Id,ICRAId,ProjectReferenceNumber,ProjectNameAndDescription,ContractorRepresentativeName,TelephoneOrMobileNumber,SpecificSiteOfActivity,ScopeOfWork,ProjectStartDate,EstimatedDuration,BarrierICRA,BarrierICRAComments,BarrierDoorsSealedSelection,BarrierDoorsSealedComments,BarrierFloorCleanSelection,BarrierFloorCleanComments,BarrierWalkOffMatsSelection,BarrierWalkOffMatsComments,BarrierTapeAdheringSelection,BarrierTapeAdheringComments,AirhandlingWindowsClosedBehindBarrierSelection,AirhandlingWindowsClosedBehindBarrierComments,AirhandlingNegativeAirMonitoredSelection,AirhandlingNegativeAirMonitoredComments,AirHandlingUnitRunningSelection,AirHandlingUnitRunningComments,AirhandlingMaintenanceLabelVisibleSelection,AirhandlingMaintenanceLabelVisibleComments,AirhandlingAirExhaustedToAppropriateAreaSelection,AirhandlingAirExhaustedToAppropriateAreaComments,ProjectareaHEPAFilteredVacuumOnJobsiteSelection,ProjectareaHEPAFilteredVacuumOnJobsiteComments,ProjectareaDebrisRemovedInCoveredContainerDailySelection,ProjectareaDebrisRemovedInCoveredContainerDailyComments,ProjectareaDesignatedConstructionRouteOrMapPostedSelection,ProjectareaDesignatedConstructionRouteOrMapPostedComments,ProjectareaTrashInAppropriateContainerSelection,ProjectareaTrashInAppropriateContainerComments,ProjectareaRoutineCleaningDoneOnSiteSelection,ProjectareaRoutineCleaningDoneOnSiteComments,ProjectareaAirVentsSealedOrDuctworkCappedSelection,ProjectareaAirVentsSealedOrDuctworkCappedComments,TrafficcontrolRestrictedToConstructionWorkersSelection,TrafficcontrolRestrictedToConstructionWorkersComments,TrafficcontrolDoorsAndExitsFreeOfDebrisSelection,TrafficcontrolDoorsAndExitsFreeOfDebrisComments,DresscodeProtectiveClothingWornSelection,DresscodeProtectiveClothingWornComments,DresscodeWorkersClothingCleanUponExitingSelection,DresscodeWorkersClothingCleanUponExitingComments,ContractorSign,EngineeringSign,ICPSign,UnitAreaRep")] TCSkillsChecklist tCSkillsChecklist)
         {
             if (ModelState.IsValid)
             {
@@ -154,7 +158,7 @@ namespace IPCU.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Area,ICRAId,ObserverName,Date,IsEquipmentAndCartPrepared,IsCleaningSolutionPrepared,IsProperAttireAndPPEWorn,IsHandHygieneAndGlovesDone,IsSignageChecked,IsSpillSoakedWithSolution,IsWallsCleaned,IsDoorFrameWiped,IsWindowSillAndWindowCleaned,IsHighTouchAreasWiped,IsVerticalSurfacesWiped,IsLooseDebrisPickedUp,IsRoomFloorMopped,IsUsedClothsDisposed,IsWasteContainersEmptied,IsInfectiousWasteRemoved,IsMirrorCleaned,IsSinkAreaCleaned,IsFaucetAndHandlesCleaned,IsToiletAndFlushHandlesCleaned,IsOtherBathroomSurfacesCleaned,IsBathroomFloorScrubbed,IsColorCodedWasteEmptied,IsPPERemoved,IsHandHygieneAfterPPE,IsGlovesRemovedAndHandHygieneDone,PreCleaningItems,PostCleaningItems,RecommendationsOrActions,UnitAreaStaffSignature,DateOfObservation")] TCSkillsChecklist tCSkillsChecklist)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ICRAId,ProjectReferenceNumber,ProjectNameAndDescription,ContractorRepresentativeName,TelephoneOrMobileNumber,SpecificSiteOfActivity,ScopeOfWork,ProjectStartDate,EstimatedDuration,BarrierICRA,BarrierICRAComments,BarrierDoorsSealedSelection,BarrierDoorsSealedComments,BarrierFloorCleanSelection,BarrierFloorCleanComments,BarrierWalkOffMatsSelection,BarrierWalkOffMatsComments,BarrierTapeAdheringSelection,BarrierTapeAdheringComments,AirhandlingWindowsClosedBehindBarrierSelection,AirhandlingWindowsClosedBehindBarrierComments,AirhandlingNegativeAirMonitoredSelection,AirhandlingNegativeAirMonitoredComments,AirHandlingUnitRunningSelection,AirHandlingUnitRunningComments,AirhandlingMaintenanceLabelVisibleSelection,AirhandlingMaintenanceLabelVisibleComments,AirhandlingAirExhaustedToAppropriateAreaSelection,AirhandlingAirExhaustedToAppropriateAreaComments,ProjectareaHEPAFilteredVacuumOnJobsiteSelection,ProjectareaHEPAFilteredVacuumOnJobsiteComments,ProjectareaDebrisRemovedInCoveredContainerDailySelection,ProjectareaDebrisRemovedInCoveredContainerDailyComments,ProjectareaDesignatedConstructionRouteOrMapPostedSelection,ProjectareaDesignatedConstructionRouteOrMapPostedComments,ProjectareaTrashInAppropriateContainerSelection,ProjectareaTrashInAppropriateContainerComments,ProjectareaRoutineCleaningDoneOnSiteSelection,ProjectareaRoutineCleaningDoneOnSiteComments,ProjectareaAirVentsSealedOrDuctworkCappedSelection,ProjectareaAirVentsSealedOrDuctworkCappedComments,TrafficcontrolRestrictedToConstructionWorkersSelection,TrafficcontrolRestrictedToConstructionWorkersComments,TrafficcontrolDoorsAndExitsFreeOfDebrisSelection,TrafficcontrolDoorsAndExitsFreeOfDebrisComments,DresscodeProtectiveClothingWornSelection,DresscodeProtectiveClothingWornComments,DresscodeWorkersClothingCleanUponExitingSelection,DresscodeWorkersClothingCleanUponExitingComments,ContractorSign,EngineeringSign,ICPSign,UnitAreaRep")] TCSkillsChecklist tCSkillsChecklist)
         {
             if (id != tCSkillsChecklist.Id)
             {
