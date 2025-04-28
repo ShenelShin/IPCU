@@ -123,7 +123,7 @@ namespace IPCU.Controllers
             await _context.SaveChangesAsync();
 
             Console.WriteLine("Saved successfully!");
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "ICNPatient", new { id = model.HospitalNumber });
         }
 
 

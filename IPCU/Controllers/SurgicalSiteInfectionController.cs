@@ -109,7 +109,7 @@ namespace IPCU.Controllers
                     Console.WriteLine("Saving changes to the database...");
                     _context.SaveChanges();
                     Console.WriteLine("Data saved successfully.");
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Details", "ICNPatient", new { id = model.HospitalNumber });
                 }
                 catch (Exception ex)
                 {

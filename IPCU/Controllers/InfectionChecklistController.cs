@@ -133,7 +133,7 @@ namespace IPCU.Controllers
                 _context.SaveChanges();
 
                 TempData["Success"] = "Checklist submitted successfully! HAI count has been updated.";
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "ICNPatient", new { id = model.HospitalNumber });
             }
             return View("Index", model);
         }

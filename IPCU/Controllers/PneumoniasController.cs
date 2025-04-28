@@ -121,7 +121,7 @@ namespace IPCU.Controllers
                 pneumonia.DateCreated = DateTime.Now;
                 _context.Add(pneumonia);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "ICNPatient", new { id = pneumonia.HospitalNumber });
             }
             return View(pneumonia);
         }

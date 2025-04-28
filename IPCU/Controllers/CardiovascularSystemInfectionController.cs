@@ -105,7 +105,7 @@ namespace IPCU.Controllers
                 model.DateCreated = DateTime.Now;
                 _context.CardiovascularSystemInfection.Add(model);
                 _context.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "ICNPatient", new { id = model.HospitalNumber });
             }
 
             return View("Index", model);

@@ -153,7 +153,7 @@ namespace IPCU.Controllers
 
                 _context.Add(usi);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "ICNPatient", new { id = usi.HospitalNumber });
             }
             return View(usi);
         }
