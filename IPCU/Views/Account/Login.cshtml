@@ -77,6 +77,29 @@
         font-weight: 600;
         transition: background 0.3s ease, color 0.3s ease;
     }
+
+
+
+
+
+    #typewriter::after {
+        content: "|";
+        animation: blink 1s infinite;
+        color: white;
+    }
+
+    @@keyframes blink {
+        0%, 100%
+
+    {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    }
 </style>
 
 <!-- Blue overlay -->
@@ -86,18 +109,10 @@
 <div class="container-fluid d-flex align-items-center justify-content-between content" style="min-height: 100vh;">
     <!-- Left Caption -->
     <div class="col-md-6 caption-section">
-        <h1 class="display-4 fw-bold">Welcome to IPCU System</h1>
-        <p class="lead">Your trusted partner in patient care and medical excellence.</p>
+        <h1 class="display-4 fw-bold" id="typewriter">Welcome to IPCU System</h1>
 
-        <div class="d-flex flex-wrap gap-3 mt-4">
-            <a class="btn btn-outline-light btn-lg flex-fill" asp-controller="Test" asp-action="TakeTest">
-                <i class="fa fa-file-alt"></i> Take a Test
-            </a>
-            <button type="button" class="btn btn-primary btn-lg flex-fill" onclick="window.location.href='https://localhost:7179/ICRAs/create'">
-                <i class="fa fa-plus"></i> Go to ICRAs
-            </button>
-        </div>
-    </div>
+    <p class="lead">Your trusted partner in patient care and medical excellence.</p>   
+</div>
 
     <!-- Right Login Card -->
     <div class="col-md-4 me-3">
@@ -150,3 +165,35 @@
         </div>
     </div>
 </div>
+<script>
+    const text = "Welcome to IPCU System";
+    const speed = 100; // typing speed (ms per character)
+    const eraseSpeed = 50; // erase speed
+    const delay = 1500; // delay before erasing
+    const element = document.getElementById("typewriter");
+
+    let index = 0;
+    let isDeleting = false;
+
+    function typeEffect() {
+        if (isDeleting) {
+            element.textContent = text.substring(0, index--);
+            if (index < 0) {
+                isDeleting = false;
+                setTimeout(typeEffect, speed);
+            } else {
+                setTimeout(typeEffect, eraseSpeed);
+            }
+        } else {
+            element.textContent = text.substring(0, index++);
+            if (index > text.length) {
+                isDeleting = true;
+                setTimeout(typeEffect, delay);
+            } else {
+                setTimeout(typeEffect, speed);
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", typeEffect);
+</script>
