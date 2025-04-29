@@ -4,16 +4,65 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-    <div class="col-md-4" style="margin-top: -100px;">
-        <!-- Increased upward movement x2 -->
-        <div class="card shadow-lg border-0 rounded-4 p-4">
+<style>
+    html, body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background-image: url('/images/hospital-bg.jpeg');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-position: center;
+        background-attachment: fixed;
+        min-height: 100vh;
+        min-width: 90vw;
+    }
+
+    /* Blue blur overlay */
+    .blue-overlay {
+        position: absolute;
+        top: 100;
+        left: 5;
+        right: 30;
+        width: 95%;
+        height: 100%;
+        background-color: rgba(var(--bs-primary-rgb), 0.3); /* Bootstrap Primary Color with 30% opacity */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px); /* for Safari */
+        z-index: 1;
+    }
+
+    .content {
+        position: relative;
+        z-index: 2; /* Content above the blue blur */
+    }
+
+    .login-card {
+        background: rgba(255, 255, 255, 0.9); /* white transparent for login card */
+        backdrop-filter: blur(5px);
+        border-radius: 20px;
+    }
+</style>
+
+<!-- Blue overlay -->
+<div class="blue-overlay"></div>
+
+<!-- Content -->
+<div class="container-fluid d-flex align-items-center justify-content-end content" style="min-height: 100vh;">
+    <div class="col-md-4 me-3">
+        <!-- Login Card -->
+        <div class="card shadow-lg border-0 p-4 login-card">
             <!-- Logo & Title -->
             <div class="text-center">
                 <img src="https://cdn-icons-png.flaticon.com/512/2913/2913977.png" alt="Hospital Logo" width="70">
                 <h4 class="mt-2 text-primary fw-bold">IPCU SYSTEM</h4>
                 <p class="text-secondary">Sign in to continue</p>
             </div>
+
             <!-- Error Message -->
             @if (!string.IsNullOrEmpty(ViewData["ErrorMessage"]?.ToString()))
             {
@@ -21,6 +70,7 @@
                     @ViewData["ErrorMessage"]
                 </div>
             }
+
             <!-- Login Form -->
             <form asp-action="Login" method="post">
                 <div class="mb-3">
@@ -54,8 +104,11 @@
         </div>
 
         <!-- Footer -->
-        <div class="text-center mt-3 text-secondary small">
+        <div class="text-center mt-3 text-white small">
             &copy; 2025 IPCU System. All Rights Reserved.
         </div>
+
     </div>
+
+   
 </div>
