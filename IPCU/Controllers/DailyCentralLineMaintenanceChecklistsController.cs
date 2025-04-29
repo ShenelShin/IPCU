@@ -44,22 +44,76 @@ namespace IPCU.Controllers
         }
 
         // GET: DailyCentralLineMaintenanceChecklists/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            // Check if a patient ID was provided via TempData
+            if (TempData["PatientId"] != null)
+            {
+                var patientId = TempData["PatientId"].ToString();
+
+                // Get patient information to pre-populate the form
+                var patient = await (from p in _context.Patients
+                                     join m in _context.PatientMasters on p.HospNum equals m.HospNum
+                                     where p.IdNum == patientId
+                                     select new
+                                     {
+                                         HospNum = p.HospNum,
+                                         LastName = m.LastName,
+                                         FirstName = m.FirstName,
+                                         MiddleName = m.MiddleName,
+                                         AdmLocation = p.AdmLocation,
+                                         RoomID = p.RoomID
+                                     })
+                                   .FirstOrDefaultAsync();
+
+                if (patient != null)
+                {
+                    // Create a maintenance checklist model with pre-populated patient data
+                    var checklistModel = new DailyCentralLineMaintenanceChecklist
+                    {
+                        AreaOrUnit = patient.AdmLocation,
+                        DateAndTimeOfMonitoring = DateTime.Now,
+                        Patient = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}",
+                        Bed = patient.RoomID
+                    };
+
+                    // Keep the patient ID in TempData for the post action
+                    TempData.Keep("PatientId");
+
+                    return View(checklistModel);
+                }
+            }
+
+            // If no patient ID or patient not found, return empty form
             return View();
         }
 
         // POST: DailyCentralLineMaintenanceChecklists/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,AreaOrUnit,DateAndTimeOfMonitoring,AssessedBy,Patient,Bed,IntitialPlacement,Implanted,Injection,Dateadministration,Necessityassessed,Injectionsites,Capschanged,Insertionsite,Dressingintact,Dressingchanged,Remarks,NumCompliant,TotalObserved,ComplianceRate")] DailyCentralLineMaintenanceChecklist dailyCentralLineMaintenanceChecklist)
         {
             if (ModelState.IsValid)
             {
+                // Calculate compliance rate if not provided
+                if (dailyCentralLineMaintenanceChecklist.NumCompliant > 0 && dailyCentralLineMaintenanceChecklist.TotalObserved > 0)
+                {
+                    dailyCentralLineMaintenanceChecklist.ComplianceRate =
+                        (int)(((decimal)dailyCentralLineMaintenanceChecklist.NumCompliant / (decimal)dailyCentralLineMaintenanceChecklist.TotalObserved) * 100);
+                }
+
                 _context.Add(dailyCentralLineMaintenanceChecklist);
                 await _context.SaveChangesAsync();
+
+                // Check if this was created from HaiChecklist
+                if (TempData["PatientId"] != null)
+                {
+                    string patientId = TempData["PatientId"].ToString();
+
+                    // Redirect back to the patient's HAI checklist
+                    return RedirectToAction("HaiChecklist", "ICNPatient", new { id = patientId });
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(dailyCentralLineMaintenanceChecklist);
@@ -82,8 +136,6 @@ namespace IPCU.Controllers
         }
 
         // POST: DailyCentralLineMaintenanceChecklists/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,AreaOrUnit,DateAndTimeOfMonitoring,AssessedBy,Patient,Bed,IntitialPlacement,Implanted,Injection,Dateadministration,Necessityassessed,Injectionsites,Capschanged,Insertionsite,Dressingintact,Dressingchanged,Remarks,NumCompliant,TotalObserved,ComplianceRate")] DailyCentralLineMaintenanceChecklist dailyCentralLineMaintenanceChecklist)
@@ -97,6 +149,13 @@ namespace IPCU.Controllers
             {
                 try
                 {
+                    // Recalculate compliance rate if values provided
+                    if (dailyCentralLineMaintenanceChecklist.NumCompliant > 0 && dailyCentralLineMaintenanceChecklist.TotalObserved > 0)
+                    {
+                        dailyCentralLineMaintenanceChecklist.ComplianceRate =
+                            (int)Math.Round(((decimal)dailyCentralLineMaintenanceChecklist.NumCompliant / (decimal)dailyCentralLineMaintenanceChecklist.TotalObserved) * 100);
+                    }
+
                     _context.Update(dailyCentralLineMaintenanceChecklist);
                     await _context.SaveChangesAsync();
                 }
@@ -111,6 +170,14 @@ namespace IPCU.Controllers
                         throw;
                     }
                 }
+
+                // Check if we need to redirect back to HAI checklist
+                if (TempData["PatientId"] != null)
+                {
+                    string patientId = TempData["PatientId"].ToString();
+                    return RedirectToAction("HaiChecklist", "ICNPatient", new { id = patientId });
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(dailyCentralLineMaintenanceChecklist);
@@ -152,6 +219,24 @@ namespace IPCU.Controllers
         private bool DailyCentralLineMaintenanceChecklistExists(int id)
         {
             return _context.DailyCentralLineMaintenanceChecklists.Any(e => e.Id == id);
+        }
+
+        // GET: View patient-specific maintenance checklists
+        public async Task<IActionResult> PatientChecklists(string patientName)
+        {
+            if (string.IsNullOrEmpty(patientName))
+            {
+                return NotFound();
+            }
+
+            var checklists = await _context.DailyCentralLineMaintenanceChecklists
+                                  .Where(c => c.Patient == patientName)
+                                  .OrderByDescending(c => c.DateAndTimeOfMonitoring)
+                                  .ToListAsync();
+
+            ViewData["PatientName"] = patientName;
+
+            return View(checklists);
         }
     }
 }

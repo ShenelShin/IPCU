@@ -44,14 +44,55 @@ namespace IPCU.Controllers
         }
 
         // GET: Insertions/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            // Check if a patient ID was provided via TempData
+            if (TempData["PatientId"] != null)
+            {
+                var patientId = TempData["PatientId"].ToString();
+
+                // Get patient information to pre-populate the form
+                var patient = await (from p in _context.Patients
+                                     join m in _context.PatientMasters on p.HospNum equals m.HospNum
+                                     where p.IdNum == patientId
+                                     select new
+                                     {
+                                         HospNum = p.HospNum,
+                                         LastName = m.LastName,
+                                         FirstName = m.FirstName,
+                                         MiddleName = m.MiddleName,
+                                         //Age = p.Age,
+                                         Sex = m.Sex,
+                                         //Birthday = m.Birthday
+                                     })
+                                   .FirstOrDefaultAsync();
+
+                if (patient != null)
+                {
+                    // Create an insertion model with pre-populated patient data
+                    var insertionModel = new Insertion
+                    {
+                        HospitalNumber = patient.HospNum,
+                        PatientLastName = patient.LastName,
+                        PatientFirstName = patient.FirstName,
+                        PatientMiddleName = patient.MiddleName,
+                        //Age = patient.Age,
+                        Sex = patient.Sex,
+                        //Birthday = patient.Birthday
+                    };
+
+                    // Keep the patient ID in TempData for the post action
+                    TempData.Keep("PatientId");
+
+                    return View(insertionModel);
+                }
+            }
+
+            // If no patient ID or patient not found, return empty form
             return View();
         }
 
         // POST: Insertions/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,PatientLastName,PatientFirstName,PatientMiddleName,Age,Sex,Birthday,PatientDiagnosis,HospitalNumber,ReasonforInsertion,ProcedureOperator,NumberofLumens,ProcedureLocation,CatheterType,Classification,Optimal,ExplainWhyAlternate,Left,Right,AnatomyIs,ChestWall,COPD,Emergency,Anesthesiologist,Coagulopathy,Dialysis,OperatorTraining,ObtainInformedConsent,ObtainInformedConsentReminder,ConfirmHandHygiene,ConfirmHandHygieneReminder,UseFullBarrier,UseFullBarrierReminder,PerformSkin,PerformSkinReminder,AllowSite,AllowSiteReminder,UseSterile,UseSterileReminder,Maintain,MaintainReminder,Monitor,MonitorReminder,CleanBlood,CleanBloodReminder,ProcedureNotes,Observer,Operator")] Insertion insertion)
@@ -60,6 +101,16 @@ namespace IPCU.Controllers
             {
                 _context.Add(insertion);
                 await _context.SaveChangesAsync();
+
+                // Check if this was created from HaiChecklist
+                if (TempData["PatientId"] != null)
+                {
+                    string patientId = TempData["PatientId"].ToString();
+
+                    // Redirect back to the patient's HAI checklist
+                    return RedirectToAction("HaiChecklist", "ICNPatient", new { id = patientId });
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(insertion);
@@ -82,8 +133,6 @@ namespace IPCU.Controllers
         }
 
         // POST: Insertions/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,PatientLastName,PatientFirstName,PatientMiddleName,Age,Sex,Birthday,PatientDiagnosis,HospitalNumber,ReasonforInsertion,ProcedureOperator,NumberofLumens,ProcedureLocation,CatheterType,Classification,Optimal,ExplainWhyAlternate,Left,Right,AnatomyIs,ChestWall,COPD,Emergency,Anesthesiologist,Coagulopathy,Dialysis,OperatorTraining,ObtainInformedConsent,ObtainInformedConsentReminder,ConfirmHandHygiene,ConfirmHandHygieneReminder,UseFullBarrier,UseFullBarrierReminder,PerformSkin,PerformSkinReminder,AllowSite,AllowSiteReminder,UseSterile,UseSterileReminder,Maintain,MaintainReminder,Monitor,MonitorReminder,CleanBlood,CleanBloodReminder,ProcedureNotes,Observer,Operator")] Insertion insertion)
@@ -111,6 +160,14 @@ namespace IPCU.Controllers
                         throw;
                     }
                 }
+
+                // Check if we need to redirect back to HAI checklist
+                if (TempData["PatientId"] != null)
+                {
+                    string patientId = TempData["PatientId"].ToString();
+                    return RedirectToAction("HaiChecklist", "ICNPatient", new { id = patientId });
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(insertion);

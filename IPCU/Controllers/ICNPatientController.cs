@@ -721,6 +721,7 @@ namespace IPCU.Controllers
             }
         }
 
+        // GET: HAI Checklist for Infection Control Nurse
         public async Task<IActionResult> HaiChecklist(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -790,21 +791,78 @@ namespace IPCU.Controllers
             // Create device flags for conditional display of infection forms
             var deviceFlags = new HAIDeviceFlags
             {
-                HasCentralLine = connectedDevices.Any(d => d.DeviceType == "CL"),
-                HasIndwellingUrinaryCatheter = connectedDevices.Any(d => d.DeviceType == "IUC"),
-                HasMechanicalVentilator = connectedDevices.Any(d => d.DeviceType == "MV"),
+                HasCentralLine = connectedDevices.Any(d => d.DeviceType == DeviceTypes.CentralLine),
+                HasIndwellingUrinaryCatheter = connectedDevices.Any(d => d.DeviceType == DeviceTypes.IndwellingUrinaryCatheter),
+                HasMechanicalVentilator = connectedDevices.Any(d => d.DeviceType == DeviceTypes.MechanicalVentilator)
                 // Add more device flags as needed
             };
 
-            // Create the view model with both patient info and device flags
+            // Get checklists and insertion forms info
+            var clInsertionForm = await _context.Insertion
+                                     .Where(i => i.HospitalNumber == patient.HospNum)
+                                     .OrderByDescending(i => i.Id)
+                                     .FirstOrDefaultAsync();
+
+            var clMaintenanceChecklists = await _context.DailyCentralLineMaintenanceChecklists
+                                           .Where(d => d.Patient == patientInfo.PatientName)
+                                           .OrderByDescending(d => d.DateAndTimeOfMonitoring)
+                                           .ToListAsync();
+
+            // Get IUC insertion form info
+            var iucInsertionForm = await _context.Insertion
+                                     .Where(i => i.HospitalNumber == patient.HospNum && i.CatheterType.Contains("Urinary"))
+                                     .OrderByDescending(i => i.Id)
+                                     .FirstOrDefaultAsync();
+
+            var iucMaintenanceChecklists = await _context.DailyCentralLineMaintenanceChecklists
+                               .Where(d => d.Patient == patientInfo.PatientName)
+                               .OrderByDescending(d => d.DateAndTimeOfMonitoring)
+                               .ToListAsync();
+
+            // Create the view model with patient info, device flags, and checklists
             var viewModel = new HAIChecklistViewModel
             {
                 Patient = patientInfo,
-                DeviceFlags = deviceFlags
+                DeviceFlags = deviceFlags,
+                CentralLineInsertionForm = clInsertionForm,
+                CentralLineMaintenanceChecklists = clMaintenanceChecklists,
+                IndwellingUrinaryCatheterInsertion = iucInsertionForm,
+                IndwellingUrinaryCatheterMaintenanceChecklists = iucMaintenanceChecklists,
+
             };
 
             // Return the HAI checklist view
             return View(viewModel);
+        }
+
+        // Helper action to redirect to Insertions controller for Central Line insertion form
+        public IActionResult CreateCentralLineInsertionForm(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            // Create TempData to store patient information for the Insertions controller
+            TempData["PatientId"] = id;
+
+            // Redirect to the create action in InsertionsController
+            return RedirectToAction("Create", "Insertions");
+        }
+
+        // Helper action to redirect to DailyCentralLineMaintenanceChecklists controller
+        public IActionResult CreateCentralLineMaintenance(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            // Create TempData to store patient information for the maintenance controller
+            TempData["PatientId"] = id;
+
+            // Redirect to the create action in DailyCentralLineMaintenanceChecklistsController
+            return RedirectToAction("Create", "DailyCentralLineMaintenanceChecklists");
         }
 
 
