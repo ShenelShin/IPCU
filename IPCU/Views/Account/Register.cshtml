@@ -64,9 +64,9 @@
     .register-card {
         background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(5px);
-        border-radius: 20px;
+        border-radius: 0px;
         padding: 2rem;
-        max-width: 450px; /* Fixed width for the form */
+        max-width: 430px; /* Fixed width for the form */
         width: 100%;
         max-height: 500px; /* Prevent the card from becoming too tall */
         overflow-y: auto; /* Allows scrolling within the card if necessary */
@@ -108,19 +108,12 @@
     }
 </style>
 
-<div class="container-fluid blue-overlay d-flex align-items-stretch justify-content-between">
+<div class="container-fluid blue-overlay d-flex align-items-stretch justify-content-between" >
     <!-- Left Caption -->
     <div class="col-md-6 caption-section d-flex flex-column justify-content-center">
         <h1 class="display-4 fw-bold">Join the IPCU System</h1>
         <p class="lead">Creating a safer and smarter patient care environment together.</p>
-        <div class="d-flex gap-3 mt-3">
-            <a class="btn btn-outline-light btn-lg" asp-controller="Test" asp-action="TakeTest">
-                <i class="fa fa-file-alt"></i> Take a Test
-            </a>
-            <a class="btn btn-light btn-lg" href="https://localhost:7179/ICRAs/create">
-                <i class="fa fa-plus"></i> Go to ICRAs
-            </a>
-        </div>
+
     </div>
 
     <!-- Right Register Form -->
