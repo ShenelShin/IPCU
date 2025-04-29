@@ -6,6 +6,10 @@ namespace IPCU.Models
     {
         [Key]
         public int Id { get; set; }
+        public string Fname { get; set; } // First Name
+        public string Lname { get; set; } // Last Name
+        public string? Mname { get; set; } // Middle Name
+        public string EmployeeId { get; set; } // New field
 
         public string Area { get; set; }
         public string ObserverName { get; set; }

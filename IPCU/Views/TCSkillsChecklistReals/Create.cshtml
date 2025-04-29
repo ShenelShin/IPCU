@@ -9,7 +9,36 @@
 
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Fname" class="control-label">First Name:</label>
+                <input asp-for="Fname" class="form-control" />
+                <span asp-validation-for="Fname" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Mname" class="control-label">Middle Name:</label>
+                <input asp-for="Mname" class="form-control" />
+                <span asp-validation-for="Mname" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Lname" class="control-label">Last Name:</label>
+                <input asp-for="Lname" class="form-control" />
+                <span asp-validation-for="Lname" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="EmployeeId" class="control-label">Employee Id:</label>
+                <input asp-for="EmployeeId" class="form-control" />
+                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -39,7 +68,7 @@
     </div>
 
     <div class="alert alert-info mt-3">
-        <strong>Instructions:</strong> Put [✓] if done, [x] if not, or indicate N/A if not applicable.
+        <strong>Instructions:</strong> Put [✓] if done, [x] if not.
     </div>
 
     <!-- Section 1: PREPARATION AND SETUP -->
