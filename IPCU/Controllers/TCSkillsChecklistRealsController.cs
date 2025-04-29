@@ -153,5 +153,24 @@ namespace IPCU.Controllers
         {
             return _context.TCSkillsChecklistReal.Any(e => e.Id == id);
         }
+        public IActionResult EnvironmentalDashboard(string employeeId)
+        {
+            if (string.IsNullOrEmpty(employeeId))
+            {
+                return View("~/Views/Environmental/Index.cshtml");
+            }
+
+            var checklist = _context.TCSkillsChecklistReal
+                .FirstOrDefault(e => e.EmployeeId == employeeId);
+
+            if (checklist == null)
+            {
+                ViewBag.ErrorMessage = "Employee not found.";
+                return View("~/Views/Environmental/Index.cshtml");
+            }
+
+            return View("~/Views/Environmental/Index.cshtml", checklist);
+        }
+
     }
 }

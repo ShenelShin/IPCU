@@ -1,8 +1,41 @@
-﻿@{
+﻿@model IPCU.Models.TCSkillsChecklistReal
+
+@{
     ViewData["Title"] = "Environmental Dashboard";
 }
 
 <h1>@ViewData["Title"]</h1>
 
 <p>Welcome to the Environmental section!</p>
-    
+
+<!-- Create New Checklist Button -->
+<a asp-controller="tCSkillsChecklistReals" asp-action="Index" class="btn btn-primary mb-3">
+    Create New Checklist
+</a>
+
+<!-- Employee ID Search Bar -->
+<form asp-controller="tCSkillsChecklistReals" asp-action="EnvironmentalDashboard" method="get" class="form-inline">
+    <div class="form-group mb-2">
+        <label for="employeeId" class="sr-only">Employee ID</label>
+        <input type="text" name="employeeId" id="employeeId" class="form-control" placeholder="Enter Employee ID" required />
+    </div>
+    <button type="submit" class="btn btn-success mb-2 ml-2">Search</button>
+</form>
+
+<br />
+
+<!-- Display error if any -->
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+<!-- Display employee full name if found -->
+@if (Model != null)
+{
+    <div class="alert alert-info">
+        <strong>Employee Found:</strong> @Model.Fname @Model.Mname @Model.Lname
+    </div>
+}
