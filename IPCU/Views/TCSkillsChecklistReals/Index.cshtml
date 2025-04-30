@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h3>TC Skills Checklist for Station: @ViewBag.Station, Room: @ViewBag.RoomID</h3>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" asp-route-roomId="@ViewData["RoomId"]">Create New</a>
 </p>
 <table class="table">
     <thead>

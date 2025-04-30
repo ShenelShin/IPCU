@@ -7,23 +7,37 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IPCU.Data;
 using IPCU.Models;
+using System.Configuration;
+using System.Data.SqlClient;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace IPCU.Controllers
 {
     public class TCSkillsChecklistRealsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public TCSkillsChecklistRealsController(ApplicationDbContext context)
+        public TCSkillsChecklistRealsController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
+
         }
 
         // GET: TCSkillsChecklistReals
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string roomId, string stationId, string station)
         {
-            return View(await _context.TCSkillsChecklistReal.ToListAsync());
+            ViewData["RoomId"] = roomId;
+            ViewBag.StationID = stationId;
+            ViewBag.Station = station;
+            var filteredData = await _context.TCSkillsChecklistReal
+                                              .Where(x => x.Area == roomId)
+                                              .ToListAsync();
+            return View(filteredData);
         }
+
+
 
         // GET: TCSkillsChecklistReals/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -44,9 +58,13 @@ namespace IPCU.Controllers
         }
 
         // GET: TCSkillsChecklistReals/Create
-        public IActionResult Create()
+        public IActionResult Create(string roomId)
         {
-            return View();
+            var model = new TCSkillsChecklistReal
+            {
+                Area = roomId // Pre-fill Area with roomId
+            };
+            return View(model);
         }
 
         // POST: TCSkillsChecklistReals/Create
@@ -60,10 +78,13 @@ namespace IPCU.Controllers
             {
                 _context.Add(tCSkillsChecklistReal);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                // 👇 Redirect with roomId as query string
+                return RedirectToAction(nameof(Index), new { roomId = tCSkillsChecklistReal.Area });
             }
             return View(tCSkillsChecklistReal);
         }
+
 
         // GET: TCSkillsChecklistReals/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -170,6 +191,44 @@ namespace IPCU.Controllers
             }
 
             return View("~/Views/Environmental/Index.cshtml", checklist);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetEmployeeDetails(string employeeId)
+        {
+            var connectionString = _configuration.GetConnectionString("EmployeeConnection"); // name it as you want in appsettings.json
+            var result = new { fname = "", mname = "", lname = "" };
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"
+            SELECT TOP 1 
+                FirstName, MiddleName, LastName 
+            FROM UNIFIEDSVR.payroll.dbo.vwSPMS_User 
+            WHERE EmpNum = @EmpNum";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@EmpNum", employeeId);
+                    await conn.OpenAsync();
+
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            result = new
+                            {
+                                fname = reader["FirstName"].ToString(),
+                                mname = reader["MiddleName"].ToString(),
+                                lname = reader["LastName"].ToString()
+                            };
+
+                            return Json(result);
+                        }
+                    }
+                }
+            }
+
+            return NotFound(); // return 404 if no match
         }
 
     }

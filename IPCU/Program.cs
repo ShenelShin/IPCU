@@ -9,12 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 QuestPDF.Settings.License = LicenseType.Community;
 
 // Configure Entity Framework Core with SQL Server
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AnotherServerConnection")));
-
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
