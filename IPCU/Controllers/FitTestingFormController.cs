@@ -12,16 +12,21 @@ using X.PagedList.Mvc.Core;
 using X.PagedList.Extensions;
 using ClosedXML.Excel;
 using System.IO;
+using System.Data.SqlClient;
 
 namespace IPCU.Controllers
 {
     public class FitTestingFormController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public FitTestingFormController(ApplicationDbContext context)
+
+        public FitTestingFormController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
+
         }
 
         // GET: FitTestingForm
@@ -563,6 +568,56 @@ namespace IPCU.Controllers
                 }
             }
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetEmployeeDetails(string employeeId)
+        {
+            var connectionString = _configuration.GetConnectionString("EmployeeConnection");
+
+            var result = new
+            {
+                fullName = "",
+                position = "",
+                department = ""
+            };
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"
+            SELECT TOP 1 
+                EmpNum, 
+                LastName + ' ' + FirstName + ' ' + MiddleName AS [Name],
+                Position,
+                Department
+            FROM UNIFIEDSVR.payroll.dbo.vwSPMS_User 
+            WHERE EmpNum = @EmpNum";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@EmpNum", employeeId);
+                    await conn.OpenAsync();
+
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            result = new
+                            {
+                                fullName = reader["Name"].ToString().Trim(),
+                                position = reader["Position"].ToString().Trim(),
+                                department = reader["Department"].ToString().Trim()
+                            };
+
+                            return Json(result);
+                        }
+                    }
+                }
+            }
+
+            return NotFound();
+        }
+
 
     }
 }
