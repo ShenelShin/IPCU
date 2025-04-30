@@ -22,7 +22,9 @@
                     <td>@row["StationID"]</td>
                     <td>@row["Station"]</td>
                     <td>
-                        <a href="@Url.Action("ViewRooms", new { stationId = row["StationID"], station = row["Station"] })" class="btn btn-primary">View</a>
+                        <a href="@Url.Action("ViewRooms", new { stationId = row["StationID"], station = row["Station"] })" class="btn btn-primary">View Rooms</a>
+                        <a class="btn btn-primary" href="@Url.Action("Table", "InfectionControlMonitoringForms", new {stationId = row["StationID"], station = row["Station"] })">Environmental Checklist</a>
+
                     </td>
                 </tr>
             }

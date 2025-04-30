@@ -7,13 +7,13 @@
 <h3>TC Skills Checklist for Station: @ViewBag.Station, Room: @ViewBag.RoomID</h3>
 
 <p>
-    <a asp-action="Create" asp-route-roomId="@ViewData["RoomId"]">Create New</a>
+    <a asp-action="Create" asp-route-roomId="@ViewData["RoomId"]" asp-route-station="@ViewData["Station"]">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Area)
+                Full Name
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ObserverName)
@@ -21,93 +21,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Date)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsEquipmentAndCartPrepared)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsCleaningSolutionPrepared)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsProperAttireAndPPEWorn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsHandHygieneAndGlovesDone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsSignageChecked)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsSpillSoakedWithSolution)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsWallsCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDoorFrameWiped)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsWindowSillAndWindowCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsHighTouchAreasWiped)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsVerticalSurfacesWiped)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsLooseDebrisPickedUp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsRoomFloorMopped)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsUsedClothsDisposed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsWasteContainersEmptied)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsInfectiousWasteRemoved)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsMirrorCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsSinkAreaCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsFaucetAndHandlesCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsToiletAndFlushHandlesCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsOtherBathroomSurfacesCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsBathroomFloorScrubbed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsColorCodedWasteEmptied)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsPPERemoved)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsHandHygieneAfterPPE)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsGlovesRemovedAndHandHygieneDone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PreCleaningItems)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PostCleaningItems)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecommendationsOrActions)
-            </th>
+           
             <th>
                 @Html.DisplayNameFor(model => model.UnitAreaStaffSignature)
             </th>
@@ -120,101 +34,14 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Area)
-            </td>
+                <td>
+                    @item.Fname @item.Mname @item.Lname
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ObserverName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsEquipmentAndCartPrepared)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsCleaningSolutionPrepared)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsProperAttireAndPPEWorn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsHandHygieneAndGlovesDone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsSignageChecked)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsSpillSoakedWithSolution)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsWallsCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDoorFrameWiped)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsWindowSillAndWindowCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsHighTouchAreasWiped)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsVerticalSurfacesWiped)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsLooseDebrisPickedUp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsRoomFloorMopped)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsUsedClothsDisposed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsWasteContainersEmptied)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsInfectiousWasteRemoved)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsMirrorCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsSinkAreaCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsFaucetAndHandlesCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsToiletAndFlushHandlesCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsOtherBathroomSurfacesCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsBathroomFloorScrubbed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsColorCodedWasteEmptied)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsPPERemoved)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsHandHygieneAfterPPE)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsGlovesRemovedAndHandHygieneDone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PreCleaningItems)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostCleaningItems)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecommendationsOrActions)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UnitAreaStaffSignature)

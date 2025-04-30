@@ -58,8 +58,10 @@ namespace IPCU.Controllers
         }
 
         // GET: TCSkillsChecklistReals/Create
-        public IActionResult Create(string roomId)
+        public IActionResult Create(string roomId, string station)
         {
+            ViewData["RoomId"] = roomId;
+            ViewData["Station"] = station;
             var model = new TCSkillsChecklistReal
             {
                 Area = roomId // Pre-fill Area with roomId
@@ -74,14 +76,18 @@ namespace IPCU.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Fname,Mname,Lname,EmployeeId,Area,ObserverName,Date,IsEquipmentAndCartPrepared,IsCleaningSolutionPrepared,IsProperAttireAndPPEWorn,IsHandHygieneAndGlovesDone,IsSignageChecked,IsSpillSoakedWithSolution,IsWallsCleaned,IsDoorFrameWiped,IsWindowSillAndWindowCleaned,IsHighTouchAreasWiped,IsVerticalSurfacesWiped,IsLooseDebrisPickedUp,IsRoomFloorMopped,IsUsedClothsDisposed,IsWasteContainersEmptied,IsInfectiousWasteRemoved,IsMirrorCleaned,IsSinkAreaCleaned,IsFaucetAndHandlesCleaned,IsToiletAndFlushHandlesCleaned,IsOtherBathroomSurfacesCleaned,IsBathroomFloorScrubbed,IsColorCodedWasteEmptied,IsPPERemoved,IsHandHygieneAfterPPE,IsGlovesRemovedAndHandHygieneDone,PreCleaningItems,PostCleaningItems,RecommendationsOrActions,UnitAreaStaffSignature,DateOfObservation")] TCSkillsChecklistReal tCSkillsChecklistReal)
         {
+            var station = Request.Query["station"].ToString(); // Get from URL query
+
             if (ModelState.IsValid)
             {
                 _context.Add(tCSkillsChecklistReal);
                 await _context.SaveChangesAsync();
 
                 // 👇 Redirect with roomId as query string
-                return RedirectToAction(nameof(Index), new { roomId = tCSkillsChecklistReal.Area });
+                return RedirectToAction(nameof(Index), new { roomId = tCSkillsChecklistReal.Area, station = station });
             }
+            ViewData["RoomId"] = tCSkillsChecklistReal.Area;
+            ViewData["Station"] = station;
             return View(tCSkillsChecklistReal);
         }
 
@@ -192,44 +198,67 @@ namespace IPCU.Controllers
 
             return View("~/Views/Environmental/Index.cshtml", checklist);
         }
-        [HttpGet]
-        public async Task<IActionResult> GetEmployeeDetails(string employeeId)
+        public async Task<IActionResult> FindNamesByPartialName(string name)
         {
-            var connectionString = _configuration.GetConnectionString("EmployeeConnection"); // name it as you want in appsettings.json
-            var result = new { fname = "", mname = "", lname = "" };
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            if (string.IsNullOrEmpty(name))
             {
-                string sql = @"
-            SELECT TOP 1 
-                FirstName, MiddleName, LastName 
-            FROM UNIFIEDSVR.payroll.dbo.vwSPMS_User 
-            WHERE EmpNum = @EmpNum";
-
-                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@EmpNum", employeeId);
-                    await conn.OpenAsync();
-
-                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            result = new
-                            {
-                                fname = reader["FirstName"].ToString(),
-                                mname = reader["MiddleName"].ToString(),
-                                lname = reader["LastName"].ToString()
-                            };
-
-                            return Json(result);
-                        }
-                    }
-                }
+                return Json(new { success = false, message = "Please enter a name." });
             }
 
-            return NotFound(); // return 404 if no match
+            // Find records where the first name, middle name, or last name contains the partial name entered
+            var matchingRecords = await _context.TCSkillsChecklistReal
+                .Where(x => x.Fname.Contains(name) || x.Mname.Contains(name) || x.Lname.Contains(name))
+                .Select(x => $"{x.Fname} {x.Mname} {x.Lname}")
+                .Take(10) // Limit the results to avoid overwhelming the UI
+                .ToListAsync();
+
+            if (matchingRecords.Any())
+            {
+                return Json(new { success = true, names = matchingRecords });
+            }
+
+            return Json(new { success = false, message = "No matching records found." });
         }
+
+
+        //[HttpGet]
+        //public async Task<IActionResult> GetEmployeeDetails(string employeeId)
+        //{
+        //    var connectionString = _configuration.GetConnectionString("EmployeeConnection"); // name it as you want in appsettings.json
+        //    var result = new { fname = "", mname = "", lname = "" };
+
+        //    using (SqlConnection conn = new SqlConnection(connectionString))
+        //    {
+        //        string sql = @"
+        //    SELECT TOP 1 
+        //        FirstName, MiddleName, LastName 
+        //    FROM UNIFIEDSVR.payroll.dbo.vwSPMS_User 
+        //    WHERE EmpNum = @EmpNum";
+
+        //        using (SqlCommand cmd = new SqlCommand(sql, conn))
+        //        {
+        //            cmd.Parameters.AddWithValue("@EmpNum", employeeId);
+        //            await conn.OpenAsync();
+
+        //            using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+        //            {
+        //                if (await reader.ReadAsync())
+        //                {
+        //                    result = new
+        //                    {
+        //                        fname = reader["FirstName"].ToString(),
+        //                        mname = reader["MiddleName"].ToString(),
+        //                        lname = reader["LastName"].ToString()
+        //                    };
+
+        //                    return Json(result);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return NotFound(); // return 404 if no match
+        //}
 
     }
 }

@@ -5,12 +5,14 @@
 }
 
 <h2 class="text-center mb-4 p-3 bg-primary text-white rounded shadow-sm">@ViewData["Title"]</h2>
+<h2>Environmental Checklist for Station: @ViewBag.Station</h2>
 
 <!-- Create Button -->
 <div class="text-end mb-3">
-    <a href="@Url.Action("Index", "InfectionControlMonitoringForms")" class="btn btn-primary btn-lg">
+    <a href="@Url.Action("Index", "InfectionControlMonitoringForms", new { stationId = ViewBag.StationID, station = ViewBag.Station })" class="btn btn-primary btn-lg">
         Create New Form
     </a>
+
 </div>
 
 <table class="table table-bordered table-striped table-hover">

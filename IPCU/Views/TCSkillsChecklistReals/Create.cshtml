@@ -3,7 +3,29 @@
 @{
     ViewData["Title"] = "Create";
 }
+<style>
+    #nameDropdown {
+        position: absolute;
+        width: 100%;
+        z-index: 1000;
+        max-height: 300px;
+        overflow-y: auto;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
 
+    #resultsList {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        #resultsList .list-group-item {
+            cursor: pointer;
+        }
+
+</style>
 <h1>Create</h1>
 <h4>TCSkillsChecklist</h4>
 
@@ -13,32 +35,36 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Fname" class="control-label">First Name:</label>
-                <input asp-for="Fname" class="form-control" id="Fname" />
+                <input asp-for="Fname" class="form-control" id="Fname" autocomplete="off" />
                 <span asp-validation-for="Fname" class="text-danger"></span>
             </div>
         </div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Mname" class="control-label">Middle Name:</label>
-                <input asp-for="Mname" class="form-control" id="Mname" />
+                <input asp-for="Mname" class="form-control" id="Mname" autocomplete="off" />
                 <span asp-validation-for="Mname" class="text-danger"></span>
             </div>
         </div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Lname" class="control-label">Last Name:</label>
-                <input asp-for="Lname" class="form-control" id="Lname" />
+                <input asp-for="Lname" class="form-control" id="Lname" autocomplete="off" />
                 <span asp-validation-for="Lname" class="text-danger"></span>
             </div>
         </div>
+
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="EmployeeId" class="control-label">Employee Id:</label>
-                <input asp-for="EmployeeId" class="form-control" id="EmployeeId" />
+                <input asp-for="EmployeeId" class="form-control" id="EmployeeId" placeholder="Skip if not applicable"/>
                 <span asp-validation-for="EmployeeId" class="text-danger"></span>
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -57,15 +83,23 @@
     </div>
 
     <div class="row">
-        
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="ObserverName" class="control-label">OBSERVER (Name):</label>
-                <input asp-for="ObserverName" class="form-control" />
+                <input asp-for="ObserverName" class="form-control" id="ObserverName" />
                 <span asp-validation-for="ObserverName" class="text-danger"></span>
             </div>
         </div>
     </div>
+
+    <!-- Dropdown to show matching results -->
+    <div id="nameDropdown" style="display: none; position: relative; z-index: 1000; max-height: 300px; overflow-y: auto; margin-top: 5px; width: 100%;">
+        <label>List of Employees:</label>
+        <ul id="resultsList" class="list-group" style="background-color: white; border: 1px solid #ccc; border-radius: 4px;">
+            <!-- Results will be appended here -->
+        </ul>
+    </div>
+
 
     <div class="alert alert-info mt-3">
         <strong>Instructions:</strong> Put [✓] if done, [x] if not.
@@ -240,6 +274,7 @@
             </div>
         </div>
     </div>
+    <input type="hidden" name="station" value="@ViewData["Station"]" />
 
     <div class="form-group">
         <label asp-for="UnitAreaStaffSignature" class="control-label">Unit Area Staff Signature</label>
@@ -264,23 +299,94 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
+    @* <script> *@
+    @*     $(document).ready(function () { *@
+    @*         $('#EmployeeId').on('blur', function () { *@
+    @*             var empId = $(this).val(); *@
+    @*             if (empId) { *@
+    @*                 $.get('/TCSkillsChecklistReals/GetEmployeeDetails', { employeeId: empId }, function (data) { *@
+    @*                     $('#Fname').val(data.fname); *@
+    @*                     $('#Mname').val(data.mname); *@
+    @*                     $('#Lname').val(data.lname); *@
+    @*                 }).fail(function () { *@
+    @*                     alert('Employee not found.'); *@
+    @*                     $('#Fname').val(''); *@
+    @*                     $('#Mname').val(''); *@
+    @*                     $('#Lname').val(''); *@
+    @*                 }); *@
+    @*             } *@
+    @*         }); *@
+    @*     }); *@
+    @* </script> *@
+
     <script>
         $(document).ready(function () {
-            $('#EmployeeId').on('blur', function () {
-                var empId = $(this).val();
-                if (empId) {
-                    $.get('/TCSkillsChecklistReals/GetEmployeeDetails', { employeeId: empId }, function (data) {
-                        $('#Fname').val(data.fname);
-                        $('#Mname').val(data.mname);
-                        $('#Lname').val(data.lname);
-                    }).fail(function () {
-                        alert('Employee not found.');
-                        $('#Fname').val('');
-                        $('#Mname').val('');
-                        $('#Lname').val('');
+            // Event handler for input in the name fields (First, Middle, Last)
+            $('#Fname, #Mname, #Lname').on('input', function () {
+                var searchTerm = $(this).val();  // Get the value of the field
+                var field = $(this).attr('id');  // Identify the field being used
+
+                if (searchTerm.length >= 2) {  // Only search if input has at least 2 characters
+                    $.ajax({
+                        url: '@Url.Action("FindNamesByPartialName", "TCSkillsChecklistReals")',  // Controller and action name
+                        type: 'GET',
+                        data: { name: searchTerm },
+                        success: function (response) {
+                            // Clear previous results
+                            $('#resultsList').empty();
+
+                            if (response.success) {
+                                // Append matching names to the dropdown
+                                if (response.names.length > 0) {
+                                    response.names.forEach(function (name) {
+                                        var listItem = $('<li>')
+                                            .addClass('list-group-item')
+                                            .text(name)
+                                            .on('click', function () {
+                                                // Fill the fields with the selected name
+                                                var nameParts = name.split(' ');  // Assuming "First Middle Last"
+                                                $('#Fname').val(nameParts[0]);
+                                                $('#Mname').val(nameParts[1] || ''); // In case middle name is empty
+                                                $('#Lname').val(nameParts[2] || ''); // In case last name is empty
+                                                $('#nameDropdown').hide();  // Hide the dropdown after selection
+                                            });
+                                        $('#resultsList').append(listItem);
+                                    });
+                                } else {
+                                    // If no results, show "No training found yet"
+                                    var noResultsItem = $('<li>')
+                                        .addClass('list-group-item')
+                                        .text('No training found yet.')
+                                        .css('text-align', 'center');
+                                    $('#resultsList').append(noResultsItem);
+                                }
+
+                                // Show the dropdown
+                                $('#nameDropdown').show();
+                            } else {
+                                // Handle error case if needed
+                                $('#resultsList').append('<li class="list-group-item text-center">No training found yet.</li>');
+                                $('#nameDropdown').show();
+                            }
+                        },
+                        error: function () {
+                            alert('Error occurred while searching.');
+                        }
                     });
+                } else {
+                    // Hide the dropdown if input is too short
+                    $('#nameDropdown').hide();
+                }
+            });
+
+            // Hide the dropdown when clicked outside
+            $(document).click(function (event) {
+                if (!$(event.target).closest('#nameDropdown, #Fname, #Mname, #Lname').length) {
+                    $('#nameDropdown').hide();
                 }
             });
         });
     </script>
+
+
 }
