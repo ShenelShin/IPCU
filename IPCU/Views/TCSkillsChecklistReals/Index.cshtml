@@ -1,233 +1,69 @@
 ﻿@model IEnumerable<IPCU.Models.TCSkillsChecklistReal>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "TC Skills Checklist";
 }
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<!-- Title Section with a more formal design -->
+<div class="text-center mb-4">
+    <h3 class="display-4 text-primary">TC Skills Checklist</h3>
+    <p class="lead">For Station: <strong>@ViewBag.Station</strong>, Room: <strong>@ViewBag.RoomID</strong></p>
+</div>
 
-<h3>TC Skills Checklist for Station: @ViewBag.Station, Room: @ViewBag.RoomID</h3>
+<!-- Create New Button -->
+<div class="text-end mb-3">
+    <a asp-action="Create" asp-route-roomId="@ViewData["RoomId"]" class="btn btn-success btn-lg">
+        <i class="fas fa-plus-circle"></i> Create New Checklist
+    </a>
+</div>
 
-<p>
-    <a asp-action="Create" asp-route-roomId="@ViewData["RoomId"]">Create New</a>
-</p>
-<table class="table">
-    <thead>
+<!-- Table with enhanced UI -->
+<table class="table table-bordered table-striped table-hover shadow-sm">
+    <thead class="table-dark">
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Area)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ObserverName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsEquipmentAndCartPrepared)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsCleaningSolutionPrepared)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsProperAttireAndPPEWorn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsHandHygieneAndGlovesDone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsSignageChecked)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsSpillSoakedWithSolution)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsWallsCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsDoorFrameWiped)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsWindowSillAndWindowCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsHighTouchAreasWiped)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsVerticalSurfacesWiped)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsLooseDebrisPickedUp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsRoomFloorMopped)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsUsedClothsDisposed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsWasteContainersEmptied)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsInfectiousWasteRemoved)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsMirrorCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsSinkAreaCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsFaucetAndHandlesCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsToiletAndFlushHandlesCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsOtherBathroomSurfacesCleaned)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsBathroomFloorScrubbed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsColorCodedWasteEmptied)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsPPERemoved)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsHandHygieneAfterPPE)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsGlovesRemovedAndHandHygieneDone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PreCleaningItems)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PostCleaningItems)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RecommendationsOrActions)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitAreaStaffSignature)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfObservation)
-            </th>
-            <th></th>
+            <th>@Html.DisplayNameFor(model => model.Area)</th>
+            <th>@Html.DisplayNameFor(model => model.ObserverName)</th>
+            <th>@Html.DisplayNameFor(model => model.Date)</th>
+            <th class="text-center">Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Area)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ObserverName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsEquipmentAndCartPrepared)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsCleaningSolutionPrepared)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsProperAttireAndPPEWorn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsHandHygieneAndGlovesDone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsSignageChecked)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsSpillSoakedWithSolution)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsWallsCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDoorFrameWiped)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsWindowSillAndWindowCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsHighTouchAreasWiped)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsVerticalSurfacesWiped)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsLooseDebrisPickedUp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsRoomFloorMopped)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsUsedClothsDisposed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsWasteContainersEmptied)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsInfectiousWasteRemoved)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsMirrorCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsSinkAreaCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsFaucetAndHandlesCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsToiletAndFlushHandlesCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsOtherBathroomSurfacesCleaned)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsBathroomFloorScrubbed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsColorCodedWasteEmptied)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsPPERemoved)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsHandHygieneAfterPPE)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsGlovesRemovedAndHandHygieneDone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PreCleaningItems)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostCleaningItems)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecommendationsOrActions)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitAreaStaffSignature)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfObservation)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Area)</td>
+                <td>@Html.DisplayFor(modelItem => item.ObserverName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                <td class="text-center">
+                    <div class="btn-group" role="group">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">
+                            <i class="fas fa-eye"></i> Details
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<!-- Pagination or other controls if necessary -->
+<div class="d-flex justify-content-center mt-4">
+    <!-- Example Pagination (you can implement this based on your actual pagination logic) -->
+    <nav>
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
