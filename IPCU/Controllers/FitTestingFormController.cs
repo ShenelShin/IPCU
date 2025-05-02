@@ -371,24 +371,45 @@ namespace IPCU.Controllers
 
 
             // Get "Attendance for Physicians" (only Passed results)
-            var attendanceForPhysicians = _context.FitTestingForm
-                .Where(f => physicianCategories.Contains(f.Professional_Category) && f.Test_Results == "Passed")
+            var attendanceForPhysicians = _context.FitTestingForm.FromSqlRaw(@"
+    SELECT * FROM FitTestingForm
+    WHERE Professional_Category IN ({0}) AND Test_Results = {1}",
+                string.Join(",", physicianCategories.Select(c => $"'{c}'")), "Passed")
                 .ToList();
 
+
+
             var attendanceForNursingAndAllied = _context.FitTestingForm
-                .Where(f => !physicianCategories.Contains(f.Professional_Category) && f.Test_Results == "Passed")
-                .Select(f => new FitTestingReportViewModel
-                {
-                    HCW_Name = f.HCW_Name,
-                    DUO = f.DUO,
-                    Professional_Category = f.Professional_Category,
-                    Fit_Test_Solution = f.Fit_Test_Solution,
-                    Test_Results = f.ExpiringAt < currentDate ? "Expired" : "Passed", // Tag expired records
-                    Name_of_Fit_Tester = f.Name_of_Fit_Tester,
-                    SubmittedAt = f.SubmittedAt,
-                    ExpiringAt = f.ExpiringAt
-                })
-                .ToList();
+    .FromSqlRaw(@"
+        SELECT 
+            HCW_Name,
+            DUO,
+            Professional_Category,
+            Fit_Test_Solution,
+            CASE 
+                WHEN ExpiringAt < {0} THEN 'Expired' 
+                ELSE 'Passed' 
+            END AS Test_Results,
+            Name_of_Fit_Tester,
+            SubmittedAt,
+            ExpiringAt
+        FROM FitTestingForm
+        WHERE Professional_Category NOT IN ({1}) AND Test_Results = 'Passed'",
+        currentDate,
+        string.Join(",", physicianCategories.Select(c => $"'{c}'")))
+    .Select(f => new FitTestingReportViewModel
+    {
+        HCW_Name = f.HCW_Name,
+        DUO = f.DUO,
+        Professional_Category = f.Professional_Category,
+        Fit_Test_Solution = f.Fit_Test_Solution,
+        Test_Results = f.Test_Results, // Now handled by SQL
+        Name_of_Fit_Tester = f.Name_of_Fit_Tester,
+        SubmittedAt = f.SubmittedAt,
+        ExpiringAt = f.ExpiringAt
+    })
+    .ToList();
+
             var tallyReport = duoList
                 .Select(unit => new
                 {
