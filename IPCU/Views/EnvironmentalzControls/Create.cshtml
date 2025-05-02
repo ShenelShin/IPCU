@@ -1,6 +1,5 @@
 ﻿@using System.Text.RegularExpressions
-@model IPCU.Models.InfectionControl.Models.InfectionControlMonitoringForm
-
+@model IPCU.Models.EnvironmentalzControl
 
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <style>
@@ -9,7 +8,7 @@
         margin: 0 10px;
     }</style>
 
-<form asp-action="Submit" method="post">
+<form asp-action="Create" method="post">
 
     <div class="border border-black bg-white rounded-md p-4 space-y-4">
         <!-- HEADER -->
@@ -27,7 +26,7 @@
             </div>
             <!-- Right Logo -->
             <div class="flex justify-center p-2 border-l border-black">
-                <img src="/images/nkti-right-logo.png" alt="Right Logo" class="h-20 w-auto" />
+                <img src="/images/nkti-right-logo-removebg-preview.png" alt="Right Logo" class="h-20 w-auto" />
             </div>
         </div>
 
@@ -530,9 +529,9 @@
             <input asp-for="FollowUpDate" type="date" class="form-control" />
         </div>
         <div class="mt-6">
-            <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">
+            <input type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">
                 Submit
-            </button>
+            </input>
         </div>
 </form>
 <link href="~/css/site.css" rel="stylesheet" />

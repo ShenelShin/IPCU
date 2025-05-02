@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250502032145_ENVI")]
+    partial class ENVI
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -484,6 +487,10 @@ namespace IPCU.Migrations
                     b.Property<DateTime>("DateAndTimeOfMonitoring")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Equipment_StorageClean_ActionDone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -499,6 +506,10 @@ namespace IPCU.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Equipment_StorageClean_Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Fname")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("FollowUpDate")
@@ -536,6 +547,10 @@ namespace IPCU.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Hallway_NoObstruction_Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Lname")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Medications_NoExpired_ActionDone")
@@ -638,6 +653,9 @@ namespace IPCU.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Misc_StaffHygienePPE_Remarks")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mname")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PatientExamRoom_AlcoholSanitizers_ActionDone")
