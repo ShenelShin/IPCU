@@ -90,6 +90,8 @@ namespace IPCU.Data
         public DbSet<IPCU.Models.NoticeOfReferral> NoticeOfReferral { get; set; } = default!;
         public DbSet<IPCU.Models.Insertion> Insertion { get; set; } = default!;
         public DbSet<IPCU.Models.TCSkillsChecklistReal> TCSkillsChecklistReal { get; set; } = default!;
+        public DbSet<IPCU.Models.PatientHAI> PatientHAIs { get; set; } = default!;
+
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);

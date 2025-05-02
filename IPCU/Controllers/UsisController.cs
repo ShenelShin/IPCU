@@ -56,7 +56,7 @@ namespace IPCU.Controllers
                     model.Fname = patientInfo.PatientMaster.FirstName;
                     model.Mname = patientInfo.PatientMaster.MiddleName;
                     model.Lname = patientInfo.PatientMaster.LastName;
-                    model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
+                    //model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
                     model.UnitWardArea = patientInfo.Patients.AdmLocation;
 
                     // null kasi bdate ko fuck goddamit
