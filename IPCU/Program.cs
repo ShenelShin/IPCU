@@ -9,6 +9,10 @@ using System.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 QuestPDF.Settings.License = LicenseType.Community;
 
+// Configure Entity Framework Core with SQL Server
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AnotherServerConnection")));
 
 // In Program.cs (for .NET 6+ minimal hosting model)
 builder.Services.AddDbContext<PatientDbContext>(options =>
