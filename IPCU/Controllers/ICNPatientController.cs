@@ -17,70 +17,206 @@ namespace IPCU.Controllers
     public class ICNPatientController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly PatientDbContext _patientContext;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<ICNPatientController> _logger;
+
 
         public ICNPatientController(
             ApplicationDbContext context,
-            UserManager<ApplicationUser> userManager)
+            PatientDbContext patientContext,
+            UserManager<ApplicationUser> userManager,
+            ILogger<ICNPatientController> logger)
         {
             _context = context;
+            _patientContext = patientContext;
             _userManager = userManager;
+            _logger = logger;
         }
 
         // GET: Display list of patients in the ICN's assigned area who have been admitted for 48+ hours
         public async Task<IActionResult> Index()
         {
-            // Get the current logged-in user
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound();
+                // Get the current logged-in user
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Get the user's assigned areas
+                var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
+
+                // Calculate the date 48 hours ago
+                var fortyEightHoursAgo = DateTime.Now.AddHours(-48);
+
+                // Create a list to store our results
+                var patients = new List<PatientViewModel>();
+
+                // Use raw SQL to query the database directly with correct table names
+                // Added LIMIT 50 to restrict the number of returned patients
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+                SELECT TOP 50000 p.HospNum, p.IdNum, p.AdmType, p.AdmLocation, p.AdmDate, p.RoomID, p.Age, 
+                       m.LastName, m.FirstName, m.MiddleName, m.Sex, m.CivilStatus, m.PatientType, 
+                       m.EmailAddress, m.cellnum
+                FROM tbpatient p
+                LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
+                WHERE p.AdmDate <= @fortyEightHoursAgo 
+                AND p.DeathDate IS NULL
+                ORDER BY p.AdmDate DESC";
+
+                    // Add parameters
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@fortyEightHoursAgo";
+                    parameter.Value = fortyEightHoursAgo;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            var hospNum = reader["HospNum"]?.ToString();
+                            var admLocation = reader["AdmLocation"]?.ToString();
+
+                            // Skip if not in assigned areas
+                            if (assignedAreas.Any() && !string.IsNullOrEmpty(admLocation) && !assignedAreas.Contains(admLocation))
+                            {
+                                continue;
+                            }
+
+                            var patient = new PatientViewModel
+                            {
+                                HospNum = hospNum,
+                                IdNum = reader["IdNum"]?.ToString() ?? string.Empty,
+                                LastName = reader["LastName"]?.ToString() ?? string.Empty,
+                                FirstName = reader["FirstName"]?.ToString() ?? string.Empty,
+                                MiddleName = reader["MiddleName"]?.ToString() ?? string.Empty,
+                                AdmType = reader["AdmType"]?.ToString() ?? string.Empty,
+                                AdmLocation = admLocation ?? string.Empty,
+                                AdmDate = reader["AdmDate"] as DateTime?,
+                                RoomID = reader["RoomID"]?.ToString() ?? string.Empty,
+                                Age = reader["Age"]?.ToString() ?? string.Empty,
+                                Sex = reader["Sex"]?.ToString() ?? string.Empty,
+                                CivilStatus = reader["CivilStatus"]?.ToString() ?? string.Empty,
+                                PatientType = reader["PatientType"]?.ToString() ?? string.Empty,
+                                EmailAddress = reader["EmailAddress"]?.ToString() ?? string.Empty,
+                                CellNum = reader["cellnum"]?.ToString() ?? string.Empty,
+                                AdmissionDuration = reader["AdmDate"] != DBNull.Value ?
+                                    (int)Math.Round((DateTime.Now - (DateTime)reader["AdmDate"]).TotalDays) : 0,
+                                PatientName = $"{reader["LastName"]?.ToString() ?? ""}, {reader["FirstName"]?.ToString() ?? ""} {reader["MiddleName"]?.ToString() ?? ""}"
+                            };
+
+                            patients.Add(patient);
+                        }
+                    }
+                }
+
+                // Get HAI data from ApplicationDbContext (_context) where tbPatientHAI is located
+                if (patients.Any())
+                {
+                    var hospNums = patients.Select(p => p.HospNum).ToList();
+
+                    // Create a dictionary for HAI data
+                    var haiDict = new Dictionary<string, (bool HaiStatus, int HaiCount)>();
+
+                    // Process in batches of 2000 to stay under SQL Server's 2100 parameter limit
+                    const int batchSize = 2000;
+
+                    for (int batchStart = 0; batchStart < hospNums.Count; batchStart += batchSize)
+                    {
+                        // Get the current batch
+                        var currentBatch = hospNums
+                            .Skip(batchStart)
+                            .Take(batchSize)
+                            .ToList();
+
+                        if (!currentBatch.Any())
+                            continue;
+
+                        // Use the table-valued parameter approach with string join instead of parameters
+                        // This is safe because hospNum values are controlled by the application
+                        string hospNumsString = "'" + string.Join("','", currentBatch.Select(h => h.Replace("'", "''"))) + "'";
+
+                        using (var command = _context.Database.GetDbConnection().CreateCommand())
+                        {
+                            command.CommandText = $@"
+                                SELECT HospNum, HaiStatus, HaiCount 
+                                FROM tbPatientHAI 
+                                WHERE HospNum IN ({hospNumsString})";
+
+                            // Ensure connection is open
+                            if (command.Connection.State != System.Data.ConnectionState.Open)
+                            {
+                                await command.Connection.OpenAsync();
+                            }
+
+                            // Execute query
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    var hospNum = reader["HospNum"].ToString();
+                                    var haiStatus = reader["HaiStatus"] != DBNull.Value && Convert.ToBoolean(reader["HaiStatus"]);
+                                    var haiCount = reader["HaiCount"] != DBNull.Value ? Convert.ToInt32(reader["HaiCount"]) : 0;
+
+                                    haiDict[hospNum] = (haiStatus, haiCount);
+                                }
+                            }
+                        }
+                    }
+
+                    // Update patients with HAI data
+                    foreach (var patient in patients)
+                    {
+                        if (haiDict.TryGetValue(patient.HospNum, out var hai))
+                        {
+                            patient.HaiStatus = hai.HaiStatus;
+                            patient.HaiCount = hai.HaiCount;
+                        }
+                    }
+                }
+
+                // Sort the results as needed
+                patients = patients
+                    .OrderBy(p => p.AdmLocation)
+                    .ThenBy(p => p.RoomID)
+                    .ThenBy(p => p.LastName)
+                    .ThenBy(p => p.FirstName)
+                    .ToList();
+
+                return View(patients);
             }
-
-            // Get the user's assigned areas
-            var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-
-            // Calculate the date 48 hours ago
-            var fortyEightHoursAgo = DateTime.Now.AddHours(-48);
-
-            // Get patients who have been admitted for at least 48 hours and are in the user's assigned areas
-            var patients = await (from p in _context.Patients
-                                  join m in _context.PatientMasters on p.HospNum equals m.HospNum
-                                  where p.AdmDate <= fortyEightHoursAgo &&
-                                        assignedAreas.Contains(p.AdmLocation) &&
-                                        p.DeathDate == null // Exclude deceased patients
-                                                            // Order by location, room, and last name directly (not the formatted string)
-                                  orderby p.AdmLocation, p.RoomID, m.LastName, m.FirstName
-                                  select new PatientViewModel
-                                  {
-                                      HospNum = p.HospNum,
-                                      IdNum = p.IdNum,
-                                      // Store the name parts separately to format after EF Core query execution
-                                      LastName = m.LastName,
-                                      FirstName = m.FirstName,
-                                      MiddleName = m.MiddleName,
-                                      AdmType = p.AdmType,
-                                      AdmLocation = p.AdmLocation,
-                                      AdmDate = p.AdmDate,
-                                      RoomID = p.RoomID,
-                                      Age = p.Age,
-                                      Sex = m.Sex,
-                                      AdmissionDuration = EF.Functions.DateDiffDay(p.AdmDate.Value, DateTime.Now),
-                                      HaiStatus = m.HaiStatus,
-                                      HaiCount = m.HaiCount
-                                  })
-                                 .ToListAsync();
-
-            // Format the patient name after the database query is complete
-            foreach (var patient in patients)
+            catch (Exception ex)
             {
-                patient.PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}";
-            }
+                // Add detailed error info
+                _logger.LogError(ex, "Error in ICNPatientController.Index");
 
-            return View(patients);
+                ViewBag.ErrorMessage = "An error occurred while loading patient data.";
+                ViewBag.ExceptionMessage = ex.Message;
+                ViewBag.StackTrace = ex.StackTrace;
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerExceptionMessage = ex.InnerException.Message;
+                    ViewBag.InnerStackTrace = ex.InnerException.StackTrace;
+                }
+
+                return View(new List<PatientViewModel>());
+            }
         }
 
-        public async Task<IActionResult> Details(string id)
+public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -678,20 +814,20 @@ namespace IPCU.Controllers
                     return NotFound();
                 }
 
-                // Add explicit debug logging
-                Console.WriteLine($"Before update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
+                //// Add explicit debug logging
+                //Console.WriteLine($"Before update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
 
-                // Update HAI status
-                patientMaster.HaiStatus = true; // Set HAI status to true
+                //// Update HAI status
+                //patientMaster.HaiStatus = true; // Set HAI status to true
 
-                //// Simply increment the count since it's a non-nullable int
-                //patientMaster.HaiCount += 1;
+                ////// Simply increment the count since it's a non-nullable int
+                ////patientMaster.HaiCount += 1;
 
-                Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
+                //Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
 
-                Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
+                //Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
 
-                Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
+                //Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
 
                 // Mark entity as modified to force update
                 _context.Entry(patientMaster).State = EntityState.Modified;
@@ -776,8 +912,8 @@ namespace IPCU.Controllers
                                          LastName = m.LastName,
                                          FirstName = m.FirstName,
                                          MiddleName = m.MiddleName,
-                                         HaiStatus = m.HaiStatus,
-                                         HaiCount = m.HaiCount
+                                         //HaiStatus = m.HaiStatus,
+                                         //HaiCount = m.HaiCount
                                      })
                                 .FirstOrDefaultAsync();
 
@@ -885,7 +1021,7 @@ namespace IPCU.Controllers
             // First, get all patients with HAI status in assigned areas
             var eligiblePatients = await (from p in _context.Patients
                                           join m in _context.PatientMasters on p.HospNum equals m.HospNum
-                                          where m.HaiStatus == true &&
+                                          where //m.HaiStatus == true &&
                                                 assignedAreas.Contains(p.AdmLocation) &&
                                                 p.DeathDate == null // Exclude deceased patients
                                           select new
@@ -901,8 +1037,8 @@ namespace IPCU.Controllers
                                               AdmDate = p.AdmDate,
                                               AdmLocation = p.AdmLocation,
                                               RoomID = p.RoomID,
-                                              HaiStatus = m.HaiStatus,
-                                              HaiCount = m.HaiCount
+                                              //HaiStatus = m.HaiStatus,
+                                              //HaiCount = m.HaiCount
                                           })
                               .ToListAsync();
 
@@ -936,7 +1072,7 @@ namespace IPCU.Controllers
                         Classification = classificationAndService.Classification,
                         MainService = classificationAndService.MainService,
                         EventDate = form.DateOfEvent,
-                        HaiStatus = patient.HaiStatus,
+                        //HaiStatus = patient.HaiStatus,
                         HaiType = "VASC",
                         SpecificHaiClassification = form.Classification ?? "",
                         CLAccess = centralLineInfo,
@@ -971,7 +1107,7 @@ namespace IPCU.Controllers
                         Classification = classificationAndService.Classification,
                         MainService = classificationAndService.MainService,
                         EventDate = form.DateOfEvent,
-                        HaiStatus = patient.HaiStatus,
+                        //HaiStatus = patient.HaiStatus,
                         HaiType = "SST",
                         SpecificHaiClassification = form.Classification ?? "Soft Tissue",
                         CLAccess = centralLineInfo,
@@ -1005,7 +1141,7 @@ namespace IPCU.Controllers
                         Classification = form.Classification ?? classificationAndService.Classification,
                         MainService = form.MainService ?? classificationAndService.MainService,
                         EventDate = form.DateOfEvent,
-                        HaiStatus = patient.HaiStatus,
+                        //HaiStatus = patient.HaiStatus,
                         HaiType = "LCBI",
                         SpecificHaiClassification = form.TypeClass ?? "",
                         CLAccess = form.centralline ?? "No",
@@ -1042,7 +1178,7 @@ namespace IPCU.Controllers
                         Classification = form.Classification ?? classificationAndService.Classification,
                         MainService = form.MainService ?? classificationAndService.MainService,
                         EventDate = form.DateOfEvent,
-                        HaiStatus = patient.HaiStatus,
+                        //HaiStatus = patient.HaiStatus,
                         HaiType = "UTI",
                         SpecificHaiClassification = form.TypeClass ?? "",
                         CLAccess = centralLineInfo,
@@ -1079,7 +1215,7 @@ namespace IPCU.Controllers
                         Classification = form.Classification ?? classificationAndService.Classification,
                         MainService = form.MainService ?? classificationAndService.MainService,
                         EventDate = form.DateOfEvent,
-                        HaiStatus = patient.HaiStatus,
+                        //HaiStatus = patient.HaiStatus,
                         HaiType = "SSI",
                         SpecificHaiClassification = form.TypeClass ?? "",
                         CLAccess = centralLineInfo,
@@ -1117,7 +1253,7 @@ namespace IPCU.Controllers
                         Classification = form.Classification ?? classificationAndService.Classification,
                         MainService = form.MainService ?? classificationAndService.MainService,
                         EventDate = form.DateOfEvent,
-                        HaiStatus = patient.HaiStatus,
+                        //HaiStatus = patient.HaiStatus,
                         HaiType = "PNEU",
                         SpecificHaiClassification = form.TypeClass ?? "",
                         CLAccess = centralLineInfo,
@@ -1151,7 +1287,7 @@ namespace IPCU.Controllers
                         Classification = form.Classification ?? classificationAndService.Classification,
                         MainService = form.MainService ?? classificationAndService.MainService,
                         EventDate = form.DateOfEvent,
-                        HaiStatus = patient.HaiStatus,
+                        //HaiStatus = patient.HaiStatus,
                         HaiType = "VAE",
                         SpecificHaiClassification = DetermineVAEClassification(form),
                         CLAccess = centralLineInfo,
@@ -1188,7 +1324,7 @@ namespace IPCU.Controllers
                         Classification = form.Classification ?? classificationAndService.Classification,
                         MainService = form.MainService ?? classificationAndService.MainService,
                         EventDate = form.DateOfEvent,
-                        HaiStatus = patient.HaiStatus,
+                        //HaiStatus = patient.HaiStatus,
                         HaiType = "USI",
                         SpecificHaiClassification = form.TypeClass ?? "",
                         CLAccess = centralLineInfo,
@@ -1227,7 +1363,7 @@ namespace IPCU.Controllers
                         Classification = form.Classification ?? classificationAndService.Classification,
                         MainService = form.MainService ?? classificationAndService.MainService,
                         EventDate = form.DateOfEvent,
-                        HaiStatus = patient.HaiStatus,
+                        //HaiStatus = patient.HaiStatus,
                         HaiType = "GI",
                         SpecificHaiClassification = form.TypeClass ?? "",
                         CLAccess = centralLineInfo,
@@ -1261,7 +1397,7 @@ namespace IPCU.Controllers
                         Classification = form.Classification ?? classificationAndService.Classification,
                         MainService = form.MainService ?? classificationAndService.MainService,
                         EventDate = form.DateOfEvent,
-                        HaiStatus = patient.HaiStatus,
+                        //HaiStatus = patient.HaiStatus,
                         HaiType = "PVAE",
                         SpecificHaiClassification = form.TypeClass ?? "",
                         CLAccess = centralLineInfo,

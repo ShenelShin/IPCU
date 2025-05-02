@@ -130,10 +130,12 @@
         <h2 class="mb-1">ICN Patient Monitoring Dashboard</h2>
         <p class="text-muted mb-0">Patients in your assigned areas admitted for 48+ hours</p>
     </div>
+
     @{
         var currentUser = await UserManager.GetUserAsync(User);
         var assignedAreas = currentUser?.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
     }
+
     <div class="alert alert-info mb-4">
         <div class="d-flex align-items-center">
             <i class="fas fa-map-marker-alt me-3"></i>
@@ -150,6 +152,86 @@
             </div>
         </div>
     </div>
+
+    <!-- Debug Panel -->
+    @if (ViewBag.Debug != null || ViewBag.ErrorMessage != null || ViewBag.ExceptionMessage != null)
+    {
+        <div class="card mb-4 shadow-sm border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <button class="btn btn-link text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#debugPanel" aria-expanded="false" aria-controls="debugPanel">
+                        <i class="fas fa-bug me-2"></i> Debug Information (Click to Expand)
+                    </button>
+                </h5>
+            </div>
+            <div class="collapse" id="debugPanel">
+                <div class="card-body">
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i> Error Message:</h5>
+                            <p>@ViewBag.ErrorMessage</p>
+                        </div>
+                    }
+
+                    @if (ViewBag.RecentAdmits != null)
+                    {
+                        <div class="alert alert-info">
+                            <h5>Most Recent Admissions:</h5>
+                            <ul>
+                                @foreach (var patient in ViewBag.RecentAdmits)
+                                {
+                                    <li>HospNum: @patient.HospNum - AdmDate: @patient.AdmDate</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    @if (ViewBag.ExceptionMessage != null)
+                    {
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-circle me-2"></i> Exception:</h5>
+                            <p>@ViewBag.ExceptionMessage</p>
+                            <pre class="mt-2 bg-light p-2 small">@ViewBag.StackTrace</pre>
+                        </div>
+                    }
+
+                    @if (ViewBag.InnerExceptionMessage != null)
+                    {
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-circle me-2"></i> Inner Exception:</h5>
+                            <p>@ViewBag.InnerExceptionMessage</p>
+                            <pre class="mt-2 bg-light p-2 small">@ViewBag.InnerStackTrace</pre>
+                        </div>
+                    }
+
+                    @if (ViewBag.Debug != null)
+                    {
+                        <h5 class="mt-3">Debug Counters:</h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Metric</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var debug in ViewBag.Debug)
+                                    {
+                                        <tr>
+                                            <td>@debug.Key</td>
+                                            <td>@debug.Value</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
 
     <!-- Stats Cards -->
     <div class="row mb-4">

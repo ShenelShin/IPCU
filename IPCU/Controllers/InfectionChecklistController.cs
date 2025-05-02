@@ -50,7 +50,7 @@ namespace IPCU.Controllers
                     model.Fname = patientInfo.PatientMaster.FirstName;
                     model.Mname = patientInfo.PatientMaster.MiddleName;
                     model.Lname = patientInfo.PatientMaster.LastName;
-                    model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
+                    //model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
 
                     model.UnitWardArea = patientInfo.Patients.AdmLocation;
 
@@ -123,7 +123,7 @@ namespace IPCU.Controllers
                 if (patientMaster != null)
                 {
                     // Increment the HAI count
-                    patientMaster.HaiCount += 1;
+                    //patientMaster.HaiCount += 1;
 
                     // Update the patient master record
                     _context.PatientMasters.Update(patientMaster);

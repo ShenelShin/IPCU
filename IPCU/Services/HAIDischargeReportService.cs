@@ -54,7 +54,7 @@ namespace IPCU.Services
                               pm => pm.HospNum,
                               p => p.HospNum,
                               (pm, p) => new { PatientMaster = pm, Patient = p })
-                        .Where(x => x.PatientMaster.HaiStatus == true &&
+                        .Where(x => //x.PatientMaster.HaiStatus == true &&
                                     x.Patient.AdmLocation == area &&
                                     x.Patient.AdmDate.HasValue &&
                                     x.Patient.AdmDate.Value >= startDate &&
