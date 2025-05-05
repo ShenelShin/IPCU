@@ -74,8 +74,11 @@
                 <td>@Html.LabelFor(m => m.MainService) <br />@Html.TextBoxFor(m => m.MainService)</td>
             </tr>
             <tr>
-                <td>@Html.LabelFor(m => m.DateOfEvent) <br />@Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}", new { type = "date" })</td>
-                <td>@Html.LabelFor(m => m.Investigator) <br />@Html.TextBoxFor(m => m.Investigator)</td>
+                    <td>
+                        @Html.LabelFor(m => m.DateOfEvent) <br />
+                        @Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}", new { type = "date", value = DateTime.Now.ToString("yyyy-MM-dd") })
+                    </td>
+                    <td>@Html.LabelFor(m => m.Investigator) <br />@Html.TextBoxFor(m => m.Investigator)</td>
                 <td>@Html.LabelFor(m => m.DateOfAdmission) <br />@Html.TextBoxFor(m => m.DateOfAdmission, "{0:yyyy-MM-dd}", new { type = "date" })</td>
                 <td>
                     @Html.LabelFor(m => m.Disposition) <br />
