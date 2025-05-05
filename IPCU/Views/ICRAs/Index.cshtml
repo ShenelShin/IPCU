@@ -1,498 +1,70 @@
 ﻿@model IEnumerable<IPCU.Models.ICRA>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "ICRA Projects";
 }
 
-<h1>Index</h1>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-qjUplC6B0x5EKnUppl88NUAIz0g8jj4hXqU6T5RgugL+SpReIp8WQzldgB19eN99" crossorigin="anonymous">
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-+N4AeX2ZB7qz6iRKhcgYKKR3HixlN4HPYcVb+ClC/kM2UCv0fzFbSwPpOecX3HPOlU5tcx5Rhbr7SVC2OCEfZw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProjectReferenceNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProjectNameAndDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContractorRepresentativeName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TelephoneOrMobileNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SpecificSiteOfActivity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ScopeOfWork)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProjectStartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EstimatedDuration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ConstructionType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PatientRiskGroup)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PreventiveMeasures)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Below_Noise)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Below_Vibration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Below_Dust)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Below_Ventilation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Below_Pressuraztion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Below_Data)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Below_Mechanical)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Below_MedicalGas)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Below_HotColdWater)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Below_Other)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Above_Noise)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Above_Vibration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Above_Dust)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Above_Ventilation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Above_Pressuraztion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Above_Data)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Above_Mechanical)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Above_MedicalGas)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Above_HotColdWater)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Above_Other)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lateral_Noise)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lateral_Vibration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lateral_Dust)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lateral_Ventilation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lateral_Pressuraztion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lateral_Data)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lateral_Mechanical)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lateral_MedicalGas)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lateral_HotColdWater)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lateral_Other)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Behind_Noise)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Behind_Vibration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Behind_Dust)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Behind_Ventilation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Behind_Pressuraztion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Behind_Data)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Behind_Mechanical)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Behind_MedicalGas)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Behind_HotColdWater)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Behind_Other)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Front_Noise)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Front_Vibration)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Front_Dust)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Front_Ventilation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Front_Pressuraztion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Front_Data)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Front_Mechanical)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Front_MedicalGas)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Front_HotColdWater)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Front_Other)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RiskofWater)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks_RiskofWater)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShouldWork)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks_ShouldWork)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CanSupplyAir)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks_CanSupplyAir)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HaveTraffic)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks_HaveTraffic)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CanPatientCare)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks_CanPatientCare)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AreMeasures)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Remarks_AreMeasures)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdditionalComments)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContractorSign)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EngineeringSign)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ICPSign)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitAreaRep)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectReferenceNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectNameAndDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContractorRepresentativeName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TelephoneOrMobileNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SpecificSiteOfActivity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ScopeOfWork)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProjectStartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EstimatedDuration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConstructionType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PatientRiskGroup)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PreventiveMeasures)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Below_Noise)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Below_Vibration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Below_Dust)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Below_Ventilation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Below_Pressuraztion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Below_Data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Below_Mechanical)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Below_MedicalGas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Below_HotColdWater)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Below_Other)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Above_Noise)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Above_Vibration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Above_Dust)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Above_Ventilation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Above_Pressuraztion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Above_Data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Above_Mechanical)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Above_MedicalGas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Above_HotColdWater)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Above_Other)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lateral_Noise)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lateral_Vibration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lateral_Dust)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lateral_Ventilation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lateral_Pressuraztion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lateral_Data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lateral_Mechanical)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lateral_MedicalGas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lateral_HotColdWater)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lateral_Other)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Behind_Noise)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Behind_Vibration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Behind_Dust)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Behind_Ventilation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Behind_Pressuraztion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Behind_Data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Behind_Mechanical)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Behind_MedicalGas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Behind_HotColdWater)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Behind_Other)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Front_Noise)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Front_Vibration)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Front_Dust)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Front_Ventilation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Front_Pressuraztion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Front_Data)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Front_Mechanical)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Front_MedicalGas)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Front_HotColdWater)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Front_Other)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RiskofWater)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remarks_RiskofWater)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShouldWork)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remarks_ShouldWork)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CanSupplyAir)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remarks_CanSupplyAir)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HaveTraffic)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remarks_HaveTraffic)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CanPatientCare)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remarks_CanPatientCare)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AreMeasures)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Remarks_AreMeasures)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdditionalComments)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContractorSign)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EngineeringSign)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ICPSign)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitAreaRep)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0"><i class="fas fa-tools me-2"></i> ICRA Project List</h4>
+            <a asp-action="Create" class="btn btn-light text-primary fw-semibold">
+                <i class="fas fa-plus me-1"></i> Create New
+            </a>
+        </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-hover align-middle shadow-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.First().ProjectReferenceNumber)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().ProjectNameAndDescription)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().ContractorRepresentativeName)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().SpecificSiteOfActivity)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().ScopeOfWork)</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.ProjectReferenceNumber)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ProjectNameAndDescription)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ContractorRepresentativeName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.SpecificSiteOfActivity)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ScopeOfWork)</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                                        <i class="fas fa-edit me-1"></i> Edit
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info text-white">
+                                        <i class="fas fa-info-circle me-1"></i> Details
+                                    </a>
+                                  <!-- <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash-alt me-1"></i> Delete
+                                      </a>-->
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle me-2"></i> No ICRA projects available.
+        </div>
+    }
+</div>
