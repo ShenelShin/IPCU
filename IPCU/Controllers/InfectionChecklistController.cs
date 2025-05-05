@@ -44,12 +44,14 @@ namespace IPCU.Controllers
                     await connPatient.OpenAsync();
 
                     string queryPatient = @"
-    SELECT TOP 1 tm.HospNum, tm.FirstName, tm.MiddleName, tm.LastName, tm.Sex,
-           tm.BirthDate, tp.AdmLocation, tp.AdmDate, tp.Age, tp.RoomId, tp.DcrDate
-    FROM tbmaster tm
-    LEFT JOIN tbpatient tp ON tm.HospNum = tp.HospNum
-    WHERE tm.HospNum = @HospNum
-    ORDER BY tp.AdmDate DESC";  // Order by admission date to get the latest room assignment
+                        SELECT TOP 1 tm.HospNum, tm.FirstName, tm.MiddleName, tm.LastName, tm.Sex,
+                               tm.BirthDate, tm.MSSDiscountExpiry,  -- <-- added
+                               tp.AdmLocation, tp.AdmDate, tp.Age, tp.RoomId, tp.DcrDate
+                        FROM tbmaster tm
+                        LEFT JOIN tbpatient tp ON tm.HospNum = tp.HospNum
+                        WHERE tm.HospNum = @HospNum
+                        ORDER BY tp.AdmDate DESC";
+
 
                     using (SqlCommand cmdPatient = new SqlCommand(queryPatient, connPatient))
                     {
@@ -80,7 +82,15 @@ namespace IPCU.Controllers
                                 string roomId = reader["RoomId"]?.ToString();
 
                                 model.Age = int.TryParse(reader["Age"]?.ToString(), out int age) ? age : 0;
-
+                                // ✅ Classification logic based on MSDiscountExpiry
+                                if (reader["MSSDiscountExpiry"] != DBNull.Value && DateTime.TryParse(reader["MSSDiscountExpiry"].ToString(), out DateTime expiry))
+                                {
+                                    model.Classification = expiry < DateTime.Now ? "Pay" : "Service";
+                                }
+                                else
+                                {
+                                    model.Classification = "Pay"; // Default to "Pay" if missing
+                                }
                                 // Check Discharge Date (DcrDate) to set Disposition
                                 if (reader["DcrDate"] == DBNull.Value)
                                 {
