@@ -16,7 +16,6 @@ namespace IPCU.Controllers
 
         public IActionResult Index()
         {
-
             return View();
         }
 
@@ -35,7 +34,7 @@ namespace IPCU.Controllers
             return RedirectToAction("Index");
         }
 
-       public IActionResult Table()
+        public IActionResult Table()
 {
             var forms = _context.InfectionControlMonitoringForms.ToList();
 

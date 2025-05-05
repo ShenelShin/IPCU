@@ -10,10 +10,6 @@
         {
             [Key]
             public int Id { get; set; }
-            public string Fname { get; set; } // First Name
-            public string Lname { get; set; } // Last Name
-            public string? Mname { get; set; } // Middle Name
-            public string EmployeeId { get; set; } // New field
             public string AreaOrUnit { get; set; }
             public DateTime DateAndTimeOfMonitoring { get; set; }
             public string AssessedBy { get; set; }

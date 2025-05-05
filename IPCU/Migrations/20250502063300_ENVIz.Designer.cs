@@ -4,6 +4,7 @@ using IPCU.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IPCU.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250502063300_ENVIz")]
+    partial class ENVIz
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,7 +162,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("AntibioticId");
 
-                    b.ToTable("tbantibiotics", (string)null);
+                    b.ToTable("tbantibiotics");
                 });
 
             modelBuilder.Entity("IPCU.Models.CardiovascularSystemInfection", b =>
@@ -299,7 +302,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CardiovascularSystemInfection", (string)null);
+                    b.ToTable("CardiovascularSystemInfection");
                 });
 
             modelBuilder.Entity("IPCU.Models.DailyCentralLineMaintenanceChecklist", b =>
@@ -373,7 +376,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DailyCentralLineMaintenanceChecklists", (string)null);
+                    b.ToTable("DailyCentralLineMaintenanceChecklists");
                 });
 
             modelBuilder.Entity("IPCU.Models.DeviceConnected", b =>
@@ -406,7 +409,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("HospNum");
 
-                    b.ToTable("DeviceConnected", (string)null);
+                    b.ToTable("DeviceConnected");
                 });
 
             modelBuilder.Entity("IPCU.Models.Diagnostics", b =>
@@ -439,7 +442,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("HospNum");
 
-                    b.ToTable("tbdiagnostics", (string)null);
+                    b.ToTable("tbdiagnostics");
                 });
 
             modelBuilder.Entity("IPCU.Models.DiagnosticsTreatment", b =>
@@ -462,7 +465,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("DiagId");
 
-                    b.ToTable("tbdiagnosticstreatments", (string)null);
+                    b.ToTable("tbdiagnosticstreatments");
                 });
 
             modelBuilder.Entity("IPCU.Models.EnvironmentalzControl", b =>
@@ -1467,7 +1470,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EvaluationViewModel", (string)null);
+                    b.ToTable("EvaluationViewModel");
                 });
 
             modelBuilder.Entity("IPCU.Models.FitTestingForm", b =>
@@ -1565,7 +1568,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FitTestingForm", (string)null);
+                    b.ToTable("FitTestingForm");
                 });
 
             modelBuilder.Entity("IPCU.Models.FitTestingFormHistory", b =>
@@ -1631,7 +1634,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("FitTestingFormId");
 
-                    b.ToTable("FitTestingFormHistory", (string)null);
+                    b.ToTable("FitTestingFormHistory");
                 });
 
             modelBuilder.Entity("IPCU.Models.GIInfectionChecklist", b =>
@@ -1824,7 +1827,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GIInfectionChecklists", (string)null);
+                    b.ToTable("GIInfectionChecklists");
                 });
 
             modelBuilder.Entity("IPCU.Models.HHActivity", b =>
@@ -1868,7 +1871,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("HHId");
 
-                    b.ToTable("HHActivities", (string)null);
+                    b.ToTable("HHActivities");
                 });
 
             modelBuilder.Entity("IPCU.Models.HandHygieneComplianceSummary", b =>
@@ -1908,7 +1911,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("SummaryId");
 
-                    b.ToTable("HandHygieneComplianceSummary", (string)null);
+                    b.ToTable("HandHygieneComplianceSummary");
                 });
 
             modelBuilder.Entity("IPCU.Models.HandHygieneForm", b =>
@@ -1984,7 +1987,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("HHId");
 
-                    b.ToTable("HandHygieneForms", (string)null);
+                    b.ToTable("HandHygieneForms");
                 });
 
             modelBuilder.Entity("IPCU.Models.ICRA", b =>
@@ -2281,7 +2284,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ICRA", (string)null);
+                    b.ToTable("ICRA");
                 });
 
             modelBuilder.Entity("IPCU.Models.InfectionControl.Models.InfectionControlMonitoringForm", b =>
@@ -3194,7 +3197,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InfectionControlMonitoringForm", (string)null);
+                    b.ToTable("InfectionControlMonitoringForm");
                 });
 
             modelBuilder.Entity("IPCU.Models.Insertion", b =>
@@ -3357,7 +3360,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Insertion", (string)null);
+                    b.ToTable("Insertion");
                 });
 
             modelBuilder.Entity("IPCU.Models.LaboratoryConfirmedBSI", b =>
@@ -3565,7 +3568,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LaboratoryConfirmedBSI", (string)null);
+                    b.ToTable("LaboratoryConfirmedBSI");
                 });
 
             modelBuilder.Entity("IPCU.Models.MDROrderSheet", b =>
@@ -3687,7 +3690,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MDROrderSheets", (string)null);
+                    b.ToTable("MDROrderSheets");
                 });
 
             modelBuilder.Entity("IPCU.Models.NoticeOfReferral", b =>
@@ -3765,7 +3768,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NoticeOfReferral", (string)null);
+                    b.ToTable("NoticeOfReferral");
                 });
 
             modelBuilder.Entity("IPCU.Models.Patient", b =>
@@ -3819,7 +3822,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("IdNum");
 
-                    b.ToTable("tbpatient", (string)null);
+                    b.ToTable("tbpatient");
                 });
 
             modelBuilder.Entity("IPCU.Models.PatientForm", b =>
@@ -3881,37 +3884,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PatientForms", (string)null);
-                });
-
-            modelBuilder.Entity("IPCU.Models.PatientHAI", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("HaiCount")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("HaiStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("HospNum")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HospNum")
-                        .IsUnique();
-
-                    b.ToTable("tbPatientHAI", (string)null);
+                    b.ToTable("PatientForms");
                 });
 
             modelBuilder.Entity("IPCU.Models.PatientMaster", b =>
@@ -3952,6 +3925,12 @@ namespace IPCU.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("HaiCount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("HaiStatus")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -3987,7 +3966,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("HospNum");
 
-                    b.ToTable("tbmaster", (string)null);
+                    b.ToTable("tbmaster");
                 });
 
             modelBuilder.Entity("IPCU.Models.PatientMovement", b =>
@@ -4047,7 +4026,7 @@ namespace IPCU.Migrations
                     b.HasIndex("MovementDate", "Area")
                         .IsUnique();
 
-                    b.ToTable("tbPatientMovement", (string)null);
+                    b.ToTable("tbPatientMovement");
                 });
 
             modelBuilder.Entity("IPCU.Models.PatientMovementDetail", b =>
@@ -4100,7 +4079,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("MovementId");
 
-                    b.ToTable("tbPatientMovementDetail", (string)null);
+                    b.ToTable("tbPatientMovementDetail");
                 });
 
             modelBuilder.Entity("IPCU.Models.PediatricVAEChecklist", b =>
@@ -4197,7 +4176,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PediatricVAEChecklist", (string)null);
+                    b.ToTable("PediatricVAEChecklist");
                 });
 
             modelBuilder.Entity("IPCU.Models.Pneumonia", b =>
@@ -4504,7 +4483,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pneumonias", (string)null);
+                    b.ToTable("Pneumonias");
                 });
 
             modelBuilder.Entity("IPCU.Models.PostConstruction", b =>
@@ -4668,7 +4647,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("ICRAId");
 
-                    b.ToTable("PostConstruction", (string)null);
+                    b.ToTable("PostConstruction");
                 });
 
             modelBuilder.Entity("IPCU.Models.PostTestClinical", b =>
@@ -4715,7 +4694,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PostTestClinicals", (string)null);
+                    b.ToTable("PostTestClinicals");
                 });
 
             modelBuilder.Entity("IPCU.Models.PostTestNonClinical", b =>
@@ -4762,7 +4741,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PostTestNonCLinicals", (string)null);
+                    b.ToTable("PostTestNonCLinicals");
                 });
 
             modelBuilder.Entity("IPCU.Models.PreTestClinical", b =>
@@ -4809,7 +4788,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PreTestClinicals", (string)null);
+                    b.ToTable("PreTestClinicals");
                 });
 
             modelBuilder.Entity("IPCU.Models.PreTestNonClinical", b =>
@@ -4856,7 +4835,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PreTestNonClinicals", (string)null);
+                    b.ToTable("PreTestNonClinicals");
                 });
 
             modelBuilder.Entity("IPCU.Models.SSIP", b =>
@@ -5000,7 +4979,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SSIP", (string)null);
+                    b.ToTable("SSIP");
                 });
 
             modelBuilder.Entity("IPCU.Models.SSTInfectionModel", b =>
@@ -5168,7 +5147,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("SSTID");
 
-                    b.ToTable("SSTInfectionModels", (string)null);
+                    b.ToTable("SSTInfectionModels");
                 });
 
             modelBuilder.Entity("IPCU.Models.SurgicalSiteInfectionChecklist", b =>
@@ -5454,7 +5433,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SurgicalSiteInfectionChecklist", (string)null);
+                    b.ToTable("SurgicalSiteInfectionChecklist");
                 });
 
             modelBuilder.Entity("IPCU.Models.TCSkillsChecklist", b =>
@@ -5653,7 +5632,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("ICRAId");
 
-                    b.ToTable("TCSkillsChecklist", (string)null);
+                    b.ToTable("TCSkillsChecklist");
                 });
 
             modelBuilder.Entity("IPCU.Models.TCSkillsChecklistReal", b =>
@@ -5675,6 +5654,7 @@ namespace IPCU.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("EmployeeId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Fname")
@@ -5788,7 +5768,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TCSkillsChecklistReal", (string)null);
+                    b.ToTable("TCSkillsChecklistReal");
                 });
 
             modelBuilder.Entity("IPCU.Models.Trainee", b =>
@@ -5846,7 +5826,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Trainees", (string)null);
+                    b.ToTable("Trainees");
                 });
 
             modelBuilder.Entity("IPCU.Models.TrainingEvaluation", b =>
@@ -5965,7 +5945,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TrainingEvaluation", (string)null);
+                    b.ToTable("TrainingEvaluation");
                 });
 
             modelBuilder.Entity("IPCU.Models.TrainingSummary", b =>
@@ -6036,7 +6016,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TrainingSummaries", (string)null);
+                    b.ToTable("TrainingSummaries");
                 });
 
             modelBuilder.Entity("IPCU.Models.UTIFormModel", b =>
@@ -6238,7 +6218,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UTIModels", (string)null);
+                    b.ToTable("UTIModels");
                 });
 
             modelBuilder.Entity("IPCU.Models.Usi", b =>
@@ -6373,7 +6353,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Usi", (string)null);
+                    b.ToTable("Usi");
                 });
 
             modelBuilder.Entity("IPCU.Models.VAEMonitoringChecklist", b =>
@@ -6467,7 +6447,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VAEMonitoringChecklist", (string)null);
+                    b.ToTable("VAEMonitoringChecklist");
                 });
 
             modelBuilder.Entity("IPCU.Models.VentilatorEventChecklist", b =>
@@ -6620,7 +6600,7 @@ namespace IPCU.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("VentilatorEventChecklists", (string)null);
+                    b.ToTable("VentilatorEventChecklists");
                 });
 
             modelBuilder.Entity("IPCU.Models.VitalSigns", b =>
@@ -6651,7 +6631,7 @@ namespace IPCU.Migrations
 
                     b.HasIndex("HospNum");
 
-                    b.ToTable("VitalSigns", (string)null);
+                    b.ToTable("VitalSigns");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -6850,17 +6830,6 @@ namespace IPCU.Migrations
                     b.Navigation("HandHygieneForm");
                 });
 
-            modelBuilder.Entity("IPCU.Models.PatientHAI", b =>
-                {
-                    b.HasOne("IPCU.Models.PatientMaster", "Patient")
-                        .WithOne("HAIData")
-                        .HasForeignKey("IPCU.Models.PatientHAI", "HospNum")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-                });
-
             modelBuilder.Entity("IPCU.Models.PatientMovementDetail", b =>
                 {
                     b.HasOne("IPCU.Models.PatientMaster", "Patient")
@@ -6972,12 +6941,6 @@ namespace IPCU.Migrations
             modelBuilder.Entity("IPCU.Models.HandHygieneForm", b =>
                 {
                     b.Navigation("Activities");
-                });
-
-            modelBuilder.Entity("IPCU.Models.PatientMaster", b =>
-                {
-                    b.Navigation("HAIData")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
