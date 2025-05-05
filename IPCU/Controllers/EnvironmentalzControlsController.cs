@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IPCU.Data;
 using IPCU.Models;
+using DocumentFormat.OpenXml.Bibliography;
 
 namespace IPCU.Controllers
 {
@@ -20,8 +21,10 @@ namespace IPCU.Controllers
         }
 
         // GET: EnvironmentalzControls
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string station)
         {
+            ViewBag.Station = station;
+
             return View(await _context.EnvironmentalzControl.ToListAsync());
         }
 
