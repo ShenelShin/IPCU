@@ -8,23 +8,19 @@
 
 <div class="container py-5 bg-white shadow rounded-4 border border-light">
     <div class="header-section d-flex align-items-center justify-content-center px-3 py-2 mb-4 gap-3">
-        <!-- Left Logo -->
         <div class="logo-box">
             <img src="~/images/NKTI.png" alt="NKTI Left Logo" class="img-fluid logo-img">
         </div>
 
-        <!-- Center Text -->
         <div class="text-center flex-grow-0 mx-5 mb-5">
             <h1 class="main-title mb-1">Welcome to the IPCU System</h1>
             <p class="subtitle mb-0">Streamlined Management of Employee Forms & Trainings</p>
         </div>
 
-        <!-- Right Logo -->
         <div class="logo-box">
             <img src="~/images/nkti-right-logo-removebg-preview.png" alt="NKTI Right Logo" class="img-fluid logo-img">
         </div>
     </div>
-
 
     <div class="row g-4">
         @{
@@ -46,16 +42,19 @@
         {
             <div class="col-md-6 col-lg-4">
                 <div class="card h-100 shadow rounded-4 border-0 hover-card">
+                    <div class="card-top bg-@card.Color">
+                        <i class="@card.Icon fa-2x text-white"></i>
+                    </div>
                     <div class="card-body text-center p-4">
-                        <div class="icon-box mb-3 bg-@card.Color">
-                            <i class="@card.Icon fa-2x text-white"></i>
-                        </div>
                         <h5 class="fw-bold mb-2">@card.Title</h5>
                         <p class="text-muted small">@card.Desc</p>
                         <div class="d-grid gap-2 mt-3">
                             @foreach (var btn in card.Buttons)
                             {
-                                <a asp-controller="@btn.Item2" asp-action="@btn.Item3" class="btn btn-@btn.Item4">@btn.Item1</a>
+                                var btnParts = btn.Item4.Split(' ');
+                                var btnBase = "btn-" + btnParts[0];
+                                var extraClass = btnParts.Length > 1 ? btnParts[1] : "";
+                                <a asp-controller="@btn.Item2" asp-action="@btn.Item3" class="btn @btnBase @extraClass">@btn.Item1</a>
                             }
                         </div>
                     </div>
@@ -63,18 +62,17 @@
             </div>
         }
 
-        <!-- Special ICRA Card -->
+        <!-- ICRA Card -->
         <div class="col-md-6 col-lg-4">
             <div class="card h-100 shadow rounded-4 border-0 hover-card">
+                <div class="card-top bg-info">
+                    <i class="fas fa-tools fa-2x text-white"></i>
+                </div>
                 <div class="card-body text-center p-4">
-                    <div class="icon-box mb-3 bg-info">
-                        <i class="fas fa-tools fa-2x text-white"></i>
-                    </div>
                     <h5 class="fw-bold mb-2">ICRA Dashboard</h5>
                     <p class="text-muted small">Manage ICRA activities efficiently.</p>
                     <div class="d-grid gap-2 mt-3">
                         <a asp-controller="ICRAs" asp-action="Index" class="btn btn-info text-white">View ICRA</a>
-
                         @if (User.IsInRole("Admin") && User.IsInRole("ICN") && User.IsInRole("Engineering"))
                         {
                             <a asp-controller="ICRADashboard" asp-action="AdminICN" class="btn btn-info text-white">Admin/ICN Dashboard</a>
@@ -96,89 +94,12 @@
 </div>
 
 <style>
-    .text-gradient {
-        background: linear-gradient(to right, #4facfe, #00f2fe);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
     body {
         background: linear-gradient(to bottom right, rgba(248, 249, 250, 0.96), rgba(233, 236, 239, 0.96)), url('https://www.transparenttextures.com/patterns/pw-maze-white.png');
         background-repeat: repeat;
         background-size: auto;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-
-    .icon-box {
-        width: 70px;
-        height: 70px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        margin: 0 auto;
-    }
-
-    .bg-purple {
-        background-color: #6f42c1;
-    }
-
-    .btn-purple {
-        background-color: #6f42c1;
-        color: white;
-    }
-
-        .btn-purple:hover {
-            background-color: #5a32a3;
-        }
-
-    .bg-teal {
-        background-color: #20c997;
-    }
-
-    .btn-teal {
-        background-color: #20c997;
-        color: white;
-    }
-
-        .btn-teal:hover {
-            background-color: #18a383;
-        }
-
-    .bg-indigo {
-        background-color: #6610f2;
-    }
-
-    .btn-indigo {
-        background-color: #6610f2;
-        color: white;
-    }
-
-        .btn-indigo:hover {
-            background-color: #520dc2;
-        }
-
-    .bg-orange {
-        background-color: #fd7e14;
-    }
-
-    .btn-orange {
-        background-color: #fd7e14;
-        color: white;
-    }
-
-        .btn-orange:hover {
-            background-color: #e96b0c;
-        }
-
-    .hover-card {
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-        .hover-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-        }
 
     .header-section {
         background: linear-gradient(to right, #f8f9fa, #e9ecef);
@@ -187,6 +108,17 @@
         gap: 2rem;
         flex-wrap: wrap;
         padding: 1rem 3rem;
+    }
+
+    .main-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #0d6efd;
+    }
+
+    .subtitle {
+        font-size: 1.125rem;
+        color: #6c757d;
     }
 
     .logo-box {
@@ -200,19 +132,84 @@
         height: auto;
     }
 
-    .main-title {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: #0d6efd;
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .subtitle {
-        font-size: 1.125rem;
-        color: #6c757d;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .card-top {
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        transition: background-color 0.3s ease;
     }
 
+    /* Hover color overrides */
+    .card:hover .card-top.bg-primary {
+        background-color: #0b5ed7 !important;
+    }
+
+    .card:hover .card-top.bg-success {
+        background-color: #157347 !important;
+    }
+
+    .card:hover .card-top.bg-warning {
+        background-color: #ffca2c !important;
+    }
+
+    .card:hover .card-top.bg-danger {
+        background-color: #bb2d3b !important;
+    }
+
+    .card:hover .card-top.bg-purple {
+        background-color: #5a32a3 !important;
+    }
+
+    .card:hover .card-top.bg-teal {
+        background-color: #18a383 !important;
+    }
+
+    .card:hover .card-top.bg-indigo {
+        background-color: #520dc2 !important;
+    }
+
+    .card:hover .card-top.bg-info {
+        background-color: #0dcaf0 !important;
+    }
+
+    .card:hover .card-top.bg-secondary {
+        background-color: #6c757d !important;
+    }
+
+    .card:hover .card-top.bg-orange {
+        background-color: #e96b0c !important;
+    }
+
+    /* Custom colors */
+    .bg-purple {
+        background-color: #6f42c1;
+    }
+
+    .bg-teal {
+        background-color: #20c997;
+    }
+
+    .bg-indigo {
+        background-color: #6610f2;
+    }
+
+    .bg-orange {
+        background-color: #fd7e14;
+    }
+
+    /* Outline buttons for custom colors */
     .btn-outline-purple {
         color: #6f42c1;
         border: 1px solid #6f42c1;
@@ -243,6 +240,53 @@
 
         .btn-outline-indigo:hover {
             background-color: #6610f2;
+            color: #fff;
+        }
+
+
+
+    /* Custom solid buttons */
+    .btn-purple {
+        background-color: #6f42c1;
+        color: #fff;
+        border: none;
+    }
+
+        .btn-purple:hover {
+            background-color: #5a32a3;
+            color: #fff;
+        }
+
+    .btn-teal {
+        background-color: #20c997;
+        color: #fff;
+        border: none;
+    }
+
+        .btn-teal:hover {
+            background-color: #18a383;
+            color: #fff;
+        }
+
+    .btn-indigo {
+        background-color: #6610f2;
+        color: #fff;
+        border: none;
+    }
+
+        .btn-indigo:hover {
+            background-color: #520dc2;
+            color: #fff;
+        }
+
+    .btn-orange {
+        background-color: #fd7e14;
+        color: #fff;
+        border: none;
+    }
+
+        .btn-orange:hover {
+            background-color: #e96b0c;
             color: #fff;
         }
 
