@@ -1,188 +1,75 @@
 ﻿@model IPCU.Models.AssignAreaViewModel
+
 @{
     ViewData["Title"] = "Assign Area";
 }
-<div class="container">
-    <h2>Assign Area</h2>
-    <div class="row">
-        <div class="col-md-8">
+
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Assign Area</h4>
+        </div>
+        <div class="card-body">
             <form asp-action="AssignArea" method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="UserId" />
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                <div class="form-group mb-3">
-                    <label>Username</label>
-                    <input asp-for="UserName" class="form-control" readonly />
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Username</label>
+                        <input asp-for="UserName" class="form-control" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Full Name</label>
+                        <input asp-for="FullName" class="form-control" readonly />
+                    </div>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label>Full Name</label>
-                    <input asp-for="FullName" class="form-control" readonly />
-                </div>
+                <input asp-for="AssignedArea" id="AssignedArea" name="AssignedArea" type="hidden" />
 
-                <div class="form-group mb-3">
-                    <label>Current Assigned Areas</label>
-                    <!-- Changed from readonly to hidden to still submit the value -->
-                    <input asp-for="AssignedArea" id="AssignedArea" name="AssignedArea" class="form-control" />
-                </div>
-
-                <div class="form-group mb-3">
-                    <label>Select Areas</label>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_2A" value="Unit 2A" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_2A">Unit 2A</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_2B" value="Unit 2B" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_2B">Unit 2B</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_2C" value="Unit 2C" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_2C">Unit 2C</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_2D" value="Unit 2D" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_2D">Unit 2D</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_2E" value="Unit 2E" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_2E">Unit 2E</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_2F" value="Unit 2F" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_2F">Unit 2F</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_2G" value="Unit 2G" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_2G">Unit 2G</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_2H" value="Unit 2H" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_2H">Unit 2H</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="2B_Extension" value="2B Extension" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="2B_Extension">2B Extension</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="2D_Extension" value="2D Extension" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="2D_Extension">2D Extension</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="2E_Extension" value="2E Extension" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="2E_Extension">2E Extension</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_3A" value="Unit 3A" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_3A">Unit 3A</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_3B" value="Unit 3B" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_3B">Unit 3B</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_3C" value="Unit 3C" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_3C">Unit 3C</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_3D" value="Unit 3D" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_3D">Unit 3D</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_3E" value="Unit 3E" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_3E">Unit 3E</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Unit_3F" value="Unit 3F" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Unit_3F">Unit 3F</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="CTU" value="CTU" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="CTU">CTU</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="PDU" value="PDU" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="PDU">PDU</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="CCRU" value="CCRU" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="CCRU">CCRU</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Cardiology" value="Cardiology" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Cardiology">Cardiology</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Laboratory" value="Laboratory" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Laboratory">Laboratory</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Radiology" value="Radiology" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Radiology">Radiology</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="Rehab" value="Rehab" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="Rehab">Rehab</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="OR-RR" value="OR-RR" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="OR-RR">OR-RR</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="OPS" value="OPS" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="OPS">OPS</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="AITU" value="AITU" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="AITU">AITU</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="IVASC" value="IVASC" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="IVASC">IVASC</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="AUEC" value="AUEC" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="AUEC">AUEC</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="ICU_IMCU" value="ICU/IMCU" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="ICU_IMCU">ICU/IMCU</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="ER" value="ER" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="ER">ER</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="PULMO" value="PULMO" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="PULMO">PULMO</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="HD_Annex" value="HD Annex" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="HD_Annex">HD Annex</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input type="checkbox" id="HD_Main" value="HD Main" class="area-checkbox form-check-input" />
-                                        <label class="form-check-label" for="HD_Main">HD Main</label>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Select Areas</label>
+                    <div class="accordion" id="areaAccordion">
+                        @foreach (var group in new[] {
+                        new { Title = "Unit 2", Areas = new[] { "Unit 2A", "Unit 2B", "Unit 2C", "Unit 2D", "Unit 2E", "Unit 2F", "Unit 2G", "Unit 2H", "2B Extension", "2D Extension", "2E Extension" } },
+                        new { Title = "Unit 3", Areas = new[] { "Unit 3A", "Unit 3B", "Unit 3C", "Unit 3D", "Unit 3E", "Unit 3F" } },
+                        new { Title = "Other Areas", Areas = new[] { "CTU", "PDU", "CCRU", "Cardiology", "Laboratory", "Radiology", "Rehab", "OR-RR", "OPS", "AITU", "IVASC", "AUEC", "ICU/IMCU", "ER", "PULMO", "HD Annex", "HD Main" } }
+                        })
+                        {
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading-@group.Title.Replace(" ", "")">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@group.Title.Replace(" ", "")" aria-expanded="false">
+                                        @group.Title
+                                    </button>
+                                </h2>
+                                <div id="collapse-@group.Title.Replace(" ", "")" class="accordion-collapse collapse" data-bs-parent="#areaAccordion">
+                                    <div class="accordion-body">
+                                        <div class="row">
+                                            @foreach (var area in group.Areas)
+                                            {
+                                                <div class="col-sm-6 col-md-4">
+                                                    <div class="form-check">
+                                                        <input type="checkbox" id="@area.Replace(" ", "_")" value="@area" class="area-checkbox form-check-input" />
+                                                        <label class="form-check-label" for="@area.Replace(" ", "_")">@area</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
-                    <div class="mt-2">
-                        <button type="button" id="selectAll" class="btn btn-sm btn-outline-primary">Select All</button>
-                        <button type="button" id="deselectAll" class="btn btn-sm btn-outline-secondary">Deselect All</button>
+
+                    <div class="mt-3">
+                        <button type="button" id="selectAll" class="btn btn-outline-primary btn-sm me-2">Select All</button>
+                        <button type="button" id="deselectAll" class="btn btn-outline-secondary btn-sm">Deselect All</button>
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="d-flex justify-content-end">
+                    <a asp-action="Index" class="btn btn-secondary me-2">Cancel</a>
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
         </div>
@@ -190,65 +77,44 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
     <script>
-        $(document).ready(function() {
-            // Function to update the AssignedArea text field based on selected checkboxes
+        $(document).ready(function () {
             function updateAssignedArea() {
-                var selectedAreas = [];
-                $('.area-checkbox:checked').each(function() {
-                    selectedAreas.push($(this).val());
+                const selected = $(".area-checkbox:checked").map(function () {
+                    return $(this).val();
+                }).get();
+                $("#AssignedArea").val(selected.join(", "));
+            }
+
+            function preSelectAreas() {
+                const current = $("#AssignedArea").val().split(",").map(a => a.trim());
+                $(".area-checkbox").each(function () {
+                    if (current.includes($(this).val())) {
+                        $(this).prop("checked", true);
+                    }
                 });
-                $('#AssignedArea').val(selectedAreas.join(', '));
             }
 
-            // Function to check if areas are already assigned
-            function checkSelectedAreas() {
-                var currentAreas = $("#AssignedArea").val();
-                if (currentAreas) {
-                    var areaArray = currentAreas.split(',').map(function(item) {
-                        return item.trim();
-                    });
-
-                    // Check the boxes for existing areas
-                    $(".area-checkbox").each(function() {
-                        if (areaArray.includes($(this).val())) {
-                            $(this).prop('checked', true);
-                        }
-                    });
-                }
-            }
-
-            // Select all button
-            $("#selectAll").click(function() {
-                $(".area-checkbox").prop('checked', true);
+            $("#selectAll").click(function () {
+                $(".area-checkbox").prop("checked", true);
                 updateAssignedArea();
             });
 
-            // Deselect all button
-            $("#deselectAll").click(function() {
-                $(".area-checkbox").prop('checked', false);
+            $("#deselectAll").click(function () {
+                $(".area-checkbox").prop("checked", false);
                 updateAssignedArea();
             });
 
-            // Update AssignedArea when any checkbox is clicked
-            $(".area-checkbox").on('change', function() {
-                updateAssignedArea();
-            });
+            $(".area-checkbox").change(updateAssignedArea);
 
-            // Check boxes based on current assignments and then update the text field
-            checkSelectedAreas();
+            preSelectAreas();
             updateAssignedArea();
 
-            // Add form validation to ensure form submission works correctly
-            $("form").submit(function() {
-                // Update assigned areas one final time before submitting
+            $("form").submit(function () {
                 updateAssignedArea();
-
-                // Optional: ensure at least one area is selected
-                if($(".area-checkbox:checked").length === 0) {
+                if ($(".area-checkbox:checked").length === 0) {
                     alert("Please select at least one area.");
                     return false;
                 }

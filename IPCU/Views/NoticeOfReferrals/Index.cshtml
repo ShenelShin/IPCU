@@ -1,85 +1,109 @@
 ﻿@model IEnumerable<IPCU.Models.NoticeOfReferral>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Notice of Referral";
 
     var referrals = Model.Where(x => x.Receivedby == null && x.ReceivedbyDnT == null);
     var acknowledged = Model.Where(x => x.Receivedby != null && x.ReceivedbyDnT != null);
 }
 
-<h1>Notice Of Referral</h1>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0"><i class="fas fa-envelope-open-text me-2"></i> Notice of Referral</h2>
+    </div>
 
-<!-- Toggle Button -->
-<div class="mb-3">
-    <div class="btn-group" role="group" aria-label="Toggle View">
-        <button id="referralsBtn" type="button" class="btn btn-primary active" onclick="toggleView('referrals')">Referrals</button>
-        <button id="acknowledgeBtn" type="button" class="btn btn-outline-primary" onclick="toggleView('acknowledge')">Acknowledge</button>
+    <!-- Toggle Button -->
+    <div class="btn-group mb-4 shadow-sm" role="group" aria-label="Toggle View">
+        <button id="referralsBtn" type="button" class="btn btn-primary active" onclick="toggleView('referrals')">
+            <i class="fas fa-inbox me-1"></i> Referrals
+        </button>
+        <button id="acknowledgeBtn" type="button" class="btn btn-outline-primary" onclick="toggleView('acknowledge')">
+            <i class="fas fa-check-circle me-1"></i> Acknowledged
+        </button>
+    </div>
+
+    <!-- Referrals Table -->
+    <div id="referralsView">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <strong>Pending Referrals</strong>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Patient Name</th>
+                                <th>@Html.DisplayNameFor(model => model.First().AreaUnit)</th>
+                                <th>Age / Sex</th>
+                                <th>@Html.DisplayNameFor(model => model.First().Referredby)</th>
+                                <th>@Html.DisplayNameFor(model => model.First().ReferredbyDnT)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in referrals)
+                            {
+                                <tr>
+                                    <td>@($"{item.PatientLastName}, {item.PatientFirstName} {item.PatientMiddleName}")</td>
+                                    <td>@Html.DisplayFor(modelItem => item.AreaUnit)</td>
+                                    <td>@($"{item.Age} / {item.Sex}")</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Referredby)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ReferredbyDnT)</td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-success">
+                                            <i class="fas fa-check me-1"></i> Acknowledge
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Acknowledge View -->
+    <div id="acknowledgeView" style="display: none;">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-secondary text-white">
+                <strong>Acknowledged Referrals</strong>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Patient Name</th>
+                                <th>@Html.DisplayNameFor(model => model.First().AreaUnit)</th>
+                                <th>Age / Sex</th>
+                                <th>@Html.DisplayNameFor(model => model.First().Referredby)</th>
+                                <th>@Html.DisplayNameFor(model => model.First().ReferredbyDnT)</th>
+                                <th>@Html.DisplayNameFor(model => model.First().Receivedby)</th>
+                                <th>@Html.DisplayNameFor(model => model.First().ReceivedbyDnT)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in acknowledged)
+                            {
+                                <tr>
+                                    <td>@($"{item.PatientLastName}, {item.PatientFirstName} {item.PatientMiddleName}")</td>
+                                    <td>@Html.DisplayFor(modelItem => item.AreaUnit)</td>
+                                    <td>@($"{item.Age} / {item.Sex}")</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Referredby)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ReferredbyDnT)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Receivedby)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ReceivedbyDnT)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-<!-- Referrals Table (default visible) -->
-<div id="referralsView">
-    <h3>Referrals</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Patient Name</th>
-                <th>@Html.DisplayNameFor(model => model.First().AreaUnit)</th>
-                <th>Age / Sex</th>
-                <th>@Html.DisplayNameFor(model => model.First().Referredby)</th>
-                <th>@Html.DisplayNameFor(model => model.First().ReferredbyDnT)</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in referrals)
-            {
-                <tr>
-                    <td>@($"{item.PatientLastName}, {item.PatientFirstName} {item.PatientMiddleName}")</td>
-                    <td>@Html.DisplayFor(modelItem => item.AreaUnit)</td>
-                    <td>@($"{item.Age} / {item.Sex}")</td>
-                    <td>@Html.DisplayFor(modelItem => item.Referredby)</td>
-                    <td>@Html.DisplayFor(modelItem => item.ReferredbyDnT)</td>
-                    <td><a asp-action="Edit" asp-route-id="@item.Id">Acknowledge</a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-
-<!-- Acknowledge View (can be a placeholder or another table) -->
-<div id="acknowledgeView" style="display: none;">
-    <h3>Acknowledged Referrals</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Patient Name</th>
-                <th>@Html.DisplayNameFor(model => model.First().AreaUnit)</th>
-                <th>Age / Sex</th>
-                <th>@Html.DisplayNameFor(model => model.First().Referredby)</th>
-                <th>@Html.DisplayNameFor(model => model.First().ReferredbyDnT)</th>
-                <th>@Html.DisplayNameFor(model => model.First().Receivedby)</th>
-                <th>@Html.DisplayNameFor(model => model.First().ReceivedbyDnT)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in acknowledged)
-            {
-                <tr>
-                    <td>@($"{item.PatientLastName}, {item.PatientFirstName} {item.PatientMiddleName}")</td>
-                    <td>@Html.DisplayFor(modelItem => item.AreaUnit)</td>
-                    <td>@($"{item.Age} / {item.Sex}")</td>
-                    <td>@Html.DisplayFor(modelItem => item.Referredby)</td>
-                    <td>@Html.DisplayFor(modelItem => item.ReferredbyDnT)</td>
-                    <td>@Html.DisplayFor(modelItem => item.Receivedby)</td>
-                    <td>@Html.DisplayFor(modelItem => item.ReceivedbyDnT)</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
 
 @section Scripts {
     <script>
@@ -89,21 +113,18 @@
             const referralsView = document.getElementById('referralsView');
             const acknowledgeView = document.getElementById('acknowledgeView');
 
-            if (view === 'referrals') {
-                referralsView.style.display = 'block';
-                acknowledgeView.style.display = 'none';
-                referralsBtn.classList.add('btn-primary', 'active');
-                referralsBtn.classList.remove('btn-outline-primary');
-                acknowledgeBtn.classList.remove('btn-primary', 'active');
-                acknowledgeBtn.classList.add('btn-outline-primary');
-            } else {
-                referralsView.style.display = 'none';
-                acknowledgeView.style.display = 'block';
-                referralsBtn.classList.remove('btn-primary', 'active');
-                referralsBtn.classList.add('btn-outline-primary');
-                acknowledgeBtn.classList.add('btn-primary', 'active');
-                acknowledgeBtn.classList.remove('btn-outline-primary');
-            }
+            const isReferrals = view === 'referrals';
+
+            referralsView.style.display = isReferrals ? 'block' : 'none';
+            acknowledgeView.style.display = isReferrals ? 'none' : 'block';
+
+            referralsBtn.classList.toggle('btn-primary', isReferrals);
+            referralsBtn.classList.toggle('btn-outline-primary', !isReferrals);
+            referralsBtn.classList.toggle('active', isReferrals);
+
+            acknowledgeBtn.classList.toggle('btn-primary', !isReferrals);
+            acknowledgeBtn.classList.toggle('btn-outline-primary', isReferrals);
+            acknowledgeBtn.classList.toggle('active', !isReferrals);
         }
     </script>
 }
