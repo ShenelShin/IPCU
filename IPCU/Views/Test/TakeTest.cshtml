@@ -1,59 +1,220 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Take a Test";
 }
 
 <div class="container mt-5">
-    <h2 class="text-center mb-4 text-primary fw-bold">NKTI-IPCU Basic Infection Prevention and Control (IPC) Training Evaluation</h2>
+    <h2 class="text-center mb-4 text-primary fw-bold heading-style">NKTI-IPCU Basic Infection Prevention and Control (IPC) Training Evaluation</h2>
+
     <div class="row g-4">
 
+        <!-- Pre-Test Card (Clinical and Allied Health Professionals) -->
         <div class="col-md-4">
-            <div class="card shadow-lg border-0 rounded-3">
+            <div class="card shadow-lg border-0 rounded-3 transition-transform">
                 <div class="card-body text-center">
                     <h5 class="card-title fw-bold">Pre-Test</h5>
                     <p class="card-text text-muted">For Clinical And Allied Health Professionals</p>
-                    <a asp-controller="Test" asp-action="Instructions" class="btn btn-outline-primary w-100">Take Test</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-lg border-0 rounded-3">
-                <div class="card-body text-center">
-                    <h5 class="card-title fw-bold">Post-Test (Non-Clinical & Admin Staff)</h5>
-                    <p class="card-text text-muted">For Non-Clinical and Administrative Staff</p>
-                    <a asp-controller="Test" asp-action="Instructions2" class="btn btn-outline-primary w-100">Take Test</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-lg border-0 rounded-3">
-                <div class="card-body text-center">
-                    <h5 class="card-title fw-bold">Post-Test (Clinical & Allied Health)</h5>
-                    <p class="card-text text-muted">For Clinical And Allied Health Professionals</p>
-                    <a asp-controller="Test" asp-action="InstructionsPostClinical" class="btn btn-outline-primary w-100">Take Test</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-lg border-0 rounded-3">
-                <div class="card-body text-center">
-                    <h5 class="card-title fw-bold">Pre-Test (Clinical & Allied Health)</h5>
-                    <p class="card-text text-muted">For Clinical And Allied Health Professionals</p>
-                    <a asp-controller="Test" asp-action="InstructionsPreC" class="btn btn-outline-primary w-100">Take Test</a>
+                    <a asp-controller="Test" asp-action="Instructions" class="btn btn-outline-info w-100 btn-hover">Take Test</a>
                 </div>
             </div>
         </div>
 
+        <!-- Post-Test Card (Non-Clinical & Admin Staff) -->
         <div class="col-md-4">
-            <div class="card shadow-lg border-0 rounded-3">
+            <div class="card shadow-lg border-0 rounded-3 transition-transform">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">Post-Test (Non-Clinical & Admin Staff)</h5>
+                    <p class="card-text text-muted">For Non-Clinical and Administrative Staff</p>
+                    <a asp-controller="Test" asp-action="Instructions2" class="btn btn-outline-info w-100 btn-hover">Take Test</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Post-Test Card (Clinical & Allied Health Professionals) -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 rounded-3 transition-transform">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">Post-Test (Clinical & Allied Health)</h5>
+                    <p class="card-text text-muted">For Clinical And Allied Health Professionals</p>
+                    <a asp-controller="Test" asp-action="InstructionsPostClinical" class="btn btn-outline-info w-100 btn-hover">Take Test</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pre-Test Card (Clinical & Allied Health Professionals) -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 rounded-3 transition-transform">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-bold">Pre-Test (Clinical & Allied Health)</h5>
+                    <p class="card-text text-muted">For Clinical And Allied Health Professionals</p>
+                    <a asp-controller="Test" asp-action="InstructionsPreC" class="btn btn-outline-info w-100 btn-hover">Take Test</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Training Evaluation Card -->
+        <div class="col-md-4">
+            <div class="card shadow-lg border-0 rounded-3 transition-transform">
                 <div class="card-body text-center">
                     <h5 class="card-title fw-bold">Training Evaluation</h5>
                     <p class="card-text text-muted">Submit your feedback for IPC Training</p>
-                    <a asp-controller="Evaluation" asp-action="Form" class="btn btn-outline-success w-100">
-                        Fill Evaluation
-                    </a>
+                    <a asp-controller="Evaluation" asp-action="Form" class="btn btn-outline-success w-100 btn-hover">Fill Evaluation</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    /* Custom Styling for Card Hover Effect */
+    .transition-transform {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    }
+
+        .transition-transform:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+    /* Button Hover Effect */
+    .btn-hover {
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .btn-hover:hover {
+            background-color: #2d6cff; /* Soft blue hover effect */
+            color: white;
+        }
+
+    /* Container and Layout Enhancements */
+    .container {
+        max-width: 100%;
+        padding: 0 15px;
+
+        border-radius: 15px;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+        letter-spacing: 1px;
+        font-weight: 700;
+        color: #333; /* Darker text for better readability */
+    }
+
+    .card {
+        background-color: #ffffff; /* Clean white background for cards */
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #333; /* Dark text for better contrast */
+    }
+
+    .card-body {
+        padding: 2rem 1rem;
+    }
+
+    .btn-outline-info {
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        border-radius: 30px;
+        border: 2px solid #5bc0de; /* Soft blue border for buttons */
+        color: #5bc0de; /* Blue text */
+    }
+
+    .btn-outline-success {
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        border-radius: 30px;
+        border: 2px solid #28a745; /* Green border for success button */
+        color: #28a745; /* Green text */
+    }
+
+    /* Adjustments for Small Screens */
+    @@media (max-width: 768px) {
+        .card-body
+
+    {
+        padding: 1rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    }
+
+    /* Background Animation for a Soft and Simple Look */
+    body {
+        background: #e2e8f0; /* Light gray background color */
+        font-family: 'Arial', sans-serif;
+        color: #2c3e50;
+    }
+
+    /* Custom Styling for Card Hover Effect */
+    .transition-transform {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+    }
+
+        .transition-transform:hover {
+            transform: translateY(-10px); /* Move the card up on hover */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); /* Add a shadow for depth */
+        }
+
+    .heading-style {
+        font-family: 'Poppins', sans-serif; /* A clean, modern font */
+        font-size: 3rem; /* Larger font size for more emphasis */
+        font-weight: 700; /* Bold for strong visibility */
+        letter-spacing: 3px; /* Increased letter spacing for clarity */
+        color: #003366; /* Deep blue for professionalism */
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2), 0 0 25px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
+        line-height: 1.4; /* Space between lines for readability */
+        margin-bottom: 50px; /* Increased bottom margin for separation */
+        padding: 15px 0; /* Padding for more breathing room */
+        background: linear-gradient(135deg, #0066cc, #00cc99); /* Gradient background for vibrancy */
+        color: transparent; /* Transparent color to show gradient */
+        -webkit-background-clip: text; /* Clip background to text */
+        background-clip: text; /* Background clipped to the text itself */
+        animation: fadeIn 1.5s ease-in-out, backgroundAnimation 5s ease-in-out infinite; /* Apply fading and background animation */
+    }
+
+    /* Animation for Background Gradient */
+    @@keyframes backgroundAnimation {
+        0%
+
+    {
+        background: linear-gradient(135deg, #0066cc, #00cc99);
+    }
+
+    50% {
+        background: linear-gradient(135deg, #00cc99, #0066cc);
+    }
+
+    100% {
+        background: linear-gradient(135deg, #0066cc, #00cc99);
+    }
+
+    }
+
+    /* Optional: Adding animation */
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+    }
+
+    /* Apply the animation to the heading */
+    .heading-style {
+        animation: fadeIn 1.5s ease-in-out;
+    }
+</style>

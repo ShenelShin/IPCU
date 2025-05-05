@@ -6,12 +6,14 @@
 
 <style>
     @@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
     html, body {
         height: 100%;
         width: 100%;
         margin: 0;
         padding: 0;
         font-family: 'Poppins', sans-serif;
+        transition: background-color 0.3s ease;
     }
 
     body {
@@ -22,45 +24,51 @@
         background-attachment: fixed;
         min-height: 100vh;
         min-width: 90vw;
-        position: relative; /* Important for absolute children */
+        position: relative;
+        transition: background 0.5s ease;
     }
 
-    /* Blue blur overlay - Fully responsive */
+    /* Blue blur overlay with transition */
     .blue-overlay {
-        position: absolute; /* NOT fixed anymore */
+        position: absolute;
         top: 100;
         left: 10px;
         right: 10px;
         width: auto;
         height: 100%;
-        background-color: rgba(var(--bs-primary-rgb), 0.3); /* Bootstrap primary color with 30% opacity */
+        background-color: rgba(var(--bs-primary-rgb), 0.3);
         backdrop-filter: blur(2px);
-        -webkit-backdrop-filter: blur(2px); /* Safari support */
+        -webkit-backdrop-filter: blur(2px);
         z-index: 1;
-        border-radius: 20px; /* Optional */
+        border-radius: 20px;
+        transition: all 0.5s ease;
     }
 
     .content {
         position: relative;
-        z-index: 2; /* Content above the blue blur */
+        z-index: 2;
+        transition: all 0.5s ease;
     }
 
     .login-card {
         background: rgba(255, 255, 255, 0.9);
         backdrop-filter: blur(5px);
         border-radius: 20px;
+        transition: all 0.3s ease;
     }
 
     .caption-section {
         color: white;
         padding: 2rem;
+        transition: all 0.5s ease;
     }
 
         .caption-section h1 {
-            font-size: 3.5rem; /* Bigger and cleaner */
+            font-size: 3.5rem;
             font-weight: 800;
-            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6); /* Subtle text glow */
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
             margin-bottom: 1rem;
+            transition: all 0.5s ease;
         }
 
         .caption-section p {
@@ -68,20 +76,18 @@
             font-weight: 400;
             opacity: 0.9;
             margin-bottom: 2rem;
+            transition: all 0.5s ease;
         }
 
     .take-test-btn {
-        margin-top: 0; /* remove top margin */
+        margin-top: 0;
         padding: 0.75rem 2rem;
         border-radius: 30px;
         font-weight: 600;
         transition: background 0.3s ease, color 0.3s ease;
     }
 
-
-
-
-
+    /* Keyframe for typewriter effect */
     #typewriter::after {
         content: "|";
         animation: blink 1s infinite;
@@ -100,6 +106,26 @@
     }
 
     }
+
+    /* Button hover effects */
+    .btn {
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+        .btn:hover {
+            transform: scale(1.05);
+            background-color: #0d6efd;
+        }
+
+    /* Form input transitions */
+    .form-control {
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 5px rgba(13, 110, 253, 0.5);
+        }
 </style>
 
 <!-- Blue overlay -->
@@ -110,9 +136,8 @@
     <!-- Left Caption -->
     <div class="col-md-6 caption-section">
         <h1 class="display-4 fw-bold" id="typewriter">Welcome to IPCU System</h1>
-
-    <p class="lead">Your trusted partner in patient care and medical excellence.</p>   
-</div>
+        <p class="lead">Your trusted partner in patient care and medical excellence.</p>
+    </div>
 
     <!-- Right Login Card -->
     <div class="col-md-4 me-3">
@@ -165,6 +190,7 @@
         </div>
     </div>
 </div>
+
 <script>
     const text = "Welcome to IPCU System";
     const speed = 100; // typing speed (ms per character)
