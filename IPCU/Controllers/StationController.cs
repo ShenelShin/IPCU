@@ -43,22 +43,30 @@ public class StationController : Controller
     public async Task<IActionResult> ViewRooms(string stationId, string station)
     {
         var rooms = new List<Dictionary<string, object>>();
-
-        // Get the connection string for Build_File from the configuration
         string connectionString = _configuration.GetConnectionString("Build_FileConnection");
-
-        if (string.IsNullOrEmpty(connectionString))
-        {
-            throw new InvalidOperationException("Connection string 'BuildFile' is missing or invalid.");
-        }
 
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
             await conn.OpenAsync();
-            // Updated query to handle StationID as varchar
-            string query = "SELECT * FROM tbCoRoom WHERE StationID = @StationID";
+
+            string query = @"
+                            SELECT r.*,
+                                   CASE 
+                                       WHEN EXISTS (
+                                           SELECT 1 
+                                           FROM Patient_Data..tbpatient p
+                                           WHERE p.RoomID = r.RoomID AND p.DcrDate IS NULL
+                                       )
+                                       THEN 'Occupied'
+                                       ELSE 'Not Occupied'
+                                   END AS OccupancyStatus
+                            FROM tbCoRoom r
+                            WHERE r.StationID = @StationID";
+
+
             SqlCommand cmd = new SqlCommand(query, conn);
-            cmd.Parameters.AddWithValue("@StationID", stationId); // stationId is now a string
+            cmd.Parameters.AddWithValue("@StationID", stationId);
+
             SqlDataReader reader = await cmd.ExecuteReaderAsync();
 
             while (await reader.ReadAsync())
@@ -71,11 +79,13 @@ public class StationController : Controller
                 rooms.Add(row);
             }
         }
+
         ViewBag.StationID = stationId;
         ViewBag.Rooms = rooms;
         ViewBag.Station = station;
         return View();
     }
+
 
 
 }
