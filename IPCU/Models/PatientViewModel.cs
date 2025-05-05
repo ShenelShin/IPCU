@@ -52,6 +52,10 @@ namespace IPCU.Models
         public InfectionFormsInfo? InfectionForms { get; set; }
         public PatientMovementViewModel? PatientMovements { get; set; }
 
+        public string RoomDescription { get; set; }
+        public string StationId { get; set; }
+        public string StationName { get; set; }
+
         public PatientViewModel()
         {
             VitalSigns = new List<VitalSigns>();

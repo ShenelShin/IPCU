@@ -60,14 +60,17 @@ namespace IPCU.Controllers
                 using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
                 {
                     command.CommandText = @"
-                SELECT TOP 50000 p.HospNum, p.IdNum, p.AdmType, p.AdmLocation, p.AdmDate, p.RoomID, p.Age, 
-                       m.LastName, m.FirstName, m.MiddleName, m.Sex, m.CivilStatus, m.PatientType, 
-                       m.EmailAddress, m.cellnum
-                FROM tbpatient p
-                LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
-                WHERE p.AdmDate <= @fortyEightHoursAgo 
-                AND p.DeathDate IS NULL
-                ORDER BY p.AdmDate DESC";
+                    SELECT TOP 50000 p.HospNum, p.IdNum, p.AdmType, p.AdmLocation, p.AdmDate, p.RoomID, p.Age, 
+                           m.LastName, m.FirstName, m.MiddleName, m.Sex, m.CivilStatus, m.PatientType, 
+                           m.EmailAddress, m.cellnum,
+                           r.RoomDescription, s.StationId, s.Station
+                    FROM tbpatient p
+                    LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
+                    LEFT JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
+                    LEFT JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
+                    WHERE p.AdmDate <= @fortyEightHoursAgo 
+                    AND p.DeathDate IS NULL
+                    ORDER BY p.AdmDate DESC";
 
                     // Add parameters
                     var parameter = command.CreateParameter();
@@ -87,12 +90,18 @@ namespace IPCU.Controllers
                         while (await reader.ReadAsync())
                         {
                             var hospNum = reader["HospNum"]?.ToString();
-                            var admLocation = reader["AdmLocation"]?.ToString();
+                            var stationId = reader["StationId"]?.ToString() ?? string.Empty;
+                            var stationName = reader["Station"]?.ToString() ?? string.Empty;
 
                             // Skip if not in assigned areas
-                            if (assignedAreas.Any() && !string.IsNullOrEmpty(admLocation) && !assignedAreas.Contains(admLocation))
+                            // Only filter if the user has assigned areas AND the patient's station is not in those areas
+                            if (assignedAreas.Any() &&
+                                !string.IsNullOrEmpty(stationId) &&
+                                !string.IsNullOrEmpty(stationName) &&
+                                !assignedAreas.Contains(stationId) &&
+                                !assignedAreas.Contains(stationName))
                             {
-                                continue;
+                                continue; // Skip this patient
                             }
 
                             var patient = new PatientViewModel
@@ -103,7 +112,7 @@ namespace IPCU.Controllers
                                 FirstName = reader["FirstName"]?.ToString() ?? string.Empty,
                                 MiddleName = reader["MiddleName"]?.ToString() ?? string.Empty,
                                 AdmType = reader["AdmType"]?.ToString() ?? string.Empty,
-                                AdmLocation = admLocation ?? string.Empty,
+                                //AdmLocation = admLocation ?? string.Empty,
                                 AdmDate = reader["AdmDate"] as DateTime?,
                                 RoomID = reader["RoomID"]?.ToString() ?? string.Empty,
                                 Age = reader["Age"]?.ToString() ?? string.Empty,
@@ -114,7 +123,10 @@ namespace IPCU.Controllers
                                 CellNum = reader["cellnum"]?.ToString() ?? string.Empty,
                                 AdmissionDuration = reader["AdmDate"] != DBNull.Value ?
                                     (int)Math.Round((DateTime.Now - (DateTime)reader["AdmDate"]).TotalDays) : 0,
-                                PatientName = $"{reader["LastName"]?.ToString() ?? ""}, {reader["FirstName"]?.ToString() ?? ""} {reader["MiddleName"]?.ToString() ?? ""}"
+                                PatientName = $"{reader["LastName"]?.ToString() ?? ""}, {reader["FirstName"]?.ToString() ?? ""} {reader["MiddleName"]?.ToString() ?? ""}",
+                                RoomDescription = reader["RoomDescription"]?.ToString() ?? string.Empty,
+                                StationId = reader["StationId"]?.ToString() ?? string.Empty,
+                                StationName = reader["Station"]?.ToString() ?? string.Empty
                             };
 
                             patients.Add(patient);
@@ -189,10 +201,11 @@ namespace IPCU.Controllers
 
                 // Sort the results as needed
                 patients = patients
-                    .OrderBy(p => p.AdmLocation)
-                    .ThenBy(p => p.RoomID)
-                    .ThenBy(p => p.LastName)
-                    .ThenBy(p => p.FirstName)
+                    .OrderBy(p => p.StationName)      // First sort by Station name
+                    .ThenBy(p => p.RoomDescription)   // Then by Room description
+                    .ThenBy(p => p.RoomID)            // Then by Room ID
+                    .ThenBy(p => p.LastName)          // Then by patient last name
+                    .ThenBy(p => p.FirstName)         // Then by patient first name
                     .ToList();
 
                 return View(patients);
@@ -216,83 +229,170 @@ namespace IPCU.Controllers
             }
         }
 
-public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
                 return NotFound();
             }
 
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound();
+                // Get the current logged-in user
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Get the user's assigned areas
+                var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
+
+                // Create a patient view model to store our result
+                PatientViewModel patient = null;
+
+                // Use raw SQL to get the patient details similar to Index method
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+                SELECT p.HospNum, p.IdNum, p.AdmType, p.AdmLocation, p.AdmDate, p.RoomID, p.Age, 
+                       m.LastName, m.FirstName, m.MiddleName, m.Sex, m.CivilStatus, m.PatientType, 
+                       m.EmailAddress, m.cellnum,
+                       r.RoomDescription, s.StationId, s.Station
+                FROM tbpatient p
+                LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
+                LEFT JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
+                LEFT JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
+                WHERE p.IdNum = @IdNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@IdNum";
+                    parameter.Value = id;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            var hospNum = reader["HospNum"]?.ToString();
+                            var stationId = reader["StationId"]?.ToString() ?? string.Empty;
+                            var stationName = reader["Station"]?.ToString() ?? string.Empty;
+
+                            // Check if patient is in assigned areas
+                            // Only filter if the user has assigned areas AND the patient's station is not in those areas
+                            if (assignedAreas.Any() &&
+                                !string.IsNullOrEmpty(stationId) &&
+                                !string.IsNullOrEmpty(stationName) &&
+                                !assignedAreas.Contains(stationId) &&
+                                !assignedAreas.Contains(stationName))
+                            {
+                                return NotFound(); // Patient not in assigned area
+                            }
+
+                            patient = new PatientViewModel
+                            {
+                                HospNum = hospNum,
+                                IdNum = reader["IdNum"]?.ToString() ?? string.Empty,
+                                LastName = reader["LastName"]?.ToString() ?? string.Empty,
+                                FirstName = reader["FirstName"]?.ToString() ?? string.Empty,
+                                MiddleName = reader["MiddleName"]?.ToString() ?? string.Empty,
+                                AdmType = reader["AdmType"]?.ToString() ?? string.Empty,
+                                AdmLocation = reader["AdmLocation"]?.ToString() ?? string.Empty,
+                                AdmDate = reader["AdmDate"] as DateTime?,
+                                RoomID = reader["RoomID"]?.ToString() ?? string.Empty,
+                                Age = reader["Age"]?.ToString() ?? string.Empty,
+                                Sex = reader["Sex"]?.ToString() ?? string.Empty,
+                                CivilStatus = reader["CivilStatus"]?.ToString() ?? string.Empty,
+                                PatientType = reader["PatientType"]?.ToString() ?? string.Empty,
+                                EmailAddress = reader["EmailAddress"]?.ToString() ?? string.Empty,
+                                CellNum = reader["cellnum"]?.ToString() ?? string.Empty,
+                                AdmissionDuration = reader["AdmDate"] != DBNull.Value ?
+                                    (int)Math.Round((DateTime.Now - (DateTime)reader["AdmDate"]).TotalDays) : 0,
+                                PatientName = $"{reader["LastName"]?.ToString() ?? ""}, {reader["FirstName"]?.ToString() ?? ""} {reader["MiddleName"]?.ToString() ?? ""}",
+                                RoomDescription = reader["RoomDescription"]?.ToString() ?? string.Empty,
+                                StationId = reader["StationId"]?.ToString() ?? string.Empty,
+                                StationName = reader["Station"]?.ToString() ?? string.Empty,
+                                InfectionForms = new InfectionFormsInfo() // Initialize empty infection forms
+                            };
+                        }
+                    }
+                }
+
+                if (patient == null)
+                {
+                    return NotFound();
+                }
+
+                // Get vital signs from ApplicationDbContext (_context)
+                patient.VitalSigns = await _context.VitalSigns
+                    .Where(v => v.HospNum == patient.HospNum)
+                    .ToListAsync();
+
+                // Get HAI data from ApplicationDbContext (_context)
+                var hai = await _context.PatientHAI
+                    .FirstOrDefaultAsync(h => h.HospNum == patient.HospNum);
+
+                if (hai != null)
+                {
+                    patient.HaiStatus = hai.HaiStatus;
+                    patient.HaiCount = hai.HaiCount;
+                }
+
+                // Get infection forms data
+                patient.InfectionForms = new InfectionFormsInfo
+                {
+                    CardiovascularForm = await _context.CardiovascularSystemInfection
+                        .FirstOrDefaultAsync(f => f.HospitalNumber == patient.HospNum),
+                    SSTForm = await _context.SSTInfectionModels
+                        .FirstOrDefaultAsync(f => f.HospitalNumber == patient.HospNum),
+                    LCBIForm = await _context.LaboratoryConfirmedBSI
+                        .FirstOrDefaultAsync(f => f.HospitalNumber == patient.HospNum),
+                    PVAEForm = await _context.PediatricVAEChecklist
+                        .FirstOrDefaultAsync(f => f.HospitalNumber == patient.HospNum),
+                    UTIForm = await _context.UTIModels
+                        .FirstOrDefaultAsync(f => f.HospitalNumber == patient.HospNum),
+                    PneumoniaForm = await _context.Pneumonias
+                        .FirstOrDefaultAsync(f => f.HospitalNumber == patient.HospNum),
+                    USIForm = await _context.Usi
+                        .FirstOrDefaultAsync(f => f.HospitalNumber == patient.HospNum),
+                    VAEForm = await _context.VentilatorEventChecklists
+                        .FirstOrDefaultAsync(f => f.HospitalNumber == patient.HospNum),
+                    GIInfectionForm = await _context.GIInfectionChecklists
+                        .FirstOrDefaultAsync(f => f.HospitalNumber == patient.HospNum),
+                    SSIForm = await _context.SurgicalSiteInfectionChecklist
+                        .FirstOrDefaultAsync(f => f.HospitalNumber == patient.HospNum)
+                };
+
+                // Count HAI forms and update the count
+                patient.HaiCount = CountHaiForms(patient.InfectionForms);
+
+                return View(patient);
             }
-
-            var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-
-            // Get the patient details with all related infection forms
-            var patient = await (from p in _context.Patients
-                                 join m in _context.PatientMasters on p.HospNum equals m.HospNum
-                                 where p.IdNum == id &&
-                                       assignedAreas.Contains(p.AdmLocation)
-                                 select new PatientViewModel
-                                 {
-                                     HospNum = p.HospNum,
-                                     IdNum = p.IdNum,
-                                     LastName = m.LastName,
-                                     FirstName = m.FirstName,
-                                     MiddleName = m.MiddleName,
-                                     AdmType = p.AdmType,
-                                     AdmLocation = p.AdmLocation,
-                                     AdmDate = p.AdmDate,
-                                     RoomID = p.RoomID,
-                                     Age = p.Age,
-                                     Sex = m.Sex,
-                                     CivilStatus = m.CivilStatus,
-                                     PatientType = m.PatientType,
-                                     EmailAddress = m.EmailAddress,
-                                     CellNum = m.cellnum,
-                                     AdmissionDuration = EF.Functions.DateDiffDay(p.AdmDate.Value, DateTime.Now),
-                                     VitalSigns = _context.VitalSigns.Where(v => v.HospNum == m.HospNum).ToList(),
-                                     InfectionForms = new InfectionFormsInfo
-                                     {
-                                         CardiovascularForm = _context.CardiovascularSystemInfection
-                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         SSTForm = _context.SSTInfectionModels
-                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         LCBIForm = _context.LaboratoryConfirmedBSI
-                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         PVAEForm = _context.PediatricVAEChecklist
-                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         UTIForm = _context.UTIModels
-                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         PneumoniaForm = _context.Pneumonias
-                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         USIForm = _context.Usi
-                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         VAEForm = _context.VentilatorEventChecklists
-                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         GIInfectionForm = _context.GIInfectionChecklists
-                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum),
-                                         SSIForm = _context.SurgicalSiteInfectionChecklist
-                                             .FirstOrDefault(f => f.HospitalNumber == p.HospNum)
-                                     }
-                                 })
-                                .FirstOrDefaultAsync();
-
-            if (patient == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                // Add detailed error info
+                _logger.LogError(ex, "Error in ICNPatientController.Details");
+
+                ViewBag.ErrorMessage = "An error occurred while loading patient details.";
+                ViewBag.ExceptionMessage = ex.Message;
+                ViewBag.StackTrace = ex.StackTrace;
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerExceptionMessage = ex.InnerException.Message;
+                    ViewBag.InnerStackTrace = ex.InnerException.StackTrace;
+                }
+
+                return View(new PatientViewModel());
             }
-
-            // Format the patient name
-            patient.PatientName = $"{patient.LastName}, {patient.FirstName} {patient.MiddleName}";
-
-            // Update HAI count based on existing forms
-            patient.HaiCount = CountHaiForms(patient.InfectionForms);
-
-            return View(patient);
         }
 
         private int CountHaiForms(InfectionFormsInfo forms)
@@ -313,6 +413,7 @@ public async Task<IActionResult> Details(string id)
 
 
         // GET: Show vital signs for a specific patient
+        // GET: Show vital signs for a specific patient
         public async Task<IActionResult> VitalSigns(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -320,63 +421,158 @@ public async Task<IActionResult> Details(string id)
                 return NotFound();
             }
 
-            // Get the current logged-in user to check assigned areas
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound();
+                // Get the current logged-in user
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Get the user's assigned areas
+                var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
+
+                // First get patient info using raw SQL from PatientDbContext
+                PatientViewModel patientInfo = null;
+                string hospNum = string.Empty;
+
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+                SELECT p.HospNum, p.IdNum, p.AdmLocation, p.RoomID, 
+                       m.LastName, m.FirstName, m.MiddleName,
+                       r.RoomDescription, s.StationId, s.Station
+                FROM tbpatient p
+                LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
+                LEFT JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
+                LEFT JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
+                WHERE p.IdNum = @IdNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@IdNum";
+                    parameter.Value = id;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            hospNum = reader["HospNum"]?.ToString() ?? string.Empty;
+                            var stationId = reader["StationId"]?.ToString() ?? string.Empty;
+                            var stationName = reader["Station"]?.ToString() ?? string.Empty;
+
+                            // Check if patient is in assigned areas
+                            // Only filter if the user has assigned areas AND the patient's station is not in those areas
+                            if (assignedAreas.Any() &&
+                                !string.IsNullOrEmpty(stationId) &&
+                                !string.IsNullOrEmpty(stationName) &&
+                                !assignedAreas.Contains(stationId) &&
+                                !assignedAreas.Contains(stationName))
+                            {
+                                return Forbid(); // Patient not in assigned area
+                            }
+
+                            patientInfo = new PatientViewModel
+                            {
+                                HospNum = hospNum,
+                                IdNum = reader["IdNum"]?.ToString() ?? string.Empty,
+                                LastName = reader["LastName"]?.ToString() ?? string.Empty,
+                                FirstName = reader["FirstName"]?.ToString() ?? string.Empty,
+                                MiddleName = reader["MiddleName"]?.ToString() ?? string.Empty,
+                                AdmLocation = reader["AdmLocation"]?.ToString() ?? string.Empty,
+                                RoomID = reader["RoomID"]?.ToString() ?? string.Empty,
+                                RoomDescription = reader["RoomDescription"]?.ToString() ?? string.Empty,
+                                StationId = reader["StationId"]?.ToString() ?? string.Empty,
+                                StationName = reader["Station"]?.ToString() ?? string.Empty,
+                            };
+
+                            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
+                        }
+                    }
+                }
+
+                if (patientInfo == null)
+                {
+                    return NotFound();
+                }
+
+                // Now get vital signs data from ApplicationDbContext using raw SQL
+                var vitalSigns = new List<VitalSigns>();
+
+                using (var command = _context.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+                SELECT VitalId, VitalSign, VitalSignValue, VitalSignDate, HospNum
+                FROM VitalSigns
+                WHERE HospNum = @HospNum
+                ORDER BY VitalSignDate DESC";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@HospNum";
+                    parameter.Value = hospNum;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            vitalSigns.Add(new VitalSigns
+                            {
+                                VitalId = reader["VitalId"] != DBNull.Value ? Convert.ToInt32(reader["VitalId"]) : 0,
+                                VitalSign = reader["VitalSign"]?.ToString() ?? string.Empty,
+                                VitalSignValue = reader["VitalSignValue"]?.ToString() ?? string.Empty,
+                                VitalSignDate = reader["VitalSignDate"] != DBNull.Value ? Convert.ToDateTime(reader["VitalSignDate"]) : DateTime.MinValue,
+                                HospNum = reader["HospNum"]?.ToString() ?? string.Empty
+                            });
+                        }
+                    }
+                }
+
+                // Create a view model that contains both patient info and vital signs
+                var viewModel = new PatientVitalSignsViewModel
+                {
+                    Patient = patientInfo,
+                    VitalSigns = vitalSigns
+                };
+
+                return View(viewModel);
             }
-
-            // Get the patient to verify they're in an assigned area and to get the HospNum
-            var patient = await _context.Patients
-                .Where(p => p.IdNum == id)
-                .FirstOrDefaultAsync();
-
-            if (patient == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "Error in ICNPatientController.VitalSigns for patient {PatientId}: {ErrorMessage}", id, ex.Message);
+
+                ViewBag.ErrorMessage = "An error occurred while loading vital signs data.";
+                ViewBag.ExceptionMessage = ex.Message;
+                ViewBag.StackTrace = ex.StackTrace;
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerExceptionMessage = ex.InnerException.Message;
+                    ViewBag.InnerStackTrace = ex.InnerException.StackTrace;
+                }
+
+                return View("Error");
             }
-
-            var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-            if (!assignedAreas.Contains(patient.AdmLocation))
-            {
-                return Forbid();
-            }
-
-            // Get vital signs for this patient
-            var vitalSigns = await _context.VitalSigns
-                .Where(v => v.HospNum == patient.HospNum)
-                .OrderByDescending(v => v.VitalSignDate)
-                .ToListAsync();
-
-            // Get basic patient info for display at the top of the page
-            var patientInfo = await (from p in _context.Patients
-                                     join m in _context.PatientMasters on p.HospNum equals m.HospNum
-                                     where p.IdNum == id
-                                     select new PatientViewModel
-                                     {
-                                         HospNum = p.HospNum,
-                                         IdNum = p.IdNum,
-                                         LastName = m.LastName,
-                                         FirstName = m.FirstName,
-                                         MiddleName = m.MiddleName,
-                                         AdmLocation = p.AdmLocation,
-                                         RoomID = p.RoomID
-                                     })
-                                  .FirstOrDefaultAsync();
-
-            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
-
-            // Create a view model that contains both patient info and vital signs
-            var viewModel = new PatientVitalSignsViewModel
-            {
-                Patient = patientInfo,
-                VitalSigns = vitalSigns
-            };
-
-            return View(viewModel);
         }
 
+        // GET: Display form to add a new vital sign
         // GET: Display form to add a new vital sign
         public async Task<IActionResult> AddVitalSign(string id)
         {
@@ -385,59 +581,117 @@ public async Task<IActionResult> Details(string id)
                 return NotFound();
             }
 
-            // Get the current logged-in user to check assigned areas
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound();
+                // Get the current logged-in user
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Get the user's assigned areas
+                var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
+
+                // Get patient info using raw SQL from PatientDbContext
+                PatientViewModel patientInfo = null;
+
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+                SELECT p.HospNum, p.IdNum, p.AdmLocation, p.RoomID, 
+                       m.LastName, m.FirstName, m.MiddleName,
+                       r.RoomDescription, s.StationId, s.Station
+                FROM tbpatient p
+                LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
+                LEFT JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
+                LEFT JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
+                WHERE p.IdNum = @IdNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@IdNum";
+                    parameter.Value = id;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            var stationId = reader["StationId"]?.ToString() ?? string.Empty;
+                            var stationName = reader["Station"]?.ToString() ?? string.Empty;
+
+                            // Check if patient is in assigned areas
+                            // Only filter if the user has assigned areas AND the patient's station is not in those areas
+                            if (assignedAreas.Any() &&
+                                !string.IsNullOrEmpty(stationId) &&
+                                !string.IsNullOrEmpty(stationName) &&
+                                !assignedAreas.Contains(stationId) &&
+                                !assignedAreas.Contains(stationName))
+                            {
+                                return Forbid(); // Patient not in assigned area
+                            }
+
+                            patientInfo = new PatientViewModel
+                            {
+                                HospNum = reader["HospNum"]?.ToString() ?? string.Empty,
+                                IdNum = reader["IdNum"]?.ToString() ?? string.Empty,
+                                LastName = reader["LastName"]?.ToString() ?? string.Empty,
+                                FirstName = reader["FirstName"]?.ToString() ?? string.Empty,
+                                MiddleName = reader["MiddleName"]?.ToString() ?? string.Empty,
+                                AdmLocation = reader["AdmLocation"]?.ToString() ?? string.Empty,
+                                RoomID = reader["RoomID"]?.ToString() ?? string.Empty,
+                                RoomDescription = reader["RoomDescription"]?.ToString() ?? string.Empty,
+                                StationId = reader["StationId"]?.ToString() ?? string.Empty,
+                                StationName = reader["Station"]?.ToString() ?? string.Empty,
+                            };
+
+                            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
+                        }
+                    }
+                }
+
+                if (patientInfo == null)
+                {
+                    return NotFound();
+                }
+
+                // Create the view model for adding vital signs
+                var viewModel = new AddVitalSignViewModel
+                {
+                    IdNum = patientInfo.IdNum,
+                    HospNum = patientInfo.HospNum,
+                    AdmLocation = patientInfo.AdmLocation,
+                    RoomID = patientInfo.RoomID,
+                    PatientName = patientInfo.PatientName,
+                    VitalSignDate = DateTime.Now
+                };
+
+                return View(viewModel);
             }
-
-            // Get the patient to verify they're in an assigned area
-            var patient = await _context.Patients
-                .Where(p => p.IdNum == id)
-                .FirstOrDefaultAsync();
-
-            if (patient == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "Error in ICNPatientController.AddVitalSign for patient {PatientId}: {ErrorMessage}", id, ex.Message);
+
+                ViewBag.ErrorMessage = "An error occurred while loading the vital sign form.";
+                ViewBag.ExceptionMessage = ex.Message;
+                ViewBag.StackTrace = ex.StackTrace;
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerExceptionMessage = ex.InnerException.Message;
+                    ViewBag.InnerStackTrace = ex.InnerException.StackTrace;
+                }
+
+                return View("Error");
             }
-
-            var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-            if (!assignedAreas.Contains(patient.AdmLocation))
-            {
-                return Forbid();
-            }
-
-            // Get basic patient info for the form
-            var patientInfo = await (from p in _context.Patients
-                                     join m in _context.PatientMasters on p.HospNum equals m.HospNum
-                                     where p.IdNum == id
-                                     select new PatientViewModel
-                                     {
-                                         IdNum = p.IdNum,
-                                         HospNum = p.HospNum,
-                                         AdmLocation = p.AdmLocation,
-                                         RoomID = p.RoomID,
-                                         LastName = m.LastName,
-                                         FirstName = m.FirstName,
-                                         MiddleName = m.MiddleName
-                                     })
-                               .FirstOrDefaultAsync();
-
-            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
-
-            // Create the view model for adding vital signs
-            var viewModel = new AddVitalSignViewModel
-            {
-                IdNum = patientInfo.IdNum,
-                HospNum = patientInfo.HospNum,
-                AdmLocation = patientInfo.AdmLocation,
-                RoomID = patientInfo.RoomID,
-                PatientName = patientInfo.PatientName,
-                VitalSignDate = DateTime.Now
-            };
-
-            return View(viewModel);
         }
 
         // POST: Process the form submission to add a new vital sign
@@ -475,61 +729,121 @@ public async Task<IActionResult> Details(string id)
                 return NotFound();
             }
 
-            // Get the current logged-in user to check assigned areas
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound();
+                // Get the current logged-in user to check assigned areas
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Get the user's assigned areas
+                var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
+
+                // First get patient info using raw SQL from PatientDbContext
+                PatientViewModel patientInfo = null;
+                string hospNum = string.Empty;
+
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+            SELECT p.HospNum, p.IdNum, p.AdmLocation, p.RoomID, 
+                   m.LastName, m.FirstName, m.MiddleName,
+                   r.RoomDescription, s.StationId, s.Station
+            FROM tbpatient p
+            LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
+            LEFT JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
+            LEFT JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
+            WHERE p.IdNum = @IdNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@IdNum";
+                    parameter.Value = id;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            hospNum = reader["HospNum"]?.ToString() ?? string.Empty;
+                            var stationId = reader["StationId"]?.ToString() ?? string.Empty;
+                            var stationName = reader["Station"]?.ToString() ?? string.Empty;
+
+                            // Check if patient is in assigned areas
+                            // Only filter if the user has assigned areas AND the patient's station is not in those areas
+                            if (assignedAreas.Any() &&
+                                !string.IsNullOrEmpty(stationId) &&
+                                !string.IsNullOrEmpty(stationName) &&
+                                !assignedAreas.Contains(stationId) &&
+                                !assignedAreas.Contains(stationName))
+                            {
+                                return Forbid(); // Patient not in assigned area
+                            }
+
+                            patientInfo = new PatientViewModel
+                            {
+                                HospNum = hospNum,
+                                IdNum = reader["IdNum"]?.ToString() ?? string.Empty,
+                                LastName = reader["LastName"]?.ToString() ?? string.Empty,
+                                FirstName = reader["FirstName"]?.ToString() ?? string.Empty,
+                                MiddleName = reader["MiddleName"]?.ToString() ?? string.Empty,
+                                AdmLocation = reader["AdmLocation"]?.ToString() ?? string.Empty,
+                                RoomID = reader["RoomID"]?.ToString() ?? string.Empty,
+                                RoomDescription = reader["RoomDescription"]?.ToString() ?? string.Empty,
+                                StationId = reader["StationId"]?.ToString() ?? string.Empty,
+                                StationName = reader["Station"]?.ToString() ?? string.Empty,
+                            };
+
+                            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
+                        }
+                    }
+                }
+
+                if (patientInfo == null)
+                {
+                    return NotFound();
+                }
+
+                // Get connected devices for this patient from ApplicationDbContext
+                var connectedDevices = await _context.DeviceConnected
+                    .Where(d => d.HospNum == hospNum)
+                    .OrderByDescending(d => d.DeviceInsert)
+                    .ToListAsync();
+
+                // Create a view model that contains both patient info and connected devices
+                var viewModel = new PatientDevicesViewModel
+                {
+                    Patient = patientInfo,
+                    ConnectedDevices = connectedDevices
+                };
+
+                return View(viewModel);
             }
-
-            // Get the patient to verify they're in an assigned area and to get the HospNum
-            var patient = await _context.Patients
-                .Where(p => p.IdNum == id)
-                .FirstOrDefaultAsync();
-
-            if (patient == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "Error in ICNPatientController.ConnectedDevices for patient {PatientId}: {ErrorMessage}", id, ex.Message);
+
+                ViewBag.ErrorMessage = "An error occurred while loading connected devices data.";
+                ViewBag.ExceptionMessage = ex.Message;
+                ViewBag.StackTrace = ex.StackTrace;
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerExceptionMessage = ex.InnerException.Message;
+                    ViewBag.InnerStackTrace = ex.InnerException.StackTrace;
+                }
+
+                return View("Error");
             }
-
-            var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-            if (!assignedAreas.Contains(patient.AdmLocation))
-            {
-                return Forbid();
-            }
-
-            // Get connected devices for this patient
-            var connectedDevices = await _context.DeviceConnected
-                .Where(d => d.HospNum == patient.HospNum)
-                .OrderByDescending(d => d.DeviceInsert)
-                .ToListAsync();
-
-            // Get basic patient info for display at the top of the page
-            var patientInfo = await (from p in _context.Patients
-                                     join m in _context.PatientMasters on p.HospNum equals m.HospNum
-                                     where p.IdNum == id
-                                     select new PatientViewModel
-                                     {
-                                         HospNum = p.HospNum,
-                                         IdNum = p.IdNum,
-                                         LastName = m.LastName,
-                                         FirstName = m.FirstName,
-                                         MiddleName = m.MiddleName,
-                                         AdmLocation = p.AdmLocation,
-                                         RoomID = p.RoomID
-                                     })
-                                  .FirstOrDefaultAsync();
-
-            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
-
-            // Create a view model that contains both patient info and connected devices
-            var viewModel = new PatientDevicesViewModel
-            {
-                Patient = patientInfo,
-                ConnectedDevices = connectedDevices
-            };
-
-            return View(viewModel);
         }
 
         // GET: Display form to add a new connected device
@@ -540,59 +854,119 @@ public async Task<IActionResult> Details(string id)
                 return NotFound();
             }
 
-            // Get the current logged-in user to check assigned areas
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound();
+                // Get the current logged-in user to check assigned areas
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Get the user's assigned areas
+                var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
+
+                // First get patient info using raw SQL from PatientDbContext
+                PatientViewModel patientInfo = null;
+                string hospNum = string.Empty;
+
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+            SELECT p.HospNum, p.IdNum, p.AdmLocation, p.RoomID, 
+                   m.LastName, m.FirstName, m.MiddleName,
+                   r.RoomDescription, s.StationId, s.Station
+            FROM tbpatient p
+            LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
+            LEFT JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
+            LEFT JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
+            WHERE p.IdNum = @IdNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@IdNum";
+                    parameter.Value = id;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            hospNum = reader["HospNum"]?.ToString() ?? string.Empty;
+                            var stationId = reader["StationId"]?.ToString() ?? string.Empty;
+                            var stationName = reader["Station"]?.ToString() ?? string.Empty;
+
+                            // Check if patient is in assigned areas
+                            // Only filter if the user has assigned areas AND the patient's station is not in those areas
+                            if (assignedAreas.Any() &&
+                                !string.IsNullOrEmpty(stationId) &&
+                                !string.IsNullOrEmpty(stationName) &&
+                                !assignedAreas.Contains(stationId) &&
+                                !assignedAreas.Contains(stationName))
+                            {
+                                return Forbid(); // Patient not in assigned area
+                            }
+
+                            patientInfo = new PatientViewModel
+                            {
+                                HospNum = hospNum,
+                                IdNum = reader["IdNum"]?.ToString() ?? string.Empty,
+                                LastName = reader["LastName"]?.ToString() ?? string.Empty,
+                                FirstName = reader["FirstName"]?.ToString() ?? string.Empty,
+                                MiddleName = reader["MiddleName"]?.ToString() ?? string.Empty,
+                                AdmLocation = reader["AdmLocation"]?.ToString() ?? string.Empty,
+                                RoomID = reader["RoomID"]?.ToString() ?? string.Empty,
+                                RoomDescription = reader["RoomDescription"]?.ToString() ?? string.Empty,
+                                StationId = reader["StationId"]?.ToString() ?? string.Empty,
+                                StationName = reader["Station"]?.ToString() ?? string.Empty,
+                            };
+
+                            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
+                        }
+                    }
+                }
+
+                if (patientInfo == null)
+                {
+                    return NotFound();
+                }
+
+                // Create the view model for adding connected device
+                var viewModel = new AddConnectedDeviceViewModel
+                {
+                    IdNum = patientInfo.IdNum,
+                    HospNum = patientInfo.HospNum,
+                    AdmLocation = patientInfo.AdmLocation,
+                    RoomID = patientInfo.RoomID,
+                    PatientName = patientInfo.PatientName,
+                    DeviceInsert = DateTime.Now.Date
+                };
+
+                return View(viewModel);
             }
-
-            // Get the patient to verify they're in an assigned area
-            var patient = await _context.Patients
-                .Where(p => p.IdNum == id)
-                .FirstOrDefaultAsync();
-
-            if (patient == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "Error in ICNPatientController.AddConnectedDevice for patient {PatientId}: {ErrorMessage}", id, ex.Message);
+
+                ViewBag.ErrorMessage = "An error occurred while loading the form to add a connected device.";
+                ViewBag.ExceptionMessage = ex.Message;
+                ViewBag.StackTrace = ex.StackTrace;
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerExceptionMessage = ex.InnerException.Message;
+                    ViewBag.InnerStackTrace = ex.InnerException.StackTrace;
+                }
+
+                return View("Error");
             }
-
-            var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-            if (!assignedAreas.Contains(patient.AdmLocation))
-            {
-                return Forbid();
-            }
-
-            // Get basic patient info for the form
-            var patientInfo = await (from p in _context.Patients
-                                     join m in _context.PatientMasters on p.HospNum equals m.HospNum
-                                     where p.IdNum == id
-                                     select new PatientViewModel
-                                     {
-                                         IdNum = p.IdNum,
-                                         HospNum = p.HospNum,
-                                         AdmLocation = p.AdmLocation,
-                                         RoomID = p.RoomID,
-                                         LastName = m.LastName,
-                                         FirstName = m.FirstName,
-                                         MiddleName = m.MiddleName
-                                     })
-                               .FirstOrDefaultAsync();
-
-            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
-
-            // Create the view model for adding connected device
-            var viewModel = new AddConnectedDeviceViewModel
-            {
-                IdNum = patientInfo.IdNum,
-                HospNum = patientInfo.HospNum,
-                AdmLocation = patientInfo.AdmLocation,
-                RoomID = patientInfo.RoomID,
-                PatientName = patientInfo.PatientName,
-                DeviceInsert = DateTime.Now.Date
-            };
-
-            return View(viewModel);
         }
         //post
         [HttpPost]
@@ -638,72 +1012,133 @@ public async Task<IActionResult> Details(string id)
                 return NotFound();
             }
 
-            // Get the current logged-in user to check assigned areas
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound();
+                // Get the current logged-in user to check assigned areas
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Get the user's assigned areas
+                var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
+
+                // First get patient info using raw SQL from PatientDbContext
+                PatientViewModel patientInfo = null;
+                string hospNum = string.Empty;
+
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+            SELECT p.HospNum, p.IdNum, p.AdmLocation, p.RoomID, 
+                   m.LastName, m.FirstName, m.MiddleName,
+                   r.RoomDescription, s.StationId, s.Station
+            FROM tbpatient p
+            LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
+            LEFT JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
+            LEFT JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
+            WHERE p.IdNum = @IdNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@IdNum";
+                    parameter.Value = id;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            hospNum = reader["HospNum"]?.ToString() ?? string.Empty;
+                            var stationId = reader["StationId"]?.ToString() ?? string.Empty;
+                            var stationName = reader["Station"]?.ToString() ?? string.Empty;
+
+                            // Check if patient is in assigned areas
+                            // Only filter if the user has assigned areas AND the patient's station is not in those areas
+                            if (assignedAreas.Any() &&
+                                !string.IsNullOrEmpty(stationId) &&
+                                !string.IsNullOrEmpty(stationName) &&
+                                !assignedAreas.Contains(stationId) &&
+                                !assignedAreas.Contains(stationName))
+                            {
+                                return Forbid(); // Patient not in assigned area
+                            }
+
+                            patientInfo = new PatientViewModel
+                            {
+                                HospNum = hospNum,
+                                IdNum = reader["IdNum"]?.ToString() ?? string.Empty,
+                                LastName = reader["LastName"]?.ToString() ?? string.Empty,
+                                FirstName = reader["FirstName"]?.ToString() ?? string.Empty,
+                                MiddleName = reader["MiddleName"]?.ToString() ?? string.Empty,
+                                AdmLocation = reader["AdmLocation"]?.ToString() ?? string.Empty,
+                                RoomID = reader["RoomID"]?.ToString() ?? string.Empty,
+                                RoomDescription = reader["RoomDescription"]?.ToString() ?? string.Empty,
+                                StationId = reader["StationId"]?.ToString() ?? string.Empty,
+                                StationName = reader["Station"]?.ToString() ?? string.Empty,
+                            };
+
+                            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
+                        }
+                    }
+                }
+
+                if (patientInfo == null)
+                {
+                    return NotFound();
+                }
+
+                // Get the device
+                var device = await _context.DeviceConnected
+                    .Where(d => d.DeviceId == deviceId && d.HospNum == hospNum)
+                    .FirstOrDefaultAsync();
+
+                if (device == null)
+                {
+                    return NotFound();
+                }
+
+                // Create the view model for updating connected device
+                var viewModel = new UpdateConnectedDeviceViewModel
+                {
+                    DeviceId = device.DeviceId,
+                    IdNum = patientInfo.IdNum,
+                    HospNum = patientInfo.HospNum,
+                    AdmLocation = patientInfo.AdmLocation,
+                    RoomID = patientInfo.RoomID,
+                    PatientName = patientInfo.PatientName,
+                    DeviceType = device.DeviceType,
+                    DeviceClass = device.DeviceClass,
+                    DeviceInsert = device.DeviceInsert,
+                    DeviceRemove = device.DeviceRemove ?? DateTime.Now.Date
+                };
+
+                return View(viewModel);
             }
-
-            // Get the patient to verify they're in an assigned area
-            var patient = await _context.Patients
-                .Where(p => p.IdNum == id)
-                .FirstOrDefaultAsync();
-
-            if (patient == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                _logger.LogError(ex, "Error in ICNPatientController.UpdateConnectedDevice for patient {PatientId} and device {DeviceId}: {ErrorMessage}", id, deviceId, ex.Message);
+
+                ViewBag.ErrorMessage = "An error occurred while loading the form to update a connected device.";
+                ViewBag.ExceptionMessage = ex.Message;
+                ViewBag.StackTrace = ex.StackTrace;
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerExceptionMessage = ex.InnerException.Message;
+                    ViewBag.InnerStackTrace = ex.InnerException.StackTrace;
+                }
+
+                return View("Error");
             }
-
-            var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-            if (!assignedAreas.Contains(patient.AdmLocation))
-            {
-                return Forbid();
-            }
-
-            // Get the device
-            var device = await _context.DeviceConnected
-                .Where(d => d.DeviceId == deviceId && d.HospNum == patient.HospNum)
-                .FirstOrDefaultAsync();
-
-            if (device == null)
-            {
-                return NotFound();
-            }
-
-            // Get basic patient info for the form
-            var patientInfo = await (from p in _context.Patients
-                                     join m in _context.PatientMasters on p.HospNum equals m.HospNum
-                                     where p.IdNum == id
-                                     select new PatientViewModel
-                                     {
-                                         IdNum = p.IdNum,
-                                         HospNum = p.HospNum,
-                                         AdmLocation = p.AdmLocation,
-                                         RoomID = p.RoomID,
-                                         LastName = m.LastName,
-                                         FirstName = m.FirstName,
-                                         MiddleName = m.MiddleName
-                                     })
-                              .FirstOrDefaultAsync();
-
-            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
-
-            // Create the view model for updating connected device
-            var viewModel = new UpdateConnectedDeviceViewModel
-            {
-                DeviceId = device.DeviceId,
-                IdNum = patientInfo.IdNum,
-                HospNum = patientInfo.HospNum,
-                AdmLocation = patientInfo.AdmLocation,
-                RoomID = patientInfo.RoomID,
-                PatientName = patientInfo.PatientName,
-                DeviceType = device.DeviceType,
-                DeviceInsert = device.DeviceInsert,
-                DeviceRemove = device.DeviceRemove ?? DateTime.Now.Date
-            };
-
-            return View(viewModel);
         }
 
         // POST: Process the form submission to update a connected device
@@ -769,8 +1204,6 @@ public async Task<IActionResult> Details(string id)
             );
         }
 
-        // Add this action method to ICNPatientController
-        // Modify your UpdateHaiStatus method like this:
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateHaiStatus(string id)
@@ -782,81 +1215,143 @@ public async Task<IActionResult> Details(string id)
 
             try
             {
-                // Get the current logged-in user to check assigned areas
-                var user = await _userManager.GetUserAsync(User);
-                if (user == null)
+                // First get the HospNum from PatientDbContext using raw SQL
+                string hospNum = string.Empty;
+
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
                 {
-                    return NotFound();
+                    command.CommandText = @"
+                SELECT p.HospNum
+                FROM tbpatient p
+                WHERE p.IdNum = @IdNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@IdNum";
+                    parameter.Value = id;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    var result = await command.ExecuteScalarAsync();
+                    if (result == null || result == DBNull.Value)
+                    {
+                        TempData["ErrorMessage"] = "Patient not found.";
+                        return RedirectToAction(nameof(Index));
+                    }
+
+                    hospNum = result.ToString();
                 }
 
-                // Get the patient
-                var patient = await _context.Patients
-                    .Where(p => p.IdNum == id)
-                    .FirstOrDefaultAsync();
+                // Now check if HAI record exists in ApplicationDbContext
+                bool recordExists = false;
+                int currentCount = 0;
 
-                if (patient == null)
+                using (var command = _context.Database.GetDbConnection().CreateCommand())
                 {
-                    return NotFound();
+                    command.CommandText = @"
+                SELECT HaiStatus, HaiCount 
+                FROM tbPatientHAI 
+                WHERE HospNum = @HospNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@HospNum";
+                    parameter.Value = hospNum;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            recordExists = true;
+                            currentCount = reader["HaiCount"] != DBNull.Value ? Convert.ToInt32(reader["HaiCount"]) : 0;
+                        }
+                    }
                 }
 
-                var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-                if (!assignedAreas.Contains(patient.AdmLocation))
+                // Now update or insert the HAI record
+                using (var command = _context.Database.GetDbConnection().CreateCommand())
                 {
-                    return Forbid();
+                    if (recordExists)
+                    {
+                        // Update existing record
+                        command.CommandText = @"
+                    UPDATE tbPatientHAI 
+                    SET HaiStatus = 1, 
+                        HaiCount = @NewCount, 
+                        LastUpdated = @LastUpdated
+                    WHERE HospNum = @HospNum";
+
+                        var countParam = command.CreateParameter();
+                        countParam.ParameterName = "@NewCount";
+                        countParam.Value = currentCount + 1;
+                        command.Parameters.Add(countParam);
+                    }
+                    else
+                    {
+                        // Insert new record
+                        command.CommandText = @"
+                    INSERT INTO tbPatientHAI (HospNum, HaiStatus, HaiCount, LastUpdated)
+                    VALUES (@HospNum, 1, 1, @LastUpdated)";
+                    }
+
+                    // Common parameters
+                    var hospNumParam = command.CreateParameter();
+                    hospNumParam.ParameterName = "@HospNum";
+                    hospNumParam.Value = hospNum;
+                    command.Parameters.Add(hospNumParam);
+
+                    var dateParam = command.CreateParameter();
+                    dateParam.ParameterName = "@LastUpdated";
+                    dateParam.Value = DateTime.Now;
+                    command.Parameters.Add(dateParam);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute the command
+                    await command.ExecuteNonQueryAsync();
                 }
 
-                // Get the PatientMaster record
-                var patientMaster = await _context.PatientMasters
-                    .FirstOrDefaultAsync(m => m.HospNum == patient.HospNum);
-
-                if (patientMaster == null)
-                {
-                    return NotFound();
-                }
-
-                //// Add explicit debug logging
-                //Console.WriteLine($"Before update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
-
-                //// Update HAI status
-                //patientMaster.HaiStatus = true; // Set HAI status to true
-
-                ////// Simply increment the count since it's a non-nullable int
-                ////patientMaster.HaiCount += 1;
-
-                //Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
-
-                //Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
-
-                //Console.WriteLine($"After update - HaiStatus: {patientMaster.HaiStatus}, HaiCount: {patientMaster.HaiCount}");
-
-                // Mark entity as modified to force update
-                _context.Entry(patientMaster).State = EntityState.Modified;
-
-                // Save changes
-                int rowsAffected = await _context.SaveChangesAsync();
-                Console.WriteLine($"SaveChanges completed. Rows affected: {rowsAffected}");
-
-                if (rowsAffected > 0)
-                {
-                    TempData["SuccessMessage"] = "Patient has been marked as having an HAI.";
-                }
-                else
-                {
-                    TempData["ErrorMessage"] = "Failed to update HAI status. No records were modified.";
-                }
-
-                return RedirectToAction(nameof(Index));
+                TempData["SuccessMessage"] = "HAI status updated successfully.";
+                return RedirectToAction(nameof(Details), new { id });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error updating HAI status: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                _logger.LogError(ex, "Error in ICNPatientController.UpdateHaiStatus for patient {PatientId}: {ErrorMessage}", id, ex.Message);
 
-                TempData["ErrorMessage"] = $"An error occurred: {ex.Message}";
-                return RedirectToAction(nameof(Index));
+                ViewBag.ErrorMessage = "An error occurred while updating HAI status.";
+                ViewBag.ExceptionMessage = ex.Message;
+                ViewBag.StackTrace = ex.StackTrace;
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerExceptionMessage = ex.InnerException.Message;
+                    ViewBag.InnerStackTrace = ex.InnerException.StackTrace;
+                }
+
+                TempData["ErrorMessage"] = "Error updating HAI status: " + ex.Message;
+                return RedirectToAction(nameof(Details), new { id });
             }
         }
 
+        // GET: HAI Checklist for Infection Control Nurse
         // GET: HAI Checklist for Infection Control Nurse
         public async Task<IActionResult> HaiChecklist(string id)
         {
@@ -865,110 +1360,169 @@ public async Task<IActionResult> Details(string id)
                 return NotFound();
             }
 
-            // Get the current logged-in user to check assigned areas
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound();
+                // Get the current logged-in user
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // Get the user's assigned areas
+                var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
+
+                // First get patient info using raw SQL from PatientDbContext
+                PatientViewModel patientInfo = null;
+                string hospNum = string.Empty;
+
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+            SELECT p.HospNum, p.IdNum, p.AdmLocation, p.RoomID, 
+                   m.LastName, m.FirstName, m.MiddleName,
+                   r.RoomDescription, s.StationId, s.Station
+            FROM tbpatient p
+            LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
+            LEFT JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
+            LEFT JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
+            WHERE p.IdNum = @IdNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@IdNum";
+                    parameter.Value = id;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            hospNum = reader["HospNum"]?.ToString() ?? string.Empty;
+                            var stationId = reader["StationId"]?.ToString() ?? string.Empty;
+                            var stationName = reader["Station"]?.ToString() ?? string.Empty;
+
+                            // Check if patient is in assigned areas
+                            // Only filter if the user has assigned areas AND the patient's station is not in those areas
+                            if (assignedAreas.Any() &&
+                                !string.IsNullOrEmpty(stationId) &&
+                                !string.IsNullOrEmpty(stationName) &&
+                                !assignedAreas.Contains(stationId) &&
+                                !assignedAreas.Contains(stationName))
+                            {
+                                return Forbid(); // Patient not in assigned area
+                            }
+
+                            patientInfo = new PatientViewModel
+                            {
+                                HospNum = hospNum,
+                                IdNum = reader["IdNum"]?.ToString() ?? string.Empty,
+                                LastName = reader["LastName"]?.ToString() ?? string.Empty,
+                                FirstName = reader["FirstName"]?.ToString() ?? string.Empty,
+                                MiddleName = reader["MiddleName"]?.ToString() ?? string.Empty,
+                                AdmLocation = reader["AdmLocation"]?.ToString() ?? string.Empty,
+                                RoomID = reader["RoomID"]?.ToString() ?? string.Empty,
+                                RoomDescription = reader["RoomDescription"]?.ToString() ?? string.Empty,
+                                StationId = reader["StationId"]?.ToString() ?? string.Empty,
+                                StationName = reader["Station"]?.ToString() ?? string.Empty,
+                            };
+
+                            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
+                        }
+                    }
+                }
+
+                if (patientInfo == null)
+                {
+                    return NotFound();
+                }
+
+                // Get HAI data from ApplicationDbContext (_context)
+                var hai = await _context.PatientHAI
+                    .FirstOrDefaultAsync(h => h.HospNum == hospNum);
+
+                if (hai != null)
+                {
+                    patientInfo.HaiStatus = hai.HaiStatus;
+                    patientInfo.HaiCount = hai.HaiCount;
+                }
+
+                // Get connected devices for this patient from ApplicationDbContext
+                var connectedDevices = await _context.DeviceConnected
+                    .Where(d => d.HospNum == hospNum)
+                    .ToListAsync();
+
+                // Create device flags for conditional display of infection forms
+                var deviceFlags = new HAIDeviceFlags
+                {
+                    HasCentralLine = connectedDevices.Any(d => d.DeviceType == DeviceTypes.CentralLine),
+                    HasIndwellingUrinaryCatheter = connectedDevices.Any(d => d.DeviceType == DeviceTypes.IndwellingUrinaryCatheter),
+                    HasMechanicalVentilator = connectedDevices.Any(d => d.DeviceType == DeviceTypes.MechanicalVentilator)
+                    // Add more device flags as needed
+                };
+
+                // Get central line insertion form info
+                var clInsertionForm = await _context.Insertion
+                        .Where(i => i.HospitalNumber == hospNum && i.CatheterType.Contains("Central"))
+                        .OrderByDescending(i => i.Id)
+                        .FirstOrDefaultAsync();
+
+                // Get central line maintenance checklists - use Patient name since there's no HospNum
+                var clMaintenanceChecklists = await _context.DailyCentralLineMaintenanceChecklists
+                        .Where(d => d.Patient == patientInfo.PatientName)
+                        .OrderByDescending(d => d.DateAndTimeOfMonitoring)
+                        .ToListAsync();
+
+                // Get IUC insertion form info
+                var iucInsertionForm = await _context.Insertion
+                        .Where(i => i.HospitalNumber == hospNum && i.CatheterType.Contains("Urinary"))
+                        .OrderByDescending(i => i.Id)
+                        .FirstOrDefaultAsync();
+
+                //// Get IUC maintenance checklists - assuming the same structure as central line checklists
+                //var iucMaintenanceChecklists = await _context.DailyUrinaryCatheterMaintenanceChecklists
+                //        .Where(d => d.Patient == patientInfo.PatientName)
+                //        .OrderByDescending(d => d.DateAndTimeOfMonitoring)
+                //        .ToListAsync();
+
+                // Create the view model with patient info, device flags, and checklists
+                var viewModel = new HAIChecklistViewModel
+                {
+                    Patient = patientInfo,
+                    DeviceFlags = deviceFlags,
+                    CentralLineInsertionForm = clInsertionForm,
+                    CentralLineMaintenanceChecklists = clMaintenanceChecklists,
+                    IndwellingUrinaryCatheterInsertion = iucInsertionForm,
+                    //IndwellingUrinaryCatheterMaintenanceChecklists = iucMaintenanceChecklists
+                };
+
+                // Return the HAI checklist view
+                return View(viewModel);
             }
-
-            // Get the patient to verify they're in an assigned area
-            var patient = await _context.Patients
-                .Where(p => p.IdNum == id)
-                .FirstOrDefaultAsync();
-
-            if (patient == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                // Add detailed error info
+                _logger.LogError(ex, "Error in ICNPatientController.HaiChecklist for patient {PatientId}: {ErrorMessage}", id, ex.Message);
+
+                ViewBag.ErrorMessage = "An error occurred while loading HAI checklist data.";
+                ViewBag.ExceptionMessage = ex.Message;
+                ViewBag.StackTrace = ex.StackTrace;
+
+                if (ex.InnerException != null)
+                {
+                    ViewBag.InnerExceptionMessage = ex.InnerException.Message;
+                    ViewBag.InnerStackTrace = ex.InnerException.StackTrace;
+                }
+
+                return View("Error");
             }
-
-            var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-            if (!assignedAreas.Contains(patient.AdmLocation))
-            {
-                return Forbid();
-            }
-
-            // Get patient master data
-            var patientMaster = await _context.PatientMasters
-                .Where(m => m.HospNum == patient.HospNum)
-                .FirstOrDefaultAsync();
-
-            if (patientMaster == null)
-            {
-                // Redirect to details if patient doesn't exist
-                return RedirectToAction(nameof(Details), new { id });
-            }
-
-            // Get basic patient info for the HAI checklist page
-            var patientInfo = await (from p in _context.Patients
-                                     join m in _context.PatientMasters on p.HospNum equals m.HospNum
-                                     where p.IdNum == id
-                                     select new PatientViewModel
-                                     {
-                                         IdNum = p.IdNum,
-                                         HospNum = p.HospNum,
-                                         AdmLocation = p.AdmLocation,
-                                         RoomID = p.RoomID,
-                                         LastName = m.LastName,
-                                         FirstName = m.FirstName,
-                                         MiddleName = m.MiddleName,
-                                         //HaiStatus = m.HaiStatus,
-                                         //HaiCount = m.HaiCount
-                                     })
-                                .FirstOrDefaultAsync();
-
-            patientInfo.PatientName = $"{patientInfo.LastName}, {patientInfo.FirstName} {patientInfo.MiddleName}";
-
-            // Get connected devices for this patient
-            var connectedDevices = await _context.DeviceConnected
-                .Where(d => d.HospNum == patient.HospNum)
-                .ToListAsync();
-
-            // Create device flags for conditional display of infection forms
-            var deviceFlags = new HAIDeviceFlags
-            {
-                HasCentralLine = connectedDevices.Any(d => d.DeviceType == DeviceTypes.CentralLine),
-                HasIndwellingUrinaryCatheter = connectedDevices.Any(d => d.DeviceType == DeviceTypes.IndwellingUrinaryCatheter),
-                HasMechanicalVentilator = connectedDevices.Any(d => d.DeviceType == DeviceTypes.MechanicalVentilator)
-                // Add more device flags as needed
-            };
-
-            // Get checklists and insertion forms info
-            var clInsertionForm = await _context.Insertion
-                                     .Where(i => i.HospitalNumber == patient.HospNum)
-                                     .OrderByDescending(i => i.Id)
-                                     .FirstOrDefaultAsync();
-
-            var clMaintenanceChecklists = await _context.DailyCentralLineMaintenanceChecklists
-                                           .Where(d => d.Patient == patientInfo.PatientName)
-                                           .OrderByDescending(d => d.DateAndTimeOfMonitoring)
-                                           .ToListAsync();
-
-            // Get IUC insertion form info
-            var iucInsertionForm = await _context.Insertion
-                                     .Where(i => i.HospitalNumber == patient.HospNum && i.CatheterType.Contains("Urinary"))
-                                     .OrderByDescending(i => i.Id)
-                                     .FirstOrDefaultAsync();
-
-            var iucMaintenanceChecklists = await _context.DailyCentralLineMaintenanceChecklists
-                               .Where(d => d.Patient == patientInfo.PatientName)
-                               .OrderByDescending(d => d.DateAndTimeOfMonitoring)
-                               .ToListAsync();
-
-            // Create the view model with patient info, device flags, and checklists
-            var viewModel = new HAIChecklistViewModel
-            {
-                Patient = patientInfo,
-                DeviceFlags = deviceFlags,
-                CentralLineInsertionForm = clInsertionForm,
-                CentralLineMaintenanceChecklists = clMaintenanceChecklists,
-                IndwellingUrinaryCatheterInsertion = iucInsertionForm,
-                IndwellingUrinaryCatheterMaintenanceChecklists = iucMaintenanceChecklists,
-
-            };
-
-            // Return the HAI checklist view
-            return View(viewModel);
         }
 
         // Helper action to redirect to Insertions controller for Central Line insertion form
