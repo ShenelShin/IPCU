@@ -3,10 +3,25 @@
 @{
     ViewData["Title"] = "Create";
 }
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<div class="grid grid-cols-3 items-center border border-black">
+    <!-- Left Logo -->
+    <div class="flex justify-center p-2 border-r border-black">
+        <img src="/images/nkti-left-logo.png" alt="Left Logo" class="h-20 w-auto" />
+    </div>
+    <!-- Center Text -->
+    <div class="text-center space-y-1 py-2">
+        <p class="text-sm font-bold uppercase">National Kidney and Transplant Institute</p>
+        <p class="text-sm">East Avenue, Quezon City</p>
+        <p class="text-sm font-bold uppercase pt-2">Infection Prevention and Control Unit</p>
+        <p class="text-sm font-bold uppercase border-t border-black pt-1">Notice of Referrals</p>
+    </div>
+    <!-- Right Logo -->
+    <div class="flex justify-center p-2 border-l border-black">
+        <img src="/images/nkti-right-logo-removebg-preview.png" alt="Right Logo" class="h-20 w-auto" />
+    </div>
+</div>
 
-<h1>Create</h1>
-
-<h4>Notice Of Referral</h4>
 
         <form asp-action="Create">
     <table class="table table-bordered">
