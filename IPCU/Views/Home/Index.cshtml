@@ -26,13 +26,14 @@
         @{
             var cards = new List<dynamic>
         {
-        new { Title="View Patients", Desc="View all registered patients.", Icon="fas fa-user-injured", Color="primary", Buttons=new[]{ ("Patients", "Patients", "Index", "primary"), ("Masters", "PatientMasters", "Index", "outline-primary") }},
+       /* new { Title="View Patients", Desc="View all registered patients.", Icon="fas fa-user-injured", Color="primary", Buttons=new[]{ ("Patients", "Patients", "Index", "primary"), ("Masters", "PatientMasters", "Index", "outline-primary") }},*/
+        new { Title="ICN Patient Management", Desc="Track ICN patients.", Icon="fas fa-hospital-user", Color="indigo", Buttons=new[]{ ("View Patients", "ICNPatient", "Index", "indigo text-white"), ("Details", "ICNPatient", "Details", "outline-indigo") }},
         new { Title="Training Summary", Desc="Summarize assessment reports.", Icon="fas fa-chalkboard-teacher", Color="warning", Buttons=new[]{ ("Summary", "Evaluation", "SummaryReport", "warning text-white"), ("Reports", "TrainingSummary", "Reports", "outline-warning") }},
         new { Title="Hand Hygiene", Desc="Track hygiene compliance.", Icon="fas fa-hands-wash", Color="success", Buttons=new[]{ ("Open Form", "HandHygieneForms", "Index", "success"), ("Summary", "HandHygieneForms", "MonthlySummary", "outline-success") }},
         new { Title="Fit Testing", Desc="Fill or view Fit Testing forms.", Icon="fas fa-mask-face", Color="purple", Buttons=new[]{ ("Open Form", "FitTestingForm", "Index", "purple text-white"), ("Reports", "FitTestingForm", "Reports", "outline-purple") }},
         new { Title="Role Management", Desc="Manage user roles and permissions.", Icon="fas fa-user-shield", Color="danger", Buttons=new[]{ ("Roles", "RoleManagement", "Index", "danger"), ("Users", "RoleManagement", "UserRoles", "outline-danger") }},
         new { Title="User Area Management", Desc="Assign user work areas.", Icon="fas fa-map-marker-alt", Color="teal", Buttons=new[]{ ("Manage Areas", "UserAreaManagement", "Index", "teal"), ("Batch Assign", "UserAreaManagement", "BatchAssignAreas", "outline-teal") }},
-        new { Title="ICN Patient Management", Desc="Track ICN patients.", Icon="fas fa-hospital-user", Color="indigo", Buttons=new[]{ ("View Patients", "ICNPatient", "Index", "indigo text-white"), ("Details", "ICNPatient", "Details", "outline-indigo") }},
+       /* new { Title="ICN Patient Management", Desc="Track ICN patients.", Icon="fas fa-hospital-user", Color="indigo", Buttons=new[]{ ("View Patients", "ICNPatient", "Index", "indigo text-white"), ("Details", "ICNPatient", "Details", "outline-indigo") }},*/
         new { Title="Notice of Referrals", Desc="View referrals notice.", Icon="fas fa-file-medical", Color="secondary", Buttons=new[]{ ("Index", "NoticeOfReferrals", "Index", "secondary text-white") }},
         new { Title="Environmental", Desc="Environmental.", Icon="fas fa-clipboard-list", Color="orange", Buttons=new[]{ ("Create Forms", "Station", "Index", "orange text-white") }},
         };
