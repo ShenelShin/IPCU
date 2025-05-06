@@ -9,74 +9,338 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace IPCU.Controllers
-{
-    public class DiagnosticsController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public DiagnosticsController(ApplicationDbContext context)
+        public class DiagnosticsController : Controller
         {
-            _context = context;
-        }
+            private readonly ApplicationDbContext _context;
+            private readonly PatientDbContext _patientContext;
+            private readonly ILogger<DiagnosticsController> _logger;
 
+            public DiagnosticsController(ApplicationDbContext context, PatientDbContext patientContext, ILogger<DiagnosticsController> logger)
+            {
+                _patientContext = patientContext;
+                _context = context;
+                _logger = logger;
+            }
+
+        // GET: Diagnostics
+        // Modify the Index action in DiagnosticsController.cs to ensure hospNum is properly saved to ViewBag
+        // GET: Diagnostics
         // GET: Diagnostics
         // GET: Diagnostics
         public async Task<IActionResult> Index(string hospNum)
         {
+            // Add debug logging
+            _logger.LogInformation("Index action called with hospNum: {HospNum}", hospNum);
+
             if (string.IsNullOrEmpty(hospNum))
             {
+                _logger.LogWarning("Hospital number is null or empty, redirecting to Home");
                 return RedirectToAction("Index", "Home");
             }
 
-            var patient = await _context.PatientMasters.FirstOrDefaultAsync(p => p.HospNum == hospNum);
-            if (patient == null)
+            try
             {
-                return NotFound();
+                // First get patient information from _patientContext
+                string patientName = string.Empty;
+
+                // Try to get from PatientMasters in ApplicationDbContext first
+                var patient = await _patientContext.PatientMasters.FirstOrDefaultAsync(p => p.HospNum == hospNum);
+
+                if (patient != null)
+                {
+                    patientName = $"{patient.FirstName} {patient.LastName}";
+                    _logger.LogInformation("Found patient in PatientMasters: {PatientName}", patientName);
+                }
+                else
+                {
+                    // Fall back to PatientDbContext for tbmaster table
+                    try
+                    {
+                        using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                        {
+                            command.CommandText = @"
+                        SELECT LastName, FirstName 
+                        FROM tbmaster 
+                        WHERE HospNum = @HospNum";
+
+                            var parameter = command.CreateParameter();
+                            parameter.ParameterName = "@HospNum";
+                            parameter.Value = hospNum;
+                            command.Parameters.Add(parameter);
+
+                            if (command.Connection.State != System.Data.ConnectionState.Open)
+                            {
+                                await command.Connection.OpenAsync();
+                            }
+
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                if (await reader.ReadAsync())
+                                {
+                                    var lastName = reader["LastName"]?.ToString() ?? string.Empty;
+                                    var firstName = reader["FirstName"]?.ToString() ?? string.Empty;
+                                    patientName = $"{firstName} {lastName}";
+                                    _logger.LogInformation("Found patient in tbmaster: {PatientName}", patientName);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error querying tbmaster for hospNum: {HospNum}", hospNum);
+                    }
+                }
+
+                if (string.IsNullOrEmpty(patientName))
+                {
+                    _logger.LogWarning("Patient not found for hospNum: {HospNum}", hospNum);
+                    patientName = $"Patient #{hospNum}";
+                }
+
+                // Get diagnostics using raw SQL
+                List<Diagnostics> diagnostics = new List<Diagnostics>();
+
+                try
+                {
+                    // First get all diagnostic IDs for this hospital number
+                    var diagIds = new List<int>();
+                    using (var command = _context.Database.GetDbConnection().CreateCommand())
+                    {
+                        command.CommandText = "SELECT DiagId FROM tbdiagnostics WHERE HospNum = @HospNum";
+                        var parameter = command.CreateParameter();
+                        parameter.ParameterName = "@HospNum";
+                        parameter.Value = hospNum;
+                        command.Parameters.Add(parameter);
+
+                        if (command.Connection.State != System.Data.ConnectionState.Open)
+                        {
+                            await command.Connection.OpenAsync();
+                        }
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                diagIds.Add(reader.GetInt32(0));
+                            }
+                        }
+                    }
+
+                    _logger.LogInformation("Found {DiagCount} diagnostic records for hospNum: {HospNum}",
+                        diagIds.Count, hospNum);
+
+                    if (diagIds.Any())
+                    {
+                        // Now fetch the full diagnostics with treatments and antibiotics
+                        // We'll do this in two steps to avoid complex joins in raw SQL
+
+                        // Step 1: Get all diagnostics
+                        var diagnosticsDict = new Dictionary<int, Diagnostics>();
+                        using (var command = _context.Database.GetDbConnection().CreateCommand())
+                        {
+                            command.CommandText = "SELECT DiagId, DateCollection, SourceSite, IsolateFindingsResult FROM tbdiagnostics WHERE DiagId IN (" +
+                                                 string.Join(",", diagIds) + ") ORDER BY DateCollection DESC";
+
+                            if (command.Connection.State != System.Data.ConnectionState.Open)
+                            {
+                                await command.Connection.OpenAsync();
+                            }
+
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    var diag = new Diagnostics
+                                    {
+                                        DiagId = reader.GetInt32(0),
+                                        DateCollection = reader.GetDateTime(1),
+                                        SourceSite = reader.IsDBNull(2) ? null : reader.GetString(2),
+                                        IsolateFindingsResult = reader.IsDBNull(3) ? null : reader.GetString(3),
+                                        HospNum = hospNum,
+                                        Treatments = new List<DiagnosticsTreatment>()
+                                    };
+                                    diagnosticsDict.Add(diag.DiagId, diag);
+                                }
+                            }
+                        }
+
+                        // Step 2: Get all treatments with antibiotics for these diagnostics
+                        using (var command = _context.Database.GetDbConnection().CreateCommand())
+                        {
+                            command.CommandText = @"
+                        SELECT dt.DiagId, dt.Id, dt.AntibioticId, a.Name, a.DateAdded 
+                        FROM tbdiagnosticstreatments dt
+                        INNER JOIN tbantibiotics a ON dt.AntibioticId = a.AntibioticId
+                        WHERE dt.DiagId IN (" + string.Join(",", diagIds) + ")";
+
+                            if (command.Connection.State != System.Data.ConnectionState.Open)
+                            {
+                                await command.Connection.OpenAsync();
+                            }
+
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    var diagId = reader.GetInt32(0);
+                                    if (diagnosticsDict.TryGetValue(diagId, out var diag))
+                                    {
+                                        var treatment = new DiagnosticsTreatment
+                                        {
+                                            Id = reader.GetInt32(1),
+                                            DiagId = diagId,
+                                            AntibioticId = reader.GetInt32(2),
+                                            Antibiotic = new Antibiotic
+                                            {
+                                                AntibioticId = reader.GetInt32(2),
+                                                Name = reader.GetString(3),
+                                                DateAdded = reader.GetDateTime(4)
+                                            }
+                                        };
+                                        diag.Treatments.Add(treatment);
+                                    }
+                                }
+                            }
+                        }
+
+                        diagnostics = diagnosticsDict.Values.ToList();
+                        _logger.LogInformation("Successfully loaded {DiagCount} diagnostics with treatments",
+                            diagnostics.Count);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error fetching diagnostics for hospNum: {HospNum}", hospNum);
+                }
+
+                ViewBag.PatientName = patientName;
+                ViewBag.HospNum = hospNum;
+                _logger.LogInformation("Setting ViewBag.HospNum to: {HospNum}", hospNum);
+
+                // Find the last antibiotic update date
+                var latestTreatment = diagnostics
+                    .SelectMany(d => d.Treatments ?? new List<DiagnosticsTreatment>())
+                    .OrderByDescending(dt => dt.Diagnostic?.DateCollection)
+                    .FirstOrDefault();
+
+                ViewBag.LastAntibioticUpdate = latestTreatment?.Diagnostic?.DateCollection;
+
+                return View(diagnostics);
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in DiagnosticsController.Index for hospital number {HospNum}: {ErrorMessage}",
+                    hospNum, ex.Message);
 
-            var diagnostics = await _context.Diagnostics
-                .Include(d => d.Treatments)
-                .ThenInclude(t => t.Antibiotic)
-                .Where(d => d.HospNum == hospNum)
-                .OrderByDescending(d => d.DateCollection)
-                .ToListAsync();
+                ViewBag.ErrorMessage = "An error occurred while loading diagnostic data.";
+                ViewBag.ExceptionMessage = ex.Message;
+                ViewBag.StackTrace = ex.StackTrace;
+                ViewBag.HospNum = hospNum;
 
-            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-            ViewBag.HospNum = hospNum;
-
-            // Find the last antibiotic update date
-            var latestTreatment = await _context.DiagnosticsTreatments
-                .Where(dt => diagnostics.Select(d => d.DiagId).Contains(dt.DiagId))
-                .OrderByDescending(dt => dt.Diagnostic.DateCollection)
-                .FirstOrDefaultAsync();
-
-            ViewBag.LastAntibioticUpdate = latestTreatment?.Diagnostic?.DateCollection;
-
-            return View(diagnostics);
+                return View(new List<Diagnostics>());
+            }
         }
 
+        // Modify the Create action to handle cases where hospNum is not provided
         public IActionResult Create(string hospNum)
         {
+            _logger.LogInformation("Create action called with hospNum: {HospNum}", hospNum);
+
             if (string.IsNullOrEmpty(hospNum))
             {
-                return RedirectToAction("Index", "Home");
+                _logger.LogWarning("Hospital number is null or empty for Create action");
+                TempData["ErrorMessage"] = "Hospital number is required to create a diagnostic record.";
+                return RedirectToAction("Index", "Patient");
             }
 
-            var patient = _context.PatientMasters.FirstOrDefault(p => p.HospNum == hospNum);
-            if (patient == null)
+            try
             {
-                return NotFound();
+                string patientName = string.Empty;
+
+                // First try to get patient from PatientMasters as this seems more reliable
+                var patient = _patientContext.PatientMasters.FirstOrDefault(p => p.HospNum == hospNum);
+
+                if (patient != null)
+                {
+                    patientName = $"{patient.FirstName} {patient.LastName}";
+                }
+                else
+                {
+                    // Fallback to raw SQL, but use the correct database/connection context
+                    // Make sure this connection has access to tbmaster table
+                    try
+                    {
+                        using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                        {
+                            command.CommandText = @"
+                    SELECT TOP 1 LastName, FirstName 
+                    FROM tbmaster
+                    WHERE HospNum = @HospNum";
+
+                            // Add parameter
+                            var parameter = command.CreateParameter();
+                            parameter.ParameterName = "@HospNum";
+                            parameter.Value = hospNum;
+                            command.Parameters.Add(parameter);
+
+                            // Ensure connection is open
+                            if (command.Connection.State != System.Data.ConnectionState.Open)
+                            {
+                                command.Connection.Open();
+                            }
+
+                            // Execute query
+                            using (var reader = command.ExecuteReader())
+                            {
+                                if (reader.Read())
+                                {
+                                    var lastName = reader["LastName"]?.ToString() ?? string.Empty;
+                                    var firstName = reader["FirstName"]?.ToString() ?? string.Empty;
+                                    patientName = $"{firstName} {lastName}";
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception sqlEx)
+                    {
+                        _logger.LogWarning(sqlEx, "Failed to query tbmaster table: {Message}", sqlEx.Message);
+                        patientName = "Unknown Patient";
+                    }
+                }
+
+                if (string.IsNullOrEmpty(patientName))
+                {
+                    patientName = "Unknown Patient";
+                }
+
+                ViewBag.PatientName = patientName;
+                ViewBag.HospNum = hospNum;
+                _logger.LogInformation("Setting ViewBag.HospNum to: {HospNum} in Create action", hospNum);
+
+                return View(new Diagnostics
+                {
+                    HospNum = hospNum,
+                    DateCollection = DateTime.Now,
+                    Treatments = new List<DiagnosticsTreatment>()
+                });
             }
-
-            ViewBag.PatientName = $"{patient.FirstName} {patient.LastName}";
-            ViewBag.HospNum = hospNum;
-
-            return View(new Diagnostics
+            catch (Exception ex)
             {
-                HospNum = hospNum,
-                DateCollection = DateTime.Now,
-                Treatments = new List<DiagnosticsTreatment>()
-            });
+                _logger.LogError(ex, "Error in DiagnosticsController.Create for hospital number {HospNum}: {ErrorMessage}", hospNum, ex.Message);
+
+                ViewBag.ErrorMessage = "An error occurred while preparing the creation form.";
+                ViewBag.ExceptionMessage = ex.Message;
+                ViewBag.StackTrace = ex.StackTrace;
+
+                // Create a minimal model to display the form
+                ViewBag.HospNum = hospNum;
+                return View(new Diagnostics
+                {
+                    HospNum = hospNum,
+                    DateCollection = DateTime.Now
+                });
+            }
         }
 
         [HttpPost]
@@ -88,11 +352,41 @@ namespace IPCU.Controllers
             {
                 ModelState.Remove("Treatments");
             }
+
             // Important - Remove Patient validation error if it exists
             if (ModelState.ContainsKey("Patient"))
             {
                 ModelState.Remove("Patient");
             }
+
+            // Debug info to log the state of the model
+            _logger.LogInformation("Diagnostic creation attempted for HospNum: {HospNum}", diagnostics.HospNum);
+
+            // Check ModelState validity
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("ModelState is invalid for Create Diagnostic");
+                foreach (var state in ModelState)
+                {
+                    if (state.Value.Errors.Count > 0)
+                    {
+                        _logger.LogWarning("Error in {Field}: {ErrorMessage}", state.Key, state.Value.Errors[0].ErrorMessage);
+                    }
+                }
+            }
+
+            // Make sure HospNum is not null or empty
+            if (string.IsNullOrEmpty(diagnostics.HospNum))
+            {
+                _logger.LogError("HospNum is null or empty in Create Diagnostic");
+                ModelState.AddModelError("HospNum", "Hospital number cannot be empty");
+
+                // Set a default patient name for the view
+                ViewBag.PatientName = "Unknown Patient";
+                ViewBag.HospNum = diagnostics.HospNum;
+                return View(diagnostics);
+            }
+
             if (ModelState.IsValid)
             {
                 try
@@ -102,17 +396,11 @@ namespace IPCU.Controllers
                     {
                         diagnostics.Treatments = new List<DiagnosticsTreatment>();
                     }
-                    // Find and attach the patient explicitly (optional but can help)
-                    var patient = await _context.PatientMasters.FirstOrDefaultAsync(p => p.HospNum == diagnostics.HospNum);
-                    if (patient != null)
-                    {
-                        // If your model includes the Patient navigation property
-                        diagnostics.Patient = patient;
-                    }
+
                     _context.Add(diagnostics);
-                    Console.WriteLine("About to save changes...");
+                    _logger.LogInformation("About to save changes for new diagnostic record: {HospNum}", diagnostics.HospNum);
                     var result = await _context.SaveChangesAsync();
-                    Console.WriteLine($"SaveChanges result: {result}");
+                    _logger.LogInformation("SaveChanges result: {Result}", result);
 
                     // Check which button was clicked
                     if (action == "BackToIndex")
@@ -128,60 +416,134 @@ namespace IPCU.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Exception type: {ex.GetType().Name}");
-                    Console.WriteLine($"Exception message: {ex.Message}");
-                    Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                    _logger.LogError(ex, "Error saving diagnostic record for {HospNum}", diagnostics.HospNum);
+
                     if (ex.InnerException != null)
                     {
-                        Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
                         ModelState.AddModelError("", $"Inner exception: {ex.InnerException.Message}");
                     }
                     ModelState.AddModelError("", $"Unable to save changes: {ex.Message}");
                 }
             }
-            else
+
+            // If we got this far, something failed, redisplay form
+            string patientName = string.Empty;
+
+            try
             {
-                foreach (var state in ModelState)
+                // Use raw SQL to get patient information
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
                 {
-                    if (state.Value.Errors.Count > 0)
+                    command.CommandText = @"
+        SELECT LastName, FirstName 
+        FROM tbmaster 
+        WHERE HospNum = @HospNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@HospNum";
+                    parameter.Value = diagnostics.HospNum ?? string.Empty; // Safeguard against null
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
                     {
-                        Console.WriteLine($"Error in {state.Key}: {state.Value.Errors[0].ErrorMessage}");
+                        command.Connection.Open();
+                    }
+
+                    // Execute query
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            var lastName = reader["LastName"]?.ToString() ?? string.Empty;
+                            var firstName = reader["FirstName"]?.ToString() ?? string.Empty;
+                            patientName = $"{firstName} {lastName}";
+                        }
                     }
                 }
             }
-            // If we got this far, something failed, redisplay form
-            ViewBag.PatientName = _context.PatientMasters
-                .Where(p => p.HospNum == diagnostics.HospNum)
-                .Select(p => $"{p.FirstName} {p.LastName}")
-                .FirstOrDefault();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving patient info for {HospNum}", diagnostics.HospNum);
+                patientName = "Unknown Patient";
+            }
+
+            // If no patient name found, try PatientMasters as fallback
+            if (string.IsNullOrEmpty(patientName))
+            {
+                try
+                {
+                    var patient = _patientContext.PatientMasters.FirstOrDefault(p => p.HospNum == diagnostics.HospNum);
+                    if (patient != null)
+                    {
+                        patientName = $"{patient.FirstName} {patient.LastName}";
+                    }
+                    else
+                    {
+                        patientName = "Unknown Patient";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error retrieving patient from PatientMasters for {HospNum}", diagnostics.HospNum);
+                    patientName = "Unknown Patient";
+                }
+            }
+
+            ViewBag.PatientName = patientName;
             ViewBag.HospNum = diagnostics.HospNum;
+
+
+            // Add a diagnostic message to help troubleshoot
+            ViewBag.ModelStateErrors = string.Join(", ", ModelState.Values
+                .SelectMany(v => v.Errors)
+                .Select(e => e.ErrorMessage));
+
             return View(diagnostics);
         }
-
         // GET: Diagnostics/AddAntibiotics/5
         public async Task<IActionResult> AddAntibiotics(int id)
         {
-            var diagnostics = await _context.Diagnostics
-                .Include(d => d.Treatments)
-                .ThenInclude(t => t.Antibiotic)
-                .FirstOrDefaultAsync(m => m.DiagId == id);
-
-            if (diagnostics == null)
+            try
             {
-                return NotFound();
+                // Load diagnostic with treatments and antibiotics
+                var diagnostics = await _context.Diagnostics
+                    .Include(d => d.Treatments)
+                        .ThenInclude(t => t.Antibiotic)
+                    .FirstOrDefaultAsync(m => m.DiagId == id);
+
+                if (diagnostics == null)
+                {
+                    _logger.LogWarning("Diagnostic not found with ID: {DiagId}", id);
+                    return NotFound();
+                }
+
+                // Get all available antibiotics for the dropdown
+                var allAntibiotics = await _context.Antibiotics
+                    .OrderBy(a => a.Name)
+                    .ToListAsync();
+
+                // Get selected antibiotics IDs
+                var selectedAntibiotics = diagnostics.Treatments?
+                    .Select(t => t.AntibioticId)
+                    .ToArray() ?? Array.Empty<int>();
+
+                ViewBag.SelectedAntibiotics = selectedAntibiotics;
+                ViewBag.AntibioticsList = new SelectList(allAntibiotics, "AntibioticId", "Name");
+
+                // Get patient name
+                string patientName = await GetPatientName(diagnostics.HospNum);
+                ViewBag.PatientName = patientName;
+
+                return View(diagnostics);
             }
-
-            // Get selected antibiotics IDs
-            var selectedAntibiotics = diagnostics.Treatments?.Select(t => t.AntibioticId).ToArray() ?? new int[0];
-            ViewBag.SelectedAntibiotics = selectedAntibiotics;
-
-            // Get patient name for the view
-            ViewBag.PatientName = _context.PatientMasters
-                .Where(p => p.HospNum == diagnostics.HospNum)
-                .Select(p => $"{p.FirstName} {p.LastName}")
-                .FirstOrDefault();
-
-            return View(diagnostics);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading AddAntibiotics for diagnostic ID: {DiagId}", id);
+                TempData["ErrorMessage"] = "An error occurred while loading antibiotics data.";
+                return RedirectToAction(nameof(Index), new { hospNum = await GetHospNumFromDiagnosticId(id) });
+            }
         }
 
         // POST: Diagnostics/AddAntibiotics
@@ -189,32 +551,24 @@ namespace IPCU.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddAntibiotics(int diagId, string hospNum, string newAntibiotic, int[] selectedAntibiotics)
         {
-            var diagnostics = await _context.Diagnostics.FindAsync(diagId);
-            if (diagnostics == null)
-            {
-                return NotFound();
-            }
-
             try
             {
-                // Remove all existing treatments for this diagnostic
-                var existingTreatments = await _context.DiagnosticsTreatments
-                    .Where(t => t.DiagId == diagId)
-                    .ToListAsync();
+                // Get the diagnostic record
+                var diagnostic = await _context.Diagnostics
+                    .Include(d => d.Treatments)
+                    .FirstOrDefaultAsync(d => d.DiagId == diagId);
 
-                _context.DiagnosticsTreatments.RemoveRange(existingTreatments);
-                await _context.SaveChangesAsync();
+                if (diagnostic == null)
+                {
+                    return NotFound();
+                }
 
-                // Process new antibiotic (if any)
-                if (!string.IsNullOrEmpty(newAntibiotic))
+                // Add new antibiotic if provided
+                if (!string.IsNullOrWhiteSpace(newAntibiotic))
                 {
                     var sanitizedName = newAntibiotic.Trim();
-
-                    // Check if it already exists
                     var existingAntibiotic = await _context.Antibiotics
                         .FirstOrDefaultAsync(a => a.Name.ToLower() == sanitizedName.ToLower());
-
-                    int antibioticId;
 
                     if (existingAntibiotic == null)
                     {
@@ -227,86 +581,150 @@ namespace IPCU.Controllers
                         _context.Antibiotics.Add(antibiotic);
                         await _context.SaveChangesAsync();
 
-                        antibioticId = antibiotic.AntibioticId;
-                    }
-                    else
-                    {
-                        antibioticId = existingAntibiotic.AntibioticId;
-                    }
-
-                    // Add this antibiotic as treatment if not already in selectedAntibiotics
-                    if (selectedAntibiotics == null || !selectedAntibiotics.Contains(antibioticId))
-                    {
-                        var treatment = new DiagnosticsTreatment
+                        // Add to selected list
+                        if (selectedAntibiotics == null)
                         {
-                            DiagId = diagId,
-                            AntibioticId = antibioticId
-                        };
-                        _context.DiagnosticsTreatments.Add(treatment);
+                            selectedAntibiotics = new int[] { antibiotic.AntibioticId };
+                        }
+                        else
+                        {
+                            selectedAntibiotics = selectedAntibiotics.Append(antibiotic.AntibioticId).ToArray();
+                        }
+                    }
+                    else if (selectedAntibiotics == null || !selectedAntibiotics.Contains(existingAntibiotic.AntibioticId))
+                    {
+                        // Add existing antibiotic to selection if not already selected
+                        if (selectedAntibiotics == null)
+                        {
+                            selectedAntibiotics = new int[] { existingAntibiotic.AntibioticId };
+                        }
+                        else
+                        {
+                            selectedAntibiotics = selectedAntibiotics.Append(existingAntibiotic.AntibioticId).ToArray();
+                        }
                     }
                 }
 
-                // Process selected antibiotics
+                // Remove existing treatments
+                var existingTreatments = await _context.DiagnosticsTreatments
+                    .Where(t => t.DiagId == diagId)
+                    .ToListAsync();
+
+                if (existingTreatments.Any())
+                {
+                    _context.DiagnosticsTreatments.RemoveRange(existingTreatments);
+                }
+
+                // Add new treatments for selected antibiotics
                 if (selectedAntibiotics != null && selectedAntibiotics.Length > 0)
                 {
-                    foreach (var antibioticId in selectedAntibiotics)
+                    // Use raw SQL to fetch antibiotics instead of LINQ to avoid OPENJSON issues
+                    List<Antibiotic> antibioticsToAdd = new List<Antibiotic>();
+
+                    // Build a parameterized SQL query manually to avoid SQL injection
+                    if (selectedAntibiotics.Length > 0)
                     {
-                        // Skip any invalid IDs
-                        if (antibioticId <= 0)
-                            continue;
+                        // Build a SQL query with proper IN clause
+                        string idList = string.Join(",", selectedAntibiotics);
+                        string sql = $"SELECT AntibioticId, Name, DateAdded FROM tbantibiotics WHERE AntibioticId IN ({idList})";
 
-                        // Check if this antibiotic exists
-                        var antibioticExists = await _context.Antibiotics.AnyAsync(a => a.AntibioticId == antibioticId);
-                        if (!antibioticExists)
-                            continue;
+                        // Execute raw SQL query
+                        using (var command = _context.Database.GetDbConnection().CreateCommand())
+                        {
+                            command.CommandText = sql;
 
+                            if (command.Connection.State != System.Data.ConnectionState.Open)
+                                await command.Connection.OpenAsync();
+
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    antibioticsToAdd.Add(new Antibiotic
+                                    {
+                                        AntibioticId = reader.GetInt32(0),
+                                        Name = reader.GetString(1),
+                                        DateAdded = reader.IsDBNull(2) ? DateTime.Now : reader.GetDateTime(2)
+                                    });
+                                }
+                            }
+                        }
+                    }
+
+                    // Add new treatments
+                    foreach (var antibiotic in antibioticsToAdd)
+                    {
                         var treatment = new DiagnosticsTreatment
                         {
                             DiagId = diagId,
-                            AntibioticId = antibioticId
+                            AntibioticId = antibiotic.AntibioticId,
                         };
                         _context.DiagnosticsTreatments.Add(treatment);
                     }
                 }
 
-                // Final save for treatments
                 await _context.SaveChangesAsync();
-
-                // Set a success message in TempData
-                TempData["SuccessMessage"] = "Antibiotics updated successfully for the diagnostic record";
-                return RedirectToAction(nameof(Index), new { hospNum });
+                return RedirectToAction("Index", "Diagnostics", new { hospNum });
             }
             catch (Exception ex)
             {
-                // Log the exception message for debugging
-                Console.WriteLine($"Exception type: {ex.GetType().Name}");
-                Console.WriteLine($"Exception message: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                _logger.LogError(ex, "Error updating antibiotics for diagnostic ID: {DiagId}", diagId);
+                TempData["ErrorMessage"] = "An error occurred while saving antibiotics. Please try again.";
+                return RedirectToAction("AddAntibioticsToLatest", new { hospNum });
+            }
+        }
 
-                ModelState.AddModelError("", $"Unable to save changes: {ex.Message}");
+        // Helper method to get patient name
+        private async Task<string> GetPatientName(string hospNum)
+        {
+            if (string.IsNullOrEmpty(hospNum))
+                return "Unknown Patient";
 
-                // If inner exception exists, also log it
-                if (ex.InnerException != null)
+            try
+            {
+                // Try to get from PatientMasters first
+                var patient = await _patientContext.PatientMasters.FirstOrDefaultAsync(p => p.HospNum == hospNum);
+                if (patient != null)
+                    return $"{patient.FirstName} {patient.LastName}";
+
+                // Fall back to tbmaster
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
                 {
-                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
-                    ModelState.AddModelError("", $"Inner exception: {ex.InnerException.Message}");
+                    command.CommandText = "SELECT LastName, FirstName FROM tbmaster WHERE HospNum = @HospNum";
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@HospNum";
+                    parameter.Value = hospNum;
+                    command.Parameters.Add(parameter);
+
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                        await command.Connection.OpenAsync();
+
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            var lastName = reader["LastName"]?.ToString() ?? string.Empty;
+                            var firstName = reader["FirstName"]?.ToString() ?? string.Empty;
+                            return $"{firstName} {lastName}";
+                        }
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting patient name for hospNum: {HospNum}", hospNum);
+            }
 
-            // If we got this far, something failed, redisplay form
-            ViewBag.SelectedAntibiotics = selectedAntibiotics ?? new int[0];
-            ViewBag.PatientName = _context.PatientMasters
-                .Where(p => p.HospNum == hospNum)
-                .Select(p => $"{p.FirstName} {p.LastName}")
-                .FirstOrDefault();
+            return $"Patient #{hospNum}";
+        }
 
-            // Reload the diagnostic and return to view
-            diagnostics = await _context.Diagnostics
-                .Include(d => d.Treatments)
-                .ThenInclude(t => t.Antibiotic)
-                .FirstOrDefaultAsync(m => m.DiagId == diagId);
-
-            return View(diagnostics);
+        // Helper method to get hospital number from diagnostic ID
+        private async Task<string> GetHospNumFromDiagnosticId(int diagId)
+        {
+            return await _context.Diagnostics
+                .Where(d => d.DiagId == diagId)
+                .Select(d => d.HospNum)
+                .FirstOrDefaultAsync() ?? string.Empty;
         }
 
         // GET: Diagnostics/Edit/5
@@ -328,10 +746,61 @@ namespace IPCU.Controllers
             }
 
             ViewBag.SelectedAntibiotics = diagnostics.Treatments.Select(t => t.AntibioticId).ToArray();
-            ViewBag.PatientName = _context.PatientMasters
-                .Where(p => p.HospNum == diagnostics.HospNum)
-                .Select(p => $"{p.FirstName} {p.LastName}")
-                .FirstOrDefault();
+
+            // Get patient name
+            string patientName = string.Empty;
+
+            try
+            {
+                // Use raw SQL to get patient information
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+                    SELECT LastName, FirstName 
+                    FROM tbmaster 
+                    WHERE HospNum = @HospNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@HospNum";
+                    parameter.Value = diagnostics.HospNum;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            var lastName = reader["LastName"]?.ToString() ?? string.Empty;
+                            var firstName = reader["FirstName"]?.ToString() ?? string.Empty;
+                            patientName = $"{firstName} {lastName}";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting patient info for {HospNum}", diagnostics.HospNum);
+
+                // Try to get from PatientMasters as fallback
+                var patient = await _patientContext.PatientMasters.FirstOrDefaultAsync(p => p.HospNum == diagnostics.HospNum);
+                if (patient != null)
+                {
+                    patientName = $"{patient.FirstName} {patient.LastName}";
+                }
+                else
+                {
+                    patientName = "Unknown Patient";
+                }
+            }
+
+            ViewBag.PatientName = patientName;
             ViewBag.HospNum = diagnostics.HospNum;
 
             return View(diagnostics);
@@ -371,27 +840,74 @@ namespace IPCU.Controllers
                 }
                 catch (Exception ex)
                 {
-                    // Log the exception message for debugging
-                    Console.WriteLine($"Exception type: {ex.GetType().Name}");
-                    Console.WriteLine($"Exception message: {ex.Message}");
-                    Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                    _logger.LogError(ex, "Error updating diagnostic {DiagId}", diagnostics.DiagId);
 
                     ModelState.AddModelError("", $"Unable to save changes: {ex.Message}");
 
                     // If inner exception exists, also log it
                     if (ex.InnerException != null)
                     {
-                        Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                        _logger.LogError(ex.InnerException, "Inner exception in Edit");
                         ModelState.AddModelError("", $"Inner exception: {ex.InnerException.Message}");
                     }
                 }
             }
 
             // If we got this far, something failed, redisplay form
-            ViewBag.PatientName = _context.PatientMasters
-                .Where(p => p.HospNum == diagnostics.HospNum)
-                .Select(p => $"{p.FirstName} {p.LastName}")
-                .FirstOrDefault();
+            // Get patient name
+            string patientName = string.Empty;
+
+            try
+            {
+                // Use raw SQL to get patient information
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+                    SELECT LastName, FirstName 
+                    FROM tbmaster 
+                    WHERE HospNum = @HospNum";
+
+                    // Add parameter
+                    var parameter = command.CreateParameter();
+                    parameter.ParameterName = "@HospNum";
+                    parameter.Value = diagnostics.HospNum;
+                    command.Parameters.Add(parameter);
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Execute query
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            var lastName = reader["LastName"]?.ToString() ?? string.Empty;
+                            var firstName = reader["FirstName"]?.ToString() ?? string.Empty;
+                            patientName = $"{firstName} {lastName}";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting patient info for {HospNum}", diagnostics.HospNum);
+
+                // Try to get from PatientMasters as fallback
+                var patient = await _patientContext.PatientMasters.FirstOrDefaultAsync(p => p.HospNum == diagnostics.HospNum);
+                if (patient != null)
+                {
+                    patientName = $"{patient.FirstName} {patient.LastName}";
+                }
+                else
+                {
+                    patientName = "Unknown Patient";
+                }
+            }
+
+            ViewBag.PatientName = patientName;
             ViewBag.HospNum = diagnostics.HospNum;
 
             return View(diagnostics);
@@ -399,92 +915,134 @@ namespace IPCU.Controllers
 
         // GET: Diagnostics/Delete/5
         public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
             {
-                return NotFound();
-            }
-
-            var diagnostics = await _context.Diagnostics
-                .Include(d => d.Patient)
-                .Include(d => d.Treatments)
-                .ThenInclude(t => t.Antibiotic)
-                .FirstOrDefaultAsync(m => m.DiagId == id);
-
-            if (diagnostics == null)
-            {
-                return NotFound();
-            }
-
-            return View(diagnostics);
-        }
-
-        // POST: Diagnostics/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            try
-            {
-                var diagnostics = await _context.Diagnostics.FindAsync(id);
-                string hospNum = null;
-
-                if (diagnostics != null)
+                if (id == null)
                 {
-                    hospNum = diagnostics.HospNum;
-
-                    // Remove associated treatments first
-                    var treatments = await _context.DiagnosticsTreatments
-                        .Where(t => t.DiagId == id)
-                        .ToListAsync();
-
-                    _context.DiagnosticsTreatments.RemoveRange(treatments);
-
-                    // Then remove the diagnostic
-                    _context.Diagnostics.Remove(diagnostics);
-                    await _context.SaveChangesAsync();
-
-                    // Add success message
-                    TempData["SuccessMessage"] = "Diagnostic record deleted successfully";
+                    return NotFound();
                 }
 
-                return RedirectToAction(nameof(Index), new { hospNum });
+                var diagnostics = await _context.Diagnostics
+                    .Include(d => d.Treatments)
+                    .ThenInclude(t => t.Antibiotic)
+                    .FirstOrDefaultAsync(m => m.DiagId == id);
+
+                if (diagnostics == null)
+                {
+                    return NotFound();
+                }
+
+                // Get patient name
+                string patientName = string.Empty;
+
+                try
+                {
+                    // Use raw SQL to get patient information
+                    using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                    {
+                        command.CommandText = @"
+                    SELECT LastName, FirstName 
+                    FROM tbmaster 
+                    WHERE HospNum = @HospNum";
+
+                        // Add parameter
+                        var parameter = command.CreateParameter();
+                        parameter.ParameterName = "@HospNum";
+                        parameter.Value = diagnostics.HospNum;
+                        command.Parameters.Add(parameter);
+
+                        // Ensure connection is open
+                        if (command.Connection.State != System.Data.ConnectionState.Open)
+                        {
+                            await command.Connection.OpenAsync();
+                        }
+
+                        // Execute query
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                var lastName = reader["LastName"]?.ToString() ?? string.Empty;
+                                var firstName = reader["FirstName"]?.ToString() ?? string.Empty;
+                                patientName = $"{firstName} {lastName}";
+                            }
+                        }
+                    }
+
+                    ViewBag.PatientName = patientName;
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error getting patient info for {HospNum}", diagnostics.HospNum);
+                }
+
+                return View(diagnostics);
             }
-            catch (Exception ex)
+
+            // POST: Diagnostics/Delete/5
+            [HttpPost, ActionName("Delete")]
+            [ValidateAntiForgeryToken]
+            public async Task<IActionResult> DeleteConfirmed(int id)
             {
-                // Log the error
-                Console.WriteLine($"Error deleting diagnostic: {ex.Message}");
-                TempData["ErrorMessage"] = "An error occurred while deleting the diagnostic record";
+                try
+                {
+                    var diagnostics = await _context.Diagnostics.FindAsync(id);
+                    string hospNum = null;
 
-                // Get the hospital number to redirect back to index
-                var diagnostics = await _context.Diagnostics.FindAsync(id);
-                string hospNum = diagnostics?.HospNum;
+                    if (diagnostics != null)
+                    {
+                        hospNum = diagnostics.HospNum;
 
-                return RedirectToAction(nameof(Index), new { hospNum });
+                        // Remove associated treatments first
+                        var treatments = await _context.DiagnosticsTreatments
+                            .Where(t => t.DiagId == id)
+                            .ToListAsync();
+
+                        _context.DiagnosticsTreatments.RemoveRange(treatments);
+
+                        // Then remove the diagnostic
+                        _context.Diagnostics.Remove(diagnostics);
+                        await _context.SaveChangesAsync();
+
+                        // Add success message
+                        TempData["SuccessMessage"] = "Diagnostic record deleted successfully";
+                    }
+
+                    return RedirectToAction(nameof(Index), new { hospNum });
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error deleting diagnostic {DiagId}", id);
+                    TempData["ErrorMessage"] = "An error occurred while deleting the diagnostic record";
+
+                    // Get the hospital number to redirect back to index
+                    var diagnostics = await _context.Diagnostics.FindAsync(id);
+                    string hospNum = diagnostics?.HospNum;
+
+                    return RedirectToAction(nameof(Index), new { hospNum });
+                }
             }
-        }
 
-        private bool DiagnosticsExists(int id)
-        {
-            return _context.Diagnostics.Any(e => e.DiagId == id);
-        }
+            private bool DiagnosticsExists(int id)
+            {
+                return _context.Diagnostics.Any(e => e.DiagId == id);
+            }
 
-        // API endpoint for autocomplete
-        [HttpGet]
-        public async Task<IActionResult> GetAntibiotics(string term)
-        {
-            var termLower = term?.ToLower() ?? "";
-            var antibiotics = await _context.Antibiotics
-                .Where(a => string.IsNullOrEmpty(termLower) || a.Name.ToLower().Contains(termLower))
-                .OrderBy(a => a.Name)
-                .Select(a => new { id = a.AntibioticId, text = a.Name })
-                .ToListAsync();
+            // API endpoint for autocomplete
+            [HttpGet]
+            public async Task<IActionResult> GetAntibiotics(string term)
+            {
+                var termLower = term?.ToLower() ?? "";
+                var antibiotics = await _context.Antibiotics
+                    .Where(a => string.IsNullOrEmpty(termLower) || a.Name.ToLower().Contains(termLower))
+                    .OrderBy(a => a.Name)
+                    .Select(a => new { id = a.AntibioticId, text = a.Name })
+                    .ToListAsync();
 
-            return Json(antibiotics);
-        }
+                return Json(antibiotics);
+            }
 
-        // API endpoint for adding new antibiotics via AJAX
-        [HttpPost]
+            // API endpoint for adding new antibiotics via AJAX
+            [HttpPost]
         public async Task<IActionResult> AddAntibiotic(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -516,6 +1074,7 @@ namespace IPCU.Controllers
             return Json(new { id = antibiotic.AntibioticId, name = antibiotic.Name, exists = false });
         }
 
+
         // GET: Diagnostics/AddAntibioticsToLatest/
         public async Task<IActionResult> AddAntibioticsToLatest(string hospNum)
         {
@@ -524,7 +1083,7 @@ namespace IPCU.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            var patient = await _context.PatientMasters.FirstOrDefaultAsync(p => p.HospNum == hospNum);
+            var patient = await _patientContext.PatientMasters.FirstOrDefaultAsync(p => p.HospNum == hospNum);
             if (patient == null)
             {
                 return NotFound();
