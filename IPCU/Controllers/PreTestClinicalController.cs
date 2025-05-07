@@ -21,8 +21,7 @@ namespace IPCU.Controllers
             return View(new PreTestClinical());
         }
         [HttpPost]
-        public IActionResult Submit(PostTestClinical model, string[] Question18, string[] Question19, string[] Question20, string[] Question21, string[] Question22, string[] Question23, string[] Question24,
-     string[] Question25, string[] Question26, string[] Question27, string[] Question28, string[] Question29)
+        public IActionResult Submit(PreTestClinical model)
         {
             if (ModelState.IsValid)
             {
@@ -30,64 +29,96 @@ namespace IPCU.Controllers
                 {
                     // Compute the score
                     float score = 0.0f;
-                    if (Request.Form["Question1"] == "Airborne precaution") score += 1.25f;
-                    if (Request.Form["Question2"] == "Airborne precaution") score += 1.25f;
-                    if (Request.Form["Question3"] == "Airborne precaution") score += 1.25f;
-                    if (Request.Form["Question4"] == "Airborne precaution") score += 1.25f;
-                    if (Request.Form["Question5"] == "Airborne precaution") score += 1.25f;
-                    if (Request.Form["Question6"] == "Airborne precaution") score += 1.25f;
-                    if (Request.Form["Question7"] == "Airborne precaution") score += 1.25f;
-                    if (Request.Form["Question8"] == "Airborne precaution") score += 1.25f;
-                    if (Request.Form["Question9"] == "Standard Precautions") score += 1.0f;
-                    if (Request.Form["Question10"] == "8 ACH") score += 1.0f;
-                    if (Request.Form["Question11"] == "Within the week") score += 1.0f;
-                    if (Request.Form["Question12"] == "Gown-Gloves-Mask-Goggles") score += 1.0f;
-                    if (Request.Form["Question13"] == "Reduce hospital costs") score += 1.0f;
-                    if (Request.Form["Question14"] == "5-10 seconds") score += 1.0f;
-                    if (Request.Form["Question15"] == "Surgical mask") score += 1.0f;
-                    if (Request.Form["Question16"] == "1 foot") score += 1.0f;
-                    if (Request.Form["Question17"] == "Wearing a mask") score += 1.0f;
+                    float totalPossibleScore = 25.0f; // Total maximum score
 
-                    if (Question18 != null && Question18.Contains("Single room only") && Question18.Contains("Ward type")) score += 1.0f;
-                    if (Question19 != null && Question19.Contains("Single room only") && Question19.Contains("Ward type")) score += 1.0f;
-                    if (Question20 != null && Question20.Contains("Single room only") && Question20.Contains("Ward type")) score += 1.0f;
-                    if (Question21 != null && Question21.Contains("Single room only") && Question21.Contains("Ward type")) score += 1.0f;
-                    if (Question22 != null && Question22.Contains("Single room only") && Question22.Contains("Ward type")) score += 1.0f;
-                    if (Question23 != null && Question23.Contains("Single room only") && Question23.Contains("Ward type")) score += 1.0f;
-                    if (Question24 != null && Question24.Contains("Single room only") && Question24.Contains("Ward type")) score += 1.0f;
-                    if (Question25 != null && Question25.Contains("Gloves") && Question25.Contains("Isolation Gown")) score += 1.8f;
-                    if (Question26 != null && Question26.Contains("Gloves") && Question26.Contains("Isolation Gown")) score += 1.8f;
-                    if (Question27 != null && Question27.Contains("Gloves") && Question27.Contains("Isolation Gown")) score += 1.8f;
-                    if (Question28 != null && Question28.Contains("Gloves") && Question28.Contains("Isolation Gown")) score += 1.8f;
-                    if (Question29 != null && Question29.Contains("Gloves") && Question29.Contains("Isolation Gown")) score += 1.8f;
+                    // Check answers for each question - based on the form structure
+                    // Questions 1-12: Clinical precautions for specific conditions (1 point each)
+                    if (Request.Form["Question1"] == "2") score += 1.25f; // COVID-19: Droplet precaution
+                    if (Request.Form["Question2"] == "3") score += 1.25f; // Tetanus: Standard precaution
+                    if (Request.Form["Question3"] == "2") score += 1.25f; // Diphtheria: Droplet precaution
+                    if (Request.Form["Question4"] == "1") score += 1.25f; // MRSA: Contact precaution
+                    if (Request.Form["Question5"] == "3") score += 1.25f; // HIV: Standard precaution
+                    if (Request.Form["Question6"] == "0") score += 1.25f; // Varicella: Airborne precaution
+                    if (Request.Form["Question7"] == "2") score += 1.25f; // Pertussis: Droplet precaution
+                    if (Request.Form["Question8"] == "2") score += 1.25f; // Human Metapneumovirus: Droplet precaution
+                    if (Request.Form["Question9"] == "0") score += 1.25f; // Pulmonary TB: Airborne precaution
+                    if (Request.Form["Question10"] == "0") score += 1.25f; // Measles: Airborne precaution
+                    if (Request.Form["Question11"] == "1") score += 1.25f; // CRE: Contact precaution
+                    if (Request.Form["Question12"] == "3") score += 1.25f; // Extrapulmonary TB: Standard precaution
 
-                    // Check if EmployeeId already exists in TrainingSummaries
+                    // Question 13: PPE donning sequence (1 point)
+                    if (Request.Form["Question13"] == "2") score += 1.0f; // Gown → Mask → Goggles → Gloves
+
+                    // Question 14: Primary goal of IPC (1 point)
+                    if (Request.Form["Question14"] == "2") score += 1.0f; // Prevent the spread of infections...
+
+                    // Question 15: 5 Moments for Hand Hygiene (checkboxes) (3 points)
+                    // Correct answers are: 0, 1, 4, 6, 8 (before touching patient, before procedure, after procedure, after touching patient, after surroundings)
+                    string[] correctHandHygieneAnswers = { "0", "1", "4", "6", "8" };
+                    string[] selectedHandHygiene = Request.Form["Question15"].ToArray();
+
+                    // Check if all correct answers are selected and no incorrect answers
+                    if (selectedHandHygiene != null &&
+                        correctHandHygieneAnswers.All(a => selectedHandHygiene.Contains(a)) &&
+                        selectedHandHygiene.All(a => correctHandHygieneAnswers.Contains(a)))
+                    {
+                        score += 5.0f;
+                    }
+
+                    // Question 16: Most effective way to prevent infections (1 point)
+                    if (Request.Form["Question16"] == "1") score += 1.0f; // Frequent and proper hand hygiene
+
+                    // Question 17: Cohorting distance (1 point)
+                    if (Request.Form["Question17"] == "2") score += 1.0f; // 3 feet (1 meter)
+
+                    // Question 18: C. difficile precautions (1 point)
+                    if (Request.Form["Question18"] == "2") score += 1.0f; // Contact Precautions
+
+                    // Question 19: Ventilation rate (1 point)
+                    if (Request.Form["Question19"] == "2") score += 1.0f; // 12 air changes per hour (ACH)
+
+                    // Question 20: Hand rubbing duration (1 point)
+                    if (Request.Form["Question20"] == "2") score += 1.0f; // 20-30 seconds
+
+                    // Question 21: TB PPE (1 point)
+                    if (Request.Form["Question21"] == "1") score += 1.0f; // N95 respirator
+
+                    // Question 22: Needle stick reporting (1 point)
+                    if (Request.Form["Question22"] == "1") score += 1.0f; // 1 hour
+
+                    // Question 23: PPE doffing sequence (1 point)
+                    if (Request.Form["Question23"] == "3") score += 1.0f; // Gloves → Gown → Goggles → Mask
+
+                    // Round the raw score to whole number FIRST
+                    int roundedScore = (int)Math.Round(score);
+
+                    // Then calculate percentage using the rounded score
+                    int percentageScore = (int)Math.Round((roundedScore / totalPossibleScore) * 100);
+
+                    // Check if EmployeeId already exists
                     var existingEntry = _context.TrainingSummaries.FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId);
 
                     if (existingEntry != null)
                     {
-                        // Update existing record with Post-Test score
-                        existingEntry.PostScore = score;
+                        // Store rounded values
+                        existingEntry.PreScore = roundedScore;
+                        existingEntry.Rate = percentageScore; // If you have this field
                         existingEntry.DateCreated = DateTime.Now;
-                        _context.TrainingSummaries.Update(existingEntry);
+                        _context.Update(existingEntry);
                     }
                     else
                     {
-                        // Create new record
+                        // Create new record with rounded values
                         var trainingSummary = new TrainingSummary
                         {
                             EmployeeId = model.EmployeeId,
                             FullName = model.FullName,
-                            AgeGroup = model.AgeGroup,
-                            Sex = model.Sex,
-                            PWD = model.PWD,
-                            CivilStatus = model.CivilStatus,
-                            Department = model.Department,
-                            PreScore = score, // Since it's a post-test, PreScore defaults to 0
-                            PreScore_Total = 15, // Since it's a post-test, PreScore defaults to 0
+                            // [other properties...]
+                            PreScore = roundedScore,
+                            PreScore_Total = totalPossibleScore,
+                            Rate = percentageScore, // If you have this field
                             DateCreated = DateTime.Now
                         };
-
                         _context.TrainingSummaries.Add(trainingSummary);
                     }
 
@@ -97,7 +128,7 @@ namespace IPCU.Controllers
                     var entryId = existingEntry != null ? existingEntry.Id : _context.TrainingSummaries
                         .FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId)?.Id;
 
-                    return RedirectToAction("Success", new { id = entryId });
+                    return RedirectToAction("QuizResult", new { id = entryId });
                 }
                 catch (Exception ex)
                 {
@@ -107,8 +138,6 @@ namespace IPCU.Controllers
             }
             return View("Index", model);
         }
-
-
 
         public IActionResult QuizResult(int id)
         {

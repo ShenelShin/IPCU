@@ -1,21 +1,64 @@
 ﻿@model IPCU.Models.TrainingSummary
 
 @{
-    ViewData["Title"] = "Success";
+    ViewData["Title"] = "Quiz Results";
 }
 
-<div class="text-center">
-    @if (Model != null)
-    {
-        <h1>Success!</h1>
-        <p>Your Post-Test Clinical Questionnaire has been successfully submitted.</p>
-        <p>Thank you, <strong>@Model.FullName</strong>, for your participation.</p>
-        <p>Your score: <strong>@Model.PostScore</strong></p>
-    }
-    else
-    {
-        <h1>Error</h1>
-        <p>No submission data found.</p>
-    }
-    <a asp-action="Quiz" class="btn btn-primary">Return to Form</a>
+<div style="max-width: 600px; margin: 0 auto; font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; padding: 20px;">
+    <fieldset style="margin: 20px 0; padding: 25px; border: 1px solid #e0e0e0; border-radius: 6px; background-color: #fff;">
+        <!-- Header Section -->
+        <div style="text-align: center; margin-bottom: 25px;">
+            <h1 style="font-size: 22px; color: #2c3e50; margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px;">
+                Quiz Submission Successful
+            </h1>
+            <p style="color: #7f8c8d; font-size: 14px; margin: 0;">
+                Thank you for completing the assessment
+            </p>
+        </div>
+
+        @if (Model != null)
+        {
+            <!-- Results Section -->
+            <div style="margin-bottom: 20px;">
+                <h2 style="font-size: 16px; color: #2c3e50; margin-bottom: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                    Your Results
+                </h2>
+
+                <div style="display: grid; grid-gap: 15px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="font-size: 14px; color: #34495e; font-weight: 500;">Name:</span>
+                        <span style="font-size: 14px; color: #2c3e50;">@Model.FullName</span>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="font-size: 14px; color: #34495e; font-weight: 500;">Employee ID:</span>
+                        <span style="font-size: 14px; color: #2c3e50;">@Model.EmployeeId</span>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between;">
+                        <span style="font-size: 14px; color: #34495e; font-weight: 500;">Date Completed:</span>
+                        <span style="font-size: 14px; color: #2c3e50;">@Model.DateCreated.ToString("MM/dd/yyyy")</span>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee;">
+                        <span style="font-size: 16px; color: #34495e; font-weight: 600;">Score:</span>
+                        <span style="font-size: 16px; color: #27ae60; font-weight: 600;">@Model.PreScore out of 30</span>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px; text-align: center;">
+                <p style="color: #e74c3c; font-size: 14px;">No submission data found. Please try again.</p>
+            </div>
+        }
+
+        <!-- Action Buttons -->
+        <div style="text-align: center; margin-top: 25px;">
+            <a asp-action="Quiz" style="display: inline-block; padding: 10px 20px; background-color: #2c3e50; color: white; text-decoration: none; border-radius: 4px; font-size: 14px; transition: background-color 0.2s;">
+                Return to Form
+            </a>
+        </div>
+    </fieldset>
 </div>

@@ -1,259 +1,574 @@
-﻿@model IPCU.Models.PreTestClinical
+﻿    @model IPCU.Models.PreTestClinical
 
-<h2>Pre-Test Clinical Questionnaire</h2>
+    <div style="max-width: 600px; margin: 0 auto; font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+        <form asp-controller="PreTestClinical" asp-action="Submit" method="post" style="margin-top: 15px;">
+            <!-- User Information -->
+            <fieldset style="margin: 20px 0; padding: 25px; border: 1px solid #e0e0e0; border-radius: 6px; background-color: #fff;">
 
-<form asp-controller="PreTestClinical" asp-action="Submit" method="post">
-    <div>
-        <label>Full Name:</label>
-        <input asp-for="FullName" />
-        <span asp-validation-for="FullName" class="text-danger"></span>
+                <!-- Header Section -->
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <h1 style="font-size: 22px; color: #2c3e50; margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px;">
+                        Pre-Test Clinical Questionnaire
+                    </h1>
+                    <p style="color: #7f8c8d; font-size: 14px; margin: 0;">
+                        Please fill out all fields before submitting.
+                    </p>
+                </div>
+
+                <!-- Personal Information Section -->
+                <h2 style="font-size: 16px; color: #2c3e50; margin-bottom: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                    Personal Information
+                </h2>
+
+                <!-- Form Fields -->
+                <div style="display: grid; grid-gap: 18px;">
+                    <div>
+                        <label asp-for="FullName" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Full Name</label>
+                        <input asp-for="FullName" type="text" placeholder="Enter your full name"
+                               style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px; transition: border 0.2s;">
+                        <span asp-validation-for="FullName" style="color: #e74c3c; font-size: 12px; margin-top: 4px;"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="EmployeeId" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Employee ID</label>
+                        <input asp-for="EmployeeId" type="text" placeholder="Enter your Employee ID"
+                               style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px;">
+                        <span asp-validation-for="EmployeeId" style="color: #e74c3c; font-size: 12px; margin-top: 4px;"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="AgeGroup" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Age Group</label>
+                        <select asp-for="AgeGroup"
+                                style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px; background-color: #fff; cursor: pointer;">
+                            <option value="">Select age group</option>
+                            <option value="18-25">18-25</option>
+                            <option value="26-35">26-35</option>
+                            <option value="36-45">36-45</option>
+                            <option value="46+">46+</option>
+                        </select>
+                        <span asp-validation-for="AgeGroup" style="color: #e74c3c; font-size: 12px; margin-top: 4px;"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Sex" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Sex</label>
+                        <select asp-for="Sex"
+                                style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px; background-color: #fff; cursor: pointer;">
+                            <option value="">Select sex</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                        <span asp-validation-for="Sex" style="color: #e74c3c; font-size: 12px; margin-top: 4px;"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="PWD" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">PWD</label>
+                        <select asp-for="PWD"
+                                style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px; background-color: #fff; cursor: pointer;">
+                            <option value="">Select option</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                        <span asp-validation-for="PWD" style="color: #e74c3c; font-size: 12px; margin-top: 4px;"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="CivilStatus" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Civil Status</label>
+                        <select asp-for="CivilStatus"
+                                style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px; background-color: #fff; cursor: pointer;">
+                            <option value="">Select status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                        <span asp-validation-for="CivilStatus" style="color: #e74c3c; font-size: 12px; margin-top: 4px;"></span>
+                    </div>
+
+                    <div>
+                        <label asp-for="Department" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Department</label>
+                        <input asp-for="Department" type="text" placeholder="Enter your department"
+                               style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px;">
+                        <span asp-validation-for="Department" style="color: #e74c3c; font-size: 12px; margin-top: 4px;"></span>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset style="margin: 20px 0; padding: 25px; border: 1px solid #e0e0e0; border-radius: 6px; background-color: #fff;">
+                <legend style="font-weight: 600; color: #2c3e50; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding: 0 10px;">Clinical Precautions Quiz</legend>
+                <p style="margin: 0 0 20px 0; font-size: 13px; color: #7f8c8d;">Select the appropriate precaution for each condition:</p>
+
+                <div style="display: grid; grid-gap: 18px;">
+                    <!-- COVID-19 -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">1. COVID-19</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question1" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question1" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question1" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question1" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Tetanus -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">2. Tetanus</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question2" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question2" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question2" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question2" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Continue with all other questions following the same pattern -->
+                    <!-- Diphtheria -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">3. Diphtheria</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question3" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question3" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question3" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question3" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- MRSA -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">4. MRSA</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question4" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question4" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question4" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question4" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Human Immunodeficiency Virus -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">5. Human Immunodeficiency Virus</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question5" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question5" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question5" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question5" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Continue with all remaining questions using the same structure -->
+                    <!-- Varicella -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">6. Varicella</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question6" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question6" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question6" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question6" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Add remaining questions (Pertussis through CRE) following the exact same pattern -->
+                    <!-- Question 7: Pertussis -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">7. Pertussis</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question7" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question7" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question7" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question7" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 8: Human Metapneumovirus -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">8. Human Metapneumovirus</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question8" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question8" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question8" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question8" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 9: Pulmonary Tuberculosis -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">9. Pulmonary Tuberculosis</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question9" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question9" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question9" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question9" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 10: Measles -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">10. Measles</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question10" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question10" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question10" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question10" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 11: CRE -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">11. CRE</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question11" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question11" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question11" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question11" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 12: Extrapulmonary Tuberculosis -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">12. Extrapulmonary Tuberculosis</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question12" value="0" style="margin-right: 8px;" /> Airborne precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question12" value="1" style="margin-right: 8px;" /> Contact precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question12" value="2" style="margin-right: 8px;" /> Droplet precaution
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question12" value="3" style="margin-right: 8px;" /> Standard precaution
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 13: PPE Donning Sequence -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">13. What is the correct sequence for donning PPE?</h4>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question13" value="0" style="margin-right: 8px;" /> Gown → Gloves → Mask → Goggles
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question13" value="1" style="margin-right: 8px;" /> Mask → Gown → Gloves → Goggles
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question13" value="2" style="margin-right: 8px;" /> Gown → Mask → Goggles → Gloves
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question13" value="3" style="margin-right: 8px;" /> Gloves → Gown → Goggles → Mask
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 14: IPC Goal -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">14. What is the primary goal of infection prevention and control (IPC) in a healthcare setting?</h4>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question14" value="0" style="margin-right: 8px;" /> Reduce hospital costs
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question14" value="1" style="margin-right: 8px;" /> Protect only healthcare workers from infections
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question14" value="2" style="margin-right: 8px;" /> Prevent the spread of infections among patients, healthcare workers, and visitors
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question14" value="3" style="margin-right: 8px;" /> Improve hospital ranking
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 15: Hand Hygiene -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">15. What are the 5 Moments for Hand Hygiene, as recommended by the World Health Organization (WHO)? Select all that apply.</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="checkbox" name="Question15" value="0" style="margin-right: 8px;" /> Before touching a patient
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="checkbox" name="Question15" value="1" style="margin-right: 8px;" /> Before a procedure
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="checkbox" name="Question15" value="2" style="margin-right: 8px;" /> Before touching your eyes, nose, or mouth
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="checkbox" name="Question15" value="3" style="margin-right: 8px;" /> After playing with animals
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="checkbox" name="Question15" value="4" style="margin-right: 8px;" /> After a procedure or exposure to body fluids
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="checkbox" name="Question15" value="5" style="margin-right: 8px;" /> After blowing your nose, coughing, or sneezing
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="checkbox" name="Question15" value="6" style="margin-right: 8px;" /> After touching a patient
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="checkbox" name="Question15" value="7" style="margin-right: 8px;" /> After using the restroom
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="checkbox" name="Question15" value="8" style="margin-right: 8px;" /> After touching a patient's surroundings
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="checkbox" name="Question15" value="9" style="margin-right: 8px;" /> Before preparing or eating food
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 16: Infection Prevention -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">16. Which of the following is the most effective way to prevent the spread of infections?</h4>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question16" value="0" style="margin-right: 8px;" /> Wearing a mask at all times
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question16" value="1" style="margin-right: 8px;" /> Frequent and proper hand hygiene
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question16" value="2" style="margin-right: 8px;" /> Using antibiotics for all patients
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question16" value="3" style="margin-right: 8px;" /> Spraying disinfectant in the air
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 17: Cohorting Distance -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">17. When cohorting patients with the same suspected or confirmed diagnosis in one room, the distance must be maintained between each patient at:</h4>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question17" value="0" style="margin-right: 8px;" /> 1 foot
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question17" value="1" style="margin-right: 8px;" /> 2 feet
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question17" value="2" style="margin-right: 8px;" /> 3 feet (1 meter)
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question17" value="3" style="margin-right: 8px;" /> 6 feet (2 meters)
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 18: C. difficile -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">18. A patient is diagnosed with Clostridioides difficile (C. difficile) infection. What type of precautions should be implemented?</h4>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question18" value="0" style="margin-right: 8px;" /> Standard Precautions
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question18" value="1" style="margin-right: 8px;" /> Droplet Precautions
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question18" value="2" style="margin-right: 8px;" /> Contact Precautions
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question18" value="3" style="margin-right: 8px;" /> Airborne Precautions
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 19: Ventilation Rate -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">19. In high-risk areas of health care facilities such as isolation rooms, the recommended minimal ventilation rate is:</h4>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question19" value="0" style="margin-right: 8px;" /> 8 air changes per hour (ACH)
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question19" value="1" style="margin-right: 8px;" /> 10 air changes per hour (ACH)
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question19" value="2" style="margin-right: 8px;" /> 12 air changes per hour (ACH)
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question19" value="3" style="margin-right: 8px;" /> 14 air changes per hour (ACH)
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 20: Hand Rubbing -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">20. Alcohol-based hand rubbing should be done for how many seconds to be effective?</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question20" value="0" style="margin-right: 8px;" /> 5-10 seconds
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question20" value="1" style="margin-right: 8px;" /> 10-20 seconds
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question20" value="2" style="margin-right: 8px;" /> 20-30 seconds
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question20" value="3" style="margin-right: 8px;" /> 30-60 seconds
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 21: TB PPE -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">21. Which type of PPE is required when caring for a patient with confirmed tuberculosis?</h4>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question21" value="0" style="margin-right: 8px;" /> Surgical mask
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question21" value="1" style="margin-right: 8px;" /> N95 respirator
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question21" value="2" style="margin-right: 8px;" /> Face shield only
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question21" value="3" style="margin-right: 8px;" /> Gloves only
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 22: Needle Stick -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">22. If a healthcare worker sustained a needle stick injury in the course of duty, he/she should report within?</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question22" value="0" style="margin-right: 8px;" /> Within the week
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question22" value="1" style="margin-right: 8px;" /> 1 hour
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question22" value="2" style="margin-right: 8px;" /> 24 hours
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question22" value="3" style="margin-right: 8px;" /> 72 hours
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 23: Doffing PPE -->
+                    <div style="padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">23. What is the correct sequence for doffing PPE?</h4>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question23" value="0" style="margin-right: 8px;" /> Gown → Gloves → Mask → Goggles
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question23" value="1" style="margin-right: 8px;" /> Mask → Gown → Gloves → Goggles
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question23" value="2" style="margin-right: 8px;" /> Gown → Mask → Goggles → Gloves
+                            </label>
+                            <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                                <input type="radio" name="Question23" value="3" style="margin-right: 8px;" /> Gloves → Gown → Goggles → Mask
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
+
+            <!-- Submit Button -->
+            <div style="text-align: center; margin-top: 20px;">
+                <button type="submit" style="padding: 8px 20px; background-color: #3498db; color: white; border: none; border-radius: 3px; font-size: 14px; cursor: pointer;">
+                    Submit
+                </button>
+            </div>
+        </form>
     </div>
 
-    <div>
-        <label>Employee ID:</label>
-        <input asp-for="EmployeeId" />
-        <span asp-validation-for="EmployeeId" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label>Age Group:</label>
-        <select asp-for="AgeGroup">
-            <option value="">Select</option>
-            <option value="18-25">18-25</option>
-            <option value="26-35">26-35</option>
-            <option value="36-45">36-45</option>
-            <option value="46+">46+</option>
-        </select>
-        <span asp-validation-for="AgeGroup" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label>Sex:</label>
-        <select asp-for="Sex">
-            <option value="">Select</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select>
-        <span asp-validation-for="Sex" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label>PWD:</label>
-        <select asp-for="PWD">
-            <option value="">Select</option>
-            <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select>
-        <span asp-validation-for="PWD" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label>Civil Status:</label>
-        <select asp-for="CivilStatus">
-            <option value="">Select</option>
-            <option value="Single">Single</option>
-            <option value="Married">Married</option>
-            <option value="Divorced">Divorced</option>
-            <option value="Widowed">Widowed</option>
-        </select>
-        <span asp-validation-for="CivilStatus" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label>Department:</label>
-        <input asp-for="Department" />
-        <span asp-validation-for="Department" class="text-danger"></span>
-    </div>
-
-    <div>
-        <label>COVID-19</label>
-        <input type="radio" name="selectedAnswers[0]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[0]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[0]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[0]" value="3" /> Standard precaution
-    </div>
-
-    <div>
-        <label>Tetanus</label>
-        <input type="radio" name="selectedAnswers[1]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[1]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[1]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[1]" value="3" /> Standard precaution
-    </div>
-    <div>
-        <label>Diphtheria</label>
-        <input type="radio" name="selectedAnswers[2]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[2]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[2]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[2]" value="3" /> Standard precaution
-    </div>
-
-    <div>
-        <label>MRSA</label>
-        <input type="radio" name="selectedAnswers[3]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[3]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[3]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[3]" value="3" /> Standard precaution
-    </div>
-
-    <div>
-        <label>Human Immunodeficiency Virus</label>
-        <input type="radio" name="selectedAnswers[4]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[4]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[4]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[4]" value="3" /> Standard precaution
-    </div>
-
-    <div>
-        <label>Varicella</label>
-        <input type="radio" name="selectedAnswers[5]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[5]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[5]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[5]" value="3" /> Standard precaution
-    </div>
-
-    <div>
-        <label>Pertussis</label>
-        <input type="radio" name="selectedAnswers[6]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[6]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[6]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[6]" value="3" /> Standard precaution
-    </div>
-
-    <div>
-        <label>Human Metapneumovirus</label>
-        <input type="radio" name="selectedAnswers[7]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[7]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[7]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[7]" value="3" /> Standard precaution
-    </div>
-
-    <div>
-        <label>Pulmonary Tuberculosis</label>
-        <input type="radio" name="selectedAnswers[8]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[8]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[8]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[8]" value="3" /> Standard precaution
-    </div>
-
-    <div>
-        <label>Measles</label>
-        <input type="radio" name="selectedAnswers[9]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[9]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[9]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[9]" value="3" /> Standard precaution
-    </div>
-
-    <div>
-        <label>CRE</label>
-        <input type="radio" name="selectedAnswers[10]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[10]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[10]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[10]" value="3" /> Standard precaution
-    </div>
-
-    <div>
-        <label>Extrapulmonary Tuberculosis</label>
-        <input type="radio" name="selectedAnswers[11]" value="0" /> Airborne precaution
-        <input type="radio" name="selectedAnswers[11]" value="1" /> Contact precaution
-        <input type="radio" name="selectedAnswers[11]" value="2" /> Droplet precaution
-        <input type="radio" name="selectedAnswers[11]" value="3" /> Standard precaution
-    </div>
-
-    <div>
-        <label>What is the correct sequence for donning PPE?</label>
-        <input type="radio" name="selectedAnswers[12]" value="0" /> Gown → Gloves → Mask → Goggles
-        <input type="radio" name="selectedAnswers[12]" value="1" /> Mask → Gown → Gloves → Goggles
-        <input type="radio" name="selectedAnswers[12]" value="2" /> Gown → Mask → Goggles → Gloves
-        <input type="radio" name="selectedAnswers[12]" value="3" /> Gloves → Gown → Goggles → Mask
-    </div>
-
-    <div>
-        <label>What is the primary goal of infection prevention and control (IPC) in a healthcare setting?</label>
-        <input type="radio" name="selectedAnswers[13]" value="0" /> Reduce hospital costs
-        <input type="radio" name="selectedAnswers[13]" value="1" /> Protect only healthcare workers from infections
-        <input type="radio" name="selectedAnswers[13]" value="2" /> Prevent the spread of infections among patients, healthcare workers, and visitors
-        <input type="radio" name="selectedAnswers[13]" value="3" /> Improve hospital ranking
-    </div>
-
-  <div>
-        <label>What are the 5 Moments for Hand Hygiene, as recommended by the World Health Organization (WHO)? Select all that apply.</label><br>
-        <input type="checkbox" name="selectedAnswers14" value="0" /> Before touching a patient<br>
-        <input type="checkbox" name="selectedAnswers14" value="1" /> Before a procedure<br>
-        <input type="checkbox" name="selectedAnswers14" value="2" /> Before touching your eyes, nose, or mouth<br>
-        <input type="checkbox" name="selectedAnswers14" value="3" /> After playing with animals<br>
-        <input type="checkbox" name="selectedAnswers14" value="4" /> After a procedure or exposure to body fluids<br>
-        <input type="checkbox" name="selectedAnswers14" value="5" /> After blowing your nose, coughing, or sneezing<br>
-        <input type="checkbox" name="selectedAnswers14" value="6" /> After touching a patient<br>
-        <input type="checkbox" name="selectedAnswers14" value="7" /> After using the restroom<br>
-        <input type="checkbox" name="selectedAnswers14" value="8" /> After touching a patient's surroundings<br>
-        <input type="checkbox" name="selectedAnswers14" value="9" /> Before preparing or eating food<br>
-    </div>
-
-    <div>
-        <label>Which of the following is the most effective way to prevent the spread of infections?</label><br>
-        <input type="radio" name="selectedAnswers[15]" value="0" /> Wearing a mask at all times<br>
-        <input type="radio" name="selectedAnswers[15]" value="1" /> Frequent and proper hand hygiene<br>
-        <input type="radio" name="selectedAnswers[15]" value="2" /> Using antibiotics for all patients<br>
-        <input type="radio" name="selectedAnswers[15]" value="3" /> Spraying disinfectant in the air<br>
-    </div>
-
-    <div>
-        <label>When cohorting patients with the same suspected or confirmed diagnosis in one room, the distance must be maintained between each patient at:</label><br>
-        <input type="radio" name="selectedAnswers[16]" value="0" /> 1 foot<br>
-        <input type="radio" name="selectedAnswers[16]" value="1" /> 2 feet<br>
-        <input type="radio" name="selectedAnswers[16]" value="2" /> 3 feet (1 meter)<br>
-        <input type="radio" name="selectedAnswers[16]" value="3" /> 6 feet (2 meters)<br>
-    </div>
-
-    <div>
-        <label>A patient is diagnosed with Clostridioides difficile (C. difficile) infection. What type of precautions should be implemented?</label><br>
-        <input type="radio" name="selectedAnswers[17]" value="0" /> Standard Precautions<br>
-        <input type="radio" name="selectedAnswers[17]" value="1" /> Droplet Precautions<br>
-        <input type="radio" name="selectedAnswers[17]" value="2" /> Contact Precautions<br>
-        <input type="radio" name="selectedAnswers[17]" value="3" /> Airborne Precautions<br>
-    </div>
-
-    <div>
-        <label>In high-risk areas of health care facilities such as isolation rooms, the recommended minimal ventilation rate is:</label><br>
-        <input type="radio" name="selectedAnswers[18]" value="0" /> 8 air changes per hour (ACH)<br>
-        <input type="radio" name="selectedAnswers[18]" value="1" /> 10 air changes per hour (ACH)<br>
-        <input type="radio" name="selectedAnswers[18]" value="2" /> 12 air changes per hour (ACH)<br>
-        <input type="radio" name="selectedAnswers[18]" value="3" /> 14 air changes per hour (ACH)<br>
-    </div>
-
-    <div>
-        <label>Alcohol-based hand rubbing should be done for how many seconds to be effective?</label><br>
-        <input type="radio" name="selectedAnswers[19]" value="0" /> 5-10 seconds<br>
-        <input type="radio" name="selectedAnswers[19]" value="1" /> 10-20 seconds<br>
-        <input type="radio" name="selectedAnswers[19]" value="2" /> 20-30 seconds<br>
-        <input type="radio" name="selectedAnswers[19]" value="3" /> 30-60 seconds<br>
-    </div>
-
-    <div>
-        <label>Which type of PPE is required when caring for a patient with confirmed tuberculosis?</label><br>
-        <input type="radio" name="selectedAnswers[20]" value="0" /> Surgical mask<br>
-        <input type="radio" name="selectedAnswers[20]" value="1" /> N95 respirator<br>
-        <input type="radio" name="selectedAnswers[20]" value="2" /> Face shield only<br>
-        <input type="radio" name="selectedAnswers[20]" value="3" /> Gloves only<br>
-    </div>
-
-    <div>
-        <label>If a healthcare worker sustained a needle stick injury in the course of her duty, he/she should report within?</label><br>
-        <input type="radio" name="selectedAnswers[21]" value="0" /> Within the week<br>
-        <input type="radio" name="selectedAnswers[21]" value="1" /> 1 hour<br>
-        <input type="radio" name="selectedAnswers[21]" value="2" /> 24 hours<br>
-        <input type="radio" name="selectedAnswers[21]" value="3" /> 72 hours<br>
-    </div>
-
-    <div>
-        <label>What is the correct sequence for doffing PPE?</label><br>
-        <input type="radio" name="selectedAnswers[22]" value="0" /> Gown → Gloves → Mask → Goggles<br>
-        <input type="radio" name="selectedAnswers[22]" value="1" /> Mask → Gown → Gloves → Goggles<br>
-        <input type="radio" name="selectedAnswers[22]" value="2" /> Gown → Mask → Goggles → Gloves<br>
-        <input type="radio" name="selectedAnswers[22]" value="3" /> Gloves → Gown → Goggles → Mask<br>
-    </div>
-
-    <button type="submit">Submit Quiz</button>
-</form>
-
+<script>
+    var quizModal = new bootstrap.Modal(document.getElementById('quizResultModal'));
+    quizModal.show();
+</script>
