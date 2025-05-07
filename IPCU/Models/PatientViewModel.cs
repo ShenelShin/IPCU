@@ -20,6 +20,8 @@ namespace IPCU.Models
         [Display(Name = "Admission Date")]
         [DataType(DataType.DateTime)]
         public DateTime? AdmDate { get; set; }
+        public DateTime? DcrDate { get; set; }
+
 
         [Display(Name = "Room")]
         public string RoomID { get; set; } = string.Empty;

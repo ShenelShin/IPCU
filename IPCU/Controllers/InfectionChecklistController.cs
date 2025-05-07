@@ -112,26 +112,37 @@ namespace IPCU.Controllers
             {
                 // Concatenate checkbox values before saving
                 model.InfectionType = string.Join(",", Request.Form["InfectionType"]);
-
                 // Add the infection record to database
                 _context.SSTInfectionModels.Add(model);
 
-                // Find the patient master record
-                var patientMaster = _context.PatientMasters
+                // Find the patient HAI record or create a new one if it doesn't exist
+                var patientHAI = _context.PatientHAI
                     .FirstOrDefault(p => p.HospNum == model.HospitalNumber);
 
-                if (patientMaster != null)
+                if (patientHAI != null)
                 {
                     // Increment the HAI count
-                    //patientMaster.HaiCount += 1;
-
-                    // Update the patient master record
-                    _context.PatientMasters.Update(patientMaster);
+                    patientHAI.HaiCount += 1;
+                    patientHAI.HaiStatus = true;
+                    patientHAI.LastUpdated = DateTime.Now;
+                    // Update the patient HAI record
+                    _context.PatientHAI.Update(patientHAI);
+                }
+                else
+                {
+                    // Create a new PatientHAI record if one doesn't exist
+                    var newPatientHAI = new PatientHAI
+                    {
+                        HospNum = model.HospitalNumber,
+                        HaiStatus = true,
+                        HaiCount = 1,
+                        LastUpdated = DateTime.Now
+                    };
+                    _context.PatientHAI.Add(newPatientHAI);
                 }
 
                 // Save all changes to the database
                 _context.SaveChanges();
-
                 TempData["Success"] = "Checklist submitted successfully! HAI count has been updated.";
                 return RedirectToAction("Details", "ICNPatient", new { id = model.HospitalNumber });
             }

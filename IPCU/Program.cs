@@ -1,5 +1,6 @@
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using IPCU.Data;
+using IPCU.Models;
 using IPCU.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

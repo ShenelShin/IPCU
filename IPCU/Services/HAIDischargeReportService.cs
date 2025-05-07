@@ -33,6 +33,7 @@ namespace IPCU.Services
             foreach (var area in areas)
             {
                 var areaMonthlyData = new List<HAIDischargeData>();
+
                 for (int month = 1; month <= 12; month++)
                 {
                     // Get date range for this month
@@ -48,13 +49,17 @@ namespace IPCU.Services
 
                     int totalDischarges = movementData.Sum(m => m.SentHomeCount + m.MortalityCount + m.TransferOutCount);
 
-                    // Simplify HAI cases counting - just count patients with HAI status = true in this area
+                    // Join PatientMaster with PatientHAI to get HAI status
                     var haiCases = await _context.PatientMasters
-                        .Join(_context.Patients,
+                        .Join(_context.PatientHAI,
                               pm => pm.HospNum,
+                              hai => hai.HospNum,
+                              (pm, hai) => new { PatientMaster = pm, HAI = hai })
+                        .Join(_context.Patients,
+                              combined => combined.PatientMaster.HospNum,
                               p => p.HospNum,
-                              (pm, p) => new { PatientMaster = pm, Patient = p })
-                        .Where(x => //x.PatientMaster.HaiStatus == true &&
+                              (combined, p) => new { combined.PatientMaster, combined.HAI, Patient = p })
+                        .Where(x => x.HAI.HaiStatus == true &&
                                     x.Patient.AdmLocation == area &&
                                     x.Patient.AdmDate.HasValue &&
                                     x.Patient.AdmDate.Value >= startDate &&
