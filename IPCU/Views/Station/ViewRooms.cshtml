@@ -1,0 +1,24 @@
+﻿<h3>Rooms for Station: @ViewBag.Station</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Room ID</th>
+            <th>Status</th> <!-- New column -->
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in ViewBag.Rooms)
+        {
+            string roomId = row["RoomID"].ToString();
+            string status = row["OccupancyStatus"].ToString();
+            <tr>
+                <td>@roomId</td>
+                <td>@status</td> <!-- Show status here -->
+                <td>
+                    <a class="btn btn-secondary" href="@Url.Action("Index", "TCSkillsChecklistReals", new { roomId = roomId, station = ViewBag.Station })">TC Skills Checklist</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,1582 @@
+﻿@model IPCU.Models.EnvironmentalzControl
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>EnvironmentalzControl</h4>
+    <hr />
+    <dl class="row">
+      
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AreaOrUnit)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AreaOrUnit)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateAndTimeOfMonitoring)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateAndTimeOfMonitoring)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AssessedBy)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AssessedBy)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_FloorsWallsClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_FloorsWallsClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_FloorsWallsClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_FloorsWallsClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_FloorsWallsClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_FloorsWallsClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_FloorsWallsClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_FloorsWallsClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_FloorsWallsClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_FloorsWallsClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_CurtainsClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_CurtainsClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_CurtainsClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_CurtainsClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_CurtainsClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_CurtainsClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_CurtainsClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_CurtainsClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_CurtainsClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_CurtainsClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_SinkClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_SinkClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_SinkClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_SinkClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_SinkClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_SinkClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_SinkClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_SinkClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_SinkClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_SinkClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_SoapDispenser_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_SoapDispenser_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_SoapDispenser_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_SoapDispenser_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_SoapDispenser_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_SoapDispenser_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_SoapDispenser_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_SoapDispenser_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_SoapDispenser_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_SoapDispenser_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_AlcoholSanitizers_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_AlcoholSanitizers_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_AlcoholSanitizers_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_AlcoholSanitizers_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_AlcoholSanitizers_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_AlcoholSanitizers_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_AlcoholSanitizers_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_AlcoholSanitizers_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_AlcoholSanitizers_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_AlcoholSanitizers_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_PPEAvailable_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_PPEAvailable_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_PPEAvailable_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_PPEAvailable_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_PPEAvailable_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_PPEAvailable_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_PPEAvailable_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_PPEAvailable_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_PPEAvailable_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_PPEAvailable_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_NoFoodInCareAreas_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_NoFoodInCareAreas_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_NoFoodInCareAreas_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_NoFoodInCareAreas_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_NoFoodInCareAreas_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_NoFoodInCareAreas_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_NoFoodInCareAreas_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_NoFoodInCareAreas_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PatientExamRoom_NoFoodInCareAreas_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.PatientExamRoom_NoFoodInCareAreas_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ChartsStored_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ChartsStored_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ChartsStored_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ChartsStored_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ChartsStored_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ChartsStored_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ChartsStored_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ChartsStored_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ChartsStored_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ChartsStored_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_NoFoodOrDrinks_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_NoFoodOrDrinks_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_NoFoodOrDrinks_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_NoFoodOrDrinks_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_NoFoodOrDrinks_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_NoFoodOrDrinks_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_NoFoodOrDrinks_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_NoFoodOrDrinks_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_NoFoodOrDrinks_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_NoFoodOrDrinks_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_FansClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_FansClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_FansClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_FansClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_FansClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_FansClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_FansClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_FansClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_FansClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_FansClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ACClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ACClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ACClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ACClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ACClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ACClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ACClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ACClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ACClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ACClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ExhaustFansClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ExhaustFansClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ExhaustFansClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ExhaustFansClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ExhaustFansClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ExhaustFansClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ExhaustFansClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ExhaustFansClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_ExhaustFansClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_ExhaustFansClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CeilingClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CeilingClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CeilingClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CeilingClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CeilingClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CeilingClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CeilingClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CeilingClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CeilingClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CeilingClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_WallsClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_WallsClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_WallsClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_WallsClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_WallsClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_WallsClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_WallsClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_WallsClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_WallsClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_WallsClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CountersClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CountersClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CountersClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CountersClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CountersClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CountersClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CountersClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CountersClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CountersClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CountersClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_FloorsClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_FloorsClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_FloorsClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_FloorsClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_FloorsClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_FloorsClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_FloorsClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_FloorsClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_FloorsClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_FloorsClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_DoorsWindowsClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_DoorsWindowsClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_DoorsWindowsClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_DoorsWindowsClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_DoorsWindowsClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_DoorsWindowsClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_DoorsWindowsClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_DoorsWindowsClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_DoorsWindowsClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_DoorsWindowsClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CleanBathroom_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CleanBathroom_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CleanBathroom_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CleanBathroom_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CleanBathroom_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CleanBathroom_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CleanBathroom_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CleanBathroom_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WorkArea_CleanBathroom_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WorkArea_CleanBathroom_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hallway_FloorsWallsClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hallway_FloorsWallsClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hallway_FloorsWallsClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hallway_FloorsWallsClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hallway_FloorsWallsClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hallway_FloorsWallsClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hallway_FloorsWallsClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hallway_FloorsWallsClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hallway_FloorsWallsClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hallway_FloorsWallsClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hallway_NoObstruction_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hallway_NoObstruction_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hallway_NoObstruction_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hallway_NoObstruction_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hallway_NoObstruction_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hallway_NoObstruction_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hallway_NoObstruction_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hallway_NoObstruction_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Hallway_NoObstruction_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Hallway_NoObstruction_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_FurnitureClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_FurnitureClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_FurnitureClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_FurnitureClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_FurnitureClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_FurnitureClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_FurnitureClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_FurnitureClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_FurnitureClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_FurnitureClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_TrashDisposed_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_TrashDisposed_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_TrashDisposed_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_TrashDisposed_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_TrashDisposed_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_TrashDisposed_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_TrashDisposed_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_TrashDisposed_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_TrashDisposed_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_TrashDisposed_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_FoodInDesignatedArea_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_FoodInDesignatedArea_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_FoodInDesignatedArea_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_FoodInDesignatedArea_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_FoodInDesignatedArea_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_FoodInDesignatedArea_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_FoodInDesignatedArea_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_FoodInDesignatedArea_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WaitingArea_FoodInDesignatedArea_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WaitingArea_FoodInDesignatedArea_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Equipment_StorageClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Equipment_StorageClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Equipment_StorageClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Equipment_StorageClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Equipment_StorageClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Equipment_StorageClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Equipment_StorageClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Equipment_StorageClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Equipment_StorageClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Equipment_StorageClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_CleanSoiledSeparation_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_CleanSoiledSeparation_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_CleanSoiledSeparation_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_CleanSoiledSeparation_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_CleanSoiledSeparation_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_CleanSoiledSeparation_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_CleanSoiledSeparation_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_CleanSoiledSeparation_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_CleanSoiledSeparation_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_CleanSoiledSeparation_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_FloorsWallsClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_FloorsWallsClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_FloorsWallsClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_FloorsWallsClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_FloorsWallsClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_FloorsWallsClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_FloorsWallsClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_FloorsWallsClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_FloorsWallsClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_FloorsWallsClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesOnFloor_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesOnFloor_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesOnFloor_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesOnFloor_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesOnFloor_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesOnFloor_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesOnFloor_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesOnFloor_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesOnFloor_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesOnFloor_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesFromCeiling_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SuppliesFromCeiling_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesFromCeiling_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SuppliesFromCeiling_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesFromCeiling_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SuppliesFromCeiling_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesFromCeiling_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SuppliesFromCeiling_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesFromCeiling_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SuppliesFromCeiling_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesUnderSink_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesUnderSink_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesUnderSink_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesUnderSink_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesUnderSink_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesUnderSink_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesUnderSink_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesUnderSink_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesUnderSink_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesUnderSink_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesInBathrooms_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesInBathrooms_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesInBathrooms_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesInBathrooms_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesInBathrooms_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesInBathrooms_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesInBathrooms_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesInBathrooms_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesInBathrooms_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesInBathrooms_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_FIFOStocks_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_FIFOStocks_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_FIFOStocks_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_FIFOStocks_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_FIFOStocks_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_FIFOStocks_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_FIFOStocks_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_FIFOStocks_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_FIFOStocks_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_FIFOStocks_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesNotExpired_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SuppliesNotExpired_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesNotExpired_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SuppliesNotExpired_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesNotExpired_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SuppliesNotExpired_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesNotExpired_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SuppliesNotExpired_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesNotExpired_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SuppliesNotExpired_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SterileTraysClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SterileTraysClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SterileTraysClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SterileTraysClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SterileTraysClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SterileTraysClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SterileTraysClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SterileTraysClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UtilityRoom_SterileTraysClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UtilityRoom_SterileTraysClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_FloorsWallsClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_FloorsWallsClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_FloorsWallsClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_FloorsWallsClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_FloorsWallsClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_FloorsWallsClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_FloorsWallsClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_FloorsWallsClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_FloorsWallsClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_FloorsWallsClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_NoPatientSupplies_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_NoPatientSupplies_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_NoPatientSupplies_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_NoPatientSupplies_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_NoPatientSupplies_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_NoPatientSupplies_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_NoPatientSupplies_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_NoPatientSupplies_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_NoPatientSupplies_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_NoPatientSupplies_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_LinenBagged_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_LinenBagged_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_LinenBagged_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_LinenBagged_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_LinenBagged_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_LinenBagged_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_LinenBagged_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_LinenBagged_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SoiledRoom_LinenBagged_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SoiledRoom_LinenBagged_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_ColorBinsAvailable_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_ColorBinsAvailable_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_ColorBinsAvailable_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_ColorBinsAvailable_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_ColorBinsAvailable_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_ColorBinsAvailable_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_ColorBinsAvailable_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_ColorBinsAvailable_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_ColorBinsAvailable_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_ColorBinsAvailable_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_ProperDisposal_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_ProperDisposal_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_ProperDisposal_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_ProperDisposal_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_ProperDisposal_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_ProperDisposal_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_ProperDisposal_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_ProperDisposal_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_ProperDisposal_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_ProperDisposal_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_BinsNotOverfilled_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_BinsNotOverfilled_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_BinsNotOverfilled_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_BinsNotOverfilled_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_BinsNotOverfilled_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_BinsNotOverfilled_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_BinsNotOverfilled_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_BinsNotOverfilled_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_BinsNotOverfilled_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_BinsNotOverfilled_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_BinsClean_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_BinsClean_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_BinsClean_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_BinsClean_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_BinsClean_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_BinsClean_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_BinsClean_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_BinsClean_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_BinsClean_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_BinsClean_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsLabeled_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_SharpsLabeled_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsLabeled_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_SharpsLabeled_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsLabeled_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_SharpsLabeled_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsLabeled_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_SharpsLabeled_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsLabeled_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_SharpsLabeled_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsNotOverfilled_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_SharpsNotOverfilled_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsNotOverfilled_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_SharpsNotOverfilled_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsNotOverfilled_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_SharpsNotOverfilled_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsNotOverfilled_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_SharpsNotOverfilled_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsNotOverfilled_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.WasteMgmt_SharpsNotOverfilled_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Refrigerator_TempChecked_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Refrigerator_TempChecked_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Refrigerator_TempChecked_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Refrigerator_TempChecked_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Refrigerator_TempChecked_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Refrigerator_TempChecked_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Refrigerator_TempChecked_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Refrigerator_TempChecked_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Refrigerator_TempChecked_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Refrigerator_TempChecked_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Refrigerator_Dedicated_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Refrigerator_Dedicated_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Refrigerator_Dedicated_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Refrigerator_Dedicated_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Refrigerator_Dedicated_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Refrigerator_Dedicated_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Refrigerator_Dedicated_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Refrigerator_Dedicated_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Refrigerator_Dedicated_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Refrigerator_Dedicated_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_NoExpired_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_NoExpired_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_NoExpired_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_NoExpired_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_NoExpired_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_NoExpired_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_NoExpired_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_NoExpired_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_NoExpired_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_NoExpired_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_VialsDated_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_VialsDated_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_VialsDated_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_VialsDated_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_VialsDated_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_VialsDated_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_VialsDated_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_VialsDated_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_VialsDated_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_VialsDated_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_VaccinesStored_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_VaccinesStored_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_VaccinesStored_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_VaccinesStored_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_VaccinesStored_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_VaccinesStored_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_VaccinesStored_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_VaccinesStored_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_VaccinesStored_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_VaccinesStored_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_NoLooseNeedles_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_NoLooseNeedles_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_NoLooseNeedles_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_NoLooseNeedles_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_NoLooseNeedles_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_NoLooseNeedles_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_NoLooseNeedles_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_NoLooseNeedles_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Medications_NoLooseNeedles_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Medications_NoLooseNeedles_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Misc_SpecimensLabeled_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Misc_SpecimensLabeled_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Misc_SpecimensLabeled_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Misc_SpecimensLabeled_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Misc_SpecimensLabeled_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Misc_SpecimensLabeled_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Misc_SpecimensLabeled_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Misc_SpecimensLabeled_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Misc_SpecimensLabeled_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Misc_SpecimensLabeled_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Misc_StaffHygienePPE_Finding)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Misc_StaffHygienePPE_Finding)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Misc_StaffHygienePPE_ActionDone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Misc_StaffHygienePPE_ActionDone)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Misc_StaffHygienePPE_Remarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Misc_StaffHygienePPE_Remarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Misc_StaffHygienePPE_FuDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Misc_StaffHygienePPE_FuDate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Misc_StaffHygienePPE_FuRemarks)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Misc_StaffHygienePPE_FuRemarks)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.UnitAreaStaffSignature)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.UnitAreaStaffSignature)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FollowUpDate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FollowUpDate)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

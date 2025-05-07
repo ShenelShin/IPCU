@@ -59,8 +59,8 @@ namespace IPCU.Controllers
             if (ModelState.IsValid)
             {
                 // Set default values for the hidden fields
-                patientMaster.HaiStatus = false;
-                patientMaster.HaiCount = 0;
+                //patientMaster.HaiStatus = false;
+                //patientMaster.HaiCount = 0;
 
                 _context.Add(patientMaster);
                 await _context.SaveChangesAsync();

@@ -51,101 +51,143 @@
         </div>
         <!-- Right Logo -->
         <div class="flex justify-center p-2 border-l border-black">
-            <img src="/images/nkti-right-logo.png" alt="Right Logo" class="h-20 w-auto" />
+            <img src="/images/nkti-right-logo-removebg-preview.png" alt="Right Logo" class="h-20 w-auto" />
         </div>
     </div>
 
 
 @using (Html.BeginForm("Submit", "InfectionChecklist", FormMethod.Post))
 {
-    <fieldset>
-        <legend>Patient Information</legend>
-        <table>
-            <tr>
-                <td>@Html.LabelFor(m => m.Fname, "First Name") <br />@Html.TextBoxFor(m => m.Fname)</td>
-                <td>@Html.LabelFor(m => m.Mname, "Middle Name") <br />@Html.TextBoxFor(m => m.Mname)</td>
-                <td>@Html.LabelFor(m => m.Lname, "Last Name") <br />@Html.TextBoxFor(m => m.Lname)</td>
-                <td>@Html.LabelFor(m => m.HospitalNumber) <br />@Html.TextBoxFor(m => m.HospitalNumber)</td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(m => m.DateOfBirth) <br />@Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}", new { type = "date" })</td>
-                <td>@Html.LabelFor(m => m.Age) <br />@Html.TextBoxFor(m => m.Age)</td>
-                <td>@Html.LabelFor(m => m.UnitWardArea) <br />@Html.TextBoxFor(m => m.UnitWardArea)</td>
-                <td>@Html.LabelFor(m => m.MainService) <br />@Html.TextBoxFor(m => m.MainService)</td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(m => m.DateOfEvent) <br />@Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}", new { type = "date" })</td>
-                <td>@Html.LabelFor(m => m.Investigator) <br />@Html.TextBoxFor(m => m.Investigator)</td>
-                <td>@Html.LabelFor(m => m.DateOfAdmission) <br />@Html.TextBoxFor(m => m.DateOfAdmission, "{0:yyyy-MM-dd}", new { type = "date" })</td>
-                <td>
-                    @Html.LabelFor(m => m.Disposition) <br />
-                    @Html.DropDownListFor(m => m.Disposition, new SelectList(new[]
-                             {
-                new { Value = "", Text = "-- Select Disposition --" },
-                new { Value = "Mortality", Text = "Mortality" },
-                new { Value = "Discharged", Text = "Discharged" },
-                new { Value = "Still Admitted", Text = "Still Admitted" },
-                new { Value = "Transferred In", Text = "Transferred In" },
-                new { Value = "Transferred Out", Text = "Transferred Out" }
-                }, "Value", "Text"), new { @class = "form-control", id = "dispositionSelect" })
+        <fieldset>
+            <legend>Patient Information</legend>
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.Fname, "First Name") <br />
+                        @Html.TextBoxFor(m => m.Fname, new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.Mname, "Middle Name") <br />
+                        @Html.TextBoxFor(m => m.Mname, new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.Lname, "Last Name") <br />
+                        @Html.TextBoxFor(m => m.Lname, new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.HospitalNumber) <br />
+                        @Html.TextBoxFor(m => m.HospitalNumber, new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.DateOfBirth) <br />
+                        @Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.Age) <br />
+                        @Html.TextBoxFor(m => m.Age, new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.UnitWardArea) <br />
+                        @Html.TextBoxFor(m => m.UnitWardArea, new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.MainService) <br />
+                        @Html.TextBoxFor(m => m.MainService, new { @class = "form-control" })
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.DateOfEvent) <br />
+                        @Html.TextBoxFor(m => m.DateOfEvent, "{0:yyyy-MM-dd}", new { type = "date", value = DateTime.Now.ToString("yyyy-MM-dd"), @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.Investigator) <br />
+                        @Html.TextBoxFor(m => m.Investigator, new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.DateOfAdmission) <br />
+                        @Html.TextBoxFor(m => m.DateOfAdmission, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.Disposition) <br />
+                        @Html.DropDownListFor(m => m.Disposition, new SelectList(new[]
+                                 {
+                    new { Value = "", Text = "-- Select Disposition --" },
+                    new { Value = "Mortality", Text = "Mortality" },
+                    new { Value = "Discharged", Text = "Discharged" },
+                    new { Value = "Still Admitted", Text = "Still Admitted" },
+                    new { Value = "Transferred In", Text = "Transferred In" },
+                    new { Value = "Transferred Out", Text = "Transferred Out" }
+                    }, "Value", "Text"), new { @class = "form-control", id = "dispositionSelect" })
 
-                    @Html.LabelFor(m => m.DispositionDate)
-                    @Html.TextBoxFor(m => m.DispositionDate, new { @class = "form-control", type = "date", id = "dispositionDateInput" })
+                        <br />
+                        @Html.LabelFor(m => m.DispositionDate)
+                        @Html.TextBoxFor(m => m.DispositionDate, new { @class = "form-control", type = "date", id = "dispositionDateInput" })
 
-                    <div id="dispositionTransferDiv" style="display: none;">
-                        @Html.LabelFor(m => m.DispositionTransfer) <br />
-                        @Html.TextBoxFor(m => m.DispositionTransfer, new { @class = "form-control", id = "dispositionTransferInput" })
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>@Html.LabelFor(m => m.Gender) <br />@Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female" }))</td>
-                <td>@Html.LabelFor(m => m.Classification) <br />@Html.DropDownListFor(m => m.Classification, new SelectList(new[] { "Pay", "Service" }))</td>
-                <td>
-                    @Html.LabelFor(m => m.MDRO) <br />
-                    @Html.CheckBoxFor(m => m.MDRO, new { id = "mdroCheckbox" }) Yes
+                        <div id="dispositionTransferDiv" style="display: none; margin-top: 10px;">
+                            @Html.LabelFor(m => m.DispositionTransfer) <br />
+                            @Html.TextBoxFor(m => m.DispositionTransfer, new { @class = "form-control", id = "dispositionTransferInput" })
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(m => m.Gender) <br />
+                        @Html.DropDownListFor(m => m.Gender, new SelectList(new[] { "Male", "Female" }), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.Classification) <br />
+                        @Html.DropDownListFor(m => m.Classification, new SelectList(new[] { "Pay", "Service" }), new { @class = "form-control" })
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.MDRO) <br />
+                        <div class="form-check">
+                            @Html.CheckBoxFor(m => m.MDRO, new { id = "mdroCheckbox", @class = "form-check-input" })
+                            <label class="form-check-label" for="mdroCheckbox">Yes</label>
+                        </div>
 
-                    <div id="mdroganismDiv" style="display:none; margin-top:10px;">
-                        @Html.LabelFor(m => m.MDROOrganism)
-                        @Html.TextBoxFor(m => m.MDROOrganism, new { @class = "form-control", id = "mdroganismInput" })
-                    </div>
-                </td>
-                <td>
-                    @Html.LabelFor(m => m.InfectionType) <br />
-                    <table>
-                        <tr>
-                            <td>
-                                <div>
-                                    <input type="checkbox" name="InfectionType" value="BURN"
-                                    @(Model.InfectionType != null && Model.InfectionType.Contains("BURN") ? "checked" : "") />
-                                    <label>BURN</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" name="InfectionType" value="DECU"
-                                    @(Model.InfectionType != null && Model.InfectionType.Contains("DECU") ? "checked" : "") />
-                                    <label>DECU</label>
-                                </div>
-                            </td>
-                            <td>
-                                <div>
-                                    <input type="checkbox" name="InfectionType" value="ST"
-                                    @(Model.InfectionType != null && Model.InfectionType.Contains("ST") ? "checked" : "") />
-                                    <label>ST</label>
-                                </div>
-                                <div>
-                                    <input type="checkbox" name="InfectionType" value="SKIN"
-                                    @(Model.InfectionType != null && Model.InfectionType.Contains("SKIN") ? "checked" : "") />
-                                    <label>SKIN</label>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
+                        <div id="mdroganismDiv" style="display:none; margin-top:10px;">
+                            @Html.LabelFor(m => m.MDROOrganism)
+                            @Html.TextBoxFor(m => m.MDROOrganism, new { @class = "form-control", id = "mdroganismInput" })
+                        </div>
+                    </td>
+                    <td>
+                        @Html.LabelFor(m => m.InfectionType) <br />
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="InfectionType" value="BURN"
+                                        @(Model.InfectionType != null && Model.InfectionType.Contains("BURN") ? "checked" : "") />
+                                        <label class="form-check-label">BURN</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="InfectionType" value="DECU"
+                                        @(Model.InfectionType != null && Model.InfectionType.Contains("DECU") ? "checked" : "") />
+                                        <label class="form-check-label">DECU</label>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="InfectionType" value="ST"
+                                        @(Model.InfectionType != null && Model.InfectionType.Contains("ST") ? "checked" : "") />
+                                        <label class="form-check-label">ST</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="InfectionType" value="SKIN"
+                                        @(Model.InfectionType != null && Model.InfectionType.Contains("SKIN") ? "checked" : "") />
+                                        <label class="form-check-label">SKIN</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
 
-
-            </tr>
-        </table>
-    </fieldset>
 
 
     <!-- BURN Infection Section -->
@@ -175,8 +217,11 @@
                         <td>
                             @Html.LabelFor(m => m.BurnCultureDate, "Culture date:") <br />
                             @Html.TextBoxFor(m => m.BurnCultureDate, new { @class = "form-control", type = "date" })
-                        </td>
-                        <td>@Html.LabelFor(m => m.BurnCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.BurnCultureResults)</td>
+                            <td>
+                                    @Html.LabelFor(m => m.BurnCultureResults, "Culture results:") <br />
+                                    @Html.TextAreaFor(m => m.BurnCultureResults, new { @class = "form-control", rows = 3 })
+                            </td>
+
                 </tr>
             </table>
         </div>
@@ -222,7 +267,11 @@
                             @Html.LabelFor(m => m.DecubitusCultureDate, "Culture date:") <br />
                             @Html.TextBoxFor(m => m.DecubitusCultureDate, new { @class = "form-control", type = "date" })
                         </td>
-                        <td>@Html.LabelFor(m => m.DecubitusCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.DecubitusCultureResults)</td>
+                            <td>
+                                @Html.LabelFor(m => m.DecubitusCultureResults, "Culture results:") <br />
+                                @Html.TextAreaFor(m => m.DecubitusCultureResults, new { @class = "form-control", rows = 3 })
+                            </td>
+
                 </tr>
             </table>
         </div>
@@ -264,10 +313,11 @@
                         @Html.LabelFor(m => m.STCultureDate, "Culture date:") <br />
                             @Html.TextBoxFor(m => m.STCultureDate, new { @class = "form-control", type = "date" })
                         </td>
-                    <td>
-                        @Html.LabelFor(m => m.STCultureResults, "Culture results:") <br />
-                        @Html.TextAreaFor(m => m.STCultureResults)
-                    </td>
+                            <td>
+                                @Html.LabelFor(m => m.STCultureResults, "Culture results:") <br />
+                                @Html.TextAreaFor(m => m.STCultureResults, new { @class = "form-control", rows = 3 })
+                            </td>
+
                 </tr>
             </table>
         </div>
@@ -320,8 +370,11 @@
                         @Html.LabelFor(m => m.SkinCultureDate, "Culture date:") <br />
                         @Html.TextBoxFor(m => m.SkinCultureDate, new { @class = "form-control", type = "date" })
                     </td>
-                    <td>@Html.LabelFor(m => m.SkinCultureResults, "Culture results:") <br />@Html.TextAreaFor(m => m.SkinCultureResults)</td>
-            </tr>
+                        <td>
+                            @Html.LabelFor(m => m.SkinCultureResults, "Culture results:") <br />
+                            @Html.TextAreaFor(m => m.SkinCultureResults, new { @class = "form-control", rows = 3 })
+                        </td>
+                    </tr>
         </table>
     </fieldset>
     </div>

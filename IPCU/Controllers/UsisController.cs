@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using IPCU.Data;
 using IPCU.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace IPCU.Controllers
 {
@@ -15,13 +17,15 @@ namespace IPCU.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IConfiguration _configuration;
+        private readonly PatientDbContext _patientContext;
 
-
-        public UsisController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public UsisController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, IConfiguration configuration, PatientDbContext patientContext)
         {
             _context = context;
             _userManager = userManager;
-
+            _configuration = configuration;
+            _patientContext = patientContext;
         }
 
         // GET: Usis
@@ -56,7 +60,7 @@ namespace IPCU.Controllers
                     model.Fname = patientInfo.PatientMaster.FirstName;
                     model.Mname = patientInfo.PatientMaster.MiddleName;
                     model.Lname = patientInfo.PatientMaster.LastName;
-                    model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
+                    //model.DateOfBirth = patientInfo.PatientMaster.BirthDate;
                     model.UnitWardArea = patientInfo.Patients.AdmLocation;
 
                     // null kasi bdate ko fuck goddamit
@@ -133,30 +137,178 @@ namespace IPCU.Controllers
 
 
         // GET: Usis/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(string hospNum)
         {
-            return View();
+            var model = new Usi();
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser != null)
+            {
+                model.Investigator = $"{currentUser.FirstName} {currentUser.Initial} {currentUser.LastName}".Trim();
+            }
+            // Set default TypeClass
+            model.TypeClass = "USI";
+
+            if (!string.IsNullOrEmpty(hospNum))
+            {
+                string connectionStringPatient = _configuration.GetConnectionString("PatientConnection");
+
+                using (SqlConnection conn = new SqlConnection(connectionStringPatient))
+                {
+                    await conn.OpenAsync();
+
+                    string query = @"
+                        SELECT TOP 1 tm.HospNum, tm.FirstName, tm.MiddleName, tm.LastName, tm.Sex,
+                               tm.BirthDate, tm.MSSDiscountExpiry,
+                               tp.AdmLocation, tp.AdmDate, tp.Age, tp.RoomId, tp.DcrDate
+                        FROM tbmaster tm
+                        LEFT JOIN tbpatient tp ON tm.HospNum = tp.HospNum
+                        WHERE tm.HospNum = @HospNum
+                        ORDER BY tp.AdmDate DESC";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@HospNum", hospNum);
+
+                        using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                model.HospitalNumber = reader["HospNum"]?.ToString();
+                                model.Fname = reader["FirstName"]?.ToString();
+                                model.Mname = reader["MiddleName"]?.ToString();
+                                model.Lname = reader["LastName"]?.ToString();
+                                model.Gender = reader["Sex"]?.ToString() == "M" ? "Male" : "Female";
+
+                                if (reader["BirthDate"] != DBNull.Value)
+                                    model.DateOfBirth = Convert.ToDateTime(reader["BirthDate"]);
+
+                                if (reader["AdmDate"] != DBNull.Value)
+                                    model.DateOfAdmission = Convert.ToDateTime(reader["AdmDate"]);
+
+                                model.Age = int.TryParse(reader["Age"]?.ToString(), out int age) ? age : 0;
+
+                                string roomId = reader["RoomId"]?.ToString();
+
+                                // Disposition
+                                model.Disposition = reader["DcrDate"] == DBNull.Value ? "Still Admitted" : "Discharged";
+
+                                // Classification
+                                if (reader["MSSDiscountExpiry"] != DBNull.Value &&
+                                    DateTime.TryParse(reader["MSSDiscountExpiry"].ToString(), out DateTime expiry))
+                                {
+                                    model.Classification = expiry < DateTime.Now ? "Pay" : "Service";
+                                }
+                                else
+                                {
+                                    model.Classification = "Pay";
+                                }
+
+                                // Resolve UnitWardArea
+                                if (!string.IsNullOrEmpty(roomId))
+                                {
+                                    string connectionStringBuild = _configuration.GetConnectionString("Build_FileConnection");
+
+                                    using (SqlConnection connBuild = new SqlConnection(connectionStringBuild))
+                                    {
+                                        await connBuild.OpenAsync();
+
+                                        string queryRoom = "SELECT StationID FROM tbCoRoom WHERE RoomId = @RoomId";
+                                        string stationId = null;
+
+                                        using (SqlCommand cmdRoom = new SqlCommand(queryRoom, connBuild))
+                                        {
+                                            cmdRoom.Parameters.AddWithValue("@RoomId", roomId);
+                                            stationId = (string)await cmdRoom.ExecuteScalarAsync();
+                                        }
+
+                                        if (!string.IsNullOrEmpty(stationId))
+                                        {
+                                            string queryStation = "SELECT Station FROM tbCoStation WHERE StationID = @StationID";
+
+                                            using (SqlCommand cmdStation = new SqlCommand(queryStation, connBuild))
+                                            {
+                                                cmdStation.Parameters.AddWithValue("@StationID", stationId);
+                                                var station = (string)await cmdStation.ExecuteScalarAsync();
+                                                model.UnitWardArea = $"{station} / {roomId}";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            model.UnitWardArea = roomId;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    model.UnitWardArea = "Unknown Location";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return View(model);
         }
+
 
         // POST: Usis/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Fname,Lname,Mname,HospitalNumber,DateOfBirth,Age,UnitWardArea,MainService,DateOfEvent,Investigator,DateOfAdmission,Disposition,DispositionDate,DispositionTransfer,Gender,Classification,MDRO,TypeClass,PatientOrganism,PatientAbscess,Fever1,LocalizedPain,PurulentDrainage,Organism,PatienLessthan1year,Fever2,Hypothermia,Apnea,Bradycardia,Lethargy,Vomiting,PurulentDrainage2,Organism2,CultureDate,CultureResults, MDROOrganism")] Usi usi)
+        public async Task<IActionResult> Create([Bind("Id,Fname,Lname,Mname,HospitalNumber,DateOfBirth,Age,UnitWardArea,MainService,DateOfEvent,Investigator,DateOfAdmission,Disposition,DispositionDate,DispositionTransfer,Gender,Classification,MDRO,TypeClass,PatientOrganism,PatientAbscess,Fever1,LocalizedPain,PurulentDrainage,Organism,PatienLessthan1year,Fever2,Hypothermia,Apnea,Bradycardia,Lethargy,Vomiting,PurulentDrainage2,Organism2,CultureDate,CultureResults,MDROOrganism")] Usi usi)
         {
             if (ModelState.IsValid)
             {
-                // Set TypeClass value to "USI" before saving
                 usi.TypeClass = "USI";
-               usi.DateCreated = DateTime.Now;
+                usi.DateCreated = DateTime.Now;
 
                 _context.Add(usi);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Details", "ICNPatient", new { id = usi.HospitalNumber });
+
+                // Retrieve the latest IdNum
+                string idNum = null;
+                string connectionString = _configuration.GetConnectionString("PatientConnection");
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = @"
+                SELECT TOP 1 tp.IdNum
+                FROM tbmaster tm
+                LEFT JOIN tbpatient tp ON tm.HospNum = tp.HospNum
+                WHERE tm.HospNum = @HospNum
+                ORDER BY tp.AdmDate DESC";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@HospNum", usi.HospitalNumber);
+                        conn.Open();
+
+                        var result = await cmd.ExecuteScalarAsync();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            idNum = result.ToString();
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(idNum))
+                {
+                    TempData["Success"] = "USI record created successfully!";
+                    return RedirectToAction("Details", "ICNPatient", new { id = idNum });
+                }
+                else
+                {
+                    TempData["Error"] = "Patient not found.";
+                    return RedirectToAction("Index");
+                }
             }
+
             return View(usi);
         }
+
+
 
 
 

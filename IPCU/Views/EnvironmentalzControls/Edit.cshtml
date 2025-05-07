@@ -1,0 +1,1330 @@
+﻿@model IPCU.Models.EnvironmentalzControl
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>EnvironmentalzControl</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            
+            <div class="form-group">
+                <label asp-for="AreaOrUnit" class="control-label"></label>
+                <input asp-for="AreaOrUnit" class="form-control" />
+                <span asp-validation-for="AreaOrUnit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateAndTimeOfMonitoring" class="control-label"></label>
+                <input asp-for="DateAndTimeOfMonitoring" class="form-control" />
+                <span asp-validation-for="DateAndTimeOfMonitoring" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AssessedBy" class="control-label"></label>
+                <input asp-for="AssessedBy" class="form-control" />
+                <span asp-validation-for="AssessedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_FloorsWallsClean_Finding" class="control-label"></label>
+                <input asp-for="PatientExamRoom_FloorsWallsClean_Finding" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_FloorsWallsClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_FloorsWallsClean_ActionDone" class="control-label"></label>
+                <input asp-for="PatientExamRoom_FloorsWallsClean_ActionDone" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_FloorsWallsClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_FloorsWallsClean_Remarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_FloorsWallsClean_Remarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_FloorsWallsClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_FloorsWallsClean_FuDate" class="control-label"></label>
+                <input asp-for="PatientExamRoom_FloorsWallsClean_FuDate" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_FloorsWallsClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_FloorsWallsClean_FuRemarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_FloorsWallsClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_FloorsWallsClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_CurtainsClean_Finding" class="control-label"></label>
+                <input asp-for="PatientExamRoom_CurtainsClean_Finding" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_CurtainsClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_CurtainsClean_ActionDone" class="control-label"></label>
+                <input asp-for="PatientExamRoom_CurtainsClean_ActionDone" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_CurtainsClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_CurtainsClean_Remarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_CurtainsClean_Remarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_CurtainsClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_CurtainsClean_FuDate" class="control-label"></label>
+                <input asp-for="PatientExamRoom_CurtainsClean_FuDate" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_CurtainsClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_CurtainsClean_FuRemarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_CurtainsClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_CurtainsClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_SinkClean_Finding" class="control-label"></label>
+                <input asp-for="PatientExamRoom_SinkClean_Finding" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_SinkClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_SinkClean_ActionDone" class="control-label"></label>
+                <input asp-for="PatientExamRoom_SinkClean_ActionDone" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_SinkClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_SinkClean_Remarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_SinkClean_Remarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_SinkClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_SinkClean_FuDate" class="control-label"></label>
+                <input asp-for="PatientExamRoom_SinkClean_FuDate" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_SinkClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_SinkClean_FuRemarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_SinkClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_SinkClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_SoapDispenser_Finding" class="control-label"></label>
+                <input asp-for="PatientExamRoom_SoapDispenser_Finding" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_SoapDispenser_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_SoapDispenser_ActionDone" class="control-label"></label>
+                <input asp-for="PatientExamRoom_SoapDispenser_ActionDone" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_SoapDispenser_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_SoapDispenser_Remarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_SoapDispenser_Remarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_SoapDispenser_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_SoapDispenser_FuDate" class="control-label"></label>
+                <input asp-for="PatientExamRoom_SoapDispenser_FuDate" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_SoapDispenser_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_SoapDispenser_FuRemarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_SoapDispenser_FuRemarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_SoapDispenser_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_AlcoholSanitizers_Finding" class="control-label"></label>
+                <input asp-for="PatientExamRoom_AlcoholSanitizers_Finding" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_AlcoholSanitizers_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_AlcoholSanitizers_ActionDone" class="control-label"></label>
+                <input asp-for="PatientExamRoom_AlcoholSanitizers_ActionDone" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_AlcoholSanitizers_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_AlcoholSanitizers_Remarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_AlcoholSanitizers_Remarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_AlcoholSanitizers_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_AlcoholSanitizers_FuDate" class="control-label"></label>
+                <input asp-for="PatientExamRoom_AlcoholSanitizers_FuDate" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_AlcoholSanitizers_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_AlcoholSanitizers_FuRemarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_AlcoholSanitizers_FuRemarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_AlcoholSanitizers_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_PPEAvailable_Finding" class="control-label"></label>
+                <input asp-for="PatientExamRoom_PPEAvailable_Finding" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_PPEAvailable_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_PPEAvailable_ActionDone" class="control-label"></label>
+                <input asp-for="PatientExamRoom_PPEAvailable_ActionDone" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_PPEAvailable_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_PPEAvailable_Remarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_PPEAvailable_Remarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_PPEAvailable_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_PPEAvailable_FuDate" class="control-label"></label>
+                <input asp-for="PatientExamRoom_PPEAvailable_FuDate" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_PPEAvailable_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_PPEAvailable_FuRemarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_PPEAvailable_FuRemarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_PPEAvailable_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_NoSuppliesUnderSinks_Finding" class="control-label"></label>
+                <input asp-for="PatientExamRoom_NoSuppliesUnderSinks_Finding" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_NoSuppliesUnderSinks_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" class="control-label"></label>
+                <input asp-for="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_NoSuppliesUnderSinks_Remarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_NoSuppliesUnderSinks_Remarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_NoSuppliesUnderSinks_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_NoSuppliesUnderSinks_FuDate" class="control-label"></label>
+                <input asp-for="PatientExamRoom_NoSuppliesUnderSinks_FuDate" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_NoSuppliesUnderSinks_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_NoSuppliesUnderSinks_FuRemarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_NoSuppliesUnderSinks_FuRemarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_NoSuppliesUnderSinks_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_NoFoodInCareAreas_Finding" class="control-label"></label>
+                <input asp-for="PatientExamRoom_NoFoodInCareAreas_Finding" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_NoFoodInCareAreas_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_NoFoodInCareAreas_ActionDone" class="control-label"></label>
+                <input asp-for="PatientExamRoom_NoFoodInCareAreas_ActionDone" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_NoFoodInCareAreas_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_NoFoodInCareAreas_Remarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_NoFoodInCareAreas_Remarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_NoFoodInCareAreas_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_NoFoodInCareAreas_FuDate" class="control-label"></label>
+                <input asp-for="PatientExamRoom_NoFoodInCareAreas_FuDate" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_NoFoodInCareAreas_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PatientExamRoom_NoFoodInCareAreas_FuRemarks" class="control-label"></label>
+                <input asp-for="PatientExamRoom_NoFoodInCareAreas_FuRemarks" class="form-control" />
+                <span asp-validation-for="PatientExamRoom_NoFoodInCareAreas_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ChartsStored_Finding" class="control-label"></label>
+                <input asp-for="WorkArea_ChartsStored_Finding" class="form-control" />
+                <span asp-validation-for="WorkArea_ChartsStored_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ChartsStored_ActionDone" class="control-label"></label>
+                <input asp-for="WorkArea_ChartsStored_ActionDone" class="form-control" />
+                <span asp-validation-for="WorkArea_ChartsStored_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ChartsStored_Remarks" class="control-label"></label>
+                <input asp-for="WorkArea_ChartsStored_Remarks" class="form-control" />
+                <span asp-validation-for="WorkArea_ChartsStored_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ChartsStored_FuDate" class="control-label"></label>
+                <input asp-for="WorkArea_ChartsStored_FuDate" class="form-control" />
+                <span asp-validation-for="WorkArea_ChartsStored_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ChartsStored_FuRemarks" class="control-label"></label>
+                <input asp-for="WorkArea_ChartsStored_FuRemarks" class="form-control" />
+                <span asp-validation-for="WorkArea_ChartsStored_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_NoFoodOrDrinks_Finding" class="control-label"></label>
+                <input asp-for="WorkArea_NoFoodOrDrinks_Finding" class="form-control" />
+                <span asp-validation-for="WorkArea_NoFoodOrDrinks_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_NoFoodOrDrinks_ActionDone" class="control-label"></label>
+                <input asp-for="WorkArea_NoFoodOrDrinks_ActionDone" class="form-control" />
+                <span asp-validation-for="WorkArea_NoFoodOrDrinks_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_NoFoodOrDrinks_Remarks" class="control-label"></label>
+                <input asp-for="WorkArea_NoFoodOrDrinks_Remarks" class="form-control" />
+                <span asp-validation-for="WorkArea_NoFoodOrDrinks_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_NoFoodOrDrinks_FuDate" class="control-label"></label>
+                <input asp-for="WorkArea_NoFoodOrDrinks_FuDate" class="form-control" />
+                <span asp-validation-for="WorkArea_NoFoodOrDrinks_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_NoFoodOrDrinks_FuRemarks" class="control-label"></label>
+                <input asp-for="WorkArea_NoFoodOrDrinks_FuRemarks" class="form-control" />
+                <span asp-validation-for="WorkArea_NoFoodOrDrinks_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_FansClean_Finding" class="control-label"></label>
+                <input asp-for="WorkArea_FansClean_Finding" class="form-control" />
+                <span asp-validation-for="WorkArea_FansClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_FansClean_ActionDone" class="control-label"></label>
+                <input asp-for="WorkArea_FansClean_ActionDone" class="form-control" />
+                <span asp-validation-for="WorkArea_FansClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_FansClean_Remarks" class="control-label"></label>
+                <input asp-for="WorkArea_FansClean_Remarks" class="form-control" />
+                <span asp-validation-for="WorkArea_FansClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_FansClean_FuDate" class="control-label"></label>
+                <input asp-for="WorkArea_FansClean_FuDate" class="form-control" />
+                <span asp-validation-for="WorkArea_FansClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_FansClean_FuRemarks" class="control-label"></label>
+                <input asp-for="WorkArea_FansClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="WorkArea_FansClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ACClean_Finding" class="control-label"></label>
+                <input asp-for="WorkArea_ACClean_Finding" class="form-control" />
+                <span asp-validation-for="WorkArea_ACClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ACClean_ActionDone" class="control-label"></label>
+                <input asp-for="WorkArea_ACClean_ActionDone" class="form-control" />
+                <span asp-validation-for="WorkArea_ACClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ACClean_Remarks" class="control-label"></label>
+                <input asp-for="WorkArea_ACClean_Remarks" class="form-control" />
+                <span asp-validation-for="WorkArea_ACClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ACClean_FuDate" class="control-label"></label>
+                <input asp-for="WorkArea_ACClean_FuDate" class="form-control" />
+                <span asp-validation-for="WorkArea_ACClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ACClean_FuRemarks" class="control-label"></label>
+                <input asp-for="WorkArea_ACClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="WorkArea_ACClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ExhaustFansClean_Finding" class="control-label"></label>
+                <input asp-for="WorkArea_ExhaustFansClean_Finding" class="form-control" />
+                <span asp-validation-for="WorkArea_ExhaustFansClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ExhaustFansClean_ActionDone" class="control-label"></label>
+                <input asp-for="WorkArea_ExhaustFansClean_ActionDone" class="form-control" />
+                <span asp-validation-for="WorkArea_ExhaustFansClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ExhaustFansClean_Remarks" class="control-label"></label>
+                <input asp-for="WorkArea_ExhaustFansClean_Remarks" class="form-control" />
+                <span asp-validation-for="WorkArea_ExhaustFansClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ExhaustFansClean_FuDate" class="control-label"></label>
+                <input asp-for="WorkArea_ExhaustFansClean_FuDate" class="form-control" />
+                <span asp-validation-for="WorkArea_ExhaustFansClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_ExhaustFansClean_FuRemarks" class="control-label"></label>
+                <input asp-for="WorkArea_ExhaustFansClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="WorkArea_ExhaustFansClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CeilingClean_Finding" class="control-label"></label>
+                <input asp-for="WorkArea_CeilingClean_Finding" class="form-control" />
+                <span asp-validation-for="WorkArea_CeilingClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CeilingClean_ActionDone" class="control-label"></label>
+                <input asp-for="WorkArea_CeilingClean_ActionDone" class="form-control" />
+                <span asp-validation-for="WorkArea_CeilingClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CeilingClean_Remarks" class="control-label"></label>
+                <input asp-for="WorkArea_CeilingClean_Remarks" class="form-control" />
+                <span asp-validation-for="WorkArea_CeilingClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CeilingClean_FuDate" class="control-label"></label>
+                <input asp-for="WorkArea_CeilingClean_FuDate" class="form-control" />
+                <span asp-validation-for="WorkArea_CeilingClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CeilingClean_FuRemarks" class="control-label"></label>
+                <input asp-for="WorkArea_CeilingClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="WorkArea_CeilingClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_WallsClean_Finding" class="control-label"></label>
+                <input asp-for="WorkArea_WallsClean_Finding" class="form-control" />
+                <span asp-validation-for="WorkArea_WallsClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_WallsClean_ActionDone" class="control-label"></label>
+                <input asp-for="WorkArea_WallsClean_ActionDone" class="form-control" />
+                <span asp-validation-for="WorkArea_WallsClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_WallsClean_Remarks" class="control-label"></label>
+                <input asp-for="WorkArea_WallsClean_Remarks" class="form-control" />
+                <span asp-validation-for="WorkArea_WallsClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_WallsClean_FuDate" class="control-label"></label>
+                <input asp-for="WorkArea_WallsClean_FuDate" class="form-control" />
+                <span asp-validation-for="WorkArea_WallsClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_WallsClean_FuRemarks" class="control-label"></label>
+                <input asp-for="WorkArea_WallsClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="WorkArea_WallsClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CountersClean_Finding" class="control-label"></label>
+                <input asp-for="WorkArea_CountersClean_Finding" class="form-control" />
+                <span asp-validation-for="WorkArea_CountersClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CountersClean_ActionDone" class="control-label"></label>
+                <input asp-for="WorkArea_CountersClean_ActionDone" class="form-control" />
+                <span asp-validation-for="WorkArea_CountersClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CountersClean_Remarks" class="control-label"></label>
+                <input asp-for="WorkArea_CountersClean_Remarks" class="form-control" />
+                <span asp-validation-for="WorkArea_CountersClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CountersClean_FuDate" class="control-label"></label>
+                <input asp-for="WorkArea_CountersClean_FuDate" class="form-control" />
+                <span asp-validation-for="WorkArea_CountersClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CountersClean_FuRemarks" class="control-label"></label>
+                <input asp-for="WorkArea_CountersClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="WorkArea_CountersClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_FloorsClean_Finding" class="control-label"></label>
+                <input asp-for="WorkArea_FloorsClean_Finding" class="form-control" />
+                <span asp-validation-for="WorkArea_FloorsClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_FloorsClean_ActionDone" class="control-label"></label>
+                <input asp-for="WorkArea_FloorsClean_ActionDone" class="form-control" />
+                <span asp-validation-for="WorkArea_FloorsClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_FloorsClean_Remarks" class="control-label"></label>
+                <input asp-for="WorkArea_FloorsClean_Remarks" class="form-control" />
+                <span asp-validation-for="WorkArea_FloorsClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_FloorsClean_FuDate" class="control-label"></label>
+                <input asp-for="WorkArea_FloorsClean_FuDate" class="form-control" />
+                <span asp-validation-for="WorkArea_FloorsClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_FloorsClean_FuRemarks" class="control-label"></label>
+                <input asp-for="WorkArea_FloorsClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="WorkArea_FloorsClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_DoorsWindowsClean_Finding" class="control-label"></label>
+                <input asp-for="WorkArea_DoorsWindowsClean_Finding" class="form-control" />
+                <span asp-validation-for="WorkArea_DoorsWindowsClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_DoorsWindowsClean_ActionDone" class="control-label"></label>
+                <input asp-for="WorkArea_DoorsWindowsClean_ActionDone" class="form-control" />
+                <span asp-validation-for="WorkArea_DoorsWindowsClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_DoorsWindowsClean_Remarks" class="control-label"></label>
+                <input asp-for="WorkArea_DoorsWindowsClean_Remarks" class="form-control" />
+                <span asp-validation-for="WorkArea_DoorsWindowsClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_DoorsWindowsClean_FuDate" class="control-label"></label>
+                <input asp-for="WorkArea_DoorsWindowsClean_FuDate" class="form-control" />
+                <span asp-validation-for="WorkArea_DoorsWindowsClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_DoorsWindowsClean_FuRemarks" class="control-label"></label>
+                <input asp-for="WorkArea_DoorsWindowsClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="WorkArea_DoorsWindowsClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CleanBathroom_Finding" class="control-label"></label>
+                <input asp-for="WorkArea_CleanBathroom_Finding" class="form-control" />
+                <span asp-validation-for="WorkArea_CleanBathroom_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CleanBathroom_ActionDone" class="control-label"></label>
+                <input asp-for="WorkArea_CleanBathroom_ActionDone" class="form-control" />
+                <span asp-validation-for="WorkArea_CleanBathroom_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CleanBathroom_Remarks" class="control-label"></label>
+                <input asp-for="WorkArea_CleanBathroom_Remarks" class="form-control" />
+                <span asp-validation-for="WorkArea_CleanBathroom_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CleanBathroom_FuDate" class="control-label"></label>
+                <input asp-for="WorkArea_CleanBathroom_FuDate" class="form-control" />
+                <span asp-validation-for="WorkArea_CleanBathroom_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WorkArea_CleanBathroom_FuRemarks" class="control-label"></label>
+                <input asp-for="WorkArea_CleanBathroom_FuRemarks" class="form-control" />
+                <span asp-validation-for="WorkArea_CleanBathroom_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hallway_FloorsWallsClean_Finding" class="control-label"></label>
+                <input asp-for="Hallway_FloorsWallsClean_Finding" class="form-control" />
+                <span asp-validation-for="Hallway_FloorsWallsClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hallway_FloorsWallsClean_ActionDone" class="control-label"></label>
+                <input asp-for="Hallway_FloorsWallsClean_ActionDone" class="form-control" />
+                <span asp-validation-for="Hallway_FloorsWallsClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hallway_FloorsWallsClean_Remarks" class="control-label"></label>
+                <input asp-for="Hallway_FloorsWallsClean_Remarks" class="form-control" />
+                <span asp-validation-for="Hallway_FloorsWallsClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hallway_FloorsWallsClean_FuDate" class="control-label"></label>
+                <input asp-for="Hallway_FloorsWallsClean_FuDate" class="form-control" />
+                <span asp-validation-for="Hallway_FloorsWallsClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hallway_FloorsWallsClean_FuRemarks" class="control-label"></label>
+                <input asp-for="Hallway_FloorsWallsClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="Hallway_FloorsWallsClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hallway_NoObstruction_Finding" class="control-label"></label>
+                <input asp-for="Hallway_NoObstruction_Finding" class="form-control" />
+                <span asp-validation-for="Hallway_NoObstruction_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hallway_NoObstruction_ActionDone" class="control-label"></label>
+                <input asp-for="Hallway_NoObstruction_ActionDone" class="form-control" />
+                <span asp-validation-for="Hallway_NoObstruction_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hallway_NoObstruction_Remarks" class="control-label"></label>
+                <input asp-for="Hallway_NoObstruction_Remarks" class="form-control" />
+                <span asp-validation-for="Hallway_NoObstruction_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hallway_NoObstruction_FuDate" class="control-label"></label>
+                <input asp-for="Hallway_NoObstruction_FuDate" class="form-control" />
+                <span asp-validation-for="Hallway_NoObstruction_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hallway_NoObstruction_FuRemarks" class="control-label"></label>
+                <input asp-for="Hallway_NoObstruction_FuRemarks" class="form-control" />
+                <span asp-validation-for="Hallway_NoObstruction_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_FurnitureClean_Finding" class="control-label"></label>
+                <input asp-for="WaitingArea_FurnitureClean_Finding" class="form-control" />
+                <span asp-validation-for="WaitingArea_FurnitureClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_FurnitureClean_ActionDone" class="control-label"></label>
+                <input asp-for="WaitingArea_FurnitureClean_ActionDone" class="form-control" />
+                <span asp-validation-for="WaitingArea_FurnitureClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_FurnitureClean_Remarks" class="control-label"></label>
+                <input asp-for="WaitingArea_FurnitureClean_Remarks" class="form-control" />
+                <span asp-validation-for="WaitingArea_FurnitureClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_FurnitureClean_FuDate" class="control-label"></label>
+                <input asp-for="WaitingArea_FurnitureClean_FuDate" class="form-control" />
+                <span asp-validation-for="WaitingArea_FurnitureClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_FurnitureClean_FuRemarks" class="control-label"></label>
+                <input asp-for="WaitingArea_FurnitureClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="WaitingArea_FurnitureClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_TrashDisposed_Finding" class="control-label"></label>
+                <input asp-for="WaitingArea_TrashDisposed_Finding" class="form-control" />
+                <span asp-validation-for="WaitingArea_TrashDisposed_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_TrashDisposed_ActionDone" class="control-label"></label>
+                <input asp-for="WaitingArea_TrashDisposed_ActionDone" class="form-control" />
+                <span asp-validation-for="WaitingArea_TrashDisposed_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_TrashDisposed_Remarks" class="control-label"></label>
+                <input asp-for="WaitingArea_TrashDisposed_Remarks" class="form-control" />
+                <span asp-validation-for="WaitingArea_TrashDisposed_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_TrashDisposed_FuDate" class="control-label"></label>
+                <input asp-for="WaitingArea_TrashDisposed_FuDate" class="form-control" />
+                <span asp-validation-for="WaitingArea_TrashDisposed_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_TrashDisposed_FuRemarks" class="control-label"></label>
+                <input asp-for="WaitingArea_TrashDisposed_FuRemarks" class="form-control" />
+                <span asp-validation-for="WaitingArea_TrashDisposed_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_FoodInDesignatedArea_Finding" class="control-label"></label>
+                <input asp-for="WaitingArea_FoodInDesignatedArea_Finding" class="form-control" />
+                <span asp-validation-for="WaitingArea_FoodInDesignatedArea_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_FoodInDesignatedArea_ActionDone" class="control-label"></label>
+                <input asp-for="WaitingArea_FoodInDesignatedArea_ActionDone" class="form-control" />
+                <span asp-validation-for="WaitingArea_FoodInDesignatedArea_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_FoodInDesignatedArea_Remarks" class="control-label"></label>
+                <input asp-for="WaitingArea_FoodInDesignatedArea_Remarks" class="form-control" />
+                <span asp-validation-for="WaitingArea_FoodInDesignatedArea_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_FoodInDesignatedArea_FuDate" class="control-label"></label>
+                <input asp-for="WaitingArea_FoodInDesignatedArea_FuDate" class="form-control" />
+                <span asp-validation-for="WaitingArea_FoodInDesignatedArea_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WaitingArea_FoodInDesignatedArea_FuRemarks" class="control-label"></label>
+                <input asp-for="WaitingArea_FoodInDesignatedArea_FuRemarks" class="form-control" />
+                <span asp-validation-for="WaitingArea_FoodInDesignatedArea_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Equipment_StorageClean_Finding" class="control-label"></label>
+                <input asp-for="Equipment_StorageClean_Finding" class="form-control" />
+                <span asp-validation-for="Equipment_StorageClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Equipment_StorageClean_ActionDone" class="control-label"></label>
+                <input asp-for="Equipment_StorageClean_ActionDone" class="form-control" />
+                <span asp-validation-for="Equipment_StorageClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Equipment_StorageClean_Remarks" class="control-label"></label>
+                <input asp-for="Equipment_StorageClean_Remarks" class="form-control" />
+                <span asp-validation-for="Equipment_StorageClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Equipment_StorageClean_FuDate" class="control-label"></label>
+                <input asp-for="Equipment_StorageClean_FuDate" class="form-control" />
+                <span asp-validation-for="Equipment_StorageClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Equipment_StorageClean_FuRemarks" class="control-label"></label>
+                <input asp-for="Equipment_StorageClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="Equipment_StorageClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_CleanSoiledSeparation_Finding" class="control-label"></label>
+                <input asp-for="UtilityRoom_CleanSoiledSeparation_Finding" class="form-control" />
+                <span asp-validation-for="UtilityRoom_CleanSoiledSeparation_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_CleanSoiledSeparation_ActionDone" class="control-label"></label>
+                <input asp-for="UtilityRoom_CleanSoiledSeparation_ActionDone" class="form-control" />
+                <span asp-validation-for="UtilityRoom_CleanSoiledSeparation_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_CleanSoiledSeparation_Remarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_CleanSoiledSeparation_Remarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_CleanSoiledSeparation_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_CleanSoiledSeparation_FuDate" class="control-label"></label>
+                <input asp-for="UtilityRoom_CleanSoiledSeparation_FuDate" class="form-control" />
+                <span asp-validation-for="UtilityRoom_CleanSoiledSeparation_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_CleanSoiledSeparation_FuRemarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_CleanSoiledSeparation_FuRemarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_CleanSoiledSeparation_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_FloorsWallsClean_Finding" class="control-label"></label>
+                <input asp-for="UtilityRoom_FloorsWallsClean_Finding" class="form-control" />
+                <span asp-validation-for="UtilityRoom_FloorsWallsClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_FloorsWallsClean_ActionDone" class="control-label"></label>
+                <input asp-for="UtilityRoom_FloorsWallsClean_ActionDone" class="form-control" />
+                <span asp-validation-for="UtilityRoom_FloorsWallsClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_FloorsWallsClean_Remarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_FloorsWallsClean_Remarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_FloorsWallsClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_FloorsWallsClean_FuDate" class="control-label"></label>
+                <input asp-for="UtilityRoom_FloorsWallsClean_FuDate" class="form-control" />
+                <span asp-validation-for="UtilityRoom_FloorsWallsClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_FloorsWallsClean_FuRemarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_FloorsWallsClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_FloorsWallsClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesOnFloor_Finding" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesOnFloor_Finding" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesOnFloor_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesOnFloor_ActionDone" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesOnFloor_ActionDone" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesOnFloor_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesOnFloor_Remarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesOnFloor_Remarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesOnFloor_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesOnFloor_FuDate" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesOnFloor_FuDate" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesOnFloor_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesOnFloor_FuRemarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesOnFloor_FuRemarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesOnFloor_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SuppliesFromCeiling_Finding" class="control-label"></label>
+                <input asp-for="UtilityRoom_SuppliesFromCeiling_Finding" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SuppliesFromCeiling_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SuppliesFromCeiling_ActionDone" class="control-label"></label>
+                <input asp-for="UtilityRoom_SuppliesFromCeiling_ActionDone" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SuppliesFromCeiling_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SuppliesFromCeiling_Remarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_SuppliesFromCeiling_Remarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SuppliesFromCeiling_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SuppliesFromCeiling_FuDate" class="control-label"></label>
+                <input asp-for="UtilityRoom_SuppliesFromCeiling_FuDate" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SuppliesFromCeiling_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SuppliesFromCeiling_FuRemarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_SuppliesFromCeiling_FuRemarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SuppliesFromCeiling_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesUnderSink_Finding" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesUnderSink_Finding" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesUnderSink_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesUnderSink_ActionDone" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesUnderSink_ActionDone" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesUnderSink_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesUnderSink_Remarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesUnderSink_Remarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesUnderSink_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesUnderSink_FuDate" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesUnderSink_FuDate" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesUnderSink_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesUnderSink_FuRemarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesUnderSink_FuRemarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesUnderSink_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesInBathrooms_Finding" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesInBathrooms_Finding" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesInBathrooms_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesInBathrooms_ActionDone" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesInBathrooms_ActionDone" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesInBathrooms_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesInBathrooms_Remarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesInBathrooms_Remarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesInBathrooms_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesInBathrooms_FuDate" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesInBathrooms_FuDate" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesInBathrooms_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_NoSuppliesInBathrooms_FuRemarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_NoSuppliesInBathrooms_FuRemarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_NoSuppliesInBathrooms_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_FIFOStocks_Finding" class="control-label"></label>
+                <input asp-for="UtilityRoom_FIFOStocks_Finding" class="form-control" />
+                <span asp-validation-for="UtilityRoom_FIFOStocks_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_FIFOStocks_ActionDone" class="control-label"></label>
+                <input asp-for="UtilityRoom_FIFOStocks_ActionDone" class="form-control" />
+                <span asp-validation-for="UtilityRoom_FIFOStocks_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_FIFOStocks_Remarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_FIFOStocks_Remarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_FIFOStocks_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_FIFOStocks_FuDate" class="control-label"></label>
+                <input asp-for="UtilityRoom_FIFOStocks_FuDate" class="form-control" />
+                <span asp-validation-for="UtilityRoom_FIFOStocks_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_FIFOStocks_FuRemarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_FIFOStocks_FuRemarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_FIFOStocks_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SuppliesNotExpired_Finding" class="control-label"></label>
+                <input asp-for="UtilityRoom_SuppliesNotExpired_Finding" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SuppliesNotExpired_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SuppliesNotExpired_ActionDone" class="control-label"></label>
+                <input asp-for="UtilityRoom_SuppliesNotExpired_ActionDone" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SuppliesNotExpired_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SuppliesNotExpired_Remarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_SuppliesNotExpired_Remarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SuppliesNotExpired_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SuppliesNotExpired_FuDate" class="control-label"></label>
+                <input asp-for="UtilityRoom_SuppliesNotExpired_FuDate" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SuppliesNotExpired_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SuppliesNotExpired_FuRemarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_SuppliesNotExpired_FuRemarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SuppliesNotExpired_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SterileTraysClean_Finding" class="control-label"></label>
+                <input asp-for="UtilityRoom_SterileTraysClean_Finding" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SterileTraysClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SterileTraysClean_ActionDone" class="control-label"></label>
+                <input asp-for="UtilityRoom_SterileTraysClean_ActionDone" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SterileTraysClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SterileTraysClean_Remarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_SterileTraysClean_Remarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SterileTraysClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SterileTraysClean_FuDate" class="control-label"></label>
+                <input asp-for="UtilityRoom_SterileTraysClean_FuDate" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SterileTraysClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UtilityRoom_SterileTraysClean_FuRemarks" class="control-label"></label>
+                <input asp-for="UtilityRoom_SterileTraysClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="UtilityRoom_SterileTraysClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_FloorsWallsClean_Finding" class="control-label"></label>
+                <input asp-for="SoiledRoom_FloorsWallsClean_Finding" class="form-control" />
+                <span asp-validation-for="SoiledRoom_FloorsWallsClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_FloorsWallsClean_ActionDone" class="control-label"></label>
+                <input asp-for="SoiledRoom_FloorsWallsClean_ActionDone" class="form-control" />
+                <span asp-validation-for="SoiledRoom_FloorsWallsClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_FloorsWallsClean_Remarks" class="control-label"></label>
+                <input asp-for="SoiledRoom_FloorsWallsClean_Remarks" class="form-control" />
+                <span asp-validation-for="SoiledRoom_FloorsWallsClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_FloorsWallsClean_FuDate" class="control-label"></label>
+                <input asp-for="SoiledRoom_FloorsWallsClean_FuDate" class="form-control" />
+                <span asp-validation-for="SoiledRoom_FloorsWallsClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_FloorsWallsClean_FuRemarks" class="control-label"></label>
+                <input asp-for="SoiledRoom_FloorsWallsClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="SoiledRoom_FloorsWallsClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_NoPatientSupplies_Finding" class="control-label"></label>
+                <input asp-for="SoiledRoom_NoPatientSupplies_Finding" class="form-control" />
+                <span asp-validation-for="SoiledRoom_NoPatientSupplies_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_NoPatientSupplies_ActionDone" class="control-label"></label>
+                <input asp-for="SoiledRoom_NoPatientSupplies_ActionDone" class="form-control" />
+                <span asp-validation-for="SoiledRoom_NoPatientSupplies_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_NoPatientSupplies_Remarks" class="control-label"></label>
+                <input asp-for="SoiledRoom_NoPatientSupplies_Remarks" class="form-control" />
+                <span asp-validation-for="SoiledRoom_NoPatientSupplies_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_NoPatientSupplies_FuDate" class="control-label"></label>
+                <input asp-for="SoiledRoom_NoPatientSupplies_FuDate" class="form-control" />
+                <span asp-validation-for="SoiledRoom_NoPatientSupplies_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_NoPatientSupplies_FuRemarks" class="control-label"></label>
+                <input asp-for="SoiledRoom_NoPatientSupplies_FuRemarks" class="form-control" />
+                <span asp-validation-for="SoiledRoom_NoPatientSupplies_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_LinenBagged_Finding" class="control-label"></label>
+                <input asp-for="SoiledRoom_LinenBagged_Finding" class="form-control" />
+                <span asp-validation-for="SoiledRoom_LinenBagged_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_LinenBagged_ActionDone" class="control-label"></label>
+                <input asp-for="SoiledRoom_LinenBagged_ActionDone" class="form-control" />
+                <span asp-validation-for="SoiledRoom_LinenBagged_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_LinenBagged_Remarks" class="control-label"></label>
+                <input asp-for="SoiledRoom_LinenBagged_Remarks" class="form-control" />
+                <span asp-validation-for="SoiledRoom_LinenBagged_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_LinenBagged_FuDate" class="control-label"></label>
+                <input asp-for="SoiledRoom_LinenBagged_FuDate" class="form-control" />
+                <span asp-validation-for="SoiledRoom_LinenBagged_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoiledRoom_LinenBagged_FuRemarks" class="control-label"></label>
+                <input asp-for="SoiledRoom_LinenBagged_FuRemarks" class="form-control" />
+                <span asp-validation-for="SoiledRoom_LinenBagged_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_ColorBinsAvailable_Finding" class="control-label"></label>
+                <input asp-for="WasteMgmt_ColorBinsAvailable_Finding" class="form-control" />
+                <span asp-validation-for="WasteMgmt_ColorBinsAvailable_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_ColorBinsAvailable_ActionDone" class="control-label"></label>
+                <input asp-for="WasteMgmt_ColorBinsAvailable_ActionDone" class="form-control" />
+                <span asp-validation-for="WasteMgmt_ColorBinsAvailable_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_ColorBinsAvailable_Remarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_ColorBinsAvailable_Remarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_ColorBinsAvailable_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_ColorBinsAvailable_FuDate" class="control-label"></label>
+                <input asp-for="WasteMgmt_ColorBinsAvailable_FuDate" class="form-control" />
+                <span asp-validation-for="WasteMgmt_ColorBinsAvailable_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_ColorBinsAvailable_FuRemarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_ColorBinsAvailable_FuRemarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_ColorBinsAvailable_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_ProperDisposal_Finding" class="control-label"></label>
+                <input asp-for="WasteMgmt_ProperDisposal_Finding" class="form-control" />
+                <span asp-validation-for="WasteMgmt_ProperDisposal_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_ProperDisposal_ActionDone" class="control-label"></label>
+                <input asp-for="WasteMgmt_ProperDisposal_ActionDone" class="form-control" />
+                <span asp-validation-for="WasteMgmt_ProperDisposal_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_ProperDisposal_Remarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_ProperDisposal_Remarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_ProperDisposal_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_ProperDisposal_FuDate" class="control-label"></label>
+                <input asp-for="WasteMgmt_ProperDisposal_FuDate" class="form-control" />
+                <span asp-validation-for="WasteMgmt_ProperDisposal_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_ProperDisposal_FuRemarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_ProperDisposal_FuRemarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_ProperDisposal_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_BinsNotOverfilled_Finding" class="control-label"></label>
+                <input asp-for="WasteMgmt_BinsNotOverfilled_Finding" class="form-control" />
+                <span asp-validation-for="WasteMgmt_BinsNotOverfilled_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_BinsNotOverfilled_ActionDone" class="control-label"></label>
+                <input asp-for="WasteMgmt_BinsNotOverfilled_ActionDone" class="form-control" />
+                <span asp-validation-for="WasteMgmt_BinsNotOverfilled_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_BinsNotOverfilled_Remarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_BinsNotOverfilled_Remarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_BinsNotOverfilled_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_BinsNotOverfilled_FuDate" class="control-label"></label>
+                <input asp-for="WasteMgmt_BinsNotOverfilled_FuDate" class="form-control" />
+                <span asp-validation-for="WasteMgmt_BinsNotOverfilled_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_BinsNotOverfilled_FuRemarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_BinsNotOverfilled_FuRemarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_BinsNotOverfilled_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_BinsClean_Finding" class="control-label"></label>
+                <input asp-for="WasteMgmt_BinsClean_Finding" class="form-control" />
+                <span asp-validation-for="WasteMgmt_BinsClean_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_BinsClean_ActionDone" class="control-label"></label>
+                <input asp-for="WasteMgmt_BinsClean_ActionDone" class="form-control" />
+                <span asp-validation-for="WasteMgmt_BinsClean_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_BinsClean_Remarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_BinsClean_Remarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_BinsClean_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_BinsClean_FuDate" class="control-label"></label>
+                <input asp-for="WasteMgmt_BinsClean_FuDate" class="form-control" />
+                <span asp-validation-for="WasteMgmt_BinsClean_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_BinsClean_FuRemarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_BinsClean_FuRemarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_BinsClean_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_SharpsLabeled_Finding" class="control-label"></label>
+                <input asp-for="WasteMgmt_SharpsLabeled_Finding" class="form-control" />
+                <span asp-validation-for="WasteMgmt_SharpsLabeled_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_SharpsLabeled_ActionDone" class="control-label"></label>
+                <input asp-for="WasteMgmt_SharpsLabeled_ActionDone" class="form-control" />
+                <span asp-validation-for="WasteMgmt_SharpsLabeled_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_SharpsLabeled_Remarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_SharpsLabeled_Remarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_SharpsLabeled_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_SharpsLabeled_FuDate" class="control-label"></label>
+                <input asp-for="WasteMgmt_SharpsLabeled_FuDate" class="form-control" />
+                <span asp-validation-for="WasteMgmt_SharpsLabeled_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_SharpsLabeled_FuRemarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_SharpsLabeled_FuRemarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_SharpsLabeled_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_SharpsNotOverfilled_Finding" class="control-label"></label>
+                <input asp-for="WasteMgmt_SharpsNotOverfilled_Finding" class="form-control" />
+                <span asp-validation-for="WasteMgmt_SharpsNotOverfilled_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_SharpsNotOverfilled_ActionDone" class="control-label"></label>
+                <input asp-for="WasteMgmt_SharpsNotOverfilled_ActionDone" class="form-control" />
+                <span asp-validation-for="WasteMgmt_SharpsNotOverfilled_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_SharpsNotOverfilled_Remarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_SharpsNotOverfilled_Remarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_SharpsNotOverfilled_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_SharpsNotOverfilled_FuDate" class="control-label"></label>
+                <input asp-for="WasteMgmt_SharpsNotOverfilled_FuDate" class="form-control" />
+                <span asp-validation-for="WasteMgmt_SharpsNotOverfilled_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WasteMgmt_SharpsNotOverfilled_FuRemarks" class="control-label"></label>
+                <input asp-for="WasteMgmt_SharpsNotOverfilled_FuRemarks" class="form-control" />
+                <span asp-validation-for="WasteMgmt_SharpsNotOverfilled_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Refrigerator_TempChecked_Finding" class="control-label"></label>
+                <input asp-for="Refrigerator_TempChecked_Finding" class="form-control" />
+                <span asp-validation-for="Refrigerator_TempChecked_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Refrigerator_TempChecked_ActionDone" class="control-label"></label>
+                <input asp-for="Refrigerator_TempChecked_ActionDone" class="form-control" />
+                <span asp-validation-for="Refrigerator_TempChecked_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Refrigerator_TempChecked_Remarks" class="control-label"></label>
+                <input asp-for="Refrigerator_TempChecked_Remarks" class="form-control" />
+                <span asp-validation-for="Refrigerator_TempChecked_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Refrigerator_TempChecked_FuDate" class="control-label"></label>
+                <input asp-for="Refrigerator_TempChecked_FuDate" class="form-control" />
+                <span asp-validation-for="Refrigerator_TempChecked_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Refrigerator_TempChecked_FuRemarks" class="control-label"></label>
+                <input asp-for="Refrigerator_TempChecked_FuRemarks" class="form-control" />
+                <span asp-validation-for="Refrigerator_TempChecked_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Refrigerator_Dedicated_Finding" class="control-label"></label>
+                <input asp-for="Refrigerator_Dedicated_Finding" class="form-control" />
+                <span asp-validation-for="Refrigerator_Dedicated_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Refrigerator_Dedicated_ActionDone" class="control-label"></label>
+                <input asp-for="Refrigerator_Dedicated_ActionDone" class="form-control" />
+                <span asp-validation-for="Refrigerator_Dedicated_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Refrigerator_Dedicated_Remarks" class="control-label"></label>
+                <input asp-for="Refrigerator_Dedicated_Remarks" class="form-control" />
+                <span asp-validation-for="Refrigerator_Dedicated_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Refrigerator_Dedicated_FuDate" class="control-label"></label>
+                <input asp-for="Refrigerator_Dedicated_FuDate" class="form-control" />
+                <span asp-validation-for="Refrigerator_Dedicated_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Refrigerator_Dedicated_FuRemarks" class="control-label"></label>
+                <input asp-for="Refrigerator_Dedicated_FuRemarks" class="form-control" />
+                <span asp-validation-for="Refrigerator_Dedicated_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_NoExpired_Finding" class="control-label"></label>
+                <input asp-for="Medications_NoExpired_Finding" class="form-control" />
+                <span asp-validation-for="Medications_NoExpired_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_NoExpired_ActionDone" class="control-label"></label>
+                <input asp-for="Medications_NoExpired_ActionDone" class="form-control" />
+                <span asp-validation-for="Medications_NoExpired_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_NoExpired_Remarks" class="control-label"></label>
+                <input asp-for="Medications_NoExpired_Remarks" class="form-control" />
+                <span asp-validation-for="Medications_NoExpired_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_NoExpired_FuDate" class="control-label"></label>
+                <input asp-for="Medications_NoExpired_FuDate" class="form-control" />
+                <span asp-validation-for="Medications_NoExpired_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_NoExpired_FuRemarks" class="control-label"></label>
+                <input asp-for="Medications_NoExpired_FuRemarks" class="form-control" />
+                <span asp-validation-for="Medications_NoExpired_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_VialsDated_Finding" class="control-label"></label>
+                <input asp-for="Medications_VialsDated_Finding" class="form-control" />
+                <span asp-validation-for="Medications_VialsDated_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_VialsDated_ActionDone" class="control-label"></label>
+                <input asp-for="Medications_VialsDated_ActionDone" class="form-control" />
+                <span asp-validation-for="Medications_VialsDated_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_VialsDated_Remarks" class="control-label"></label>
+                <input asp-for="Medications_VialsDated_Remarks" class="form-control" />
+                <span asp-validation-for="Medications_VialsDated_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_VialsDated_FuDate" class="control-label"></label>
+                <input asp-for="Medications_VialsDated_FuDate" class="form-control" />
+                <span asp-validation-for="Medications_VialsDated_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_VialsDated_FuRemarks" class="control-label"></label>
+                <input asp-for="Medications_VialsDated_FuRemarks" class="form-control" />
+                <span asp-validation-for="Medications_VialsDated_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_VaccinesStored_Finding" class="control-label"></label>
+                <input asp-for="Medications_VaccinesStored_Finding" class="form-control" />
+                <span asp-validation-for="Medications_VaccinesStored_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_VaccinesStored_ActionDone" class="control-label"></label>
+                <input asp-for="Medications_VaccinesStored_ActionDone" class="form-control" />
+                <span asp-validation-for="Medications_VaccinesStored_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_VaccinesStored_Remarks" class="control-label"></label>
+                <input asp-for="Medications_VaccinesStored_Remarks" class="form-control" />
+                <span asp-validation-for="Medications_VaccinesStored_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_VaccinesStored_FuDate" class="control-label"></label>
+                <input asp-for="Medications_VaccinesStored_FuDate" class="form-control" />
+                <span asp-validation-for="Medications_VaccinesStored_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_VaccinesStored_FuRemarks" class="control-label"></label>
+                <input asp-for="Medications_VaccinesStored_FuRemarks" class="form-control" />
+                <span asp-validation-for="Medications_VaccinesStored_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_NoLooseNeedles_Finding" class="control-label"></label>
+                <input asp-for="Medications_NoLooseNeedles_Finding" class="form-control" />
+                <span asp-validation-for="Medications_NoLooseNeedles_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_NoLooseNeedles_ActionDone" class="control-label"></label>
+                <input asp-for="Medications_NoLooseNeedles_ActionDone" class="form-control" />
+                <span asp-validation-for="Medications_NoLooseNeedles_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_NoLooseNeedles_Remarks" class="control-label"></label>
+                <input asp-for="Medications_NoLooseNeedles_Remarks" class="form-control" />
+                <span asp-validation-for="Medications_NoLooseNeedles_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_NoLooseNeedles_FuDate" class="control-label"></label>
+                <input asp-for="Medications_NoLooseNeedles_FuDate" class="form-control" />
+                <span asp-validation-for="Medications_NoLooseNeedles_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Medications_NoLooseNeedles_FuRemarks" class="control-label"></label>
+                <input asp-for="Medications_NoLooseNeedles_FuRemarks" class="form-control" />
+                <span asp-validation-for="Medications_NoLooseNeedles_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Misc_SpecimensLabeled_Finding" class="control-label"></label>
+                <input asp-for="Misc_SpecimensLabeled_Finding" class="form-control" />
+                <span asp-validation-for="Misc_SpecimensLabeled_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Misc_SpecimensLabeled_ActionDone" class="control-label"></label>
+                <input asp-for="Misc_SpecimensLabeled_ActionDone" class="form-control" />
+                <span asp-validation-for="Misc_SpecimensLabeled_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Misc_SpecimensLabeled_Remarks" class="control-label"></label>
+                <input asp-for="Misc_SpecimensLabeled_Remarks" class="form-control" />
+                <span asp-validation-for="Misc_SpecimensLabeled_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Misc_SpecimensLabeled_FuDate" class="control-label"></label>
+                <input asp-for="Misc_SpecimensLabeled_FuDate" class="form-control" />
+                <span asp-validation-for="Misc_SpecimensLabeled_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Misc_SpecimensLabeled_FuRemarks" class="control-label"></label>
+                <input asp-for="Misc_SpecimensLabeled_FuRemarks" class="form-control" />
+                <span asp-validation-for="Misc_SpecimensLabeled_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Misc_StaffHygienePPE_Finding" class="control-label"></label>
+                <input asp-for="Misc_StaffHygienePPE_Finding" class="form-control" />
+                <span asp-validation-for="Misc_StaffHygienePPE_Finding" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Misc_StaffHygienePPE_ActionDone" class="control-label"></label>
+                <input asp-for="Misc_StaffHygienePPE_ActionDone" class="form-control" />
+                <span asp-validation-for="Misc_StaffHygienePPE_ActionDone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Misc_StaffHygienePPE_Remarks" class="control-label"></label>
+                <input asp-for="Misc_StaffHygienePPE_Remarks" class="form-control" />
+                <span asp-validation-for="Misc_StaffHygienePPE_Remarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Misc_StaffHygienePPE_FuDate" class="control-label"></label>
+                <input asp-for="Misc_StaffHygienePPE_FuDate" class="form-control" />
+                <span asp-validation-for="Misc_StaffHygienePPE_FuDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Misc_StaffHygienePPE_FuRemarks" class="control-label"></label>
+                <input asp-for="Misc_StaffHygienePPE_FuRemarks" class="form-control" />
+                <span asp-validation-for="Misc_StaffHygienePPE_FuRemarks" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UnitAreaStaffSignature" class="control-label"></label>
+                <input asp-for="UnitAreaStaffSignature" class="form-control" />
+                <span asp-validation-for="UnitAreaStaffSignature" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FollowUpDate" class="control-label"></label>
+                <input asp-for="FollowUpDate" class="form-control" />
+                <span asp-validation-for="FollowUpDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

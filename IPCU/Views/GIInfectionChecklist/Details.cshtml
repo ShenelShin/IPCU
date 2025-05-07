@@ -1,319 +1,877 @@
 ﻿@model IPCU.Models.GIInfectionChecklist
 
 @{
-    ViewData["Title"] = "Patient Details";
+    ViewData["Title"] = "Gastrointestinal (GI) Infection Checklist";
 }
 
-<h2>Patient Details</h2>
+<style>
+    fieldset {
+        border: 2px solid #000;
+        padding: 10px;
+        margin-bottom: 20px;
+        pointer-events: none; /* Prevent clicks */
+        opacity: 0.8; /* Make it look disabled */
+    }
 
-<table class="table table-bordered">
-    <tr>
-        <td>First Name: @Model.Fname</td>
-        <td>Middle Name: @Model.Mname</td>
-        <td>Last Name: @Model.Lname</td>
-        <td>Hospital Number: @Model.HospitalNumber</td>
-    </tr>
 
-    <tr>
-        <td>Date of Birth: @(Model.DateOfBirth?.ToString("yyyy-MM-dd") ?? "N/A")</td>
-        <td>Age: @Model.Age</td>
-        <td>Unit/Ward Area: @Model.UnitWardArea</td>
-        <td>Main Service: @Model.MainService</td>
-    </tr>
+    legend {
+        font-weight: bold;
+    }
 
-    <tr>
-        <td>Date of Event: @Model.DateOfEvent?.ToString("yyyy-MM-dd")</td>
-        <td>Investigator: @Model.Investigator</td>
-        <td>Date of Admission: @Model.DateOfAdmission?.ToString("yyyy-MM-dd")</td>
-        <td>Disposition: @Model.Disposition</td>
-    </tr>
-    <tr>
-        <td>Disposition Date: @Model.DispositionDate?.ToString("yyyy-MM-dd")</td>
-        <td>Gender: @Model.Gender</td>
-        <td>Classification: @Model.Classification</td>
-        <td>
-            MDRO: @Model.MDRO
-            @if (Model.MDRO?.Trim().ToLower() == "yes" && !string.IsNullOrWhiteSpace(Model.MDROOrganism))
-            {
-                <text><br />MDRO Organism: @Model.MDROOrganism</text>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+    }
+
+    td, th {
+        border: 1px solid #000;
+        padding: 5px;
+        vertical-align: top;
+        pointer-events: none; /* Prevent clicks */
+        opacity: 0.8; /* Make it look disabled */
+    }
+
+    label {
+        font-weight: normal;
+    }
+
+    .st-trigger-checkbox {
+        pointer-events: none;
+        opacity: 0.8; /* Make it look disabled */
+    }
+</style>
+
+<h2 style="text-align:center;">@ViewData["Title"]</h2>
+
+
+    <fieldset>
+        <legend>Patient Information</legend>
+
+        <table>
+            <tr>
+                <td>
+                    <label asp-for="Fname"></label><br />
+                    <input asp-for="Fname" class="form-control" />
+                    <span asp-validation-for="Fname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Mname"></label><br />
+                    <input asp-for="Mname" class="form-control" />
+                    <span asp-validation-for="Mname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Lname"></label><br />
+                    <input asp-for="Lname" class="form-control" />
+                    <span asp-validation-for="Lname" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="HospitalNumber"></label><br />
+                    <input asp-for="HospitalNumber" class="form-control" />
+                    <span asp-validation-for="HospitalNumber" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="DateOfBirth"></label><br />
+                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Age"></label><br />
+                    <input asp-for="Age" class="form-control" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Gender"></label><br />
+                    <select asp-for="Gender" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="Classification"></label><br />
+                    <select asp-for="Classification" class="form-control">
+                        <option value="">--Select--</option>
+                        <option>Pay</option>
+                        <option>Service</option>
+                    </select>
+                    <span asp-validation-for="Classification" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="UnitWardArea"></label><br />
+                    <input asp-for="UnitWardArea" class="form-control" />
+                    <span asp-validation-for="UnitWardArea" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="MainService"></label><br />
+                    <input asp-for="MainService" class="form-control" />
+                    <span asp-validation-for="MainService" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfAdmission"></label><br />
+                    <input asp-for="DateOfAdmission" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfAdmission" class="text-danger"></span>
+                </td>
+                <td>
+                    <label asp-for="DateOfEvent"></label><br />
+                    <input asp-for="DateOfEvent" type="date" class="form-control" />
+                    <span asp-validation-for="DateOfEvent" class="text-danger"></span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label asp-for="Investigator"></label><br />
+                    <input asp-for="Investigator" class="form-control" />
+                    <span asp-validation-for="Investigator" class="text-danger"></span>
+                </td>
+
+
+                <!-- Disposition dropdown -->
+                <td>
+                    <label asp-for="Disposition"></label><br />
+                    <select asp-for="Disposition" class="form-control" id="DispositionDropdown" onchange="toggleDispositionDateField()">
+                        <option value="">--Select--</option>
+                        <option>Mortality</option>
+                        <option>Discharged</option>
+                        <option>Still Admitted</option>
+                        <option>Transferred In</option>
+                        <option>Transferred Out</option>
+                    </select>
+                    <span asp-validation-for="Disposition" class="text-danger"></span>
+                </td>
+
+                <td id="DispositionDateSection">
+                    <label asp-for="DispositionDate"></label><br />
+                    <input asp-for="DispositionDate" type="date" class="form-control" />
+                    <span asp-validation-for="DispositionDate" class="text-danger"></span>
+                </td>
+
+                <td id="DispositionTransferRow" style="display:none;" colspan="1">
+                    <label asp-for="DispositionTransfer"></label><br />
+                    <select asp-for="DispositionTransfer" class="form-control">
+                        <option value="">-- Select --</option>
+                        <option value="2A">2A</option>
+                        <option value="2B">2B</option>
+                        <option value="2C">2C</option>
+                    </select>
+                    <span asp-validation-for="DispositionTransfer" class="text-danger"></span>
+                </td>
+
+            </tr>
+
+            <tr>
+                <!-- Type & Classification Row -->
+            @{
+                var selectedTypes = Model.TypeClass?.Split(", ", StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
             }
-        </td>
 
-    </tr>
+            <td colspan="2">
+                <h4 style="margin-bottom:10px;">Type & Classification</h4>
 
-</table>
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" id="cdiCheckbox" class="form-check-input" disabled
+                           value="CDI" name="TypeClass"
+                    @(selectedTypes.Contains("CDI") ? "checked" : "") />
+                    <label class="form-check-label" for="cdiCheckbox">CDI</label>
+                </div>
 
-<!-- CDI CHECKBOX -->
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <legend style="text-align:center; font-weight:bold; font-size:16px; border: 1px solid #ccc; padding: 8px; border-radius: 5px;">
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" id="geCheckbox" class="form-check-input" disabled
+                           value="GE" name="TypeClass"
+                    @(selectedTypes.Contains("GE") ? "checked" : "") />
+                    <label class="form-check-label" for="geCheckbox">GE</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" id="gitCheckbox" class="form-check-input" disabled
+                           value="GIT" name="TypeClass"
+                    @(selectedTypes.Contains("GIT") ? "checked" : "") />
+                    <label class="form-check-label" for="gitCheckbox">GIT</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" id="iabCheckbox" class="form-check-input" disabled
+                           value="IAB" name="TypeClass"
+                    @(selectedTypes.Contains("IAB") ? "checked" : "") />
+                    <label class="form-check-label" for="iabCheckbox">IAB</label>
+                </div>
+            </td>
+
+
+                <td>
+                    <label asp-for="MDRO"></label>
+                    <select asp-for="MDRO" class="form-control" id="MDRODropdown" onchange="toggleMDROOrganism()">
+                        <option value="">Select</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                    <span asp-validation-for="MDRO" class="text-danger"></span>
+                </td>
+
+                <td id="mdroOrganismContainer" style="display:none;">
+                    <label asp-for="MDROOrganism"></label><br />
+                    <input asp-for="MDROOrganism" class="form-control" />
+                    <span asp-validation-for="MDROOrganism" class="text-danger"></span>
+                </td>
+
+            </tr>
+
+        </table>
+
+    </fieldset>
+
+    <!-- CDI Section -->
+    <div id="cdi-box" style="display:none;">
+        <fieldset>
+            <legend style="text-align:center; font-weight:bold; border:1px solid black; padding:5px;">
                 CLOSTRIDIOIDES DIFFICILE INFECTION (CDI)
             </legend>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <p>At least one (1) of the following criteria:</p>
-                <div>
-                    <input type="checkbox" @(Model.CDItoxin ? "checked" : "") disabled />
-                    Positive test for toxin-producing <i>C. difficile</i> on an unformed stool specimen (conforms to the shape of the container)
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.CDIpseudomembranous ? "checked" : "") disabled />
-                    Patient has evidence of pseudomembranous colitis on gross anatomic (includes endoscopic exams) or histopathologic exam
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
 
-<!-- GE CHECKBOX -->
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <legend style="text-align:center; font-weight:bold; font-size:16px; border: 1px solid #ccc; padding: 8px; border-radius: 5px;">
-                GE-GASTROENTERITIS (EXCLUDING C. DIFFICILE INFECTIONS)
+            <p><b>At least one (1)</b> of the following criteria:</p>
+            <table>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="CDItoxin" class="form-check-input" type="checkbox" id="CDItoxin" style="margin-top: 5px;" />
+                            <label for="CDItoxin" style="max-width: 1400px;">
+                                Positive test for toxin-producing C. difficile on an unformed stool specimen (conforms to the shape of the container)
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="CDIpseudomembranous" class="form-check-input" type="checkbox" id="CDIpseudomembranous" style="margin-top: 5px;" />
+                            <label for="CDIpseudomembranous" style="max-width: 1400px;">
+                                Patient has evidence of pseudomembranous colitis on gross anatomic (includes endoscopic exams) or histopathologic exam
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </fieldset>
+    </div>
+
+
+    <!-- GE Section -->
+    <div id="ge-box" style="display:none;">
+        <fieldset>
+            <legend style="text-align:center; font-weight:bold; border:1px solid black; padding:5px;">
+                GASTROENTERITIS (GE)
             </legend>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <p>At least one (1) of the following criteria:</p>
-                <div>
-                    <input type="checkbox" @(Model.GEdiarrhea ? "checked" : "") disabled>
-                    Patient has an acute onset of diarrhea (liquid stools for > 12 hours) and no likely noninfectious cause (for example, diagnostic tests, therapeutic regimen other than antimicrobial agents, acute exacerbation of a chronic condition, or psychological stress information)
-                </div>
-            </td>
-        </tr>
-    </tbody>
- 
-    <tbody>
-        <tr>
-            <td>
-                <p>Patient hasdatalist  least two of the following signs or symptoms:</p>
-                <div>
-                    <input type="checkbox" @(Model.GENausea ? "checked" : "") disabled>
-                    Nausea*
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GEVomiting ? "checked" : "") disabled>
-                    Vomiting*
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GENAbdominal ? "checked" : "") disabled>
-                    Abdominal pain*
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GENFever ? "checked" : "") disabled>
-                    Fever (>38.0°C)
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GENHeadache ? "checked" : "") disabled>
-                    Headache*
-                </div>
-            </td>
-        </tr>
-    </tbody>
-    <tbody>
-        <tr>
-            <td>
-                <p>AND at least one of the following:</p>
-                <div>
-                    <input type="checkbox" @(Model.GENpenteric1 ? "checked" : "") disabled>
-                    An enteric pathogen is identified from stool or rectal swab by a culture or nonculture based microbiologic testing
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GENenteric2 ? "checked" : "") disabled>
-                    An enteric pathogen is detected by microscopy on stool
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GENantibody ? "checked" : "") disabled>
-                    Diagnostic single antibody titer (IgM) or 4-fold increase in paired sera (IgG) for organism
-                </div>
-            </td>
-        </tr>
-    </tbody>
 
-</table>
+            <p><b>At least one (1)</b> of the following criteria:</p>
+            <table>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GEdiarrhea" type="checkbox" id="GEdiarrhea" style="margin-top: 5px;" />
+                            <label for="GEdiarrhea" style="max-width: 1400px;">
+                                Patient has an acute onset of diarrhea (liquid stools for &gt; 12 hours) and no likely noninfectious cause
+                                (for example, diagnostic tests, therapeutic regimen other than antimicrobial agents, acute exacerbation of
+                                a chronic condition, or psychological stress information)
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-<!--IAB CHECKBOX-->
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <legend style="text-align:center; font-weight:bold; font-size:16px; border: 1px solid #ccc; padding: 8px; border-radius: 5px;">
-                IAB-INTRAABDOMINAL INFECTION
+            <p>Patient has <b>at least two</b> of the following:</p>
+            <table>
+                <tr>
+                    <td>
+                        <input asp-for="GENausea" type="checkbox" id="GENausea">
+                        <label for="GENausea">Nausea</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input asp-for="GEVomiting" type="checkbox" id="GEVomiting">
+                        <label for="GEVomiting">Vomiting</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input asp-for="GENAbdominal" type="checkbox" id="GENAbdominal">
+                        <label for="GENAbdominal">Abdominal pain</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input asp-for="GENFever" type="checkbox" id="GENFever">
+                        <label for="GENFever">Fever (&gt;38.0°C)</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input asp-for="GENHeadache" type="checkbox" id="GENHeadache">
+                        <label for="GENHeadache">Headache</label>
+                    </td>
+                </tr>
+            </table>
+
+            <p><b>AND at least one</b> of the following:</p>
+            <table>
+                <tr>
+                    <td>
+                        <input asp-for="GENpenteric1" type="checkbox" id="GENpenteric1">
+                        <label for="GENpenteric1">
+                            An enteric pathogen is identified from stool or rectal swab by a culture or nonculture based microbiologic testing
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input asp-for="GENenteric2" type="checkbox" id="GENenteric2">
+                        <label for="GENenteric2">
+                            An enteric pathogen is detected by microscopy on stool
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input asp-for="GENantibody" type="checkbox" id="GENantibody">
+                        <label for="GENantibody">
+                            Diagnostic single antibody titer (IgM) or 4-fold increase in paired sera (IgG) for organism
+                        </label>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
+
+
+    <!-- GIT - GASTROINTESTINAL TRACT INFECTION -->
+    <div id="git-box" style="display:none;">
+        <fieldset>
+            <legend style="text-align:center; font-weight:bold; border:1px solid black; padding:5px;">
+                GIT - GASTROINTESTINAL TRACT INFECTION
             </legend>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <p>At least one (1) of the following criteria:</p>
-                <div>
-                    <input type="checkbox" @(Model.IABorganism ? "checked" : "") disabled>
-                    Patient has organism(s) identified from an abscess or from purulent material from intraabdominal space by a culture or non-culture based microbiologic testing method
-                </div>
-            </td>
-        </tr>
-    </tbody>
 
-    <tbody>
-        <tr>
-            <td>
-                <p>AND at least one of the following:</p>
-                <div>
-                    <input type="checkbox" @(Model.IABAbscess1 ? "checked" : "") disabled>
-                    Abscess or other evidence of intraabdominal infection on gross anatomic or histopathologic exam
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.IABAbscess2 ? "checked" : "") disabled>
-                    Abscess or other evidence of intraabdominal infection on gross anatomic or histopathologic exam, <b>AND</b> organism(s) identified from blood by a culture or non-culture based microbiologic testing method
-                </div>
-            </td>
-        </tr>
-    </tbody>
+            <!-- Criteria Group 1 -->
+            <p><b>At least one (1)</b> of the following criteria:</p>
+            <table>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GITAbscess1" class="form-check-input" type="checkbox" id="GITAbscess1" style="margin-top: 5px;" />
+                            <label for="GITAbscess1" style="max-width: 1400px;">
+                                Abscess or other evidence of gastrointestinal infection on gross anatomic or histopathologic exam
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: start; gap: 10px; max-width: 1400px;">
+                            <input asp-for="GITAbscess2" class="form-check-input" type="checkbox" id="GITAbscess2" style="margin-top: 3px; flex-shrink: 0;" />
+                            <label for="GITAbscess2" style="line-height: 1.4;">
+                                Abscess or other evidence of gastrointestinal infection on gross anatomic or histopathologic exam, <strong>AND</strong> organism(s) identified from blood by a culture or non-culture based microbiologic testing method
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GITblood" class="form-check-input" type="checkbox" id="GITblood" style="margin-top: 5px;" />
+                            <label for="GITblood" style="max-width: 1400px;">
+                                Organism(s) identified from blood by a culture or non-culture based microbiologic testing method
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-    <tbody>
-        <tr>
-            <td>
-                <p>At least two (2) of the following criteria:</p>
-                <div>
-                    <input type="checkbox" @(Model.IABFever ? "checked" : "") disabled>
-                    Fever (>38.0°C)
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.IABHypotension ? "checked" : "") disabled>
-                    Hypotension
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.IABNausea ? "checked" : "") disabled>
-                    Nausea*
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.IABVomiting ? "checked" : "") disabled>
-                    Vomiting*
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.IABAbdominal ? "checked" : "") disabled>
-                    Abdominal pain or tenderness*
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.IABtransaminase ? "checked" : "") disabled>
-                    Elevated transaminase level(s)*
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.IABJaundice ? "checked" : "") disabled>
-                    Jaundice*
-                </div>
-            </td>
-        </tr>
-    </tbody>
-    <tbody>
-        <tr>
-            <td>
-                <p>AND at least one of the following:</p>
-                <div>
-                    <input type="checkbox" @(Model.IABOrgintraabdominal ? "checked" : "") disabled>
-                    Organism(s) seen on Gram stain and/or identified from intraabdominal fluid or tissue obtained during invasive procedure or from an aseptically-placed drain in the intraabdominal space (for example, closed suction drainage system, open drain, T-tube drain, CT-guided drainage)
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.IABmicrobiologic ? "checked" : "") disabled>
-                    Organism(s) identified from blood by a culture or nonculture based microbiologic testing method, <b>AND</b> Imaging test evidence definitive for infection (for example, ultrasound, CT scan, MRI, ERCP, radiolabel scans [gallium, technetium, etc.], or on abdominal x-ray)
-                </div>
-            </td>
-        </tr>
-    </tbody>
+            <!-- Criteria Group 2 -->
+            <p><b>At least two (2)</b> of the following criteria:</p>
+            <table>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GITFEVER" class="form-check-input" type="checkbox" id="GITFEVER" style="margin-top: 5px;" />
+                            <label for="GITFEVER" style="max-width: 1400px;">Fever (&gt;38.0°C)</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GITNausea" class="form-check-input" type="checkbox" id="GITNausea" style="margin-top: 5px;" />
+                            <label for="GITNausea" style="max-width: 1400px;">Nausea</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GITVomiting" class="form-check-input" type="checkbox" id="GITVomiting" style="margin-top: 5px;" />
+                            <label for="GITVomiting" style="max-width: 1400px;">Vomiting</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GITPainTend" class="form-check-input" type="checkbox" id="GITPainTend" style="margin-top: 5px;" />
+                            <label for="GITPainTend" style="max-width: 1400px;">Abdominal pain or tenderness</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GITOdynophagia" class="form-check-input" type="checkbox" id="GITOdynophagia" style="margin-top: 5px;" />
+                            <label for="GITOdynophagia" style="max-width: 1400px;">Odynophagia (painful swallowing)</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GITDysphagia" class="form-check-input" type="checkbox" id="GITDysphagia" style="margin-top: 5px;" />
+                            <label for="GITDysphagia" style="max-width: 1400px;">Dysphagia (difficulty swallowing)</label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-</table>
+            <!-- Criteria Group 3 -->
+            <p><b>AND at least one</b> of the following:</p>
+            <table>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GITDrain" class="form-check-input" type="checkbox" id="GITDrain" style="margin-top: 5px;" />
+                            <label for="GITDrain" style="max-width: 1400px;">Organism(s) identified from drainage or tissue</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GITGram" class="form-check-input" type="checkbox" id="GITGram" style="margin-top: 5px;" />
+                            <label for="GITGram" style="max-width: 1400px;">Organism(s) seen on Gram stain or fungal elements seen on KOH stain or multinucleated giant cells</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: start; gap: 10px; max-width: 1400px;">
+                            <input asp-for="GITmicrobiologic" class="form-check-input" type="checkbox" id="GITmicrobiologic" style="margin-top: 3px; flex-shrink: 0;" />
+                            <label for="GITmicrobiologic" style="line-height: 1.4;">
+                                Organism(s) identified from blood by a culture or non-culture based microbiologic testing method, <strong>AND</strong> imaging test evidence definitive for gastrointestinal infection
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="GITgastrointestinal" class="form-check-input" type="checkbox" id="GITgastrointestinal" style="margin-top: 5px;" />
+                            <label for="GITgastrointestinal" style="max-width: 1400px;">
+                                Imaging test evidence definitive for gastrointestinal infection (e.g., endoscopic exam, MRI, CT scan)
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+    </div>
 
-<!--GIT CHECKBOX-->
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <legend style="text-align:center; font-weight:bold; font-size:16px; border: 1px solid #ccc; padding: 8px; border-radius: 5px;">
-                GIT-GASTROINTESTINAL TRACT INFECTION
+    <!-- IAB - INTRAABDOMINAL INFECTION -->
+    <div id="iab-box" style="display:none;">
+        <fieldset>
+            <legend style="text-align:center; font-weight:bold; border:1px solid black; padding:5px;">
+                IAB - INTRAABDOMINAL INFECTION
             </legend>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <p>At least one (1) of the following criteria:</p>
-                <div>
-                    <input type="checkbox" @(Model.GITAbscess1 ? "checked" : "") disabled>
-                    An abscess or other evidence of gastrointestinal tract infection on gross anatomic or histopathologic exam
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GITAbscess2 ? "checked" : "") disabled>
-                    Abscess or other evidence of gastrointestinal tract infection on gross anatomic or histopathologic exam, <b>AND</b>
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GITblood ? "checked" : "") disabled>
-                    Organism(s) identified from blood by a culture or nonculture based microbiologic testing method
-                </div>
-            </td>
-        </tr>
-    </tbody>
 
-    <tbody>
-        <tr>
-            <td>
-                <p>At least two of the following signs or symptoms compatible with infection of the organ or tissue involved:</p>
-                <div>
-                    <input type="checkbox" @(Model.GITNausea ? "checked" : "") disabled>
-                    Nausea*
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GITVomiting ? "checked" : "") disabled>
-                    Vomiting*
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GITPainTend ? "checked" : "") disabled>
-                    Pain* or tenderness*
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GITFEVER ? "checked" : "") disabled>
-                    Fever (>38.0°C)
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GITOdynophagia ? "checked" : "") disabled>
-                    Odynophagia*
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GITDysphagia ? "checked" : "") disabled>
-                    Dysphagia*
-                </div>
-            </td>
-        </tr>
-    </tbody>
+            <!-- Criteria Group 1 -->
+            <p><b>At least one (1) of the following criteria:</b></p>
+            <table>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="IABorganism" type="checkbox" id="IABorganism" class="form-check-input" />
+                            <label for="IABorganism" style="max-width: 1400px;">
+                                Patient has organism(s) identified from an abscess or from purulent material from intraabdominal space by a culture or non-culture based microbiologic testing method
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-    <tbody>
-        <tr>
-            <td>
-                <p>AND at least one of the following:</p>
-                <div>
-                    <input type="checkbox" @(Model.GITDrain ? "checked" : "") disabled>
-                    Organism(s) identified from drainage or tissue
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GITGram ? "checked" : "") disabled>
-                    Organism(s) seen on Gram stain or fungal elements seen on KOH stain or multinucleated giant cells
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GITmicrobiologic ? "checked" : "") disabled>
-                    Organism(s) identified from blood by a culture or nonculture based microbiologic testing method, AND imaging test evidence definitive for gastrointestinal infection
-                </div>
-                <div>
-                    <input type="checkbox" @(Model.GITgastrointestinal ? "checked" : "") disabled>
-                    Imaging test evidence definitive for gastrointestinal infection (for example, endoscopic exam, MRI, CT scan)
-                </div>
-            </td>
-        </tr>
-    </tbody>
+            <!-- Criteria Group 2 -->
+            <p><b>At least one (1) of the following criteria:</b></p>
+            <table>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="IABAbscess1" type="checkbox" id="IABAbscess1" class="form-check-input" />
+                            <label for="IABAbscess1" style="max-width: 1400px;">
+                                Abscess or other evidence of intraabdominal infection on gross anatomic or histopathologic exam
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="IABAbscess2" type="checkbox" id="IABAbscess2" class="form-check-input" />
+                            <label for="IABAbscess2" style="max-width: 1400px;">
+                                Abscess or other evidence of intraabdominal infection on gross anatomic or histopathologic exam, <b>AND</b> organism(s) identified from blood by a culture or non-culture based microbiologic testing method
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-</table>
+            <!-- Criteria Group 3 -->
+            <p><b>At least two (2) of the following criteria:</b></p>
+            <table>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="IABFever" type="checkbox" id="IABFever" class="form-check-input" />
+                            <label for="IABFever" style="max-width: 1400px;">Fever (&gt;38.0°C)</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="IABNausea" type="checkbox" id="IABNausea" class="form-check-input" />
+                            <label for="IABNausea" style="max-width: 1400px;">Nausea</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="IABVomiting" type="checkbox" id="IABVomiting" class="form-check-input" />
+                            <label for="IABVomiting" style="max-width: 1400px;">Vomiting</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="IABAbdominal" type="checkbox" id="IABAbdominal" class="form-check-input" />
+                            <label for="IABAbdominal" style="max-width: 1400px;">Abdominal pain or tenderness</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="IABtransaminase" type="checkbox" id="IABtransaminase" class="form-check-input" />
+                            <label for="IABtransaminase" style="max-width: 1400px;">Elevated transaminase level(s)</label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="IABJaundice" type="checkbox" id="IABJaundice" class="form-check-input" />
+                            <label for="IABJaundice" style="max-width: 1400px;">Jaundice</label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
-<a asp-action="PatientIndex" class="btn btn-primary">Back to List</a>
+            <!-- Criteria Group 4 -->
+            <p><b>AND at least one of the following:</b></p>
+            <table>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="IABOrgintraabdominal" type="checkbox" id="IABOrgintraabdominal" class="form-check-input" style="margin-top: 3px;" />
+                            <label for="IABOrgintraabdominal" style="max-width: 95%; line-height: 1.4;">
+                                Organism(s) seen on Gram stain and/or identified from intraabdominal fluid or tissue obtained during invasive procedure or from an aseptically-placed drain in the intraabdominal space (for example, closed suction drainage system, open drain, T-tube drain, CT-guided drainage)
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div style="display: flex; align-items: flex-start; gap: 10px;">
+                            <input asp-for="IABOrgintraabdominal" type="checkbox" id="IABOrgintraabdominal" class="form-check-input" style="margin-top: 3px;" />
+                            <label for="IABOrgintraabdominal" style="max-width: 95%; line-height: 1.4;">
+                                Organism(s) identified from blood by a culture or nonculture based microbiologic testing method, AND Imaging test evidence definitive for infection (for example, ultrasound, CT scan, MRI, ERCP, radiolabel scans [gallium, technetium, etc.], or on abdominal x-ray)
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </fieldset>
+    </div>
+
+
+<script>
+
+    // Dispostion
+    function toggleDispositionDateField() {
+        const dispositionDropdown = document.getElementById('DispositionDropdown');
+        const transferRow = document.getElementById('DispositionTransferRow');
+
+        // Show the transfer row only if "Transferred In" or "Transferred Out" is selected
+        if (dispositionDropdown.value === 'Transferred In' || dispositionDropdown.value === 'Transferred Out') {
+            transferRow.style.display = '';
+        } else {
+            transferRow.style.display = 'none';
+            // Optional: Clear the transfer value when hiding
+            document.querySelector('[asp-for="DispositionTransfer"]').value = '';
+        }
+    }
+    // MDRO
+    function toggleMDROOrganism() {
+        const mdroDropdown = document.getElementById('MDRODropdown');
+        const organismContainer = document.getElementById('mdroOrganismContainer');
+
+        if (mdroDropdown.value === 'Yes') {
+            organismContainer.style.display = ''; // or 'block' depending on your layout
+        } else {
+            organismContainer.style.display = 'none';
+        }
+    }
+
+    // GE
+
+        document.addEventListener("DOMContentLoaded", function () {
+        const diarrheaCheckbox = document.getElementById("GEdiarrhea");
+        const symptomIds = ["GENausea", "GEVomiting", "GENAbdominal", "GENFever", "GENHeadache"];
+        const labTestIds = ["GENpenteric1", "GENenteric2", "GENantibody"];
+
+        const symptomCheckboxes = symptomIds.map(id => document.getElementById(id));
+        const labTestCheckboxes = labTestIds.map(id => document.getElementById(id));
+
+        function toggleSymptomCheckboxes() {
+            const shouldEnable = diarrheaCheckbox.checked;
+            symptomCheckboxes.forEach(cb => {
+                if (cb) {
+                    cb.disabled = !shouldEnable;
+                    if (!shouldEnable) {
+                        cb.checked = false;
+                    }
+                }
+            });
+
+            // Also update lab tests if symptoms are disabled
+            toggleLabTestCheckboxes();
+        }
+
+        function toggleLabTestCheckboxes() {
+            // Only check symptom count if they are enabled
+            const enabledSymptoms = symptomCheckboxes.filter(cb => !cb.disabled);
+            const checkedCount = enabledSymptoms.filter(cb => cb.checked).length;
+            const shouldEnable = checkedCount >= 2;
+
+            labTestCheckboxes.forEach(cb => {
+                if (cb) {
+                    cb.disabled = !shouldEnable;
+                    if (!shouldEnable) {
+                        cb.checked = false;
+                    }
+                }
+            });
+        }
+
+        // Add listeners
+        diarrheaCheckbox.addEventListener("change", toggleSymptomCheckboxes);
+        symptomCheckboxes.forEach(cb => {
+            if (cb) {
+                cb.addEventListener("change", toggleLabTestCheckboxes);
+            }
+        });
+
+        // Run everything on load
+        toggleSymptomCheckboxes();
+    });
+    /// End GE
+
+    // GIT
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Criteria 1 checkboxes
+        const criteria1Checkboxes = [
+            document.getElementById("GITAbscess1"),
+            document.getElementById("GITAbscess2"),
+            document.getElementById("GITblood")
+        ];
+
+        // Criteria 2 checkboxes
+        const criteria2Checkboxes = [
+            document.getElementById("GITFEVER"),
+            document.getElementById("GITNausea"),
+            document.getElementById("GITVomiting"),
+            document.getElementById("GITPainTend"),
+            document.getElementById("GITOdynophagia"),
+            document.getElementById("GITDysphagia")
+        ];
+
+        // Criteria 3 checkboxes
+        const criteria3Checkboxes = [
+            document.getElementById("GITDrain"),
+            document.getElementById("GITGram"),
+            document.getElementById("GITmicrobiologic"),
+            document.getElementById("GITgastrointestinal")
+        ];
+
+        // Function to update the enabled/disabled state of Criteria 2 checkboxes
+        function updateCriteria2State() {
+            const checkedCountCriteria1 = criteria1Checkboxes.filter(cb => cb.checked).length;
+            criteria2Checkboxes.forEach(cb => {
+                cb.disabled = checkedCountCriteria1 < 1; // Enable if at least 1 Criteria 1 checkbox is checked
+                if (cb.disabled) {
+                    cb.checked = false; // Uncheck if disabled
+                }
+            });
+        }
+
+        // Function to update the enabled/disabled state of Criteria 3 checkboxes
+        function updateCriteria3State() {
+            const checkedCountCriteria2 = criteria2Checkboxes.filter(cb => cb.checked).length;
+            criteria3Checkboxes.forEach(cb => {
+                cb.disabled = checkedCountCriteria2 < 2; // Enable if at least 2 Criteria 2 checkboxes are checked
+                if (cb.disabled) {
+                    cb.checked = false; // Uncheck if disabled
+                }
+            });
+        }
+
+        // Event listener for Criteria 1 checkboxes
+        criteria1Checkboxes.forEach(cb => {
+            cb.addEventListener("change", function() {
+                updateCriteria2State();
+                updateCriteria3State();
+            });
+        });
+
+        // Event listener for Criteria 2 checkboxes
+        criteria2Checkboxes.forEach(cb => {
+            cb.addEventListener("change", updateCriteria3State);
+        });
+
+        // Initialize the state of Criteria 2 and Criteria 3 on page load
+        updateCriteria2State();
+        updateCriteria3State();
+    });
+
+    // GIT END
+
+    // IAB
+
+    document.addEventListener("DOMContentLoaded", function () {
+        // Criteria 1
+        const IABorganismCheckbox = document.getElementById("IABorganism");
+
+        // Criteria 2
+        const IABAbscess1Checkbox = document.getElementById("IABAbscess1");
+        const IABAbscess2Checkbox = document.getElementById("IABAbscess2");
+
+        // Criteria 3
+        const criteria3Checkboxes = [
+            document.getElementById("IABFever"),
+            document.getElementById("IABNausea"),
+            document.getElementById("IABVomiting"),
+            document.getElementById("IABAbdominal"),
+            document.getElementById("IABtransaminase"),
+            document.getElementById("IABJaundice")
+        ];
+
+        // Criteria 4
+        const criteria4Checkboxes = Array.from(document.querySelectorAll('input[id="IABOrgintraabdominal"]'));
+
+        // Enable/Disable Criteria 2 based on Criteria 1
+        function toggleCriteria2() {
+            const shouldEnable = IABorganismCheckbox.checked;
+            IABAbscess1Checkbox.disabled = !shouldEnable;
+            IABAbscess2Checkbox.disabled = !shouldEnable;
+
+            if (!shouldEnable) {
+                IABAbscess1Checkbox.checked = false;
+                IABAbscess2Checkbox.checked = false;
+            }
+
+            toggleCriteria3();
+        }
+
+        // Enable/Disable Criteria 3 based on Criteria 2
+        function toggleCriteria3() {
+            const enable = IABAbscess1Checkbox.checked || IABAbscess2Checkbox.checked;
+
+            criteria3Checkboxes.forEach(cb => {
+                cb.disabled = !enable;
+                if (!enable) cb.checked = false;
+            });
+
+            toggleCriteria4();
+        }
+
+        // Enable/Disable Criteria 4 based on Criteria 3
+        function toggleCriteria4() {
+            const checkedCount = criteria3Checkboxes.filter(cb => cb.checked).length;
+            const enable = checkedCount >= 2;
+
+            criteria4Checkboxes.forEach(cb => {
+                cb.disabled = !enable;
+                if (!enable) cb.checked = false;
+            });
+        }
+
+        // Event Listeners
+        IABorganismCheckbox.addEventListener("change", toggleCriteria2);
+        IABAbscess1Checkbox.addEventListener("change", toggleCriteria3);
+        IABAbscess2Checkbox.addEventListener("change", toggleCriteria3);
+
+        criteria3Checkboxes.forEach(cb => {
+            cb.addEventListener("change", toggleCriteria4);
+        });
+
+        // Initial state setup
+        toggleCriteria2();
+        toggleCriteria3();
+        toggleCriteria4();
+    });
+
+    // IAB END
+
+
+    // Also call the function on page load in case there's a selected value
+    document.addEventListener('DOMContentLoaded', toggleMDROOrganism);
+
+        function toggleCDISection() {
+        document.getElementById('cdi-box').style.display =
+            document.getElementById('cdiCheckbox').checked ? 'block' : 'none';
+    }
+
+    function toggleGESection() {
+        document.getElementById('ge-box').style.display =
+            document.getElementById('geCheckbox').checked ? 'block' : 'none';
+    }
+
+    function toggleGITSection() {
+        document.getElementById('git-box').style.display =
+            document.getElementById('gitCheckbox').checked ? 'block' : 'none';
+    }
+
+    function toggleIABSection() {
+        document.getElementById('iab-box').style.display =
+            document.getElementById('iabCheckbox').checked ? 'block' : 'none';
+    }
+        document.addEventListener('DOMContentLoaded', function () {
+        toggleCDISection();
+        toggleGESection();
+        toggleGITSection();
+        toggleIABSection();
+    });
+
+</script>

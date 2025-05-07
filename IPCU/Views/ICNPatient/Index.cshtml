@@ -3,6 +3,9 @@
 @using Microsoft.AspNetCore.Identity
 @{
     ViewData["Title"] = "ICN Patient List";
+    
+    // Group patients by station
+    var patientsByStation = Model.GroupBy(p => p.StationName ?? p.AdmLocation ?? "Unknown").OrderBy(g => g.Key);
 }
 <!-- Custom CSS for the dashboard -->
 <style>
@@ -124,16 +127,49 @@
         font-weight: bold;
         margin-left: 5px;
     }
+    
+    .station-card {
+        margin-bottom: 30px;
+        border: none;
+        box-shadow: 0 0 20px rgba(0,0,0,0.08);
+    }
+    
+    .station-header {
+        background-color: #f1f8ff;
+        border-left: 5px solid #0d6efd;
+        padding: 15px;
+        margin-bottom: 0;
+        font-size: 18px;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .station-stats {
+        display: flex;
+        gap: 15px;
+    }
+    
+    .station-stat {
+        background: white;
+        border-radius: 20px;
+        padding: 5px 12px;
+        font-size: 14px;
+        font-weight: 500;
+    }
 </style>
 <div class="container-fluid py-4">
     <div class="dashboard-header">
         <h2 class="mb-1">ICN Patient Monitoring Dashboard</h2>
         <p class="text-muted mb-0">Patients in your assigned areas admitted for 48+ hours</p>
     </div>
+
     @{
         var currentUser = await UserManager.GetUserAsync(User);
         var assignedAreas = currentUser?.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
     }
+
     <div class="alert alert-info mb-4">
         <div class="d-flex align-items-center">
             <i class="fas fa-map-marker-alt me-3"></i>
@@ -150,6 +186,102 @@
             </div>
         </div>
     </div>
+
+    <!-- Debug Panel -->
+    @if (ViewBag.Debug != null || ViewBag.ErrorMessage != null || ViewBag.ExceptionMessage != null)
+    {
+        <div class="card mb-4 shadow-sm border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <button class="btn btn-link text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#debugPanel" aria-expanded="false" aria-controls="debugPanel">
+                        <i class="fas fa-bug me-2"></i> Debug Information (Click to Expand)
+                    </button>
+                </h5>
+            </div>
+            <div class="collapse" id="debugPanel">
+                <div class="card-body">
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i> Error Message:</h5>
+                            <p>@ViewBag.ErrorMessage</p>
+                        </div>
+                    }
+
+                    @if (ViewBag.RecentAdmits != null)
+                    {
+                        <div class="alert alert-info">
+                            <h5>Most Recent Admissions:</h5>
+                            <ul>
+                                @foreach (var patient in ViewBag.RecentAdmits)
+                                {
+                                    <li>HospNum: @patient.HospNum - AdmDate: @patient.AdmDate</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    @if (ViewBag.ExceptionMessage != null)
+                    {
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-circle me-2"></i> Exception:</h5>
+                            <p>@ViewBag.ExceptionMessage</p>
+                            <pre class="mt-2 bg-light p-2 small">@ViewBag.StackTrace</pre>
+                        </div>
+                    }
+
+                    @if (ViewBag.InnerExceptionMessage != null)
+                    {
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-circle me-2"></i> Inner Exception:</h5>
+                            <p>@ViewBag.InnerExceptionMessage</p>
+                            <pre class="mt-2 bg-light p-2 small">@ViewBag.InnerStackTrace</pre>
+                        </div>
+                    }
+
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <i class="fas fa-check-circle me-2"></i> @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    @if (TempData["ErrorMessage"] != null)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <i class="fas fa-exclamation-circle me-2"></i> @TempData["ErrorMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    @if (ViewBag.Debug != null)
+                    {
+                        <h5 class="mt-3">Debug Counters:</h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Metric</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var debug in ViewBag.Debug)
+                                    {
+                                        <tr>
+                                            <td>@debug.Key</td>
+                                            <td>@debug.Value</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
 
     <!-- Stats Cards -->
     <div class="row mb-4">
@@ -242,84 +374,117 @@
     }
     else
     {
-        <div class="card patient-table mb-4">
-            <div class="card-body p-0">
-                <table class="table table-hover m-0" id="patientsTable">
-                    <thead>
-                        <tr>
-                            <th>@Html.DisplayNameFor(model => model.HospNum)</th>
-                            <th>@Html.DisplayNameFor(model => model.PatientName)</th>
-                            <th>@Html.DisplayNameFor(model => model.AdmLocation)</th>
-                            <th>Room</th>
-                            <th>Admitted</th>
-                            <th>Duration</th>
-                            <th>@Html.DisplayNameFor(model => model.Age)/@Html.DisplayNameFor(model => model.Sex)</th>
-                            <th>HAI Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
+        <!-- Grouped by Station -->
+        @foreach (var stationGroup in patientsByStation)
+        {
+            var stationName = stationGroup.Key;
+            var stationPatients = stationGroup.ToList();
+            var haiCount = stationPatients.Count(p => p.HaiStatus);
+            var extendedStayCount = stationPatients.Count(p => p.AdmissionDuration >= 7);
+            
+            <div class="card station-card mb-4">
+                <div class="station-header">
+                    <div>
+                        <i class="fas fa-hospital-alt me-2"></i>
+                        @stationName
+                    </div>
+                    <div class="station-stats">
+                        <span class="station-stat bg-primary text-white">
+                            <i class="fas fa-user-injured me-1"></i> @stationPatients.Count() patients
+                        </span>
+                        @if (haiCount > 0)
                         {
-                            <tr>
-                                <td><span class="badge bg-light text-dark">@Html.DisplayFor(modelItem => item.HospNum)</span></td>
-                                <td>
-                                    <div class="fw-500">@Html.DisplayFor(modelItem => item.PatientName)</div>
-                                </td>
-                                <td>
-                                    <span class="badge bg-primary">@Html.DisplayFor(modelItem => item.AdmLocation)</span>
-                                </td>
-                                <td>
-                                    <span class="room-badge bg-light text-dark">@Html.DisplayFor(modelItem => item.RoomID)</span>
-                                </td>
-                                <td>@item.AdmDate?.ToString("MMM dd, yyyy")</td>
-                                <td>
-                                    @{
-                                        string durationClass = item.AdmissionDuration >= 14 ? "critical" :
-                                        (item.AdmissionDuration >= 7 ? "warning" : "normal");
-                                    }
-                                    <span class="admission-duration @durationClass">
-                                        @Html.DisplayFor(modelItem => item.AdmissionDuration) days
-                                    </span>
-                                </td>
-                                <td>@item.Age yrs / @item.Sex</td>
-                                <td>
-                                    <span class="hai-badge @(item.HaiStatus ? "hai-status-yes" : "hai-status-no")">
-                                        @(item.HaiStatus ? "YES" : "NO")
-                                    </span>
-                                    @if (item.HaiStatus && item.HaiCount > 0)
-                                    {
-                                        <span class="badge hai-count-badge">@item.HaiCount</span>
-                                    }
-                                </td>
-                                <td>
-                                    <div class="d-flex">
-                                        <a asp-action="Details" asp-route-id="@item.IdNum" class="btn btn-sm btn-primary btn-view-details">
-                                            <i class="fas fa-eye me-1"></i> View
-                                        </a>
-                                        @if (!item.HaiStatus)
-                                        {
-                                            <button type="button" class="btn btn-sm btn-danger btn-hai-action mark-hai-btn"
-                                                    data-id="@item.IdNum" data-name="@item.PatientName">
-                                                <i class="fas fa-virus me-1"></i> Mark HAI
-                                            </button>
-                                        }
-                                        else
-                                        {
-                                            <a asp-action="HaiChecklist" asp-route-id="@item.IdNum" class="btn btn-sm btn-warning btn-hai-action">
-                                                <i class="fas fa-clipboard-check me-1"></i> HAI Checklist
-                                            </a>
-                                        }
-                                    </div>
-                                </td>
-                            </tr>
+                            <span class="station-stat bg-danger text-white">
+                                <i class="fas fa-virus me-1"></i> @haiCount HAI
+                            </span>
                         }
-                    </tbody>
-                </table>
+                        @if (extendedStayCount > 0)
+                        {
+                            <span class="station-stat bg-warning text-dark">
+                                <i class="fas fa-hourglass-half me-1"></i> @extendedStayCount extended stay
+                            </span>
+                        }
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover m-0 patient-table-@stationName.Replace(" ", "-").ToLower()">
+                        <thead>
+                            <tr>
+                                <th>Hosp #</th>
+                                <th>Patient Name</th>
+                                <th>Room</th>
+                                <th>Admitted</th>
+                                <th>Duration</th>
+                                <th>Age/Sex</th>
+                                <th>HAI Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in stationPatients.OrderBy(p => p.RoomID).ThenBy(p => p.LastName))
+                            {
+                                <tr>
+                                    <td><span class="badge bg-light text-dark">@item.HospNum</span></td>
+                                    <td>
+                                        <div class="fw-500">@item.PatientName</div>
+                                    </td>
+                                    <td>
+                                        <span class="room-badge bg-light text-dark" title="@item.RoomDescription">
+                                            @item.RoomID
+                                        </span>
+                                    </td>
+                                    <td>@item.AdmDate?.ToString("MMM dd, yyyy")</td>
+                                    <td>
+                                        @{
+                                            string durationClass = item.AdmissionDuration >= 14 ? "critical" :
+                                            (item.AdmissionDuration >= 7 ? "warning" : "normal");
+                                        }
+                                        <span class="admission-duration @durationClass">
+                                            @item.AdmissionDuration days
+                                        </span>
+                                    </td>
+                                    <td>@item.Age yrs / @item.Sex</td>
+                                    <td>
+                                        <span class="hai-badge @(item.HaiStatus ? "hai-status-yes" : "hai-status-no")">
+                                            @(item.HaiStatus ? "YES" : "NO")
+                                        </span>
+                                        @if (item.HaiStatus && item.HaiCount > 0)
+                                        {
+                                            <span class="badge hai-count-badge">@item.HaiCount</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="d-flex">
+                                            <a asp-action="Details" asp-route-id="@item.IdNum" class="btn btn-sm btn-primary btn-view-details">
+                                                <i class="fas fa-eye me-1"></i> View
+                                            </a>
+                                            @if (!item.HaiStatus)
+                                            {
+                                                <button type="button" class="btn btn-sm btn-danger btn-hai-action mark-hai-btn"
+                                                        data-id="@item.IdNum" data-name="@item.PatientName">
+                                                    <i class="fas fa-virus me-1"></i> Mark HAI
+                                                </button>
+                                            }
+                                            else
+                                            {
+                                                <a asp-action="HaiChecklist" asp-route-id="@item.IdNum" class="btn btn-sm btn-warning btn-hai-action">
+                                                    <i class="fas fa-clipboard-check me-1"></i> HAI Checklist
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
+        }
     }
 </div>
+
+
+
 <!-- HAI Confirmation Modal -->
 <div class="modal fade" id="haiConfirmationModal" tabindex="-1" aria-labelledby="haiConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -342,43 +507,53 @@
             </div>
         </div>
     </div>
-</div>
-@section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Initialize DataTables with advanced features
-            $('#patientsTable').DataTable({
-                "responsive": true,
-                "order": [[2, "asc"], [3, "asc"]], // Sort by Location then Room
-                "pageLength": 10,
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                "language": {
-                    "search": "Search patients:",
-                    "lengthMenu": "Show MENU patients",
-                    "info": "Showing START to END of TOTAL patients"
-                },
-                "dom": '<"row"<"col-md-6"l><"col-md-6"f>>rtip',
-                "initComplete": function() {
-                    // Add a custom class to the search input
-                    $('.dataTables_filter input').addClass('form-control-sm');
-                }
+
+    @section Scripts {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+        <!-- DataTables JS -->
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Initialize DataTables for each station table
+            @foreach (var stationGroup in patientsByStation)
+            {
+                var tableId = $"'.patient-table-{stationGroup.Key.Replace(" ", "-").ToLower()}'";
+                <text>
+                            $(@Html.Raw(tableId)).DataTable({
+                                "responsive": true,
+                                "order": [[2, "asc"], [1, "asc"]], // Sort by Room then Name
+                                "pageLength": 10,
+                                "lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                                "language": {
+                                    "search": "Search:",
+                                    "lengthMenu": "_MENU_",
+                                    "info": "Showing _START_ to _END_ of _TOTAL_ patients"
+                                },
+                                "dom": 'lftip',
+                                "initComplete": function() {
+                                    $('.dataTables_filter input').addClass('form-control-sm');
+                                    $('.dataTables_paginate').addClass('pt-3');
+                                }
+                            });
+                </text>
+            }
+
+                // Handle HAI confirmation modal
+                $('.mark-hai-btn').click(function() {
+                    var patientId = $(this).data('id');
+                    var patientName = $(this).data('name');
+
+                    // Log for debugging
+                    console.log("Patient ID:", patientId);
+                    console.log("Patient Name:", patientName);
+
+                    $('#patientIdInput').val(patientId);
+                    $('#patientNameSpan').text(patientName);
+
+                    var modal = new bootstrap.Modal(document.getElementById('haiConfirmationModal'));
+                    modal.show();
+                });
             });
-
-            // Handle HAI confirmation modal
-            $('.mark-hai-btn').click(function() {
-                var patientId = $(this).data('id');
-                var patientName = $(this).data('name');
-
-                $('#patientIdInput').val(patientId);
-                $('#patientNameSpan').text(patientName);
-
-                var modal = new bootstrap.Modal(document.getElementById('haiConfirmationModal'));
-                modal.show();
-            });
-        });
-    </script>
-}
+        </script>
+    }

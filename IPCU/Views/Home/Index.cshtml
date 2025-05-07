@@ -4,194 +4,94 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-<div class="container mt-5">
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-gradient">Welcome to IPCU System</h1>
-        <p class="lead text-muted">Efficiently managing Employee Forms & Trainings.</p>
+<div class="container py-5 bg-white shadow rounded-4 border border-light">
+    <div class="header-section d-flex align-items-center justify-content-center px-3 py-2 mb-4 gap-3 animate__animated animate__fadeInDown">
+
+        <div class="logo-box">
+            <img src="~/images/NKTI.png" alt="NKTI Left Logo" class="img-fluid logo-img">
+        </div>
+
+        <div class="text-center flex-grow-0 mx-5 mb-5">
+        
+            <h1 class="text-primary fw-bold mb-1">IPCU SYSTEM</h1>
+            <p class="text-muted text-fade mb-1">Welcome to the IPCU System</p>
+            <p class="text-muted text-fade">Streamlined Management of Employee Forms & Trainings</p>
+            <p class="text-secondary small fst-italic">Empowering infection control through efficient digital workflows</p> <!-- Caption -->
+        </div>
+
+        <div class="logo-box">
+            <img src="~/images/nkti-right-logo-removebg-preview.png" alt="NKTI Right Logo" class="img-fluid logo-img">
+        </div>
     </div>
 
-    <div class="row g-4 justify-content-center">
-        <!-- View Patients -->
-        <div class="col-md-3">
-            <div class="card h-100 border-0 shadow-lg rounded-4">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-primary mb-3">
-                        <i class="fas fa-user-injured fa-2x text-white"></i>
-                    </div>
-                    <h5 class="fw-bold">View Patients</h5>
-                    <p class="text-muted">View all registered patients efficiently.</p>
-                    <div class="d-grid gap-2">
-                        <a asp-controller="Patients" asp-action="Index" class="btn btn-primary">Patient</a>
-                        <a asp-controller="PatientMasters" asp-action="Index" class="btn btn-outline-primary">Master</a>
-                    
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="row g-4">
+        @{
+            var cards = new List<dynamic>
+        {
+       /* new { Title="View Patients", Desc="View all registered patients.", Icon="fas fa-user-injured", Color="primary", Buttons=new[]{ ("Patients", "Patients", "Index", "primary"), ("Masters", "PatientMasters", "Index", "outline-primary") }},*/
+        new { Title="ICN Patient Management", Desc="Track ICN patients.", Icon="fas fa-hospital-user", Color="indigo", Buttons=new[]{ ("View Patients", "ICNPatient", "Index", "indigo text-white"), ("Details", "ICNPatient", "Details", "outline-indigo") }},
+        new { Title="Training Summary", Desc="Summarize assessment reports.", Icon="fas fa-chalkboard-teacher", Color="warning", Buttons=new[]{ ("Summary", "Evaluation", "SummaryReport", "warning text-white"), ("Reports", "TrainingSummary", "Reports", "outline-warning") }},
+        new { Title="Hand Hygiene", Desc="Track hygiene compliance.", Icon="fas fa-hands-wash", Color="success", Buttons=new[]{ ("Open Form", "HandHygieneForms", "Index", "success"), ("Summary", "HandHygieneForms", "MonthlySummary", "outline-success") }},
+        new { Title="Fit Testing", Desc="Fill or view Fit Testing forms.", Icon="fas fa-mask-face", Color="purple", Buttons=new[]{ ("Open Form", "FitTestingForm", "Index", "purple text-white"), ("Reports", "FitTestingForm", "Reports", "outline-purple") }},
+        new { Title="Role Management", Desc="Manage user roles and permissions.", Icon="fas fa-user-shield", Color="danger", Buttons=new[]{ ("Roles", "RoleManagement", "Index", "danger"), ("Users", "RoleManagement", "UserRoles", "outline-danger") }},
+        new { Title="User Area Management", Desc="Assign user work areas.", Icon="fas fa-map-marker-alt", Color="teal", Buttons=new[]{ ("Manage Areas", "UserAreaManagement", "Index", "teal"), ("Batch Assign", "UserAreaManagement", "BatchAssignAreas", "outline-teal") }},
+       /* new { Title="ICN Patient Management", Desc="Track ICN patients.", Icon="fas fa-hospital-user", Color="indigo", Buttons=new[]{ ("View Patients", "ICNPatient", "Index", "indigo text-white"), ("Details", "ICNPatient", "Details", "outline-indigo") }},*/
+        new { Title="Notice of Referrals", Desc="View referrals notice.", Icon="fas fa-file-medical", Color="secondary", Buttons=new[]{ ("Index", "NoticeOfReferrals", "Index", "secondary text-white") }},
+        new { Title="Environmental", Desc="Environmental.", Icon="fas fa-clipboard-list", Color="orange", Buttons=new[]{ ("Create Forms", "Station", "Index", "orange text-white") }},
+        };
+        }
 
-        <!-- Training Summary -->
-        <div class="col-md-3">
-            <div class="card h-100 border-0 shadow-lg rounded-4">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-warning mb-3">
-                        <i class="fas fa-chalkboard-teacher fa-2x text-white"></i>
-                    </div>
-                    <h5 class="fw-bold">Training Summary</h5>
-                    <p class="text-muted">Summarize assessment reports.</p>
-                    <div class="d-grid gap-2">
-                        <a asp-controller="Evaluation" asp-action="SummaryReport" class="btn btn-warning text-white">Summary</a>
-                        <a asp-controller="TrainingSummary" asp-action="Reports" class="btn btn-outline-success">Report</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @foreach (var card in cards)
+        {
+            <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
 
-        <!-- Hand Hygiene -->
-        <div class="col-md-3">
-            <div class="card h-100 border-0 shadow-lg rounded-4">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-success mb-3">
-                        <i class="fas fa-hands-wash fa-2x text-white"></i>
+                <div class="card h-100 shadow rounded-4 border-0 hover-card">
+                    <div class="card-top bg-@card.Color">
+                        <i class="@card.Icon fa-2x text-white"></i>
                     </div>
-                    <h5 class="fw-bold">Hand Hygiene</h5>
-                    <p class="text-muted">Track hygiene compliance records.</p>
-                    <div class="d-grid gap-2">
-                        <a asp-controller="HandHygieneForms" asp-action="Index" class="btn btn-success">Open Form</a>
-                        <a asp-controller="HandHygieneForms" asp-action="MonthlySummary" class="btn btn-outline-success">Summary</a>
+                    <div class="card-body text-center p-4">
+                        <h5 class="fw-bold mb-2">@card.Title</h5>
+                        <p class="text-muted small">@card.Desc</p>
+                        <div class="d-grid gap-2 mt-3">
+                            @foreach (var btn in card.Buttons)
+                            {
+                                var btnParts = btn.Item4.Split(' ');
+                                var btnBase = "btn-" + btnParts[0];
+                                var extraClass = btnParts.Length > 1 ? btnParts[1] : "";
+                                <a asp-controller="@btn.Item2" asp-action="@btn.Item3" class="btn @btnBase @extraClass">@btn.Item1</a>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
 
-        <!-- Fit Testing -->
-        <div class="col-md-3">
-            <div class="card h-100 border-0 shadow-lg rounded-4">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-purple mb-3">
-                        <i class="fas fa-mask-face fa-2x text-white"></i>
-                    </div>
-                    <h5 class="fw-bold">Fit Testing Form</h5>
-                    <p class="text-muted">Fill out or view Fit Testing forms.</p>
-                    <div class="d-grid gap-2">
-                        <a asp-controller="FitTestingForm" asp-action="Index" class="btn btn-purple text-white">Open Form</a>
-                        <a asp-controller="FitTestingForm" asp-action="Reports" class="btn btn-outline-success">Reports</a>
-                    </div>
+        <!-- ICRA Card -->
+        <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+            <div class="card h-100 shadow rounded-4 border-0 hover-card">
+                <div class="card-top bg-info">
+                    <i class="fas fa-tools fa-2x text-white"></i>
                 </div>
-            </div>
-        </div>
-
-        <!-- Role Management -->
-        <div class="col-md-3">
-            <div class="card h-100 border-0 shadow-lg rounded-4">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-danger mb-3">
-                        <i class="fas fa-user-shield fa-2x text-white"></i>
-                    </div>
-                    <h5 class="fw-bold">Role Management</h5>
-                    <p class="text-muted">Manage user roles & permissions.</p>
-                    <div class="d-grid gap-2">
-                        <a asp-controller="RoleManagement" asp-action="Index" class="btn btn-danger">Roles</a>
-                        <a asp-controller="RoleManagement" asp-action="UserRoles" class="btn btn-outline-danger">Users</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- User Area Management -->
-        <div class="col-md-3">
-            <div class="card h-100 border-0 shadow-lg rounded-4">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-teal mb-3">
-                        <i class="fas fa-map-marker-alt fa-2x text-white"></i>
-                    </div>
-                    <h5 class="fw-bold">User Area Management</h5>
-                    <p class="text-muted">Assign & manage user work areas.</p>
-                    <div class="d-grid gap-2">
-                        <a asp-controller="UserAreaManagement" asp-action="Index" class="btn btn-teal">Manage Areas</a>
-                        <a asp-controller="UserAreaManagement" asp-action="BatchAssignAreas" class="btn btn-outline-teal">Batch Assign</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- HAI Management -->
-        <div class="col-md-3">
-            <div class="card h-100 border-0 shadow-lg rounded-4">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-indigo mb-3">
-                        <i class="fas fa-virus fa-2x text-white"></i>
-                    </div>
-                    <h5 class="fw-bold">HAI Records</h5>
-                    <p class="text-muted">Manage infection control records.</p>
-                    <div class="d-grid gap-2">
-                        <a asp-controller="DashboardHAI" asp-action="Index" class="btn btn-indigo">Open Form</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ICN Patient Management -->
-        <div class="col-md-3">
-            <div class="card h-100 border-0 shadow-lg rounded-4">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-info mb-3">
-                        <i class="fas fa-hospital-user fa-2x text-white"></i>
-                    </div>
-                    <h5 class="fw-bold">ICN Patient Management</h5>
-                    <p class="text-muted">Track ICN patients efficiently.</p>
-                    <div class="d-grid gap-2">
-                        <a asp-controller="ICNPatient" asp-action="Index" class="btn btn-info text-white">View Patients</a>
-                        <a asp-controller="ICNPatient" asp-action="Details" class="btn btn-outline-info">Patient Details</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Notice of Referral -->
-        <div class="col-md-3">
-            <div class="card h-100 border-0 shadow-lg rounded-4">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-warning mb-3">
-                        <i class="fas fa-chalkboard-teacher fa-2x text-white"></i>
-                    </div>
-                    <h5 class="fw-bold">Notice Of Referrals</h5>
-                    <p class="text-muted">Summarize assessment reports.</p>
-                    <div class="d-grid gap-2">
-                        <a asp-controller="NoticeOfReferrals" asp-action="Index" class="btn btn-warning text-white">Index</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ICRA Management -->
-        <div class="col-md-3">
-            <div class="card h-100 border-0 shadow-lg rounded-4">
-                <div class="card-body text-center">
-                    <div class="icon-box bg-info mb-3">
-                        <i class="fas fa-hospital-user fa-2x text-white"></i>
-                    </div>
-                    <h5 class="fw-bold">ICRA Dashboard</h5>
-                    <p class="text-muted">Manage ICRA.</p>
-                    <div class="d-grid gap-2">
+                <div class="card-body text-center p-4">
+                    <h5 class="fw-bold mb-2">ICRA Dashboard</h5>
+                    <p class="text-muted small">Manage ICRA activities efficiently.</p>
+                    <div class="d-grid gap-2 mt-3">
                         <a asp-controller="ICRAs" asp-action="Index" class="btn btn-info text-white">View ICRA</a>
-                    </div>
-                    <div class="d-grid gap-2">
-                        @if (User.IsInRole("Admin") & User.IsInRole("ICN") & User.IsInRole("Engineering"))
+                        @if (User.IsInRole("Admin") && User.IsInRole("ICN") && User.IsInRole("Engineering"))
                         {
-                            <a asp-controller="ICRADashboard" asp-action="AdminICN" class="btn btn-info text-white">View Admin/ICN Dashboard</a>
-                            <a asp-controller="ICRADashboard" asp-action="Engineering" class="btn btn-info text-white">View Engineering Dashboard</a>
+                            <a asp-controller="ICRADashboard" asp-action="AdminICN" class="btn btn-info text-white">Admin/ICN Dashboard</a>
+                            <a asp-controller="ICRADashboard" asp-action="Engineering" class="btn btn-info text-white">Engineering Dashboard</a>
                         }
                         else if (User.IsInRole("Engineering"))
                         {
-                            <a asp-controller="ICRADashboard" asp-action="Engineering" class="btn btn-info text-white">View Engineering Dashboard</a>
+                            <a asp-controller="ICRADashboard" asp-action="Engineering" class="btn btn-info text-white">Engineering Dashboard</a>
                         }
                         else if (User.IsInRole("Admin") || User.IsInRole("ICN"))
                         {
-                            <a asp-controller="ICRADashboard" asp-action="AdminICN" class="btn btn-info text-white">View Admin/ICN Dashboard</a>
-                        }
-                        else
-                        {
-                            <a asp-controller="ICRAs" asp-action="Index" class="btn btn-info text-white">View ICRA</a>
+                            <a asp-controller="ICRADashboard" asp-action="AdminICN" class="btn btn-info text-white">Admin/ICN Dashboard</a>
                         }
                     </div>
                 </div>
@@ -201,65 +101,225 @@
 </div>
 
 <style>
-    .text-gradient {
-        background: linear-gradient(to right, #4facfe, #00f2fe);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+    body {
+        background: linear-gradient(to bottom right, rgba(248, 249, 250, 0.96), rgba(233, 236, 239, 0.96)), url('https://www.transparenttextures.com/patterns/pw-maze-white.png');
+        background-repeat: repeat;
+        background-size: auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    .icon-box {
-        width: 60px;
-        height: 60px;
+    .header-section {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        border-radius: 1rem;
+        box-shadow: 0 0.125rem 1rem rgba(0, 0, 0, 0.05);
+        gap: 2rem;
+        flex-wrap: wrap;
+        padding: 1rem 3rem;
+    }
+
+    .main-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #0d6efd;
+    }
+
+    .subtitle {
+        font-size: 1.125rem;
+        color: #6c757d;
+    }
+
+    .logo-box {
+        flex: 0 0 auto;
+        max-width: 160px;
+    }
+
+    .logo-img {
+        max-height: 150px;
+        width: auto;
+        height: auto;
+    }
+
+    .hover-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .card-top {
+        height: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 50%;
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+        transition: background-color 0.3s ease;
     }
 
+    /* Hover color overrides */
+    .card:hover .card-top.bg-primary {
+        background-color: #0b5ed7 !important;
+    }
+
+    .card:hover .card-top.bg-success {
+        background-color: #157347 !important;
+    }
+
+    .card:hover .card-top.bg-warning {
+        background-color: #ffca2c !important;
+    }
+
+    .card:hover .card-top.bg-danger {
+        background-color: #bb2d3b !important;
+    }
+
+    .card:hover .card-top.bg-purple {
+        background-color: #5a32a3 !important;
+    }
+
+    .card:hover .card-top.bg-teal {
+        background-color: #18a383 !important;
+    }
+
+    .card:hover .card-top.bg-indigo {
+        background-color: #520dc2 !important;
+    }
+
+    .card:hover .card-top.bg-info {
+        background-color: #0dcaf0 !important;
+    }
+
+    .card:hover .card-top.bg-secondary {
+        background-color: #6c757d !important;
+    }
+
+    .card:hover .card-top.bg-orange {
+        background-color: #e96b0c !important;
+    }
+
+    /* Custom colors */
     .bg-purple {
         background-color: #6f42c1;
     }
-
-    .btn-purple {
-        background-color: #6f42c1;
-        border-color: #6f42c1;
-    }
-
-        .btn-purple:hover {
-            background-color: #5a32a3;
-            border-color: #5a32a3;
-        }
 
     .bg-teal {
         background-color: #20c997;
     }
 
-    .btn-teal {
-        background-color: #20c997;
-        border-color: #20c997;
-        color: white;
-    }
-
-    .btn-outline-teal {
-        color: #20c997;
-        border-color: #20c997;
-    }
-
-        .btn-outline-teal:hover {
-            background-color: #20c997;
-            color: white;
-        }
-
     .bg-indigo {
         background-color: #6610f2;
     }
 
-    .btn-indigo {
-        background-color: #6610f2;
-        border-color: #6610f2;
-        color: white;
+    .bg-orange {
+        background-color: #fd7e14;
     }
 
+    /* Outline buttons for custom colors */
+    .btn-outline-purple {
+        color: #6f42c1;
+        border: 1px solid #6f42c1;
+        background-color: transparent;
+    }
 
+        .btn-outline-purple:hover {
+            background-color: #6f42c1;
+            color: #fff;
+        }
+
+    .btn-outline-teal {
+        color: #20c997;
+        border: 1px solid #20c997;
+        background-color: transparent;
+    }
+
+        .btn-outline-teal:hover {
+            background-color: #20c997;
+            color: #fff;
+        }
+
+    .btn-outline-indigo {
+        color: #6610f2;
+        border: 1px solid #6610f2;
+        background-color: transparent;
+    }
+
+        .btn-outline-indigo:hover {
+            background-color: #6610f2;
+            color: #fff;
+        }
+
+
+
+    /* Custom solid buttons */
+    .btn-purple {
+        background-color: #6f42c1;
+        color: #fff;
+        border: none;
+    }
+
+        .btn-purple:hover {
+            background-color: #5a32a3;
+            color: #fff;
+        }
+
+    .btn-teal {
+        background-color: #20c997;
+        color: #fff;
+        border: none;
+    }
+
+        .btn-teal:hover {
+            background-color: #18a383;
+            color: #fff;
+        }
+
+    .btn-indigo {
+        background-color: #6610f2;
+        color: #fff;
+        border: none;
+    }
+
+        .btn-indigo:hover {
+            background-color: #520dc2;
+            color: #fff;
+        }
+
+    .btn-orange {
+        background-color: #fd7e14;
+        color: #fff;
+        border: none;
+    }
+
+        .btn-orange:hover {
+            background-color: #e96b0c;
+            color: #fff;
+        }
+
+
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        animation: pulse-card 0.5s ease;
+    }
+
+    @@keyframes pulse-card {
+        0%
+
+    {
+        transform: translateY(-5px) scale(1);
+    }
+
+    50% {
+        transform: translateY(-5px) scale(1.02);
+    }
+
+    100% {
+        transform: translateY(-5px) scale(1);
+    }
+
+    }
 </style>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

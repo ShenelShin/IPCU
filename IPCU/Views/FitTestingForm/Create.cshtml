@@ -23,7 +23,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label asp-for="HCW_Name" class="form-label fw-bold">Healthcare Worker</label>
-                                    <input asp-for="HCW_Name" class="form-control" placeholder="Enter Healthcare Worker Name" />
+                                    <input asp-for="HCW_Name" class="form-control" id="HCW_Name" />
                                     <span asp-validation-for="HCW_Name" class="text-danger"></span>
                                 </div>
                             </div>
@@ -31,21 +31,21 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label asp-for="DUO" class="form-label fw-bold">Department/Unit/Office</label>
-                                    <input asp-for="DUO" class="form-control" placeholder="Enter Department/Unit/Office:" />
+                                    <input asp-for="DUO" class="form-control" id="DUO" />
                                     <span asp-validation-for="DUO" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label asp-for="EmployeeId" class="form-label fw-bold">EmployeeId</label>
-                                    <input asp-for="EmployeeId" class="form-control" placeholder="Enter Employee Id:" />
+                                    <input asp-for="EmployeeId" class="form-control" id="EmployeeId" />
                                     <span asp-validation-for="EmployeeId" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label asp-for="Professional_Category" class="form-label fw-bold">Professional_Category</label>
-                                    <input asp-for="Professional_Category" class="form-control" placeholder="Enter ProfessionalCategory:" />
+                                    <label asp-for="Professional_Category" class="form-label fw-bold">Professional Category</label>
+                                    <input asp-for="Professional_Category" class="form-control" id="Professional_Category" />
                                     <span asp-validation-for="Professional_Category" class="text-danger"></span>
                                 </div>
                             </div>
@@ -255,3 +255,34 @@
         });
     });
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.getElementById('EmployeeId').addEventListener('blur', function () {
+        const empId = this.value.trim();
+
+        if (empId !== "") {
+            fetch(`/FitTestingForm/GetEmployeeDetails?employeeId=${encodeURIComponent(empId)}`)
+                .then(response => {
+                    if (!response.ok) throw new Error("Not found");
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('HCW_Name').value = data.fullName;
+                    document.getElementById('Professional_Category').value = data.position;
+                    document.getElementById('DUO').value = data.department;
+                })
+                .catch(err => {
+                    document.getElementById('HCW_Name').value = "";
+                    document.getElementById('Professional_Category').value = "";
+                    document.getElementById('DUO').value = "";
+                    console.error("Error fetching employee details:", err);
+                });
+        } else {
+            document.getElementById('HCW_Name').value = "";
+            document.getElementById('Professional_Category').value = "";
+            document.getElementById('DUO').value = "";
+        }
+    });
+
+</script>
+

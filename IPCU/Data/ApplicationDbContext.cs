@@ -57,7 +57,7 @@ namespace IPCU.Data
         public DbSet<InfectionControlMonitoringForm> InfectionControlMonitoringForms { get; set; }
         public DbSet<SSIP> SSIP { get; set; }
         public DbSet<DailyCentralLineMaintenanceChecklist> DailyCentralLineMaintenanceChecklists { get; set; }
-
+        public DbSet<IPCU.Models.EnvironmentalzControl> EnvironmentalzControl { get; set; } = default!;
         public DbSet<MDROrderSheet> MDROrderSheets { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -90,6 +90,8 @@ namespace IPCU.Data
         public DbSet<IPCU.Models.NoticeOfReferral> NoticeOfReferral { get; set; } = default!;
         public DbSet<IPCU.Models.Insertion> Insertion { get; set; } = default!;
         public DbSet<IPCU.Models.TCSkillsChecklistReal> TCSkillsChecklistReal { get; set; } = default!;
+        public DbSet<IPCU.Models.PatientHAI> PatientHAI { get; set; }
+
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);

@@ -1,16 +1,49 @@
 using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
 using IPCU.Data;
+using IPCU.Models;
 using IPCU.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using QuestPDF.Infrastructure;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 QuestPDF.Settings.License = LicenseType.Community;
 
 // Configure Entity Framework Core with SQL Server
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AnotherServerConnection")));
+
+// In Program.cs (for .NET 6+ minimal hosting model)
+builder.Services.AddDbContext<PatientDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("PatientConnection"),
+        sqlOptions => {
+            // Add retry logic which can help with transient errors
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+
+            // Set the compatibility level to force use of older query format
+            // that doesn't rely as heavily on CTEs
+            sqlOptions.CommandTimeout(60);
+        }
+    )
+);
+
+// Also update your ApplicationDbContext configuration similarly
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlOptions => {
+            sqlOptions.UseRelationalNulls(true);
+            // Add this line to ensure proper CTE handling
+            sqlOptions.CommandTimeout(60); // Optional: increase timeout
+        }
+    )
+);
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()

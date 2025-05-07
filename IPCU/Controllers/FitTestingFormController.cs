@@ -12,16 +12,21 @@ using X.PagedList.Mvc.Core;
 using X.PagedList.Extensions;
 using ClosedXML.Excel;
 using System.IO;
+using System.Data.SqlClient;
 
 namespace IPCU.Controllers
 {
     public class FitTestingFormController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public FitTestingFormController(ApplicationDbContext context)
+
+        public FitTestingFormController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
+
         }
 
         // GET: FitTestingForm
@@ -366,24 +371,45 @@ namespace IPCU.Controllers
 
 
             // Get "Attendance for Physicians" (only Passed results)
-            var attendanceForPhysicians = _context.FitTestingForm
-                .Where(f => physicianCategories.Contains(f.Professional_Category) && f.Test_Results == "Passed")
+            var attendanceForPhysicians = _context.FitTestingForm.FromSqlRaw(@"
+    SELECT * FROM FitTestingForm
+    WHERE Professional_Category IN ({0}) AND Test_Results = {1}",
+                string.Join(",", physicianCategories.Select(c => $"'{c}'")), "Passed")
                 .ToList();
 
+
+
             var attendanceForNursingAndAllied = _context.FitTestingForm
-                .Where(f => !physicianCategories.Contains(f.Professional_Category) && f.Test_Results == "Passed")
-                .Select(f => new FitTestingReportViewModel
-                {
-                    HCW_Name = f.HCW_Name,
-                    DUO = f.DUO,
-                    Professional_Category = f.Professional_Category,
-                    Fit_Test_Solution = f.Fit_Test_Solution,
-                    Test_Results = f.ExpiringAt < currentDate ? "Expired" : "Passed", // Tag expired records
-                    Name_of_Fit_Tester = f.Name_of_Fit_Tester,
-                    SubmittedAt = f.SubmittedAt,
-                    ExpiringAt = f.ExpiringAt
-                })
-                .ToList();
+    .FromSqlRaw(@"
+        SELECT 
+            HCW_Name,
+            DUO,
+            Professional_Category,
+            Fit_Test_Solution,
+            CASE 
+                WHEN ExpiringAt < {0} THEN 'Expired' 
+                ELSE 'Passed' 
+            END AS Test_Results,
+            Name_of_Fit_Tester,
+            SubmittedAt,
+            ExpiringAt
+        FROM FitTestingForm
+        WHERE Professional_Category NOT IN ({1}) AND Test_Results = 'Passed'",
+        currentDate,
+        string.Join(",", physicianCategories.Select(c => $"'{c}'")))
+    .Select(f => new FitTestingReportViewModel
+    {
+        HCW_Name = f.HCW_Name,
+        DUO = f.DUO,
+        Professional_Category = f.Professional_Category,
+        Fit_Test_Solution = f.Fit_Test_Solution,
+        Test_Results = f.Test_Results, // Now handled by SQL
+        Name_of_Fit_Tester = f.Name_of_Fit_Tester,
+        SubmittedAt = f.SubmittedAt,
+        ExpiringAt = f.ExpiringAt
+    })
+    .ToList();
+
             var tallyReport = duoList
                 .Select(unit => new
                 {
@@ -563,6 +589,56 @@ namespace IPCU.Controllers
                 }
             }
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetEmployeeDetails(string employeeId)
+        {
+            var connectionString = _configuration.GetConnectionString("EmployeeConnection");
+
+            var result = new
+            {
+                fullName = "",
+                position = "",
+                department = ""
+            };
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = @"
+            SELECT TOP 1 
+                EmpNum, 
+                LastName + ' ' + FirstName + ' ' + MiddleName AS [Name],
+                Position,
+                Department
+            FROM UNIFIEDSVR.payroll.dbo.vwSPMS_User 
+            WHERE EmpNum = @EmpNum";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@EmpNum", employeeId);
+                    await conn.OpenAsync();
+
+                    using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            result = new
+                            {
+                                fullName = reader["Name"].ToString().Trim(),
+                                position = reader["Position"].ToString().Trim(),
+                                department = reader["Department"].ToString().Trim()
+                            };
+
+                            return Json(result);
+                        }
+                    }
+                }
+            }
+
+            return NotFound();
+        }
+
 
     }
 }

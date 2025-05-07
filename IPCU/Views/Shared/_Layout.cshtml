@@ -19,42 +19,41 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-               
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
 
-                        <li class="nav-item">
-                            <a class="nav-link active" asp-controller="Test" asp-action="TakeTest">
-                                <i class="fa fa-file-alt"></i> Take a Test
+                        <!-- Dropdown for IPCU Tools -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle fw-bold" href="#" id="toolsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Guest Forms
                             </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="toolsDropdown">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="Test" asp-action="TakeTest">
+                                        <i class="fa fa-file-alt me-2"></i> Take a Test
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="https://localhost:7179/ICRAs/create">
+                                        <i class="fa fa-plus me-2"></i> Go to ICRAs
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="https://localhost:7179/NoticeOfReferrals/create">
+                                        <i class="fa fa-paper-plane me-2"></i> Create Referral Notice
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
-                       <!-- <li class="nav-item">
-                            <a class="nav-link active" asp-controller="TrainingSummary" asp-action="Create">
-                                <i class="fa fa-file-alt"></i> Take Training Form
-                            </a>
-                         </li>-->
-
+                        <!-- Home Link -->
                         <li class="nav-item">
                             <a class="nav-link active" asp-controller="Home" asp-action="Index">
                                 <i class="fa fa-home"></i> Home
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Privacy">
-                                <i class="fa fa-shield-alt"></i> Privacy
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="PatientForm" asp-action="Index">
-                                <i class="fa fa-users"></i> Patients
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Ipcu" asp-action="Index">
-                                <i class="fa fa-hospital-user"></i> IPCU
-                            </a>
-                        </li>
+
+                        <!-- Authenticated Logout -->
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
@@ -66,22 +65,17 @@
                             </li>
                         }
                     </ul>
-                    </ul>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-  <!--  <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - IPCU - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-      </footer>-->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

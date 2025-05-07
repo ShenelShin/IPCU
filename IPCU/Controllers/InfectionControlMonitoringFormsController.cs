@@ -33,5 +33,20 @@ namespace IPCU.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult Table()
+{
+            var forms = _context.InfectionControlMonitoringForms.ToList();
+
+            if (forms == null || !forms.Any())
+            {
+                // Log or handle the case where no data is returned.
+                // For example, return an empty list to the view.
+                TempData["NoDataMessage"] = "No records found.";
+            }
+
+            return View(forms); // This will pass the data to the view
+        }
+
     }
 }

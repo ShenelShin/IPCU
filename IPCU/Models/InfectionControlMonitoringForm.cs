@@ -10,7 +10,6 @@
         {
             [Key]
             public int Id { get; set; }
-
             public string AreaOrUnit { get; set; }
             public DateTime DateAndTimeOfMonitoring { get; set; }
             public string AssessedBy { get; set; }
