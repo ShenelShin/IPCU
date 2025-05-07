@@ -171,13 +171,14 @@ namespace IPCU.Controllers
 
         // Submit the form
         [HttpPost]
-        public IActionResult Submit(VentilatorEventChecklist model)
+        public IActionResult Submit(VentilatorEventChecklist model, [FromForm] string[] TypeClass)
         {
             if (ModelState.IsValid)
             {
-                // Add date created if necessary
-                model.DateCreated = DateTime.Now;
+                // Join the selected types into a comma-separated string
+                model.TypeClass = string.Join(",", TypeClass);
 
+                model.DateCreated = DateTime.Now;
                 _context.VentilatorEventChecklists.Add(model);
 
                 string idNum = null;
