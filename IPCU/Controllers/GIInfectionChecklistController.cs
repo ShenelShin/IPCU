@@ -169,15 +169,18 @@ namespace IPCU.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Submit(GIInfectionChecklist model, string[] TypeClassification)
+        public async Task<IActionResult> Submit(GIInfectionChecklist model, string[] TypeClass)
         {
-            if (TypeClassification != null && TypeClassification.Length > 0)
+            // Combine selected classifications into a single comma-separated string
+            if (TypeClass != null && TypeClass.Length > 0)
             {
-                model.Classification = string.Join(", ", TypeClassification);
+                model.TypeClass = string.Join(", ", TypeClass);
             }
 
+            // Check if the model is valid
             if (!ModelState.IsValid)
             {
+                // Log validation errors to console
                 foreach (var error in ModelState)
                 {
                     foreach (var subError in error.Value.Errors)
@@ -190,6 +193,7 @@ namespace IPCU.Controllers
                 return View("Index", model);
             }
 
+            // Save the checklist to the database
             _context.GIInfectionChecklists.Add(model);
             await _context.SaveChangesAsync();
             Console.WriteLine("Saved successfully!");
@@ -210,7 +214,7 @@ namespace IPCU.Controllers
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@HospNum", model.HospitalNumber);
-                    conn.Open();
+                    await conn.OpenAsync();
 
                     var result = await cmd.ExecuteScalarAsync();
                     if (result != null && result != DBNull.Value)
@@ -220,6 +224,7 @@ namespace IPCU.Controllers
                 }
             }
 
+            // Redirect based on patient ID result
             if (!string.IsNullOrEmpty(idNum))
             {
                 TempData["Success"] = "GI Infection Checklist submitted successfully!";
