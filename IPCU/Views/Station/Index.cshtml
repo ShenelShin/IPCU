@@ -2,50 +2,90 @@
     ViewBag.Title = "Station List";
     var stations = ViewBag.Data as List<Dictionary<string, object>>;
 }
-@if (ViewBag.TotalRooms != null)
+@{
+    int total = ViewBag.TotalRooms ?? 0;
+    int occupied = ViewBag.OccupiedCount ?? 0;
+    int notOccupied = ViewBag.NotOccupiedCount ?? 0;
+
+    int occupiedPercent = total > 0 ? (int)((double)occupied / total * 100) : 0;
+    int notOccupiedPercent = total > 0 ? (int)((double)notOccupied / total * 100) : 0;
+}
+
+@if (total > 0)
 {
-    <div class="container mt-4 mb-4">
-        <!-- Added mt-4 -->
-        <div class="row g-3">
-            <div class="col-md-4">
-                <div class="card text-center shadow-sm border-0 rounded-3">
-                    <div class="card-header bg-primary text-white">
-                        <i class="fas fa-bed me-2"></i>Total Rooms
+    <div class="container my-5">
+        <div class="row g-4 justify-content-center">
+            <!-- Total Rooms -->
+            <div class="col-12 col-md-4 d-flex">
+                <div class="card text-center shadow border-0 rounded-4 bg-white bg-opacity-75 backdrop-blur-sm p-4 hover-shadow h-100 w-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="mb-3 text-primary">
+                            <i class="fas fa-bed fa-3x"></i>
+                        </div>
+                        <h5 class="text-uppercase fw-semibold text-muted">Total Rooms</h5>
+                        <h2 class="fw-bold display-5">@total</h2>
+                        <p class="text-muted small mt-2">All rooms across all stations</p>
                     </div>
-                    <div class="card-body">
-                        <h3 class="fw-bold">@ViewBag.TotalRooms</h3>
-                        <p class="text-muted mb-0">All rooms across all stations</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card text-center shadow-sm border-0 rounded-3">
-                    <div class="card-header bg-danger text-white">
-                        <i class="fas fa-user-injured me-2"></i>Occupied
-                    </div>
-                    <div class="card-body">
-                        <h3 class="fw-bold">@ViewBag.OccupiedCount</h3>
-                        <p class="text-muted mb-0">Rooms currently in use</p>
+                    <div class="mt-3">
+                        <span class="badge bg-light text-muted border">
+                            <i class="fas fa-clock me-1"></i> Updated @DateTime.Now.ToShortTimeString()
+                        </span>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4">
-                <div class="card text-center shadow-sm border-0 rounded-3">
-                    <div class="card-header bg-success text-white">
-                        <i class="fas fa-bed me-2"></i>Not Occupied
+            <!-- Occupied -->
+            <div class="col-12 col-md-4 d-flex">
+                <div class="card text-center shadow border-0 rounded-4 bg-white bg-opacity-75 backdrop-blur-sm p-4 hover-shadow h-100 w-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="mb-3 text-danger">
+                            <i class="fas fa-user-injured fa-3x"></i>
+                        </div>
+                        <h5 class="text-uppercase fw-semibold text-muted">Occupied</h5>
+                        <h2 class="fw-bold display-5">@occupied</h2>
+                        <p class="text-muted small mt-2">Rooms currently in use</p>
+                        <div class="mt-3">
+                            <div class="progress mb-1" style="height: 6px;">
+                                <div class="progress-bar bg-danger" style="width: @occupiedPercent%;"></div>
+                            </div>
+                            <small class="text-muted">@occupiedPercent% of rooms are occupied</small>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h3 class="fw-bold">@ViewBag.NotOccupiedCount</h3>
-                        <p class="text-muted mb-0">Available for assignment</p>
+                    <div class="mt-3">
+                        <span class="badge bg-light text-muted border">
+                            <i class="fas fa-clock me-1"></i> Updated @DateTime.Now.ToShortTimeString()
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Not Occupied -->
+            <div class="col-12 col-md-4 d-flex">
+                <div class="card text-center shadow border-0 rounded-4 bg-white bg-opacity-75 backdrop-blur-sm p-4 hover-shadow h-100 w-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="mb-3 text-success">
+                            <i class="fas fa-bed fa-3x"></i>
+                        </div>
+                        <h5 class="text-uppercase fw-semibold text-muted">Not Occupied</h5>
+                        <h2 class="fw-bold display-5">@notOccupied</h2>
+                        <p class="text-muted small mt-2">Available for assignment</p>
+                        <div class="mt-3">
+                            <div class="progress mb-1" style="height: 6px;">
+                                <div class="progress-bar bg-success" style="width: @notOccupiedPercent%;"></div>
+                            </div>
+                            <small class="text-muted">@notOccupiedPercent% of rooms are free</small>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <span class="badge bg-light text-muted border">
+                            <i class="fas fa-clock me-1"></i> Updated @DateTime.Now.ToShortTimeString()
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 }
-
 
 <div class="container mt-4">
     <div class="card shadow-sm rounded-3">
