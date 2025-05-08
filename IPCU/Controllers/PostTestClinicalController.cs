@@ -21,127 +21,118 @@ namespace IPCU.Controllers
         }
 
         [HttpPost]
-        public IActionResult Submit(PostTestClinical model, string[] Question18, string[] Question19, string[] Question20, string[] Question21, string[] Question22, string[] Question23, string[] Question24,
-                    string[] Question25, string[] Question26, string[] Question27, string[] Question28, string[] Question29)
+        public IActionResult Submit(PostTestClinical model, string[] Question18, string[] Question19, string[] Question20,
+    string[] Question21, string[] Question22, string[] Question23, string[] Question24,
+    string[] Question25, string[] Question26, string[] Question27, string[] Question28, string[] Question29)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View("Index", model);
+
+            try
             {
-                try
+                float score = 0.0f;
+                float totalPossibleScore = 29.0f;
+
+                // Single-answer questions (1 point each)
+                if (Request.Form["Question1"] == "3") score += 1.25f;
+                if (Request.Form["Question2"] == "2") score += 1.25f;
+                if (Request.Form["Question3"] == "1") score += 1.25f;
+                if (Request.Form["Question4"] == "2") score += 1.25f;
+                if (Request.Form["Question5"] == "0") score += 1.25f;
+                if (Request.Form["Question6"] == "2") score += 1.25f;
+                if (Request.Form["Question7"] == "3") score += 1.25f;
+                if (Request.Form["Question8"] == "3") score += 1.25f;
+
+                if (Request.Form["Question9"] == "1") score += 1.0f;
+                if (Request.Form["Question10"] == "2") score += 1.0f;
+                if (Request.Form["Question11"] == "1") score += 1.0f;
+                if (Request.Form["Question12"] == "3") score += 1.0f;
+                if (Request.Form["Question13"] == "2") score += 1.0f;
+                if (Request.Form["Question14"] == "2") score += 1.0f;
+                if (Request.Form["Question15"] == "1") score += 1.0f;
+                if (Request.Form["Question16"] == "2") score += 1.0f;
+                if (Request.Form["Question17"] == "1") score += 1.0f;
+
+                if (Request.Form["Question18"] == "2") score += 1.0f;
+                if (Request.Form["Question19"] == "0") score += 1.0f;
+                if (Request.Form["Question20"] == "0") score += 1.0f;
+                if (Request.Form["Question21"] == "2") score += 1.0f;
+                if (Request.Form["Question22"] == "2") score += 1.0f;
+                if (Request.Form["Question23"] == "0") score += 1.0f;
+                if (Request.Form["Question24"] == "1") score += 1.0f;
+
+                if (Request.Form["Question25"] == "0") score += 1.8f;
+
+                if (Request.Form["Question26"] == "0") score += 1.8f;
+
+                // Multi-answer questions (1 point each)
+
+                string[] q27 = Request.Form["Question27"].ToString().Split(','); // correct: 0,1
+                string[] correct27 = { "0", "1" };
+                if (q27 != null && correct27.All(q27.Contains) && q27.All(correct27.Contains)) score += 1.88f;
+
+                string[] q28 = Request.Form["Question28"].ToString().Split(','); // correct: 0,3,4
+                string[] correct28 = { "0", "3", "4" };
+                if (q28 != null && correct28.All(q28.Contains) && q28.All(correct28.Contains)) score += 1.8f;
+
+                string[] q29 = Request.Form["Question29"].ToString().Split(','); // correct: 0,2,4
+                string[] correct29 = { "0", "2", "4" };
+                if (q29 != null && correct29.All(q29.Contains) && q29.All(correct29.Contains)) score += 1.8f;
+
+
+                // 1. First round the raw score to whole number
+                float roundedScore = (float)Math.Round(score);  // This removes all decimals
+
+                // 2. Then calculate percentage using the rounded score
+                float percentageScore = (roundedScore / totalPossibleScore) * 100;
+                percentageScore = (float)Math.Round(percentageScore);  // Remove decimal places from percentage
+
+                // 3. Save results with fully rounded values
+                var existingEntry = _context.TrainingSummaries
+                    .FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId);
+
+                if (existingEntry != null)
                 {
-                    // Compute the score
-                    float score = 0.0f;
-                    if (Request.Form["Question1"] == "Airborne precaution")
-                        score += 1.25f;
-                    if (Request.Form["Question2"] == "Airborne precaution")
-                        score += 1.25f;
-                    if (Request.Form["Question3"] == "Airborne precaution")
-                        score += 1.25f;
-                    if (Request.Form["Question4"] == "Airborne precaution")
-                        score += 1.25f;
-                    if (Request.Form["Question5"] == "Airborne precaution")
-                        score += 1.25f;
-                    if (Request.Form["Question6"] == "Airborne precaution")
-                        score += 1.25f;
-                    if (Request.Form["Question7"] == "Airborne precaution")
-                        score += 1.25f;
-                    if (Request.Form["Question8"] == "Airborne precaution")
-                        score += 1.25f;
-                    if (Request.Form["Question9"] == "Standard Precautions")
-                        score += 1.0f;
-                    if (Request.Form["Question10"] == "8 ACH")
-                        score += 1.0f;
-                    if (Request.Form["Question11"] == "Within the week")
-                        score += 1.0f;
-                    if (Request.Form["Question12"] == "Gown-Gloves-Mask-Goggles")
-                        score += 1.0f;
-                    if (Request.Form["Question13"] == "Reduce hospital costs")
-                        score += 1.0f;
-                    if (Request.Form["Question14"] == "5-10 seconds")
-                        score += 1.0f;
-                    if (Request.Form["Question15"] == "Surgical mask")
-                        score += 1.0f;
-                    if (Request.Form["Question16"] == "1 foot")
-                        score += 1.0f;
-                    if (Request.Form["Question17"] == "Wearing a mask")
-                        score += 1.0f;
-                    if (Question18 != null && Question18.Contains("Single room only") && Question18.Contains("Ward type"))
-                        score += 1.0f;
-                    if (Question19 != null && Question19.Contains("Single room only") && Question19.Contains("Ward type"))
-                        score += 1.0f;
-                    if (Question20 != null && Question20.Contains("Single room only") && Question20.Contains("Ward type"))
-                        score += 1.0f;
-                    if (Question21 != null && Question21.Contains("Single room only") && Question21.Contains("Ward type"))
-                        score += 1.0f;
-                    if (Question22 != null && Question22.Contains("Single room only") && Question22.Contains("Ward type"))
-                        score += 1.0f;
-                    if (Question23 != null && Question23.Contains("Single room only") && Question23.Contains("Ward type"))
-                        score += 1.0f;
-                    if (Question24 != null && Question24.Contains("Single room only") && Question24.Contains("Ward type"))
-                        score += 1.0f;
-                    if (Question25 != null && Question25.Contains("Gloves") && Question25.Contains("Isolation Gown"))
-                        score += 1.8f;
-                    if (Question26 != null && Question26.Contains("Gloves") && Question26.Contains("Isolation Gown"))
-                        score += 1.8f;
-                    if (Question27 != null && Question27.Contains("Gloves") && Question27.Contains("Isolation Gown"))
-                        score += 1.8f;
-                    if (Question28 != null && Question28.Contains("Gloves") && Question28.Contains("Isolation Gown"))
-                        score += 1.8f;
-                    if (Question29 != null && Question29.Contains("Gloves") && Question29.Contains("Isolation Gown"))
-                        score += 1.8f;
-
-                    // Calculate Rate (Percentage)
-                    float maxScore = 35.0f;
-                    float rate = (score / maxScore) * 100.0f;
-
-                    // Check if there's an existing entry for the same EmployeeId
-                    var existingEntry = _context.TrainingSummaries
-                        .FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId);
-
-                    if (existingEntry != null)
-                    {
-                        // Update existing record
-                        existingEntry.PostScore = score;
-                        existingEntry.Rate = rate; // Save Rate
-                        existingEntry.DateCreated = DateTime.Now;
-                        _context.TrainingSummaries.Update(existingEntry);
-                    }
-                    else
-                    {
-                        // Create a new record if no existing entry is found
-                        var trainingSummary = new TrainingSummary
-                        {
-                            FullName = model.FullName,
-                            EmployeeId = model.EmployeeId,
-                            AgeGroup = model.AgeGroup,
-                            Sex = model.Sex,
-                            PWD = model.PWD,
-                            PostScore_Total = 35f,
-                            CivilStatus = model.CivilStatus,
-                            Department = model.Department,
-                            PostScore = score,
-                            Rate = rate,  // Store computed Rate
-                            DateCreated = DateTime.Now
-                        };
-
-                        _context.TrainingSummaries.Add(trainingSummary);
-                    }
-
-                    // Save changes to the database
-                    _context.SaveChanges();
-
-                    // Redirect to the Success action with the ID
-                    var entryId = existingEntry != null ? existingEntry.Id : _context.TrainingSummaries
-                        .FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId)?.Id;
-
-                    return RedirectToAction("Success", new { id = entryId });
+                    existingEntry.PostScore = roundedScore;  // Use the pre-rounded score
+                    existingEntry.Rate = percentageScore;
+                    existingEntry.DateCreated = DateTime.Now;
+                    _context.Update(existingEntry);
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine(ex.InnerException?.Message);
-                    ModelState.AddModelError("", "An error occurred while saving the data.");
+                    _context.TrainingSummaries.Add(new TrainingSummary
+                    {
+                        FullName = model.FullName,
+                        EmployeeId = model.EmployeeId,
+                        AgeGroup = model.AgeGroup,
+                        Sex = model.Sex,
+                        PWD = model.PWD,
+                        CivilStatus = model.CivilStatus,
+                        Department = model.Department,
+                        PostScore_Total = totalPossibleScore,
+                        PostScore = roundedScore,  // Use the pre-rounded score
+                        Rate = percentageScore,
+                        DateCreated = DateTime.Now
+                    });
                 }
+
+                // 4. Pass the rounded values to your view
+                ViewBag.DisplayScore = ((int)roundedScore).ToString();  // Force integer display
+                ViewBag.DisplayTotal = ((int)totalPossibleScore).ToString();
+
+                _context.SaveChanges();
+
+                var entryId = existingEntry?.Id ?? _context.TrainingSummaries
+                    .FirstOrDefault(ts => ts.EmployeeId == model.EmployeeId)?.Id;
+
+                return RedirectToAction("Success", new { id = entryId });
             }
-            return View("Index", model);
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}\n{ex.StackTrace}");
+                ModelState.AddModelError("", "An error occurred while processing your submission.");
+                return View("Index", model);
+            }
         }
 
         public IActionResult Success(int id)

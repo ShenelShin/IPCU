@@ -1,288 +1,663 @@
 ﻿@model IPCU.Models.PostTestClinical
 
-<h2>Post-Test Clinical Questionnaire</h2>
+<div style="max-width: 600px; margin: 0 auto; font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
+    
+    <form asp-controller="PostTestClinical" asp-action="Submit" method="post" style="margin-top: 15px;">
+        <!-- User Information -->
+        <fieldset style="margin: 20px 0; padding: 25px; border: 1px solid #e0e0e0; border-radius: 6px; background-color: #fff;">
+            
+            <!-- Header Section -->
+            <div style="text-align: center; margin-bottom: 25px;">
+                <h1 style="font-size: 22px; color: #2c3e50; margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px;">
+                    Post Test Clinical Quiz
+                </h1>
+                <p style="color: #7f8c8d; font-size: 14px; margin: 0;">
+                    Please fill out all fields before submitting.
+                </p>
+            </div>
 
-<form asp-controller="PostTestClinical" asp-action="Submit" method="post">
-    <!-- User Information -->
-    <div>
-        <label asp-for="FullName">Full Name</label>
-        <input asp-for="FullName" />
-        <span asp-validation-for="FullName"></span>
-    </div>
-    <div>
-        <label asp-for="EmployeeId">Employee ID</label>
-        <input asp-for="EmployeeId" />
-        <span asp-validation-for="EmployeeId"></span>
-    </div>
-    <div>
-        <label asp-for="AgeGroup">Age Group</label>
-        <input asp-for="AgeGroup" />
-        <span asp-validation-for="AgeGroup"></span>
-    </div>
-    <div>
-        <label asp-for="Sex">Sex</label>
-        <input asp-for="Sex" />
-        <span asp-validation-for="Sex"></span>
-    </div>
-    <div>
-        <label asp-for="PWD">PWD Status</label>
-        <input asp-for="PWD" />
-        <span asp-validation-for="PWD"></span>
-    </div>
-    <div>
-        <label asp-for="CivilStatus">Civil Status</label>
-        <input asp-for="CivilStatus" />
-        <span asp-validation-for="CivilStatus"></span>
-    </div>
-    <div>
-        <label asp-for="Department">Department</label>
-        <input asp-for="Department" />
-        <span asp-validation-for="Department"></span>
-    </div>
+            <!-- Personal Information Section -->
+            <h2 style="font-size: 16px; color: #2c3e50; margin-bottom: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                Personal Information
+            </h2>
 
-    <!-- Questions -->
+            <!-- Form Fields -->
+            <div style="display: grid; grid-gap: 18px;">
+                <div>
+                    <label for="FullName" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Full Name</label>
+                    <input id="FullName" name="FullName" type="text" placeholder="Enter your full name"
+                           style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px; transition: border 0.2s;">
+                </div>
 
-    <div>
-        <h4>Tetanus</h4>
-        <input type="radio" name="Question1" value="Airborne precaution" /> Airborne precaution
-        <input type="radio" name="Question1" value="Contact precaution	" /> Contact precaution
-        <input type="radio" name="Question1" value="Droplet precaution	" /> Droplet precaution
-        <input type="radio" name="Question1" value="Standard precaution" /> Standard precaution
-    </div>
+                <div>
+                    <label for="EmployeeId" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Employee ID</label>
+                    <input id="EmployeeId" name="EmployeeId" type="text" placeholder="Enter your Employee ID"
+                           style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px;">
+                </div>
 
-    <div>
-        <h4>Human Metapneumovirus</h4>
-        <input type="radio" name="Question2" value="Airborne precaution" /> Airborne precaution
-        <input type="radio" name="Question2" value="Contact precaution	" /> Contact precaution
-        <input type="radio" name="Question2" value="Droplet precaution	" /> Droplet precaution
-        <input type="radio" name="Question2" value="Standard precaution" /> Standard precaution
-    </div>
+                <div>
+                    <label for="AgeGroup" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Age Group</label>
+                    <select id="AgeGroup" name="AgeGroup"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px; background-color: #fff; cursor: pointer;">
+                        <option value="">Select age group</option>
+                        <option value="18-25">18-25</option>
+                        <option value="26-35">26-35</option>
+                        <option value="36-45">36-45</option>
+                        <option value="46+">46+</option>
+                    </select>
+                </div>
 
-    <div>
-        <h4>CRE</h4>
-        <input type="radio" name="Question3" value="Airborne precaution" /> Airborne precaution
-        <input type="radio" name="Question3" value="Contact precaution	" /> Contact precaution
-        <input type="radio" name="Question3" value="Droplet precaution	" /> Droplet precaution
-        <input type="radio" name="Question3" value="Standard precaution" /> Standard precaution
-    </div>
+                <div>
+                    <label for="Sex" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Sex</label>
+                    <select id="Sex" name="Sex"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px; background-color: #fff; cursor: pointer;">
+                        <option value="">Select sex</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
 
-    <div>
-        <h4>Diphtheria</h4>
-        <input type="radio" name="Question4" value="Airborne precaution" /> Airborne precaution
-        <input type="radio" name="Question4" value="Contact precaution	" /> Contact precaution
-        <input type="radio" name="Question4" value="Droplet precaution	" /> Droplet precaution
-        <input type="radio" name="Question4" value="Standard precaution" /> Standard precaution
-    </div>
+                <div>
+                    <label for="PWD" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">PWD</label>
+                    <select id="PWD" name="PWD"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px; background-color: #fff; cursor: pointer;">
+                        <option value="">Select option</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
 
-    <div>
-        <h4>Varicella</h4>
-        <input type="radio" name="Question5" value="Airborne precaution" /> Airborne precaution
-        <input type="radio" name="Question5" value="Contact precaution	" /> Contact precaution
-        <input type="radio" name="Question5" value="Droplet precaution	" /> Droplet precaution
-        <input type="radio" name="Question5" value="Standard precaution" /> Standard precaution
-    </div>
+                <div>
+                    <label for="CivilStatus" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Civil Status</label>
+                    <select id="CivilStatus" name="CivilStatus"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px; background-color: #fff; cursor: pointer;">
+                        <option value="">Select status</option>
+                        <option value="Single">Single</option>
+                        <option value="Married">Married</option>
+                        <option value="Divorced">Divorced</option>
+                        <option value="Widowed">Widowed</option>
+                    </select>
+                </div>
 
-    <div>
-        <h4>COVID-19</h4>
-        <input type="radio" name="Question6" value="Airborne precaution" /> Airborne precaution
-        <input type="radio" name="Question6" value="Contact precaution	" /> Contact precaution
-        <input type="radio" name="Question6" value="Droplet precaution	" /> Droplet precaution
-        <input type="radio" name="Question6" value="Standard precaution" /> Standard precaution
-    </div>
+                <div>
+                    <label for="Department" style="display: block; margin-bottom: 6px; font-size: 14px; color: #34495e; font-weight: 500;">Department</label>
+                    <input id="Department" name="Department" type="text" placeholder="Enter your department"
+                           style="width: 100%; padding: 10px 12px; border: 1px solid #dfe6e9; border-radius: 4px; font-size: 14px;">
+                </div>
+            </div>
 
-    <div>
-        <h4>Human Immunodeficiency virus</h4>
-        <input type="radio" name="Question7" value="Airborne precaution" /> Airborne precaution
-        <input type="radio" name="Question7" value="Contact precaution	" /> Contact precaution
-        <input type="radio" name="Question7" value="Droplet precaution	" /> Droplet precaution
-        <input type="radio" name="Question7" value="Standard precaution" /> Standard precaution
-    </div>
+        </fieldset>
 
-    <div>
-        <h4>Extrapulmonary Tuberculosis</h4>
-        <input type="radio" name="Question8" value="Airborne precaution" /> Airborne precaution
-        <input type="radio" name="Question8" value="Contact precaution	" /> Contact precaution
-        <input type="radio" name="Question8" value="Droplet precaution	" /> Droplet precaution
-        <input type="radio" name="Question8" value="Standard precaution" /> Standard precaution
-    </div>
+        <!-- Questions Section -->
+        <fieldset style="margin: 20px 0; padding: 25px; border: 1px solid #e0e0e0; border-radius: 6px; background-color: #fff;">
+            <legend style="font-weight: 600; color: #2c3e50; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding: 0 10px;">Clinical Questions</legend>
 
-    <div>
-        <h4>A patient is diagnosed with Clostridioides difficile (C. difficile) infection. What type of precautions should be implemented?</h4>
-        <input type="radio" name="Question9" value="Standard Precautions" /> Standard Precautions
-        <input type="radio" name="Question9" value="Standard Precautions	" /> Standard Precautions
-        <input type="radio" name="Question9" value="Standard Precautions	" /> Standard Precautions
-        <input type="radio" name="Question9" value="Standard Precautions" /> Standard Precautions
-    </div>
+            <!-- Question 1 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">1. Tetanus</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question1" value="0" style="margin-right: 8px;" /> Airborne precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question1" value="1" style="margin-right: 8px;" /> Contact precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question1" value="2" style="margin-right: 8px;" /> Droplet precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question1" value="3" style="margin-right: 8px;" /> Standard precaution
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>In high-risk areas of health care facilities such as isolation rooms, the recommended minimal ventilation rate is</h4>
-        <input type="radio" name="Question10" value="8 ACH" /> 8 air changes per hour (ACH)
-        <input type="radio" name="Question10" value="10 ACH" /> 10 air changes per hour (ACH)
-        <input type="radio" name="Question10" value="12 ACH" /> 12 air changes per hour (ACH)
-        <input type="radio" name="Question10" value="14 ACH" /> 14 air changes per hour (ACH)
-    </div>
+            <!-- Question 2 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">2. Human Metapneumovirus</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question2" value="0" style="margin-right: 8px;" /> Airborne precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question2" value="1" style="margin-right: 8px;" /> Contact precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question2" value="2" style="margin-right: 8px;" /> Droplet precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question2" value="3" style="margin-right: 8px;" /> Standard precaution
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>If a healthcare worker sustained a needle stick injury in the course of duty, he/she should report within?</h4>
-        <input type="radio" name="Question11" value="Within the week" /> Within the week<br>
-        <input type="radio" name="Question11" value="1 hour" /> 1 hour<br>
-        <input type="radio" name="Question11" value="24 hours" /> 24 hours<br>
-        <input type="radio" name="Question11" value="72 hours" /> 72 hours
-    </div>
+            <!-- Question 3 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">3. CRE</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question3" value="0" style="margin-right: 8px;" /> Airborne precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question3" value="1" style="margin-right: 8px;" /> Contact precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question3" value="2" style="margin-right: 8px;" /> Droplet precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question3" value="3" style="margin-right: 8px;" /> Standard precaution
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>What is the correct sequence for doffing PPE?</h4>
-        <input type="radio" name="Question12" value="Gown-Gloves-Mask-Goggles" /> Gown → Gloves → Mask → Goggles<br>
-        <input type="radio" name="Question12" value="Mask-Gown-Gloves-Goggles" /> Mask → Gown → Gloves → Goggles<br>
-        <input type="radio" name="Question12" value="Gown-Mask-Goggles-Gloves" /> Gown → Mask → Goggles → Gloves<br>
-        <input type="radio" name="Question12" value="Gloves-Gown-Goggles-Mask" /> Gloves → Gown → Goggles → Mask
-    </div>
+            <!-- Question 4 to 17 would follow the same pattern -->
+            <!-- Question 4 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">4. Diphtheria</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question4" value="0" style="margin-right: 8px;" /> Airborne precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question4" value="1" style="margin-right: 8px;" /> Contact precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question4" value="2" style="margin-right: 8px;" /> Droplet precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question4" value="3" style="margin-right: 8px;" /> Standard precaution
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>What is the primary goal of infection prevention and control (IPC) in a healthcare setting?</h4>
-        <input type="radio" name="Question13" value="Reduce hospital costs" /> Reduce hospital costs<br>
-        <input type="radio" name="Question13" value="Protect only healthcare workers" /> Protect only healthcare workers from infections<br>
-        <input type="radio" name="Question13" value="Prevent infections" /> Prevent the spread of infections among patients, healthcare workers, and visitors<br>
-        <input type="radio" name="Question13" value="Improve hospital ranking" /> Improve hospital ranking
-    </div>
+            <!-- Question 5 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">5. Varicella</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question5" value="0" style="margin-right: 8px;" /> Airborne precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question5" value="1" style="margin-right: 8px;" /> Contact precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question5" value="2" style="margin-right: 8px;" /> Droplet precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question5" value="3" style="margin-right: 8px;" /> Standard precaution
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Alcohol-based hand rubbing should be done for how many seconds to be effective?</h4>
-        <input type="radio" name="Question14" value="5-10 seconds" /> 5-10 seconds<br>
-        <input type="radio" name="Question14" value="10-20 seconds" /> 10-20 seconds<br>
-        <input type="radio" name="Question14" value="20-30 seconds" /> 20-30 seconds<br>
-        <input type="radio" name="Question14" value="30-60 seconds" /> 30-60 seconds
-    </div>
+            <!-- Question 6 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">6. COVID-19</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question6" value="0" style="margin-right: 8px;" /> Airborne precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question6" value="1" style="margin-right: 8px;" /> Contact precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question6" value="2" style="margin-right: 8px;" /> Droplet precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question6" value="3" style="margin-right: 8px;" /> Standard precaution
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Which type of PPE is required when caring for a patient with confirmed tuberculosis?</h4>
-        <input type="radio" name="Question15" value="Surgical mask" /> Surgical mask<br>
-        <input type="radio" name="Question15" value="N95 respirator" /> N95 respirator<br>
-        <input type="radio" name="Question15" value="Face shield only" /> Face shield only<br>
-        <input type="radio" name="Question15" value="Gloves only" /> Gloves only
-    </div>
+            <!-- Question 7 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">7. Human Immunodeficiency virus</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question7" value="0" style="margin-right: 8px;" /> Airborne precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question7" value="1" style="margin-right: 8px;" /> Contact precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question7" value="2" style="margin-right: 8px;" /> Droplet precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question7" value="3" style="margin-right: 8px;" /> Standard precaution
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>When cohorting patients with the same suspected or confirmed diagnosis in one room, the distance must be maintained between each patient at:</h4>
-        <input type="radio" name="Question16" value="1 foot" /> 1 foot<br>
-        <input type="radio" name="Question16" value="2 feet" /> 2 feet<br>
-        <input type="radio" name="Question16" value="3 feet" /> 3 feet (1 meter)<br>
-        <input type="radio" name="Question16" value="6 feet" /> 6 feet (2 meters)
-    </div>
+            <!-- Question 8 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">8. Extrapulmonary Tuberculosis</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question8" value="0" style="margin-right: 8px;" /> Airborne precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question8" value="1" style="margin-right: 8px;" /> Contact precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question8" value="2" style="margin-right: 8px;" /> Droplet precaution
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question8" value="3" style="margin-right: 8px;" /> Standard precaution
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Which of the following is the most effective way to prevent the spread of infections?</h4>
-        <input type="radio" name="Question17" value="Wearing a mask" /> Wearing a mask at all times<br>
-        <input type="radio" name="Question17" value="Hand hygiene" /> Frequent and proper hand hygiene<br>
-        <input type="radio" name="Question17" value="Antibiotics" /> Using antibiotics for all patients<br>
-        <input type="radio" name="Question17" value="Disinfectant spray" /> Spraying disinfectant in the air
-    </div>
+            <!-- Question 9 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">9. A patient is diagnosed with Clostridioides difficile (C. difficile) infection. What type of precautions should be implemented?</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question9" value="0" style="margin-right: 8px;" /> Standard Precautions
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question9" value="1" style="margin-right: 8px;" /> Contact Precautions
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question9" value="2" style="margin-right: 8px;" /> Droplet Precautions
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question9" value="3" style="margin-right: 8px;" /> Airborne Precautions
+                    </label>
+                </div>
+            </div>
 
-    <h3>Select the correct room placement for each patient (single, ward), and PPE to be used by 
-        each healthcare worker based on its disease and mode of transmission [pre-pandemic]:</h3>
+            <!-- Question 10 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">10. In high-risk areas of health care facilities such as isolation rooms, the recommended minimal ventilation rate is</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question10" value="0" style="margin-right: 8px;" /> 8 air changes per hour (ACH)
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question10" value="1" style="margin-right: 8px;" /> 10 air changes per hour (ACH)
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question10" value="2" style="margin-right: 8px;" /> 12 air changes per hour (ACH)
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question10" value="3 style="margin-right: 8px;" /> 14 air changes per hour (ACH)
+                    </label>
+                </div>
+            </div>
 
-    <h5>
-        Place the patient in the appropriate room
-    </h5>
+            <!-- Question 11 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">11. If a healthcare worker sustained a needle stick injury in the course of duty, he/she should report within?</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question11" value="0" style="margin-right: 8px;" /> Within the week
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question11" value="1" style="margin-right: 8px;" /> 1 hour
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question11" value="2" style="margin-right: 8px;" /> 24 hours
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question11" value="3" style="margin-right: 8px;" /> 72 hours
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Measles, with active lesions</h4>
-        <input type="checkbox" name="Question18" value="Single room only" /> Single room only
-        <input type="checkbox" name="Question18" value="Ward type" /> Ward type
-        <input type="checkbox" name="Question18" value="AIIR or Isolation room" />AIIR or Isolation room
-    </div>
+            <!-- Question 12 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">12. What is the correct sequence for doffing PPE?</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question12" value="0" style="margin-right: 8px;" /> Gown → Gloves → Mask → Goggles
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question12" value="1" style="margin-right: 8px;" /> Mask → Gown → Gloves → Goggles
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question12" value="2" style="margin-right: 8px;" /> Gown → Mask → Goggles → Gloves
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question12" value="3" style="margin-right: 8px;" /> Gloves → Gown → Goggles → Mask
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>MRSA patient</h4>
-        <input type="checkbox" name="Question19" value="Single room only" /> Single room only
-        <input type="checkbox" name="Question19" value="Ward type" /> Ward type
-        <input type="checkbox" name="Question19" value="AIIR or Isolation room" />AIIR or Isolation room
-    </div>
+            <!-- Question 13 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">13. What is the primary goal of infection prevention and control (IPC) in a healthcare setting?</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question13" value="0" style="margin-right: 8px;" /> Reduce hospital costs
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question13" value="1" style="margin-right: 8px;" /> Protect only healthcare workers from infections
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question13" value="2" style="margin-right: 8px;" /> Prevent the spread of infections among patients, healthcare workers, and visitors
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question13" value="3" style="margin-right: 8px;" /> Improve hospital ranking
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Patient with Dengue Hemorrhagic Fever</h4>
-        <input type="checkbox" name="Question20" value="Single room only" /> Single room only
-        <input type="checkbox" name="Question20" value="Ward type" /> Ward type
-        <input type="checkbox" name="Question20" value="AIIR or Isolation room" />AIIR or Isolation room
-    </div>
+            <!-- Question 14 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">14. Alcohol-based hand rubbing should be done for how many seconds to be effective?</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question14" value="0" style="margin-right: 8px;" /> 5-10 seconds
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question14" value="1" style="margin-right: 8px;" /> 10-20 seconds
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question14" value="2" style="margin-right: 8px;" /> 20-30 seconds
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question14" value="3" style="margin-right: 8px;" /> 30-60 seconds
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Bacteriologically confirmed pulmonary TB with ongoing treatment of less than 14 days</h4>
-        <input type="checkbox" name="Question21" value="Single room only" /> Single room only
-        <input type="checkbox" name="Question21" value="Ward type" /> Ward type
-        <input type="checkbox" name="Question21" value="AIIR or Isolation room" />AIIR or Isolation room
-    </div>
+            <!-- Question 15 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">15. Which type of PPE is required when caring for a patient with confirmed tuberculosis?</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question15" value="0" style="margin-right: 8px;" /> Surgical mask
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question15" value="1" style="margin-right: 8px;" /> N95 respirator
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question15" value="2" style="margin-right: 8px;" /> Face shield only
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question15" value="3" style="margin-right: 8px;" /> Gloves only
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>COVID, intubated patient</h4>
-        <input type="checkbox" name="Question22" value="Single room only" /> Single room only
-        <input type="checkbox" name="Question22" value="Ward type" /> Ward type
-        <input type="checkbox" name="Question22" value="AIIR or Isolation room" />AIIR or Isolation room
-    </div>
+            <!-- Question 16 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">16. When cohorting patients with the same suspected or confirmed diagnosis in one room, the distance must be maintained between each patient at:</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question16" value="0" style="margin-right: 8px;" /> 1 foot
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question16" value="1" style="margin-right: 8px;" /> 2 feet
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question16" value="2" style="margin-right: 8px;" /> 3 feet (1 meter)
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question16" value="3" style="margin-right: 8px;" /> 6 feet (2 meters)
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Intubated patient, ETA positive of CRE</h4>
-        <input type="checkbox" name="Question23" value="Single room only" /> Single room only
-        <input type="checkbox" name="Question23" value="Ward type" /> Ward type
-        <input type="checkbox" name="Question23" value="AIIR or Isolation room" />AIIR or Isolation room
-    </div>
+            <!-- Question 17 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">17. Which of the following is the most effective way to prevent the spread of infections?</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question17" value="0" style="margin-right: 8px;" /> Wearing a mask at all times
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question17" value="1" style="margin-right: 8px;" /> Frequent and proper hand hygiene
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question17" value="2" style="margin-right: 8px;" /> Using antibiotics for all patients
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question17" value="3" style="margin-right: 8px;" /> Spraying disinfectant in the air
+                    </label>
+                </div>
+            </div>
+            
+           
+        </fieldset>
 
-    <div>
-        <h4>HIV patient, with CD4 count of >200t</h4>
-        <input type="checkbox" name="Question24" value="Single room only" /> Single room only
-        <input type="checkbox" name="Question24" value="Ward type" /> Ward type
-        <input type="checkbox" name="Question24" value="AIIR or Isolation room" />AIIR or Isolation room
-    </div>
+        <!-- Room Placement Section -->
+        <fieldset style="margin: 20px 0; padding: 25px; border: 1px solid #e0e0e0; border-radius: 6px; background-color: #fff;">
+            <legend style="font-weight: 600; color: #2c3e50; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding: 0 10px;">Patient Room Placement</legend>
+            <p style="margin: 0 0 15px 0; font-size: 13px; color: #7f8c8d;">Select the correct room placement for each patient:</p>
 
-    <h5>
-        Check the PPE required for each patient based on your risk assessment 9pts
-    </h5>
+            <!-- Question 18 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">18. Measles, with active lesions</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question18" value="0" style="margin-right: 8px;" /> Single room only
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question18" value="1" style="margin-right: 8px;" /> Ward type
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question18" value="2" style="margin-right: 8px;" /> AIIR/Isolation
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Hepatitis B patient for blood extraction</h4>
-        <input type="checkbox" name="Question25" value="Gloves" /> Gloves
-        <input type="checkbox" name="Question25" value="Isolation Gown" /> Isolation Gown
-        <input type="checkbox" name="Question25" value="Mask" /> Mask
-        <input type="checkbox" name="Question25" value="Respirator or N95" /> Respirator or N95
-        <input type="checkbox" name="Question25" value="Face/Eye Protection" /> Face/Eye Protection
-    </div>
+            <!-- Question 19 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">19. MRSA patient</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question19" value="0" style="margin-right: 8px;" /> Single room only
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question19" value="1" style="margin-right: 8px;" /> Ward type
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question19" value="2" style="margin-right: 8px;" /> AIIR/Isolation
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Vital signs taking for a Post KT patient</h4>
-        <input type="checkbox" name="Question26" value="Gloves" /> Gloves
-        <input type="checkbox" name="Question26" value="Isolation Gown" /> Isolation Gown
-        <input type="checkbox" name="Question26" value="Mask" /> Mask
-        <input type="checkbox" name="Question26" value="Respirator or N95" /> Respirator or N95
-        <input type="checkbox" name="Question26" value="Face/Eye Protection" /> Face/Eye Protection
-    </div>
+            <!-- Question 20 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">20. Patient with Dengue Hemorrhagic Fever</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question20" value="0" style="margin-right: 8px;" /> Single room only
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question20" value="1" style="margin-right: 8px;" /> Ward type
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question20" value="2" style="margin-right: 8px;" /> AIIR/Isolation
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Blood extraction in a patient with VRE</h4>
-        <input type="checkbox" name="Question27" value="Gloves" /> Gloves
-        <input type="checkbox" name="Question27" value="Isolation Gown" /> Isolation Gown
-        <input type="checkbox" name="Question27" value="Mask" /> Mask
-        <input type="checkbox" name="Question27" value="Respirator or N95" /> Respirator or N95
-        <input type="checkbox" name="Question27" value="Face/Eye Protection" /> Face/Eye Protection
-    </div>
+            <!-- Question 21 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">21. Bacteriologically confirmed pulmonary TB with ongoing treatment of less than 14 days</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question21" value="0" style="margin-right: 8px;" /> Single room only
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question21" value="1" style="margin-right: 8px;" /> Ward type
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question21" value="2" style="margin-right: 8px;" /> AIIR/Isolation
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Intubating pneumonia patient</h4>
-        <input type="checkbox" name="Question28" value="Gloves" /> Gloves
-        <input type="checkbox" name="Question28" value="Isolation Gown" /> Isolation Gown
-        <input type="checkbox" name="Question28" value="Mask" /> Mask
-        <input type="checkbox" name="Question28" value="Respirator or N95" /> Respirator or N95
-        <input type="checkbox" name="Question28" value="Face/Eye Protection" /> Face/Eye Protection
-    </div>
+            <!-- Question 22 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">22. COVID, intubated patient</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question22" value="0" style="margin-right: 8px;" /> Single room only
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question22" value="1" style="margin-right: 8px;" /> Ward type
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question22" value="2" style="margin-right: 8px;" /> AIIR/Isolation
+                    </label>
+                </div>
+            </div>
 
-    <div>
-        <h4>Post HSCT patient with fever</h4>
-        <input type="checkbox" name="Question29" value="Gloves" /> Gloves
-        <input type="checkbox" name="Question29" value="Isolation Gown" /> Isolation Gown
-        <input type="checkbox" name="Question29" value="Mask" /> Mask
-        <input type="checkbox" name="Question29" value="Respirator or N95" /> Respirator or N95
-        <input type="checkbox" name="Question29" value="Face/Eye Protection" /> Face/Eye Protection
-    </div>
+            <!-- Question 23 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">23. Intubated patient, ETA positive of CRE</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question23" value="0" style="margin-right: 8px;" /> Single room only
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question23" value="1" style="margin-right: 8px;" /> Ward type
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question23" value="2" style="margin-right: 8px;" /> AIIR/Isolation
+                    </label>
+                </div>
+            </div>
 
+            <!-- Question 24 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">24. HIV patient, with CD4 count of >200</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question24" value="0" style="margin-right: 8px;" /> Single room only
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question24" value="1" style="margin-right: 8px;" /> Ward type
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="radio" name="Question24" value="2" style="margin-right: 8px;" /> AIIR/Isolation
+                    </label>
+                </div>
+            </div>
+        </fieldset>
 
-    <button type="submit">Submit</button>
-</form>
+        <!-- PPE Selection Section -->
+        <fieldset style="margin: 20px 0; padding: 25px; border: 1px solid #e0e0e0; border-radius: 6px; background-color: #fff;">
+            <legend style="font-weight: 600; color: #2c3e50; font-size: 16px; text-transform: uppercase; letter-spacing: 0.5px; padding: 0 10px;">PPE Requirements</legend>
+            <p style="margin: 0 0 15px 0; font-size: 13px; color: #7f8c8d;">Check the PPE required for each patient:</p>
+
+            <!-- Question 25 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">25. Hepatitis B patient for blood extraction</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question25" value="0" style="margin-right: 8px;" /> Gloves
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question25" value="1" style="margin-right: 8px;" /> Isolation Gown
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question25" value="2" style="margin-right: 8px;" /> Mask
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question25" value="3" style="margin-right: 8px;" /> N95 Respirator
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question25" value="4" style="margin-right: 8px;" /> Eye Protection
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 26 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">26. Vital signs for Post KT patient</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question26" value="0" style="margin-right: 8px;" /> Gloves
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question26" value="1" style="margin-right: 8px;" /> Isolation Gown
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question26" value="2" style="margin-right: 8px;" /> Mask
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question26" value="3" style="margin-right: 8px;" /> N95 Respirator
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question26" value="4" style="margin-right: 8px;" /> Eye Protection
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 27 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">27. Blood extraction in a patient with VRE</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question27" value="0" style="margin-right: 8px;" /> Gloves
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question27" value="1" style="margin-right: 8px;" /> Isolation Gown
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question27" value="2" style="margin-right: 8px;" /> Mask
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question27" value="3" style="margin-right: 8px;" /> Respirator or N95
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question27" value="4" style="margin-right: 8px;" /> Face/Eye Protection
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 28 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">28. Intubating pneumonia patient</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question28" value="0" style="margin-right: 8px;" /> Gloves
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question28" value="1" style="margin-right: 8px;" /> Isolation Gown
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question28" value="2" style="margin-right: 8px;" /> Mask
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question28" value="3" style="margin-right: 8px;" /> Respirator or N95
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question28" value="4" style="margin-right: 8px;" /> Face/Eye Protection
+                    </label>
+                </div>
+            </div>
+
+            <!-- Question 29 -->
+            <div style="margin-bottom: 18px; padding: 15px; background-color: #f8f9fa; border-radius: 4px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #34495e; font-weight: 500;">29. Post HSCT patient with fever</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question29" value="0" style="margin-right: 8px;" /> Gloves
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question29" value="1" style="margin-right: 8px;" /> Isolation Gown
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question29" value="2" style="margin-right: 8px;" /> Mask
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question29" value="3" style="margin-right: 8px;" /> Respirator or N95
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 14px; color: #34495e;">
+                        <input type="checkbox" name="Question29" value="4" style="margin-right: 8px;" /> Face/Eye Protection
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+
+        <!-- Submit Button -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="submit" style="padding: 8px 20px; background-color: #3498db; color: white; border: none; border-radius: 3px; font-size: 14px; cursor: pointer;">
+                Submit
+            </button>
+        </div>
+    </form>
+</div>

@@ -33,9 +33,7 @@ namespace IPCU.Controllers
             "Masks should fully cover the nose and mouth at all times inside the hospital",      // Question 2
             "20-30 seconds",                                                                     // Question 3
             "Prevent the spread of infections among patients, healthcare workers, and visitors", // Question 4
-            "24 hours",                                                                          // Question 5
-            "Prevent the spread of infections among patients, healthcare workers, and visitors", // Question 6
-            "Masks should fully cover the nose and mouth at all times inside the hospital"       // Question 7
+            "1 hour"                                                                           // Question 5
         };
 
         // Correct answers for the waste segregation questions (Section III)
