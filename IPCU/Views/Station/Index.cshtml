@@ -2,6 +2,50 @@
     ViewBag.Title = "Station List";
     var stations = ViewBag.Data as List<Dictionary<string, object>>;
 }
+@if (ViewBag.TotalRooms != null)
+{
+    <div class="container mt-4 mb-4">
+        <!-- Added mt-4 -->
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-primary text-white">
+                        <i class="fas fa-bed me-2"></i>Total Rooms
+                    </div>
+                    <div class="card-body">
+                        <h3 class="fw-bold">@ViewBag.TotalRooms</h3>
+                        <p class="text-muted mb-0">All rooms across all stations</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-danger text-white">
+                        <i class="fas fa-user-injured me-2"></i>Occupied
+                    </div>
+                    <div class="card-body">
+                        <h3 class="fw-bold">@ViewBag.OccupiedCount</h3>
+                        <p class="text-muted mb-0">Rooms currently in use</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-center shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-bed me-2"></i>Not Occupied
+                    </div>
+                    <div class="card-body">
+                        <h3 class="fw-bold">@ViewBag.NotOccupiedCount</h3>
+                        <p class="text-muted mb-0">Available for assignment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 
 <div class="container mt-4">
     <div class="card shadow-sm rounded-3">
