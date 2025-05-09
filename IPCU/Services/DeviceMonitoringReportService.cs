@@ -12,10 +12,14 @@ namespace IPCU.Services
     public class DeviceMonitoringReportService
     {
         private readonly ApplicationDbContext _context;
+        private readonly PatientDbContext _patientContext;
 
-        public DeviceMonitoringReportService(ApplicationDbContext context)
+        public DeviceMonitoringReportService(
+            ApplicationDbContext context,
+            PatientDbContext patientContext)
         {
             _context = context;
+            _patientContext = patientContext;
         }
 
         public async Task<DeviceMonitoringReportData> GenerateReportData(string area, int year, int month)
@@ -78,17 +82,53 @@ namespace IPCU.Services
 
         private async Task<int> GetDeviceCountForDay(string area, DateTime date, string deviceType, string deviceClass)
         {
-            // Find all patients in this area with this device type/class active on this date
-            var patientsWithDevice = await (from p in _context.Patients
-                                            join d in _context.DeviceConnected on p.HospNum equals d.HospNum
-                                            where p.AdmLocation == area
-                                                && d.DeviceType == deviceType
-                                                && (deviceClass == null || d.DeviceClass == deviceClass)
-                                                && d.DeviceInsert <= date
-                                                && (d.DeviceRemove == null || d.DeviceRemove >= date)
-                                            select p.HospNum).Distinct().CountAsync();
+            // Use raw SQL to query the tbpatient table in the proper context
+            using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = @"
+                    SELECT COUNT(DISTINCT p.HospNum) as DeviceCount
+                    FROM tbpatient p
+                    JOIN tbmaster m ON p.HospNum = m.HospNum
+                    JOIN " + _context.Database.GetDbConnection().Database + @".dbo.DeviceConnected d ON p.HospNum = d.HospNum
+                    JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
+                    JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
+                    WHERE s.Station = @Area
+                        AND d.DeviceType = @DeviceType
+                        AND (@DeviceClass IS NULL OR d.DeviceClass = @DeviceClass)
+                        AND d.DeviceInsert <= @Date
+                        AND (d.DeviceRemove IS NULL OR d.DeviceRemove >= @Date)";
 
-            return patientsWithDevice;
+                // Add parameters
+                var areaParam = command.CreateParameter();
+                areaParam.ParameterName = "@Area";
+                areaParam.Value = area;
+                command.Parameters.Add(areaParam);
+
+                var deviceTypeParam = command.CreateParameter();
+                deviceTypeParam.ParameterName = "@DeviceType";
+                deviceTypeParam.Value = deviceType;
+                command.Parameters.Add(deviceTypeParam);
+
+                var deviceClassParam = command.CreateParameter();
+                deviceClassParam.ParameterName = "@DeviceClass";
+                deviceClassParam.Value = deviceClass == null ? DBNull.Value : (object)deviceClass;
+                command.Parameters.Add(deviceClassParam);
+
+                var dateParam = command.CreateParameter();
+                dateParam.ParameterName = "@Date";
+                dateParam.Value = date;
+                command.Parameters.Add(dateParam);
+
+                // Ensure connection is open
+                if (command.Connection.State != System.Data.ConnectionState.Open)
+                {
+                    await command.Connection.OpenAsync();
+                }
+
+                // Execute query
+                var result = await command.ExecuteScalarAsync();
+                return result == DBNull.Value ? 0 : Convert.ToInt32(result);
+            }
         }
 
         private async Task<PatientMovement> GetPatientMovementForDay(string area, DateTime date)
