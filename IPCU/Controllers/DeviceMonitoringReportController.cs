@@ -15,56 +15,119 @@ namespace IPCU.Controllers
     public class DeviceMonitoringReportController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly PatientDbContext _patientContext;
+        private readonly BuildFileDbContext _buildFileContext;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly DeviceMonitoringReportService _reportService;
         private readonly DeviceMonitoringPdfService _pdfService;
         private readonly DeviceMonitoringExcelService _excelService;
         private readonly DeviceMonitoringYearlyExcelService _yearlyExcelService;
         private readonly DeviceMonitoringAreaYearlyExcelService _areaYearlyExcelService;
+        private readonly StationService _stationService;
 
-        // Update the constructor to include the new service
         public DeviceMonitoringReportController(
             ApplicationDbContext context,
+            PatientDbContext patientContext,
+            BuildFileDbContext buildFileContext,
             UserManager<ApplicationUser> userManager,
             DeviceMonitoringReportService reportService,
             DeviceMonitoringPdfService pdfService,
             DeviceMonitoringExcelService excelService,
             DeviceMonitoringYearlyExcelService yearlyExcelService,
-            DeviceMonitoringAreaYearlyExcelService areaYearlyExcelService)
+            DeviceMonitoringAreaYearlyExcelService areaYearlyExcelService,
+            StationService stationService)
         {
             _context = context;
+            _patientContext = patientContext;
+            _buildFileContext = buildFileContext;
             _userManager = userManager;
             _reportService = reportService;
             _pdfService = pdfService;
             _excelService = excelService;
             _yearlyExcelService = yearlyExcelService;
             _areaYearlyExcelService = areaYearlyExcelService;
+            _stationService = stationService;
         }
 
+        // Update the Index method in your DeviceMonitoringReportController.cs
 
-        // GET: Display form to select area and month for the report
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            try
             {
-                return NotFound();
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return NotFound("User not found");
+                }
+
+                // Get all available areas from StationService
+                var allAreas = await _stationService.GetAllStationAreas();
+
+                if (allAreas == null || !allAreas.Any())
+                {
+                    // Log warning and use fallback data explicitly
+                    System.Diagnostics.Debug.WriteLine("Warning: No station areas found, using fallback data");
+                    allAreas = _stationService.GetFallbackStationList();
+                }
+
+                // Get the user's assigned areas for the dropdown
+                var assignedAreas = user.AssignedArea?.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(a => a.Trim())
+                    .ToList() ?? new List<string>();
+
+                // Filter areas based on user permissions
+                List<string> availableAreas;
+                if (assignedAreas.Any() && !User.IsInRole("Administrator"))
+                {
+                    availableAreas = allAreas
+                        .Where(a => assignedAreas.Contains(a))
+                        .OrderBy(a => a)
+                        .ToList();
+                }
+                else
+                {
+                    availableAreas = allAreas
+                        .OrderBy(a => a)
+                        .ToList();
+                }
+
+                // If still no available areas, use fallback in any case
+                if (!availableAreas.Any())
+                {
+                    availableAreas = _stationService.GetFallbackStationList();
+                    System.Diagnostics.Debug.WriteLine($"Using {availableAreas.Count} fallback areas as last resort");
+                }
+
+                // Create view model with areas and defaults
+                var viewModel = new DeviceMonitoringReportViewModel
+                {
+                    Areas = availableAreas,
+                    SelectedArea = availableAreas.FirstOrDefault() ?? "Emergency Department",
+                    ReportMonth = DateTime.Now.Month,
+                    ReportYear = DateTime.Now.Year,
+                    ExportFormat = "PDF"
+                };
+
+                return View(viewModel);
             }
-
-            // Get the user's assigned areas for the dropdown
-            var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-
-            // Create view model with areas and defaults
-            var viewModel = new DeviceMonitoringReportViewModel
+            catch (Exception ex)
             {
-                Areas = assignedAreas,
-                SelectedArea = assignedAreas.FirstOrDefault(),
-                ReportMonth = DateTime.Now.Month,
-                ReportYear = DateTime.Now.Year,
-                ExportFormat = "PDF" // Default export format
-            };
+                // Log the error
+                System.Diagnostics.Debug.WriteLine($"Error in Index: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
 
-            return View(viewModel);
+                // Use the public method to get fallback data
+                var fallbackAreas = _stationService.GetFallbackStationList();
+                return View(new DeviceMonitoringReportViewModel
+                {
+                    Areas = fallbackAreas,
+                    SelectedArea = fallbackAreas.FirstOrDefault() ?? "Emergency Department",
+                    ReportMonth = DateTime.Now.Month,
+                    ReportYear = DateTime.Now.Year,
+                    ExportFormat = "PDF"
+                });
+            }
         }
 
         [HttpGet]
@@ -82,14 +145,7 @@ namespace IPCU.Controllers
             };
 
             var pdfData = _pdfService.GeneratePdf(reportData);
-
-            // Set Content-Type without Content-Disposition for inline viewing
-            return File(
-                pdfData,
-                "application/pdf",
-                "test.pdf",
-                false // inline viewing
-            );
+            return File(pdfData, "application/pdf", "test.pdf", false);
         }
 
         [HttpGet]
@@ -315,6 +371,8 @@ namespace IPCU.Controllers
         }
 
 
+
+        // POST: Generate the report based on selected parameters
         // POST: Generate the report based on selected parameters
         [HttpPost]
         public async Task<IActionResult> GenerateReport(DeviceMonitoringReportViewModel model)
@@ -329,71 +387,91 @@ namespace IPCU.Controllers
                         // Log or debug the errors
                         System.Diagnostics.Debug.WriteLine($"Model Error: {error.ErrorMessage}");
                     }
-                    // Get the user's assigned areas again if we need to redisplay the form
+
+                    // Get all available areas
+                    var allAreas = await _stationService.GetAllStationAreas();
+
+                    // Get the user's assigned areas
                     var user = await _userManager.GetUserAsync(User);
                     var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-                    model.Areas = assignedAreas;
+
+                    // Filter areas based on user permissions
+                    List<string> availableAreas;
+                    if (assignedAreas.Any() && !User.IsInRole("Administrator"))
+                    {
+                        availableAreas = allAreas.Where(a => assignedAreas.Contains(a)).ToList();
+                    }
+                    else
+                    {
+                        availableAreas = allAreas;
+                    }
+
+                    model.Areas = availableAreas;
                     return View("Index", model);
                 }
 
                 // Debug the area validation
                 var currentUser = await _userManager.GetUserAsync(User);
                 var userAreas = currentUser.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-                System.Diagnostics.Debug.WriteLine($"User Areas: {string.Join(",", userAreas)}");
-                System.Diagnostics.Debug.WriteLine($"Selected Area: {model.SelectedArea}");
 
-                if (!userAreas.Contains(model.SelectedArea))
+                // If user has assigned areas and is not an admin, check permissions
+                if (userAreas.Any() && !User.IsInRole("Administrator") && !userAreas.Contains(model.SelectedArea))
                 {
                     ModelState.AddModelError("SelectedArea", "You do not have access to the selected area.");
-                    model.Areas = userAreas;
+
+                    // Get all available areas
+                    var allAreas = await _stationService.GetAllStationAreas();
+                    var availableAreas = allAreas.Where(a => userAreas.Contains(a)).ToList();
+                    model.Areas = availableAreas;
+
                     return View("Index", model);
                 }
 
                 // Generate report data using the service
                 var reportData = await _reportService.GenerateReportData(model.SelectedArea, model.ReportYear, model.ReportMonth);
 
-                // Validate report data
+                // Check if we have any data
                 if (reportData == null || reportData.DailyData == null || !reportData.DailyData.Any())
                 {
-                    throw new Exception("No data available for the selected parameters");
+                    ModelState.AddModelError("", "No data available for the selected criteria.");
+
+                    // Get all available areas for re-displaying the form
+                    var allAreas = await _stationService.GetAllStationAreas();
+                    var availableAreas = userAreas.Any() && !User.IsInRole("Administrator")
+                        ? allAreas.Where(a => userAreas.Contains(a)).ToList()
+                        : allAreas;
+
+                    model.Areas = availableAreas;
+                    return View("Index", model);
                 }
 
-                string fileName = $"DeviceMonitoring-{model.SelectedArea}-{model.ReportYear}-{model.ReportMonth}";
-
-                // Check the requested export format
-                if (model.ExportFormat.ToUpper() == "EXCEL")
+                // Based on the selected format, return the appropriate action
+                switch (model.ExportFormat.ToUpper())
                 {
-                    // Create Excel document using the Excel service
-                    var excelData = _excelService.GenerateExcel(reportData);
-                    if (excelData == null || excelData.Length < 100)
-                    {
-                        System.Diagnostics.Debug.WriteLine("Excel data is too small or null!");
-                        throw new Exception("Generated Excel file is empty or invalid");
-                    }
+                    case "PDF":
+                        return RedirectToAction("ViewReport", new
+                        {
+                            area = model.SelectedArea,
+                            year = model.ReportYear,
+                            month = model.ReportMonth
+                        });
 
-                    // Return the Excel file
-                    return File(
-                        fileContents: excelData,
-                        contentType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        fileDownloadName: $"{fileName}.xlsx"
-                    );
-                }
-                else // Default to PDF
-                {
-                    // Create PDF document using the PDF service
-                    var pdfData = _pdfService.GeneratePdf(reportData);
-                    if (pdfData == null || pdfData.Length < 100) // A valid PDF should have some minimum size
-                    {
-                        System.Diagnostics.Debug.WriteLine("PDF data is too small or null!");
-                        throw new Exception("Generated PDF is empty or invalid");
-                    }
+                    case "EXCEL":
+                        return RedirectToAction("DownloadExcel", new
+                        {
+                            area = model.SelectedArea,
+                            year = model.ReportYear,
+                            month = model.ReportMonth
+                        });
 
-                    // Return the PDF file
-                    return File(
-                        fileContents: pdfData,
-                        contentType: "application/pdf",
-                        fileDownloadName: $"{fileName}.pdf"
-                    );
+                    default:
+                        // If format is not recognized, default to PDF
+                        return RedirectToAction("ViewReport", new
+                        {
+                            area = model.SelectedArea,
+                            year = model.ReportYear,
+                            month = model.ReportMonth
+                        });
                 }
             }
             catch (Exception ex)
@@ -412,9 +490,22 @@ namespace IPCU.Controllers
                 ModelState.AddModelError("", "An error occurred while generating the report: " + ex.Message);
 
                 // Re-populate model areas
+                var allAreas = await _stationService.GetAllStationAreas();
                 var currentUser = await _userManager.GetUserAsync(User);
                 var userAreas = currentUser.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
-                model.Areas = userAreas;
+
+                // Filter areas based on user permissions
+                List<string> availableAreas;
+                if (userAreas.Any() && !User.IsInRole("Administrator"))
+                {
+                    availableAreas = allAreas.Where(a => userAreas.Contains(a)).ToList();
+                }
+                else
+                {
+                    availableAreas = allAreas;
+                }
+
+                model.Areas = availableAreas;
 
                 return View("Index", model);
             }

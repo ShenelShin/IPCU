@@ -9,17 +9,15 @@
 
 <div class="container py-5 bg-white shadow rounded-4 border border-light">
     <div class="header-section d-flex align-items-center justify-content-center px-3 py-2 mb-4 gap-3 animate__animated animate__fadeInDown">
-
         <div class="logo-box">
             <img src="~/images/NKTI.png" alt="NKTI Left Logo" class="img-fluid logo-img">
         </div>
 
         <div class="text-center flex-grow-0 mx-5 mb-5">
-        
             <h1 class="text-primary fw-bold mb-1">IPCU SYSTEM</h1>
             <p class="text-muted text-fade mb-1">Welcome to the IPCU System</p>
             <p class="text-muted text-fade">Streamlined Management of Employee Forms & Trainings</p>
-            <p class="text-secondary small fst-italic">Empowering infection control through efficient digital workflows</p> <!-- Caption -->
+            <p class="text-secondary small fst-italic">Empowering infection control through efficient digital workflows</p>
         </div>
 
         <div class="logo-box">
@@ -29,25 +27,127 @@
 
     <div class="row g-4">
         @{
-            var cards = new List<dynamic>
-        {
-       /* new { Title="View Patients", Desc="View all registered patients.", Icon="fas fa-user-injured", Color="primary", Buttons=new[]{ ("Patients", "Patients", "Index", "primary"), ("Masters", "PatientMasters", "Index", "outline-primary") }},*/
-        new { Title="ICN Patient Management", Desc="Track ICN patients.", Icon="fas fa-hospital-user", Color="indigo", Buttons=new[]{ ("View Patients", "ICNPatient", "Index", "indigo text-white"), ("Details", "ICNPatient", "Details", "outline-indigo") }},
-        new { Title="Training Summary", Desc="Summarize assessment reports.", Icon="fas fa-chalkboard-teacher", Color="warning", Buttons=new[]{ ("Summary", "Evaluation", "SummaryReport", "warning text-white"), ("Reports", "TrainingSummary", "Reports", "outline-warning") }},
-        new { Title="Hand Hygiene", Desc="Track hygiene compliance.", Icon="fas fa-hands-wash", Color="success", Buttons=new[]{ ("Open Form", "HandHygieneForms", "Index", "success"), ("Summary", "HandHygieneForms", "MonthlySummary", "outline-success") }},
-        new { Title="Fit Testing", Desc="Fill or view Fit Testing forms.", Icon="fas fa-mask-face", Color="purple", Buttons=new[]{ ("Open Form", "FitTestingForm", "Index", "purple text-white"), ("Reports", "FitTestingForm", "Reports", "outline-purple") }},
-        new { Title="Role Management", Desc="Manage user roles and permissions.", Icon="fas fa-user-shield", Color="danger", Buttons=new[]{ ("Roles", "RoleManagement", "Index", "danger"), ("Users", "RoleManagement", "UserRoles", "outline-danger") }},
-        new { Title="User Area Management", Desc="Assign user work areas.", Icon="fas fa-map-marker-alt", Color="teal", Buttons=new[]{ ("Manage Areas", "UserAreaManagement", "Index", "teal"), ("Batch Assign", "UserAreaManagement", "BatchAssignAreas", "outline-teal") }},
-       /* new { Title="ICN Patient Management", Desc="Track ICN patients.", Icon="fas fa-hospital-user", Color="indigo", Buttons=new[]{ ("View Patients", "ICNPatient", "Index", "indigo text-white"), ("Details", "ICNPatient", "Details", "outline-indigo") }},*/
-        new { Title="Notice of Referrals", Desc="View referrals notice.", Icon="fas fa-file-medical", Color="secondary", Buttons=new[]{ ("Index", "NoticeOfReferrals", "Index", "secondary text-white") }},
-        new { Title="Environmental", Desc="Environmental.", Icon="fas fa-clipboard-list", Color="orange", Buttons=new[]{ ("Create Forms", "Station", "Index", "orange text-white") }},
-        };
+            var cards = new List<dynamic>();
+
+            // Define card with its role requirements
+            // ICN Patient Management - For ICN role
+            if (User.IsInRole("ICN") || User.IsInRole("Admin"))
+            {
+                cards.Add(new
+                {
+                    Title = "ICN Patient Management",
+                    Desc = "Track ICN patients.",
+                    Icon = "fas fa-hospital-user",
+                    Color = "indigo",
+                    Buttons = new[]{
+        ("View Patients", "ICNPatient", "Index", "indigo text-white"),
+        ("Details", "ICNPatient", "Details", "outline-indigo")
+        }
+                });
+            }
+
+            // Training Summary - For all users
+            cards.Add(new
+            {
+                Title = "Training Summary",
+                Desc = "Summarize assessment reports.",
+                Icon = "fas fa-chalkboard-teacher",
+                Color = "warning",
+                Buttons = new[]{
+        ("Summary", "Evaluation", "SummaryReport", "warning text-white"),
+        ("Reports", "TrainingSummary", "Reports", "outline-warning")
+        }
+            });
+
+            // Hand Hygiene - For all users
+            cards.Add(new
+            {
+                Title = "Hand Hygiene",
+                Desc = "Track hygiene compliance.",
+                Icon = "fas fa-hands-wash",
+                Color = "success",
+                Buttons = new[]{
+        ("Open Form", "HandHygieneForms", "Index", "success"),
+        ("Summary", "HandHygieneForms", "MonthlySummary", "outline-success")
+        }
+            });
+
+            // Fit Testing - For all users
+            cards.Add(new
+            {
+                Title = "Fit Testing",
+                Desc = "Fill or view Fit Testing forms.",
+                Icon = "fas fa-mask-face",
+                Color = "purple",
+                Buttons = new[]{
+        ("Open Form", "FitTestingForm", "Index", "purple text-white"),
+        ("Reports", "FitTestingForm", "Reports", "outline-purple")
+        }
+            });
+
+            // Role Management - Only for Admin
+            if (User.IsInRole("Admin"))
+            {
+                cards.Add(new
+                {
+                    Title = "Role Management",
+                    Desc = "Manage user roles and permissions.",
+                    Icon = "fas fa-user-shield",
+                    Color = "danger",
+                    Buttons = new[]{
+        ("Roles", "RoleManagement", "Index", "danger"),
+        ("Users", "RoleManagement", "UserRoles", "outline-danger")
+        }
+                });
+            }
+
+            // User Area Management - Only for Admin
+            if (User.IsInRole("Admin"))
+            {
+                cards.Add(new
+                {
+                    Title = "User Area Management",
+                    Desc = "Assign user work areas.",
+                    Icon = "fas fa-map-marker-alt",
+                    Color = "teal",
+                    Buttons = new[]{
+        ("Manage Areas", "UserAreaManagement", "Index", "teal"),
+        ("Batch Assign", "UserAreaManagement", "BatchAssignAreas", "outline-teal")
+        }
+                });
+            }
+
+            // Notice of Referrals - For ICN and Admin
+            if (User.IsInRole("ICN") || User.IsInRole("Admin"))
+            {
+                cards.Add(new
+                {
+                    Title = "Notice of Referrals",
+                    Desc = "View referrals notice.",
+                    Icon = "fas fa-file-medical",
+                    Color = "secondary",
+                    Buttons = new[]{
+        ("Index", "NoticeOfReferrals", "Index", "secondary text-white")
+        }
+                });
+            }
+
+            // Environmental - For all users (can be restricted if needed)
+            cards.Add(new
+            {
+                Title = "Environmental",
+                Desc = "Environmental.",
+                Icon = "fas fa-clipboard-list",
+                Color = "orange",
+                Buttons = new[]{
+        ("Create Forms", "Station", "Index", "orange text-white")
+        }
+            });
         }
 
         @foreach (var card in cards)
         {
             <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
-
                 <div class="card h-100 shadow rounded-4 border-0 hover-card">
                     <div class="card-top bg-@card.Color">
                         <i class="@card.Icon fa-2x text-white"></i>
@@ -69,34 +169,34 @@
             </div>
         }
 
-        <!-- ICRA Card -->
-        <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
-            <div class="card h-100 shadow rounded-4 border-0 hover-card">
-                <div class="card-top bg-info">
-                    <i class="fas fa-tools fa-2x text-white"></i>
-                </div>
-                <div class="card-body text-center p-4">
-                    <h5 class="fw-bold mb-2">ICRA Dashboard</h5>
-                    <p class="text-muted small">Manage ICRA activities efficiently.</p>
-                    <div class="d-grid gap-2 mt-3">
-                        <a asp-controller="ICRAs" asp-action="Index" class="btn btn-info text-white">View ICRA</a>
-                        @if (User.IsInRole("Admin") && User.IsInRole("ICN") && User.IsInRole("Engineering"))
-                        {
-                            <a asp-controller="ICRADashboard" asp-action="AdminICN" class="btn btn-info text-white">Admin/ICN Dashboard</a>
-                            <a asp-controller="ICRADashboard" asp-action="Engineering" class="btn btn-info text-white">Engineering Dashboard</a>
-                        }
-                        else if (User.IsInRole("Engineering"))
-                        {
-                            <a asp-controller="ICRADashboard" asp-action="Engineering" class="btn btn-info text-white">Engineering Dashboard</a>
-                        }
-                        else if (User.IsInRole("Admin") || User.IsInRole("ICN"))
-                        {
-                            <a asp-controller="ICRADashboard" asp-action="AdminICN" class="btn btn-info text-white">Admin/ICN Dashboard</a>
-                        }
+        <!-- ICRA Card with proper role checks -->
+        @if (User.IsInRole("Admin") || User.IsInRole("ICN") || User.IsInRole("Engineering"))
+        {
+            <div class="col-md-6 col-lg-4 animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+                <div class="card h-100 shadow rounded-4 border-0 hover-card">
+                    <div class="card-top bg-info">
+                        <i class="fas fa-tools fa-2x text-white"></i>
+                    </div>
+                    <div class="card-body text-center p-4">
+                        <h5 class="fw-bold mb-2">ICRA Dashboard</h5>
+                        <p class="text-muted small">Manage ICRA activities efficiently.</p>
+                        <div class="d-grid gap-2 mt-3">
+                            <a asp-controller="ICRAs" asp-action="Index" class="btn btn-info text-white">View ICRA</a>
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("ICN"))
+                            {
+                                <a asp-controller="ICRADashboard" asp-action="AdminICN" class="btn btn-info text-white">Admin/ICN Dashboard</a>
+                            }
+
+                            @if (User.IsInRole("Engineering"))
+                            {
+                                <a asp-controller="ICRADashboard" asp-action="Engineering" class="btn btn-info text-white">Engineering Dashboard</a>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 
@@ -250,8 +350,6 @@
             color: #fff;
         }
 
-
-
     /* Custom solid buttons */
     .btn-purple {
         background-color: #6f42c1;
@@ -297,28 +395,10 @@
             color: #fff;
         }
 
-
     .hover-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         animation: pulse-card 0.5s ease;
-    }
-
-    @@keyframes pulse-card {
-        0%
-
-    {
-        transform: translateY(-5px) scale(1);
-    }
-
-    50% {
-        transform: translateY(-5px) scale(1.02);
-    }
-
-    100% {
-        transform: translateY(-5px) scale(1);
-    }
-
     }
 </style>
 

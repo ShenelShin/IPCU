@@ -38,7 +38,7 @@ namespace IPCU.Controllers
 
         // TODO: Dishcharge date is not accurate in the test server thats why its disabled for now
         // GET: Display list of patients in the ICN's assigned area who have been admitted for 48+ hours
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 25, string stationFilter = null)
         {
             try
             {
@@ -52,6 +52,45 @@ namespace IPCU.Controllers
                 // Get the user's assigned areas
                 var assignedAreas = user.AssignedArea?.Split(',').Select(a => a.Trim()).ToList() ?? new List<string>();
 
+                // Calculate pagination parameters for SQL query
+                int skip = (page - 1) * pageSize;
+
+                // Create a variable to hold count of total records (for pagination)
+                int totalRecords = 0;
+
+                // First, get the count of total records that match our criteria
+                using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+                {
+                    command.CommandText = @"
+            SELECT COUNT(*)
+            FROM tbpatient p
+            LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
+            LEFT JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
+            LEFT JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
+            WHERE p.DcrDate IS NOT NULL
+            AND p.DeathDate IS NULL";
+
+                    // Add station filter if provided
+                    if (!string.IsNullOrEmpty(stationFilter))
+                    {
+                        command.CommandText += " AND s.Station = @StationFilter";
+                        var param = command.CreateParameter();
+                        param.ParameterName = "@StationFilter";
+                        param.Value = stationFilter;
+                        command.Parameters.Add(param);
+                    }
+
+                    // Ensure connection is open
+                    if (command.Connection.State != System.Data.ConnectionState.Open)
+                    {
+                        await command.Connection.OpenAsync();
+                    }
+
+                    // Get total count
+                    var result = await command.ExecuteScalarAsync();
+                    totalRecords = Convert.ToInt32(result);
+                }
+
                 // Create a list to store our results
                 var patients = new List<PatientViewModel>();
 
@@ -59,24 +98,49 @@ namespace IPCU.Controllers
                 using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
                 {
                     command.CommandText = @"
-                    SELECT TOP 50000 p.HospNum, p.IdNum, p.AdmType, p.AdmLocation, p.AdmDate, p.RoomID, p.Age, 
-                           p.DcrDate, -- Added DcrDate to the selected columns
-                           m.LastName, m.FirstName, m.MiddleName, m.Sex, m.CivilStatus, m.PatientType, 
-                           m.EmailAddress, m.cellnum,
-                           r.RoomDescription, s.StationId, s.Station
-                    FROM tbpatient p
-                    LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
-                    LEFT JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
-                    LEFT JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
-                    WHERE p.DcrDate IS NOT NULL -- Filter for non-null DcrDate
-                    AND p.DeathDate IS NULL
-                    ORDER BY p.DcrDate DESC";
+            SELECT p.HospNum, p.IdNum, p.AdmType, p.AdmLocation, p.AdmDate, p.RoomID, p.Age, 
+                   p.DcrDate,
+                   m.LastName, m.FirstName, m.MiddleName, m.Sex, m.CivilStatus, m.PatientType, 
+                   m.EmailAddress, m.cellnum,
+                   r.RoomDescription, s.StationId, s.Station
+            FROM tbpatient p
+            LEFT JOIN tbmaster m ON p.HospNum = m.HospNum
+            LEFT JOIN Build_File..tbCoRoom r ON p.RoomID = r.RoomID 
+            LEFT JOIN Build_File..tbCoStation s ON r.StationId = s.StationId
+            WHERE p.DcrDate IS NOT NULL
+            AND p.DeathDate IS NULL";
+
+                    // Add station filter if provided
+                    if (!string.IsNullOrEmpty(stationFilter))
+                    {
+                        command.CommandText += " AND s.Station = @StationFilter";
+                        var param = command.CreateParameter();
+                        param.ParameterName = "@StationFilter";
+                        param.Value = stationFilter;
+                        command.Parameters.Add(param);
+                    }
+
+                    // Add order by clause and pagination
+                    command.CommandText += @"
+            ORDER BY s.Station, r.RoomDescription, p.RoomID, m.LastName, m.FirstName
+            OFFSET @Skip ROWS
+            FETCH NEXT @PageSize ROWS ONLY";
+
+                    var skipParam = command.CreateParameter();
+                    skipParam.ParameterName = "@Skip";
+                    skipParam.Value = skip;
+                    command.Parameters.Add(skipParam);
+
+                    var pageSizeParam = command.CreateParameter();
+                    pageSizeParam.ParameterName = "@PageSize";
+                    pageSizeParam.Value = pageSize;
+                    command.Parameters.Add(pageSizeParam);
 
                     // Ensure connection is open
                     if (command.Connection.State != System.Data.ConnectionState.Open)
-                        {
-                            await command.Connection.OpenAsync();
-                        }
+                    {
+                        await command.Connection.OpenAsync();
+                    }
 
                     // Execute query
                     using (var reader = await command.ExecuteReaderAsync())
@@ -107,7 +171,7 @@ namespace IPCU.Controllers
                                 MiddleName = reader["MiddleName"]?.ToString() ?? string.Empty,
                                 AdmType = reader["AdmType"]?.ToString() ?? string.Empty,
                                 AdmDate = reader["AdmDate"] as DateTime?,
-                                DcrDate = reader["DcrDate"] as DateTime?, // Add DcrDate to the view model
+                                DcrDate = reader["DcrDate"] as DateTime?,
                                 RoomID = reader["RoomID"]?.ToString() ?? string.Empty,
                                 Age = reader["Age"]?.ToString() ?? string.Empty,
                                 Sex = reader["Sex"]?.ToString() ?? string.Empty,
@@ -157,9 +221,9 @@ namespace IPCU.Controllers
                         using (var command = _context.Database.GetDbConnection().CreateCommand())
                         {
                             command.CommandText = $@"
-                                SELECT HospNum, HaiStatus, HaiCount 
-                                FROM tbPatientHAI 
-                                WHERE HospNum IN ({hospNumsString})";
+                        SELECT HospNum, HaiStatus, HaiCount 
+                        FROM tbPatientHAI 
+                        WHERE HospNum IN ({hospNumsString})";
 
                             // Ensure connection is open
                             if (command.Connection.State != System.Data.ConnectionState.Open)
@@ -193,14 +257,27 @@ namespace IPCU.Controllers
                     }
                 }
 
-                // Sort the results as needed
-                patients = patients
-                    .OrderBy(p => p.StationName)      // First sort by Station name
-                    .ThenBy(p => p.RoomDescription)   // Then by Room description
-                    .ThenBy(p => p.RoomID)            // Then by Room ID
-                    .ThenBy(p => p.LastName)          // Then by patient last name
-                    .ThenBy(p => p.FirstName)         // Then by patient first name
-                    .ToList();
+                // Calculate pagination values
+                var totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+                var hasPreviousPage = page > 1;
+                var hasNextPage = page < totalPages;
+
+                // Create pagination metadata
+                var paginationInfo = new
+                {
+                    CurrentPage = page,
+                    PageSize = pageSize,
+                    TotalRecords = totalRecords,
+                    TotalPages = totalPages,
+                    HasPreviousPage = hasPreviousPage,
+                    HasNextPage = hasNextPage,
+                    // Get available stations for the station filter dropdown
+                    AvailableStations = await GetAvailableStations(assignedAreas)
+                };
+
+                // Add pagination info to ViewBag
+                ViewBag.PaginationInfo = paginationInfo;
+                ViewBag.CurrentStationFilter = stationFilter;
 
                 return View(patients);
             }
@@ -221,6 +298,48 @@ namespace IPCU.Controllers
 
                 return View(new List<PatientViewModel>());
             }
+        }
+
+        // Helper method to get available stations
+        private async Task<List<string>> GetAvailableStations(List<string> assignedAreas)
+        {
+            var stations = new List<string>();
+
+            using (var command = _patientContext.Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = @"
+        SELECT DISTINCT s.Station 
+        FROM Build_File..tbCoStation s
+        INNER JOIN Build_File..tbCoRoom r ON s.StationId = r.StationId
+        INNER JOIN tbpatient p ON r.RoomID = p.RoomID
+        WHERE p.DcrDate IS NOT NULL AND p.DeathDate IS NULL
+        ORDER BY s.Station";
+
+                // Ensure connection is open
+                if (command.Connection.State != System.Data.ConnectionState.Open)
+                {
+                    await command.Connection.OpenAsync();
+                }
+
+                // Execute query
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        var station = reader["Station"]?.ToString();
+                        if (!string.IsNullOrEmpty(station))
+                        {
+                            // Only add stations that are in assigned areas, or add all if no assigned areas
+                            if (!assignedAreas.Any() || assignedAreas.Contains(station))
+                            {
+                                stations.Add(station);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return stations;
         }
 
 

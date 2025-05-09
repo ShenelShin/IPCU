@@ -74,6 +74,7 @@
                     <form asp-action="GenerateReport" method="post" id="reportForm">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+                        <!-- Dropdown for Area Selection -->
                         <div class="form-group mb-3">
                             <label asp-for="SelectedArea" class="control-label"></label>
                             <select asp-for="SelectedArea" class="form-control" id="selectedArea">

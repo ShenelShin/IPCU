@@ -15,6 +15,10 @@ QuestPDF.Settings.License = LicenseType.Community;
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AnotherServerConnection")));
 
+// In Startup.cs ConfigureServices method
+builder.Services.AddDbContext<BuildFileDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BuildFileConnection")));
+
 // In Program.cs (for .NET 6+ minimal hosting model)
 builder.Services.AddDbContext<PatientDbContext>(options =>
     options.UseSqlServer(
@@ -63,6 +67,8 @@ builder.Services.AddScoped<HaiExcelExportService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddTransient<EmailSender>(); // forgot pw toh
+builder.Services.AddScoped<StationService>();
+
 
 
 

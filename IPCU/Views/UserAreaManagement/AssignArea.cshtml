@@ -29,28 +29,64 @@
 
                 <div class="mb-3">
                     <label class="form-label fw-bold">Select Areas</label>
+
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="searchAreas" class="form-control" placeholder="Search areas...">
+                        </div>
+                    </div>
+
                     <div class="accordion" id="areaAccordion">
                         @foreach (var group in new[] {
-                        new { Title = "Unit 2", Areas = new[] { "Unit 2A", "Unit 2B", "Unit 2C", "Unit 2D", "Unit 2E", "Unit 2F", "Unit 2G", "Unit 2H", "2B Extension", "2D Extension", "2E Extension" } },
-                        new { Title = "Unit 3", Areas = new[] { "Unit 3A", "Unit 3B", "Unit 3C", "Unit 3D", "Unit 3E", "Unit 3F" } },
-                        new { Title = "Other Areas", Areas = new[] { "CTU", "PDU", "CCRU", "Cardiology", "Laboratory", "Radiology", "Rehab", "OR-RR", "OPS", "AITU", "IVASC", "AUEC", "ICU/IMCU", "ER", "PULMO", "HD Annex", "HD Main" } }
+                        new { Title = "Unit 2", Areas = new[] {
+                        "UNIT 2A", "UNIT 2B", "UNIT 2C", "UNIT 2D", "UNIT 2E", "UNIT 2F", "UNIT 2G", "UNIT 2H",
+                        "UNIT 2B EXTENSION", "UNIT 2D EXTENSION", "UNIT 2E EXT.", "UNIT 2F EXT.", "UNIT 2E (OLD)"
+                        }},
+                        new { Title = "Unit 3", Areas = new[] {
+                        "UNIT 3A", "UNIT 3B", "UNIT 3C", "UNIT 3D", "UNIT 3E PEDIA", "UNIT 3F UROLOGY",
+                        "UNIT 3C EXT.", "UNIT 3D (OLD)"
+                        }},
+                        new { Title = "Emergency & Critical Care", Areas = new[] {
+                        "ER STATION A (SERVICE)", "ER STATION B (PAY)", "ER COVID IN-PATIENT",
+                        "ICU", "IMCU", "CELLTRAN UNIT", "RENAL WARD", "PD"
+                        }},
+                        new { Title = "Special Units", Areas = new[] {
+                        "HEMODIALYSIS", "PHILHEALTH WARD", "LIFESTYLE MEDICINE PROGRAM", "LEPTO WARD", "LEPTO REHAB WARD"
+                        }},
+                        new { Title = "Isolation Areas", Areas = new[] {
+                        "ISOLATION WARD A", "SAFE TEST ISOLATION FACILITY", "COVID WARD - GYM", "GYM STATION"
+                        }},
+                        new { Title = "Temporary Facilities", Areas = new[] {
+                        "RED CROSS 1", "RED CROSS 2", "UNICEF", "MILITARY TENT", "MILITARY TENT 2", "MILITARY TENT 3", "MILITARY TENT 4"
+                        }},
+                        new { Title = "Other Areas", Areas = new[] {
+                        "IN-ACTIVE ROOMS", "TEST"
+                        }}
                         })
                         {
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="heading-@group.Title.Replace(" ", "")">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@group.Title.Replace(" ", "")" aria-expanded="false">
                                         @group.Title
+                                        <span class="ms-2 badge bg-secondary area-counter">0 selected</span>
                                     </button>
                                 </h2>
                                 <div id="collapse-@group.Title.Replace(" ", "")" class="accordion-collapse collapse" data-bs-parent="#areaAccordion">
                                     <div class="accordion-body">
+                                        <div class="mb-2">
+                                            <button type="button" class="select-group-btn btn btn-outline-primary btn-sm me-2">Select All in Group</button>
+                                            <button type="button" class="deselect-group-btn btn btn-outline-secondary btn-sm">Deselect All in Group</button>
+                                        </div>
                                         <div class="row">
                                             @foreach (var area in group.Areas)
                                             {
-                                                <div class="col-sm-6 col-md-4">
+                                                <div class="col-sm-6 col-md-4 area-item">
                                                     <div class="form-check">
-                                                        <input type="checkbox" id="@area.Replace(" ", "_")" value="@area" class="area-checkbox form-check-input" />
-                                                        <label class="form-check-label" for="@area.Replace(" ", "_")">@area</label>
+                                                        <input type="checkbox" id="@area.Replace(" ", "_").Replace("(", "").Replace(")", "").Replace(".", "")"
+                                                               value="@area" class="area-checkbox form-check-input"
+                                                               data-group="@group.Title.Replace(" ", "")" />
+                                                        <label class="form-check-label" for="@area.Replace(" ", "_").Replace("(", "").Replace(")", "").Replace(".", "")">@area</label>
                                                     </div>
                                                 </div>
                                             }
@@ -62,8 +98,9 @@
                     </div>
 
                     <div class="mt-3">
-                        <button type="button" id="selectAll" class="btn btn-outline-primary btn-sm me-2">Select All</button>
-                        <button type="button" id="deselectAll" class="btn btn-outline-secondary btn-sm">Deselect All</button>
+                        <button type="button" id="selectAll" class="btn btn-outline-primary btn-sm me-2">Select All Areas</button>
+                        <button type="button" id="deselectAll" class="btn btn-outline-secondary btn-sm">Deselect All Areas</button>
+                        <span class="ms-3 badge bg-primary" id="totalSelected">0 areas selected</span>
                     </div>
                 </div>
 
@@ -86,10 +123,21 @@
                     return $(this).val();
                 }).get();
                 $("#AssignedArea").val(selected.join(", "));
+
+                // Update counters
+                $("#totalSelected").text(selected.length + " areas selected");
+
+                // Update group counters
+                $(".accordion-item").each(function() {
+                    const groupId = $(this).find(".accordion-header button").attr("data-bs-target").replace("#collapse-", "");
+                    const count = $(this).find(`.area-checkbox[data-group="${groupId}"]:checked`).length;
+                    const total = $(this).find(`.area-checkbox[data-group="${groupId}"]`).length;
+                    $(this).find(".area-counter").text(`${count}/${total} selected`);
+                });
             }
 
             function preSelectAreas() {
-                const current = $("#AssignedArea").val().split(",").map(a => a.trim());
+                const current = $("#AssignedArea").val() ? $("#AssignedArea").val().split(",").map(a => a.trim()) : [];
                 $(".area-checkbox").each(function () {
                     if (current.includes($(this).val())) {
                         $(this).prop("checked", true);
@@ -107,7 +155,40 @@
                 updateAssignedArea();
             });
 
+            $(".select-group-btn").click(function() {
+                $(this).closest(".accordion-item").find(".area-checkbox").prop("checked", true);
+                updateAssignedArea();
+            });
+
+            $(".deselect-group-btn").click(function() {
+                $(this).closest(".accordion-item").find(".area-checkbox").prop("checked", false);
+                updateAssignedArea();
+            });
+
             $(".area-checkbox").change(updateAssignedArea);
+
+            $("#searchAreas").on("keyup", function() {
+                const searchText = $(this).val().toLowerCase();
+
+                if (searchText.length > 0) {
+                    // Open all accordion items when searching
+                    $(".accordion-collapse").collapse("show");
+
+                    $(".area-item").each(function() {
+                        const areaText = $(this).text().toLowerCase();
+                        if (areaText.includes(searchText)) {
+                            $(this).show();
+                            $(this).addClass("search-highlight");
+                        } else {
+                            $(this).hide();
+                            $(this).removeClass("search-highlight");
+                        }
+                    });
+                } else {
+                    // When search box is empty, show all items and remove highlighting
+                    $(".area-item").show().removeClass("search-highlight");
+                }
+            });
 
             preSelectAreas();
             updateAssignedArea();
@@ -122,4 +203,18 @@
             });
         });
     </script>
+
+    <style>
+        .search-highlight {
+            background-color: rgba(0, 123, 255, 0.1);
+        }
+
+        .area-counter {
+            font-size: 0.75rem;
+        }
+
+        #totalSelected {
+            font-size: 0.9rem;
+        }
+    </style>
 }
