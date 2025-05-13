@@ -101,6 +101,7 @@
                 <td>
                     @Html.LabelFor(m => m.MainService) <br />
                     @Html.TextBoxFor(m => m.MainService, new { @class = "form-control" })
+                    <span asp-validation-for="MainService" class="text-danger"></span>
                 </td>
             </tr>
             <tr>

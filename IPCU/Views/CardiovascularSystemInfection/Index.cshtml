@@ -381,4 +381,23 @@
                 updateSelectability();
             });
 
+            document.addEventListener("DOMContentLoaded", function () {
+            const mdroDropdown = document.getElementById("MDRODropdown");
+            const organismContainer = document.getElementById("mdroOrganismContainer");
+
+            function toggleOrganismInput() {
+                if (mdroDropdown.value === "Yes") {
+                    organismContainer.style.display = "block";
+                } else {
+                    organismContainer.style.display = "none";
+                }
+            }
+
+            // Run it once in case a value is already selected on page load
+            toggleOrganismInput();
+
+            // Attach the event listener
+            mdroDropdown.addEventListener("change", toggleOrganismInput);
+        });
+
 </script>
