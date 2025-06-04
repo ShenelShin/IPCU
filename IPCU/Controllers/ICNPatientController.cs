@@ -342,7 +342,7 @@ namespace IPCU.Controllers
             return stations;
         }
 
-
+        // Details type shit
         public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -527,7 +527,6 @@ namespace IPCU.Controllers
 
 
         // GET: Show vital signs for a specific patient
-        // GET: Show vital signs for a specific patient
         public async Task<IActionResult> VitalSigns(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -686,7 +685,6 @@ namespace IPCU.Controllers
             }
         }
 
-        // GET: Display form to add a new vital sign
         // GET: Display form to add a new vital sign
         public async Task<IActionResult> AddVitalSign(string id)
         {
@@ -1466,7 +1464,6 @@ namespace IPCU.Controllers
         }
 
         // GET: HAI Checklist for Infection Control Nurse
-        // GET: HAI Checklist for Infection Control Nurse
         public async Task<IActionResult> HaiChecklist(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -1670,7 +1667,6 @@ namespace IPCU.Controllers
         }
 
         //HAILineList Reporting
-
         public async Task<IActionResult> GenerateHAILineListReport()
         {
             try
@@ -2074,7 +2070,7 @@ namespace IPCU.Controllers
             public string StationName { get; set; }
         }
 
-        // Helper methods to retrieve each type of HAI form
+        // Helper methods to retrieve Hai forms
         private async Task RetrieveCardiovascularForms(List<HAILineListViewModel> haiEntries, Dictionary<string, PatientBasicInfo> patientDict)
         {
             using (var command = _context.Database.GetDbConnection().CreateCommand())
@@ -2676,7 +2672,7 @@ namespace IPCU.Controllers
             }
         }
 
-        // We need to implement these helper methods that are referenced in the code
+        // Helper method to get central line info
         private async Task<string> GetCentralLineInfoForForm(string formType, string hospitalNumber)
         {
             using (var command = _context.Database.GetDbConnection().CreateCommand())
@@ -2938,7 +2934,6 @@ namespace IPCU.Controllers
         }
 
         // Helper method to determine VAE classification
-        // Helper method to determine VAE classification
         private string DetermineVAEClassification(VentilatorEventChecklist form)
         {
             // TypeClass already contains the VAE classification (PVAP, IVAC, or VAC)
@@ -2970,7 +2965,8 @@ namespace IPCU.Controllers
                 return "Undetermined";
         }
 
-        // remove comment when PVAE is done
+        ////This method shit dont work make a new one guys o7 joaqi out
+
         //private string DeterminePVAEClassification(PediatricVAEChecklist form)
         //{
         //    // If TypeClass already contains the classification, use it
@@ -2993,4 +2989,4 @@ namespace IPCU.Controllers
         //        return "Undetermined";
         //}
     }
-    }
+}
