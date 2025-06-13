@@ -1,0 +1,53 @@
+﻿@model dynamic
+
+<div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRoleModalLabel">Add a New Role</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-action="CreateRole">
+                    <div class="mb-3">
+                        <label for="role">Role Name:</label>
+                        <input class="form-control" id="roleName" name="roleName" placeholder="Enter a role name" />
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnAdd">Add</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('btnAdd').addEventListener('click', function () {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Do you confirm to add this role?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, add it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Show success alert after confirmation
+                Swal.fire({
+                    title: "Success!",
+                    text: "Role has been added",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    // Submit form after success alert closes
+                    document.querySelector('#addRoleModal form').submit();
+                });
+            }
+        });
+    });
+</script>

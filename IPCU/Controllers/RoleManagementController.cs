@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using IPCU.Models;
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace IPCU.Controllers
@@ -149,6 +150,66 @@ namespace IPCU.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetRoleById(string id)
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            return Json(new { id = role.Id, name = role.Name });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditRole(IdentityRole model)
+        {
+            var role = await _roleManager.FindByIdAsync(model.Id);
+            if (role == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            role.Name = model.Name;
+            var result = await _roleManager.UpdateAsync(role);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteRole(string id)
+        {   
+            var role = await _roleManager.FindByIdAsync(id);
+            if (role == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var result = await _roleManager.DeleteAsync(role);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            // Optional: If it fails, add an error
+            ModelState.AddModelError("", "Error deleting role");
+            return RedirectToAction("Index");
         }
     }
 }

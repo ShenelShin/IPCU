@@ -1,7 +1,17 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
+@await Html.PartialAsync("_CreateRole")
+@await Html.PartialAsync("_EditRole")
+
 <h2>Roles List</h2>
 <p>
-    <a asp-action="CreateRole" class="btn btn-primary">Create New Role</a>
+    @*  <a asp-action="CreateRole" class="btn btn-primary">Create New Role</a> *@
+    <div class="col-md-3">
+        <a class="btn btn-primary"
+           data-bs-toggle="modal"
+           data-bs-target="#addRoleModal">
+            Add New Role
+        </a>
+    </div>
 </p>
 <table class="table">
     <thead>
@@ -18,11 +28,122 @@
                 <td>@role.Name</td>
                 <td>@role.Id</td>
                 <td>
-                    <a asp-action="EditRole" asp-route-id="@role.Id" class="btn btn-primary btn-sm">Edit</a>
-                    <a asp-action="DeleteRole" asp-route-id="@role.Id" class="btn btn-danger btn-sm">Delete</a>
+                    <button type="button"
+                            class="btn btn-primary btn-sm edit-btn"
+                            data-id="@role.Id"
+                            title="Edit">
+                        Edit
+                    </button>
+
+                    <a href="#" class="btn btn-danger btn-sm delete-btn" data-id="@role.Id" title="Delete" method="post">
+                        Delete
+                    </a>
                     <a asp-action="ManageUsersInRole" asp-route-roleId="@role.Id" class="btn btn-info btn-sm">Manage Users</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+
+    <script>
+         // Reset form when "Add Employee" modal is closed
+         $('#addRoleModal').on('hidden.bs.modal', function () {
+             $(this).find('form')[0].reset();
+             $(this).find('.text-danger').text('');
+         });
+
+                $(document).ready(function () {
+            $('.edit-btn').click(function () {
+                const roleId = $(this).data('id');
+
+                $.ajax({
+                    url: '/RoleManagement/GetRoleById/' + roleId,
+                    method: 'GET',
+                    success: function (data) {
+                        $('#editRoleId').val(data.id);
+                        $('#editRoleName').val(data.name);
+                        $('#editRoleModal').modal('show');
+                    },
+                    error: function () {
+                        Swal.fire("Error", "Could not load role data", "error");
+                    }
+                });
+            });
+
+            $('#btnUpdate').on('click', function () {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Do you want to save the changes?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, save it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: "Good job!",
+                            text: "Changes have been saved!",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            $('#editRoleModal form').submit();
+                        });
+                    }
+                });
+            });
+
+            // Delete button - confirm with SweetAlert
+            $('.delete-btn').on('click', function (e) {
+                e.preventDefault();
+
+                var id = $(this).data('id');
+                var deleteUrl = `/RoleManagement/DeleteRole/${id}`;
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Do you confirm to delete this record?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!",
+                    confirmButtonColor: '#c22b3f',
+                    reverseButtons: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: deleteUrl,
+                            method: 'POST',
+                            headers: {
+                                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                            },
+                            success: function() {
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: "The role has been removed.",
+                                    icon: "success",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            },
+                            error: function() {
+                                Swal.fire("Error", "Could not delete the role.", "error");
+                            }
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+}

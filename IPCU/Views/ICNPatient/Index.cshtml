@@ -422,8 +422,30 @@
     </div>
 
     <div class="row mb-3">
-        <div class="col-md-6">
-            <h2>Patient List</h2>
+         <!-- Station Filter -->
+        <div class="col-md">
+    <div class="station-filter">
+        <form asp-action="Index" method="get" id="stationFilterForm" class="d-flex align-items-center flex-wrap">
+            <label for="stationFilter" class="form-label mb-0 me-2">Filter by Station:</label>
+            <select name="stationFilter" id="stationFilter" class="form-select form-select-sm me-2" style="width: auto;" asp-items="@(new SelectList(availableStations, currentStationFilter))">
+                <option value="">All Stations</option>
+            </select>
+            <input type="hidden" name="page" value="1" />
+            <input type="hidden" name="pageSize" value="@pageSize" />
+            <button type="submit" class="btn btn-primary btn-sm me-2">Apply Filter</button>
+            @if (!string.IsNullOrEmpty(currentStationFilter))
+            {
+                <a href="@Url.Action("Index", new { page = 1, pageSize })" class="btn btn-outline-secondary btn-sm">Clear Filter</a>
+            }
+        </form>
+
+        <!-- Page Size Selector -->
+        <div class="page-size-selector">
+            <span>Show:</span>
+            <select id="pageSizeSelector" class="form-select form-select-sm" style="width:65px" asp-items="@(new SelectList(new[] { 10, 25, 50, 100 }, pageSize))">
+            </select>
+        </div>
+    </div>
         </div>
         <div class="col-md-6 text-end d-flex flex-wrap justify-content-end gap-2">
             <a asp-action="GenerateHAILineListReport" class="btn btn-primary mb-2">
@@ -444,108 +466,6 @@
             <a asp-controller="ICNPatient" asp-action="PrintMechanicalVentilatorPDF" class="btn btn-primary mb-2">
                 <i class="fa fa-print"></i> Print Ventilator Report
             </a>
-        </div>
-    </div>
-
-    <!-- Station Filter -->
-    <div class="station-filter">
-        <form asp-action="Index" method="get" id="stationFilterForm" class="d-flex align-items-center flex-wrap">
-            <label for="stationFilter" class="form-label mb-0 me-2">Filter by Station:</label>
-            <select name="stationFilter" id="stationFilter" class="form-select form-select-sm me-2" style="width: auto;" asp-items="@(new SelectList(availableStations, currentStationFilter))">
-                <option value="">All Stations</option>
-            </select>
-            <input type="hidden" name="page" value="1" />
-            <input type="hidden" name="pageSize" value="@pageSize" />
-            <button type="submit" class="btn btn-primary btn-sm me-2">Apply Filter</button>
-            @if (!string.IsNullOrEmpty(currentStationFilter))
-            {
-                <a href="@Url.Action("Index", new { page = 1, pageSize })" class="btn btn-outline-secondary btn-sm">Clear Filter</a>
-            }
-        </form>
-
-        <!-- Pagination -->
-        <div class="pagination-container">
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    @if (currentPage > 1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link navLink" href="@Url.Action("Index", new { page = 1, pageSize, stationFilter = currentStationFilter })" aria-label="First">
-                                <span aria-hidden="true">&laquo;&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link navLink" href="@Url.Action("Index", new { page = currentPage - 1, pageSize, stationFilter = currentStationFilter })" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="First">
-                                <span aria-hidden="true">&laquo;&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Previous">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    }
-
-                    @{
-                        int startPage = Math.Max(1, currentPage - 2);
-                        int endPage = Math.Min(totalPages, startPage + 4);
-
-                        if (endPage - startPage < 4 && totalPages > 4)
-                        {
-                            startPage = Math.Max(1, endPage - 4);
-                        }
-                    }
-
-                    @for (int i = startPage; i <= endPage; i++)
-                    {
-                        <li class="page-item @(i == currentPage ? "active" : "")">
-                            <a class="page-link navLink" href="@Url.Action("Index", new { page = i, pageSize, stationFilter = currentStationFilter })">@i</a>
-                        </li>
-                    }
-
-                    @if (currentPage < totalPages)
-                    {
-                        <li class="page-item">
-                            <a class="page-link navLink" href="@Url.Action("Index", new { page = currentPage + 1, pageSize, stationFilter = currentStationFilter })" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link navLink" href="@Url.Action("Index", new { page = totalPages, pageSize, stationFilter = currentStationFilter })" aria-label="Last">
-                                <span aria-hidden="true">&raquo;&raquo;</span>
-                            </a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" aria-label="Last">
-                                <span aria-hidden="true">&raquo;&raquo;</span>
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </nav>
-    </div>
-
-        <!-- Page Size Selector -->
-        <div class="page-size-selector">
-            <span>Show:</span>
-            <select id="pageSizeSelector" class="form-select form-select-sm" asp-items="@(new SelectList(new[] { 10, 25, 50, 100 }, pageSize))">
-            </select>
         </div>
     </div>
 
@@ -571,6 +491,9 @@
             
             <div class="card station-card mb-4">
                 <div class="station-header">
+                    <div class="col-md-6">
+                     <h2>Patient List</h2>
+                   </div>
                     <span>
                         <i class="fas fa-hospital-alt me-2"></i>
                         @stationGroup.Key
@@ -665,6 +588,84 @@
             </div>
         }
     }
+
+    <!-- Pagination -->
+        <div class="pagination-container">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    @if (currentPage > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link navLink" href="@Url.Action("Index", new { page = 1, pageSize, stationFilter = currentStationFilter })" aria-label="First">
+                                <span aria-hidden="true">&laquo;&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link navLink" href="@Url.Action("Index", new { page = currentPage - 1, pageSize, stationFilter = currentStationFilter })" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="First">
+                                <span aria-hidden="true">&laquo;&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    }
+
+                    @{
+                        int startPage = Math.Max(1, currentPage - 2);
+                        int endPage = Math.Min(totalPages, startPage + 4);
+
+                        if (endPage - startPage < 4 && totalPages > 4)
+                        {
+                            startPage = Math.Max(1, endPage - 4);
+                        }
+                    }
+
+                    @for (int i = startPage; i <= endPage; i++)
+                    {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link navLink" href="@Url.Action("Index", new { page = i, pageSize, stationFilter = currentStationFilter })">@i</a>
+                        </li>
+                    }
+
+                    @if (currentPage < totalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link navLink" href="@Url.Action("Index", new { page = currentPage + 1, pageSize, stationFilter = currentStationFilter })" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link navLink" href="@Url.Action("Index", new { page = totalPages, pageSize, stationFilter = currentStationFilter })" aria-label="Last">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" aria-label="Last">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+    </div>
 
     <div class="page-info text-center">
         Showing @((currentPage - 1) * pageSize + (Model.Any() ? 1 : 0)) to @(Math.Min(currentPage * pageSize, totalRecords)) of @totalRecords patients

@@ -23,17 +23,16 @@
 
         <label>
             Test Result:
-            <select name="testResult">
+            <select name="testResult" id="testResult">
                 <option value="" selected="@(string.IsNullOrEmpty(ViewData["SelectedTestResult"] as string) ? "selected" : null)">All</option>
                 <option value="Passed" selected="@(ViewData["SelectedTestResult"] as string == "Passed" ? "selected" : null)">Passed</option>
                 <option value="Failed" selected="@(ViewData["SelectedTestResult"] as string == "Failed" ? "selected" : null)">Failed</option>
             </select>
         </label>
-
-        <button type="submit" class="btn btn-primary">Apply Filters</button>
     </form>
-
-    <input type="text" id="searchBox" class="form-control w-25" placeholder="Search...">
+    <form method="get" action="@Url.Action("Index", "FitTestingForm")">
+        <input type="text" id="searchBox" class="form-control" placeholder="Search..." name="searchTerm" value="@ViewBag.SearchTerm">
+    </form>
 </div>
 
 <div class="table-responsive" data-aos="fade-up" data-aos-delay="200">
@@ -134,6 +133,9 @@
 <!-- Filter script fix -->
 <script>
     document.getElementById("filterExpiring")?.addEventListener("change", function () {
+        this.form.submit();
+    });
+    document.getElementById("testResult")?.addEventListener("change", function () {
         this.form.submit();
     });
 </script>

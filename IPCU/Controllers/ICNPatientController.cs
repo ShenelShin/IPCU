@@ -1669,6 +1669,7 @@ namespace IPCU.Controllers
         //HAILineList Reporting
         public async Task<IActionResult> GenerateHAILineListReport()
         {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             try
             {
                 // Get the current logged-in user
@@ -2037,7 +2038,7 @@ namespace IPCU.Controllers
                     return File(
                         reportBytes,
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        $"HAI_Line_List_{DateTime.Now:yyyyMMdd}.xlsx");
+                        $"HAI_Line_List_{DateTime.Now:MM/dd/yyyy}.xlsx");
                 }
             }
             catch (Exception ex)

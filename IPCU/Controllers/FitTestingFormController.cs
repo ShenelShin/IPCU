@@ -31,7 +31,7 @@ namespace IPCU.Controllers
 
         // GET: FitTestingForm
 
-        public async Task<IActionResult> Index(int? page, bool? filterExpiring, string testResult)
+        public async Task<IActionResult> Index(int? page, bool? filterExpiring, string testResult, string searchTerm)
         {
             int pageSize = 20;
             int pageNumber = page ?? 1;
@@ -51,6 +51,11 @@ namespace IPCU.Controllers
                 fitTestingForm = fitTestingForm.Where(f => f.Test_Results == testResult);
             }
 
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                fitTestingForm = fitTestingForm.Where(f => f.HCW_Name.Contains(searchTerm) || f.DUO.Contains(searchTerm));
+            }
+
             // Order the data in descending order (e.g., by ExpiringAt)
             fitTestingForm = fitTestingForm.OrderByDescending(f => f.ExpiringAt);
 
@@ -59,6 +64,7 @@ namespace IPCU.Controllers
             // Store selected filters
             ViewData["FilterExpiring"] = filterExpiring;
             ViewData["SelectedTestResult"] = testResult;
+            ViewBag.SearchTerm = searchTerm;
 
             return View(pagedList);
         }

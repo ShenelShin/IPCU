@@ -1,1582 +1,1170 @@
 ﻿@model IPCU.Models.EnvironmentalzControl
+@using System.Text.RegularExpressions
 
 @{
     ViewData["Title"] = "Delete";
 }
 
-<h1>Delete</h1>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<style>
+    .big-radio {
+        transform: scale(1);
+        margin: 0 10px;
+    }
+</style>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>EnvironmentalzControl</h4>
-    <hr />
-    <dl class="row">
-      
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AreaOrUnit)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AreaOrUnit)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateAndTimeOfMonitoring)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateAndTimeOfMonitoring)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AssessedBy)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AssessedBy)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_FloorsWallsClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_FloorsWallsClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_FloorsWallsClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_FloorsWallsClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_FloorsWallsClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_FloorsWallsClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_FloorsWallsClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_FloorsWallsClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_FloorsWallsClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_FloorsWallsClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_CurtainsClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_CurtainsClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_CurtainsClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_CurtainsClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_CurtainsClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_CurtainsClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_CurtainsClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_CurtainsClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_CurtainsClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_CurtainsClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_SinkClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_SinkClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_SinkClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_SinkClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_SinkClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_SinkClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_SinkClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_SinkClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_SinkClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_SinkClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_SoapDispenser_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_SoapDispenser_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_SoapDispenser_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_SoapDispenser_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_SoapDispenser_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_SoapDispenser_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_SoapDispenser_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_SoapDispenser_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_SoapDispenser_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_SoapDispenser_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_AlcoholSanitizers_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_AlcoholSanitizers_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_AlcoholSanitizers_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_AlcoholSanitizers_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_AlcoholSanitizers_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_AlcoholSanitizers_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_AlcoholSanitizers_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_AlcoholSanitizers_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_AlcoholSanitizers_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_AlcoholSanitizers_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_PPEAvailable_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_PPEAvailable_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_PPEAvailable_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_PPEAvailable_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_PPEAvailable_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_PPEAvailable_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_PPEAvailable_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_PPEAvailable_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_PPEAvailable_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_PPEAvailable_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_NoSuppliesUnderSinks_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_NoFoodInCareAreas_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_NoFoodInCareAreas_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_NoFoodInCareAreas_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_NoFoodInCareAreas_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_NoFoodInCareAreas_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_NoFoodInCareAreas_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_NoFoodInCareAreas_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_NoFoodInCareAreas_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatientExamRoom_NoFoodInCareAreas_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatientExamRoom_NoFoodInCareAreas_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ChartsStored_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ChartsStored_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ChartsStored_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ChartsStored_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ChartsStored_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ChartsStored_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ChartsStored_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ChartsStored_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ChartsStored_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ChartsStored_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_NoFoodOrDrinks_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_NoFoodOrDrinks_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_NoFoodOrDrinks_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_NoFoodOrDrinks_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_NoFoodOrDrinks_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_NoFoodOrDrinks_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_NoFoodOrDrinks_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_NoFoodOrDrinks_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_NoFoodOrDrinks_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_NoFoodOrDrinks_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_FansClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_FansClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_FansClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_FansClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_FansClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_FansClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_FansClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_FansClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_FansClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_FansClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ACClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ACClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ACClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ACClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ACClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ACClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ACClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ACClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ACClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ACClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ExhaustFansClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ExhaustFansClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ExhaustFansClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ExhaustFansClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ExhaustFansClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ExhaustFansClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ExhaustFansClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ExhaustFansClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_ExhaustFansClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_ExhaustFansClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CeilingClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CeilingClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CeilingClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CeilingClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CeilingClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CeilingClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CeilingClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CeilingClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CeilingClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CeilingClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_WallsClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_WallsClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_WallsClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_WallsClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_WallsClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_WallsClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_WallsClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_WallsClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_WallsClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_WallsClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CountersClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CountersClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CountersClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CountersClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CountersClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CountersClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CountersClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CountersClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CountersClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CountersClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_FloorsClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_FloorsClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_FloorsClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_FloorsClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_FloorsClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_FloorsClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_FloorsClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_FloorsClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_FloorsClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_FloorsClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_DoorsWindowsClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_DoorsWindowsClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_DoorsWindowsClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_DoorsWindowsClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_DoorsWindowsClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_DoorsWindowsClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_DoorsWindowsClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_DoorsWindowsClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_DoorsWindowsClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_DoorsWindowsClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CleanBathroom_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CleanBathroom_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CleanBathroom_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CleanBathroom_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CleanBathroom_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CleanBathroom_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CleanBathroom_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CleanBathroom_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WorkArea_CleanBathroom_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WorkArea_CleanBathroom_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hallway_FloorsWallsClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hallway_FloorsWallsClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hallway_FloorsWallsClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hallway_FloorsWallsClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hallway_FloorsWallsClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hallway_FloorsWallsClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hallway_FloorsWallsClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hallway_FloorsWallsClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hallway_FloorsWallsClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hallway_FloorsWallsClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hallway_NoObstruction_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hallway_NoObstruction_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hallway_NoObstruction_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hallway_NoObstruction_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hallway_NoObstruction_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hallway_NoObstruction_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hallway_NoObstruction_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hallway_NoObstruction_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Hallway_NoObstruction_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Hallway_NoObstruction_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_FurnitureClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_FurnitureClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_FurnitureClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_FurnitureClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_FurnitureClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_FurnitureClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_FurnitureClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_FurnitureClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_FurnitureClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_FurnitureClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_TrashDisposed_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_TrashDisposed_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_TrashDisposed_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_TrashDisposed_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_TrashDisposed_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_TrashDisposed_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_TrashDisposed_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_TrashDisposed_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_TrashDisposed_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_TrashDisposed_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_FoodInDesignatedArea_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_FoodInDesignatedArea_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_FoodInDesignatedArea_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_FoodInDesignatedArea_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_FoodInDesignatedArea_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_FoodInDesignatedArea_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_FoodInDesignatedArea_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_FoodInDesignatedArea_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WaitingArea_FoodInDesignatedArea_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WaitingArea_FoodInDesignatedArea_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Equipment_StorageClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Equipment_StorageClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Equipment_StorageClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Equipment_StorageClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Equipment_StorageClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Equipment_StorageClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Equipment_StorageClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Equipment_StorageClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Equipment_StorageClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Equipment_StorageClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_CleanSoiledSeparation_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_CleanSoiledSeparation_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_CleanSoiledSeparation_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_CleanSoiledSeparation_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_CleanSoiledSeparation_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_CleanSoiledSeparation_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_CleanSoiledSeparation_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_CleanSoiledSeparation_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_CleanSoiledSeparation_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_CleanSoiledSeparation_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_FloorsWallsClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_FloorsWallsClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_FloorsWallsClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_FloorsWallsClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_FloorsWallsClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_FloorsWallsClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_FloorsWallsClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_FloorsWallsClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_FloorsWallsClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_FloorsWallsClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesOnFloor_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesOnFloor_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesOnFloor_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesOnFloor_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesOnFloor_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesOnFloor_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesOnFloor_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesOnFloor_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesOnFloor_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesOnFloor_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesFromCeiling_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SuppliesFromCeiling_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesFromCeiling_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SuppliesFromCeiling_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesFromCeiling_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SuppliesFromCeiling_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesFromCeiling_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SuppliesFromCeiling_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesFromCeiling_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SuppliesFromCeiling_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesUnderSink_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesUnderSink_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesUnderSink_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesUnderSink_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesUnderSink_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesUnderSink_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesUnderSink_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesUnderSink_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesUnderSink_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesUnderSink_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesInBathrooms_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesInBathrooms_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesInBathrooms_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesInBathrooms_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesInBathrooms_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesInBathrooms_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesInBathrooms_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesInBathrooms_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_NoSuppliesInBathrooms_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_NoSuppliesInBathrooms_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_FIFOStocks_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_FIFOStocks_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_FIFOStocks_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_FIFOStocks_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_FIFOStocks_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_FIFOStocks_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_FIFOStocks_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_FIFOStocks_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_FIFOStocks_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_FIFOStocks_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesNotExpired_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SuppliesNotExpired_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesNotExpired_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SuppliesNotExpired_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesNotExpired_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SuppliesNotExpired_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesNotExpired_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SuppliesNotExpired_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SuppliesNotExpired_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SuppliesNotExpired_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SterileTraysClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SterileTraysClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SterileTraysClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SterileTraysClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SterileTraysClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SterileTraysClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SterileTraysClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SterileTraysClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UtilityRoom_SterileTraysClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UtilityRoom_SterileTraysClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_FloorsWallsClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_FloorsWallsClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_FloorsWallsClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_FloorsWallsClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_FloorsWallsClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_FloorsWallsClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_FloorsWallsClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_FloorsWallsClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_FloorsWallsClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_FloorsWallsClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_NoPatientSupplies_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_NoPatientSupplies_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_NoPatientSupplies_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_NoPatientSupplies_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_NoPatientSupplies_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_NoPatientSupplies_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_NoPatientSupplies_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_NoPatientSupplies_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_NoPatientSupplies_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_NoPatientSupplies_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_LinenBagged_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_LinenBagged_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_LinenBagged_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_LinenBagged_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_LinenBagged_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_LinenBagged_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_LinenBagged_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_LinenBagged_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SoiledRoom_LinenBagged_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SoiledRoom_LinenBagged_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_ColorBinsAvailable_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_ColorBinsAvailable_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_ColorBinsAvailable_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_ColorBinsAvailable_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_ColorBinsAvailable_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_ColorBinsAvailable_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_ColorBinsAvailable_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_ColorBinsAvailable_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_ColorBinsAvailable_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_ColorBinsAvailable_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_ProperDisposal_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_ProperDisposal_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_ProperDisposal_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_ProperDisposal_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_ProperDisposal_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_ProperDisposal_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_ProperDisposal_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_ProperDisposal_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_ProperDisposal_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_ProperDisposal_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_BinsNotOverfilled_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_BinsNotOverfilled_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_BinsNotOverfilled_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_BinsNotOverfilled_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_BinsNotOverfilled_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_BinsNotOverfilled_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_BinsNotOverfilled_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_BinsNotOverfilled_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_BinsNotOverfilled_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_BinsNotOverfilled_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_BinsClean_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_BinsClean_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_BinsClean_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_BinsClean_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_BinsClean_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_BinsClean_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_BinsClean_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_BinsClean_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_BinsClean_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_BinsClean_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsLabeled_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_SharpsLabeled_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsLabeled_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_SharpsLabeled_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsLabeled_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_SharpsLabeled_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsLabeled_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_SharpsLabeled_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsLabeled_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_SharpsLabeled_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsNotOverfilled_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_SharpsNotOverfilled_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsNotOverfilled_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_SharpsNotOverfilled_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsNotOverfilled_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_SharpsNotOverfilled_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsNotOverfilled_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_SharpsNotOverfilled_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.WasteMgmt_SharpsNotOverfilled_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.WasteMgmt_SharpsNotOverfilled_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Refrigerator_TempChecked_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Refrigerator_TempChecked_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Refrigerator_TempChecked_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Refrigerator_TempChecked_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Refrigerator_TempChecked_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Refrigerator_TempChecked_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Refrigerator_TempChecked_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Refrigerator_TempChecked_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Refrigerator_TempChecked_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Refrigerator_TempChecked_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Refrigerator_Dedicated_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Refrigerator_Dedicated_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Refrigerator_Dedicated_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Refrigerator_Dedicated_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Refrigerator_Dedicated_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Refrigerator_Dedicated_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Refrigerator_Dedicated_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Refrigerator_Dedicated_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Refrigerator_Dedicated_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Refrigerator_Dedicated_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_NoExpired_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_NoExpired_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_NoExpired_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_NoExpired_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_NoExpired_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_NoExpired_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_NoExpired_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_NoExpired_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_NoExpired_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_NoExpired_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_VialsDated_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_VialsDated_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_VialsDated_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_VialsDated_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_VialsDated_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_VialsDated_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_VialsDated_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_VialsDated_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_VialsDated_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_VialsDated_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_VaccinesStored_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_VaccinesStored_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_VaccinesStored_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_VaccinesStored_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_VaccinesStored_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_VaccinesStored_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_VaccinesStored_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_VaccinesStored_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_VaccinesStored_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_VaccinesStored_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_NoLooseNeedles_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_NoLooseNeedles_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_NoLooseNeedles_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_NoLooseNeedles_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_NoLooseNeedles_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_NoLooseNeedles_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_NoLooseNeedles_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_NoLooseNeedles_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medications_NoLooseNeedles_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medications_NoLooseNeedles_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Misc_SpecimensLabeled_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Misc_SpecimensLabeled_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Misc_SpecimensLabeled_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Misc_SpecimensLabeled_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Misc_SpecimensLabeled_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Misc_SpecimensLabeled_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Misc_SpecimensLabeled_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Misc_SpecimensLabeled_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Misc_SpecimensLabeled_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Misc_SpecimensLabeled_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Misc_StaffHygienePPE_Finding)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Misc_StaffHygienePPE_Finding)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Misc_StaffHygienePPE_ActionDone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Misc_StaffHygienePPE_ActionDone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Misc_StaffHygienePPE_Remarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Misc_StaffHygienePPE_Remarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Misc_StaffHygienePPE_FuDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Misc_StaffHygienePPE_FuDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Misc_StaffHygienePPE_FuRemarks)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Misc_StaffHygienePPE_FuRemarks)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.UnitAreaStaffSignature)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.UnitAreaStaffSignature)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FollowUpDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FollowUpDate)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
-</div>
+<h1 class="text-center mb-2 mt-3">Delete</h1>
+
+<h3 class="text-center mb-5">Are you sure you want to delete this?</h3>
+<form asp-action="Delete" method="post">
+    <div class="border border-black bg-white rounded-md p-4 space-y-4">
+        <!-- HEADER -->
+        <div class="grid grid-cols-3 items-center border border-black">
+            <!-- Left Logo -->
+            <div class="flex justify-center p-2 border-r border-black">
+                <img src="/images/nkti-left-logo.png" alt="Left Logo" class="h-20 w-auto" />
+            </div>
+            <!-- Center Text -->
+            <div class="text-center space-y-1 py-2">
+                <p class="text-sm font-bold uppercase">National Kidney and Transplant Institute</p>
+                <p class="text-sm">East Avenue, Quezon City</p>
+                <p class="text-sm font-bold uppercase pt-2">Infection Prevention and Control Unit</p>
+                <p class="text-sm font-bold uppercase border-t border-black pt-1">Environmental Cleaning and Disinfection<br />Assessment and Monitoring Form</p>
+            </div>
+            <!-- Right Logo -->
+            <div class="flex justify-center p-2 border-l border-black">
+                <img src="/images/nkti-right-logo-removebg-preview.png" alt="Right Logo" class="h-20 w-auto" />
+            </div>
+        </div>
+
+        <!-- FORM SECTION -->
+        <div class="border border-black text-sm rounded-md overflow-hidden">
+            <!-- AREA/UNIT -->
+            <div class="grid grid-cols-3 border-b border-black">
+                <div class="bg-gray-100 font-semibold px-3 py-2 border-r border-black flex items-center">AREA/UNIT:</div>
+                <div class="col-span-2 px-3 py-2">
+                    <input asp-for="AreaOrUnit" class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500" disabled />
+                </div>
+            </div>
+
+            <!-- DATE AND TIME -->
+            <div class="grid grid-cols-3 border-b border-black">
+                <div class="bg-gray-100 font-semibold px-3 py-2 border-r border-black flex items-center">DATE AND TIME OF MONITORING</div>
+                <div class="col-span-2 px-3 py-2">
+                    <input asp-for="DateAndTimeOfMonitoring" type="datetime-local" class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500" disabled />
+                </div>
+            </div>
+
+            <!-- ASSESSED BY + NOTES -->
+            <div class="grid grid-cols-3">
+                <div class="bg-gray-100 font-semibold px-3 py-2 border-r border-black flex items-center">ASSESSED BY:</div>
+                <div class="px-3 py-2">
+                    <input asp-for="AssessedBy" class="w-full border border-gray-300 rounded px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500" disabled />
+                </div>
+                <div class="px-3 py-2 text-xs italic text-gray-700 leading-tight">
+                    Regular monitoring with feedback of results to staff can maintain or improve adherence to proper environmental practices.
+                    Monitoring may be performed in any type of patient care location.
+                    <span class="block mt-1 font-semibold">Use a separate sheet for each unit observed.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- INSTRUCTIONS -->
+        <div class="mt-3 text-sm leading-tight font-bold !font-bold">
+            Instructions: Observe each practice and check a box if adherent.
+            <br />
+            <span class="block mt-1">
+                C = Compliant;
+                NC = Not compliant;
+                CAC = Corrective action completed;
+                FU = Follow-up required;
+                NA = Not applicable
+            </span>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Finding</th>
+                    <th>Remarks</th>
+                    <th>Action Done</th>
+                    <th>Follow-up</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Section Header: Patient Exam/Treatment Rooms -->
+                <tr>
+                    <td colspan="5"><strong>Patient Exam/Treatment Rooms:</strong></td>
+                </tr>
+
+                <tr>
+                    <td>Floors and walls clean</td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_FloorsWallsClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="PatientExamRoom_FloorsWallsClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_FloorsWallsClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_FloorsWallsClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="PatientExamRoom_FloorsWallsClean_ActionDone" value="FU" class="action-radio" data-target="PatientExamRoom_FloorsWallsClean" disabled /> FU
+                        <input type="radio" asp-for="PatientExamRoom_FloorsWallsClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_FloorsWallsClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="PatientExamRoom_FloorsWallsClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Cubicle curtains clean and free of tears</td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_CurtainsClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="PatientExamRoom_CurtainsClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_CurtainsClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_CurtainsClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="PatientExamRoom_CurtainsClean_ActionDone" value="FU" class="action-radio" data-target="PatientExamRoom_CurtainsClean" disabled /> FU
+                        <input type="radio" asp-for="PatientExamRoom_CurtainsClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_CurtainsClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="PatientExamRoom_CurtainsClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Sink clean</td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_SinkClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="PatientExamRoom_SinkClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_SinkClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_SinkClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="PatientExamRoom_SinkClean_ActionDone" value="FU" class="action-radio" data-target="PatientExamRoom_SinkClean" disabled /> FU
+                        <input type="radio" asp-for="PatientExamRoom_SinkClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_SinkClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="PatientExamRoom_SinkClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Soap and Paper Towel Dispensers are stocked and working</td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_SoapDispenser_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="PatientExamRoom_SoapDispenser_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_SoapDispenser_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_SoapDispenser_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="PatientExamRoom_SoapDispenser_ActionDone" value="FU" class="action-radio" data-target="PatientExamRoom_SoapDispenser" disabled /> FU
+                        <input type="radio" asp-for="PatientExamRoom_SoapDispenser_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_SoapDispenser_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="PatientExamRoom_SoapDispenser_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Alcohol Hand sanitizers are available</td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_AlcoholSanitizers_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="PatientExamRoom_AlcoholSanitizers_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_AlcoholSanitizers_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_AlcoholSanitizers_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="PatientExamRoom_AlcoholSanitizers_ActionDone" value="FU" class="action-radio" data-target="PatientExamRoom_AlcoholSanitizers" disabled /> FU
+                        <input type="radio" asp-for="PatientExamRoom_AlcoholSanitizers_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_AlcoholSanitizers_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="PatientExamRoom_AlcoholSanitizers_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Gloves, PPE available as per policy</td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_PPEAvailable_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="PatientExamRoom_PPEAvailable_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_PPEAvailable_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_PPEAvailable_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="PatientExamRoom_PPEAvailable_ActionDone" value="FU" class="action-radio" data-target="PatientExamRoom_PPEAvailable" disabled /> FU
+                        <input type="radio" asp-for="PatientExamRoom_PPEAvailable_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_PPEAvailable_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="PatientExamRoom_PPEAvailable_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>No supplies stored under sinks</td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_NoSuppliesUnderSinks_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="PatientExamRoom_NoSuppliesUnderSinks_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_NoSuppliesUnderSinks_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" value="FU" class="action-radio" data-target="PatientExamRoom_NoSuppliesUnderSinks" disabled /> FU
+                        <input type="radio" asp-for="PatientExamRoom_NoSuppliesUnderSinks_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_NoSuppliesUnderSinks_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="PatientExamRoom_NoSuppliesUnderSinks_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>No food or drink in Patient Care Areas</td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_NoFoodInCareAreas_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="PatientExamRoom_NoFoodInCareAreas_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_NoFoodInCareAreas_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="PatientExamRoom_NoFoodInCareAreas_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="PatientExamRoom_NoFoodInCareAreas_ActionDone" value="FU" class="action-radio" data-target="PatientExamRoom_NoFoodInCareAreas" disabled /> FU
+                        <input type="radio" asp-for="PatientExamRoom_NoFoodInCareAreas_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="PatientExamRoom_NoFoodInCareAreas_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="PatientExamRoom_NoFoodInCareAreas_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+
+                <!-- Continue with all other fields in the same pattern -->
+                <!-- Work Areas Section -->
+                <tr>
+                    <td colspan="5"><strong>Work Areas:</strong></td>
+                </tr>
+
+                <tr>
+                    <td>Charts on its designated storage area when not in use</td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_ChartsStored_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WorkArea_ChartsStored_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_ChartsStored_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_ChartsStored_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WorkArea_ChartsStored_ActionDone" value="FU" class="action-radio" data-target="WorkArea_ChartsStored" disabled /> FU
+                        <input type="radio" asp-for="WorkArea_ChartsStored_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_ChartsStored_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WorkArea_ChartsStored_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>No food or drinks inside the work station</td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_NoFoodOrDrinks_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WorkArea_NoFoodOrDrinks_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_NoFoodOrDrinks_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_NoFoodOrDrinks_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WorkArea_NoFoodOrDrinks_ActionDone" value="FU" class="action-radio" data-target="WorkArea_NoFoodOrDrinks" disabled /> FU
+                        <input type="radio" asp-for="WorkArea_NoFoodOrDrinks_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_NoFoodOrDrinks_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WorkArea_NoFoodOrDrinks_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Electric fans are functioning and are dust-free</td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_FansClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WorkArea_FansClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_FansClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_FansClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WorkArea_FansClean_ActionDone" value="FU" class="action-radio" data-target="WorkArea_FansClean" disabled /> FU
+                        <input type="radio" asp-for="WorkArea_FansClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_FansClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WorkArea_FansClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Air condition units are functioning and dust-free</td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_ACClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WorkArea_ACClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_ACClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_ACClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WorkArea_ACClean_ActionDone" value="FU" class="action-radio" data-target="WorkArea_ACClean" disabled /> FU
+                        <input type="radio" asp-for="WorkArea_ACClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_ACClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WorkArea_ACClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Exhaust fans are clean and dust-free</td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_ExhaustFansClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WorkArea_ExhaustFansClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_ExhaustFansClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_ExhaustFansClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WorkArea_ExhaustFansClean_ActionDone" value="FU" class="action-radio" data-target="WorkArea_ExhaustFansClean" disabled /> FU
+                        <input type="radio" asp-for="WorkArea_ExhaustFansClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_ExhaustFansClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WorkArea_ExhaustFansClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Ceiling are in good condition and visibly clean</td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_CeilingClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WorkArea_CeilingClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_CeilingClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_CeilingClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WorkArea_CeilingClean_ActionDone" value="FU" class="action-radio" data-target="WorkArea_CeilingClean" disabled /> FU
+                        <input type="radio" asp-for="WorkArea_CeilingClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_CeilingClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WorkArea_CeilingClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Walls are in good condition and visibly clean</td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_WallsClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WorkArea_WallsClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_WallsClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_WallsClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WorkArea_WallsClean_ActionDone" value="FU" class="action-radio" data-target="WorkArea_WallsClean" disabled /> FU
+                        <input type="radio" asp-for="WorkArea_WallsClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_WallsClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WorkArea_WallsClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Counters are in good condition and visibly clean</td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_CountersClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WorkArea_CountersClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_CountersClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_CountersClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WorkArea_CountersClean_ActionDone" value="FU" class="action-radio" data-target="WorkArea_CountersClean" disabled /> FU
+                        <input type="radio" asp-for="WorkArea_CountersClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_CountersClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WorkArea_CountersClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Floors are in good condition and visibly clean</td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_FloorsClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WorkArea_FloorsClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_FloorsClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_FloorsClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WorkArea_FloorsClean_ActionDone" value="FU" class="action-radio" data-target="WorkArea_FloorsClean" disabled /> FU
+                        <input type="radio" asp-for="WorkArea_FloorsClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_FloorsClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WorkArea_FloorsClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Doors and windows are open, in good condition and visibly clean</td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_DoorsWindowsClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WorkArea_DoorsWindowsClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_DoorsWindowsClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_DoorsWindowsClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WorkArea_DoorsWindowsClean_ActionDone" value="FU" class="action-radio" data-target="WorkArea_DoorsWindowsClean" disabled /> FU
+                        <input type="radio" asp-for="WorkArea_DoorsWindowsClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_DoorsWindowsClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WorkArea_DoorsWindowsClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Clean, odor-free bathroom</td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_CleanBathroom_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WorkArea_CleanBathroom_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_CleanBathroom_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WorkArea_CleanBathroom_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WorkArea_CleanBathroom_ActionDone" value="FU" class="action-radio" data-target="WorkArea_CleanBathroom" disabled /> FU
+                        <input type="radio" asp-for="WorkArea_CleanBathroom_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WorkArea_CleanBathroom_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WorkArea_CleanBathroom_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+
+                <!-- Continue with all other Work Area fields -->
+                <!-- Hallways Section -->
+                <tr>
+                    <td colspan="5"><strong>Hallways:</strong></td>
+                </tr>
+
+                <tr>
+                    <td>Floors and walls clean</td>
+                    <td>
+                        <input type="radio" asp-for="Hallway_FloorsWallsClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="Hallway_FloorsWallsClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="Hallway_FloorsWallsClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="Hallway_FloorsWallsClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="Hallway_FloorsWallsClean_ActionDone" value="FU" class="action-radio" data-target="Hallway_FloorsWallsClean" disabled /> FU
+                        <input type="radio" asp-for="Hallway_FloorsWallsClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="Hallway_FloorsWallsClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="Hallway_FloorsWallsClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Free of obstruction and equipment</td>
+                    <td>
+                        <input type="radio" asp-for="Hallway_NoObstruction_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="Hallway_NoObstruction_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="Hallway_NoObstruction_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="Hallway_NoObstruction_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="Hallway_NoObstruction_ActionDone" value="FU" class="action-radio" data-target="Hallway_NoObstruction" disabled /> FU
+                        <input type="radio" asp-for="Hallway_NoObstruction_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="Hallway_NoObstruction_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="Hallway_NoObstruction_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td colspan="5"><strong>Reception Area:</strong></td>
+                </tr>
+
+                <tr>
+                    <td>Furniture clean and in good condition</td>
+                    <td>
+                        <input type="radio" asp-for="WaitingArea_FurnitureClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WaitingArea_FurnitureClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WaitingArea_FurnitureClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WaitingArea_FurnitureClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WaitingArea_FurnitureClean_ActionDone" value="FU" class="action-radio" data-target="Reception_FurnitureClean" disabled /> FU
+                        <input type="radio" asp-for="WaitingArea_FurnitureClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WaitingArea_FurnitureClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WaitingArea_FurnitureClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Empty cups and food items placed in trash</td>
+                    <td>
+                        <input type="radio" asp-for="WaitingArea_TrashDisposed_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WaitingArea_TrashDisposed_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WaitingArea_TrashDisposed_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WaitingArea_TrashDisposed_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WaitingArea_TrashDisposed_ActionDone" value="FU" class="action-radio" data-target="Reception_TrashDisposed" disabled /> FU
+                        <input type="radio" asp-for="WaitingArea_TrashDisposed_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WaitingArea_TrashDisposed_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WaitingArea_TrashDisposed_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Food only in designated areas</td>
+                    <td>
+                        <input type="radio" asp-for="WaitingArea_FoodInDesignatedArea_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WaitingArea_FoodInDesignatedArea_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WaitingArea_FoodInDesignatedArea_Remarks" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WaitingArea_FoodInDesignatedArea_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WaitingArea_FoodInDesignatedArea_ActionDone" value="FU" class="action-radio" data-target="Reception_FoodInDesignatedArea" disabled /> FU
+                        <input type="radio" asp-for="WaitingArea_FoodInDesignatedArea_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WaitingArea_FoodInDesignatedArea_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WaitingArea_FoodInDesignatedArea_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="5"><strong>Equipment:</strong></td>
+                </tr>
+
+                <tr>
+                    <td>Equipment storage is clean</td>
+                    <td>
+                        <input type="radio" asp-for="Equipment_StorageClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="Equipment_StorageClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="Equipment_StorageClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="Equipment_StorageClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="Equipment_StorageClean_ActionDone" value="FU" class="action-radio" data-target="Equipment_StorageClean" disabled /> FU
+                        <input type="radio" asp-for="Equipment_StorageClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="Equipment_StorageClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="Equipment_StorageClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+
+
+
+                <tr>
+                    <td colspan="5"><strong>Supply and Storage Area:</strong></td>
+                </tr>
+
+                <tr>
+                    <td>Adequate separation of clean and soiled</td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_CleanSoiledSeparation_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="UtilityRoom_CleanSoiledSeparation_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_CleanSoiledSeparation_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_CleanSoiledSeparation_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="UtilityRoom_CleanSoiledSeparation_ActionDone" value="FU" class="action-radio" data-target="Supply_CleanSoiledSeparation" disabled /> FU
+                        <input type="radio" asp-for="UtilityRoom_CleanSoiledSeparation_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_CleanSoiledSeparation_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="UtilityRoom_CleanSoiledSeparation_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Floors and walls clean</td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_FloorsWallsClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="UtilityRoom_FloorsWallsClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_FloorsWallsClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_FloorsWallsClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="UtilityRoom_FloorsWallsClean_ActionDone" value="FU" class="action-radio" data-target="Supply_FloorsWallsClean" disabled /> FU
+                        <input type="radio" asp-for="UtilityRoom_FloorsWallsClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_FloorsWallsClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="UtilityRoom_FloorsWallsClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>No supplies stored on the floor. Supplies stored 6" from floor.</td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesOnFloor_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesOnFloor_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_NoSuppliesOnFloor_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesOnFloor_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesOnFloor_ActionDone" value="FU" class="action-radio" data-target="Supply_NoSuppliesOnFloor" disabled /> FU
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesOnFloor_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_NoSuppliesOnFloor_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="UtilityRoom_NoSuppliesOnFloor_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Supplies stored 18" from ceiling.</td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_SuppliesFromCeiling_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="UtilityRoom_SuppliesFromCeiling_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_SuppliesFromCeiling_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_SuppliesFromCeiling_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="UtilityRoom_SuppliesFromCeiling_ActionDone" value="FU" class="action-radio" data-target="Supply_SuppliesFromCeiling" disabled /> FU
+                        <input type="radio" asp-for="UtilityRoom_SuppliesFromCeiling_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_SuppliesFromCeiling_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="UtilityRoom_SuppliesFromCeiling_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>No supplies stored under sinks</td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesUnderSink_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesUnderSink_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_NoSuppliesUnderSink_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesUnderSink_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesUnderSink_ActionDone" value="FU" class="action-radio" data-target="Supply_NoSuppliesUnderSink" disabled /> FU
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesUnderSink_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_NoSuppliesUnderSink_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="UtilityRoom_NoSuppliesUnderSink_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>No supplies stored in bathrooms, soiled utility rooms</td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesInBathrooms_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesInBathrooms_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_NoSuppliesInBathrooms_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesInBathrooms_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesInBathrooms_ActionDone" value="FU" class="action-radio" data-target="Supply_NoSuppliesInBathrooms" disabled /> FU
+                        <input type="radio" asp-for="UtilityRoom_NoSuppliesInBathrooms_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_NoSuppliesInBathrooms_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="UtilityRoom_NoSuppliesInBathrooms_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Stocks are properly organized or First in First Out (FIFO)</td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_FIFOStocks_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="UtilityRoom_FIFOStocks_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_FIFOStocks_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_FIFOStocks_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="UtilityRoom_FIFOStocks_ActionDone" value="FU" class="action-radio" data-target="Supply_FIFOStocks" disabled /> FU
+                        <input type="radio" asp-for="UtilityRoom_FIFOStocks_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_FIFOStocks_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="UtilityRoom_FIFOStocks_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Patient supplies within expiration dates</td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_SuppliesNotExpired_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="UtilityRoom_SuppliesNotExpired_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_SuppliesNotExpired_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_SuppliesNotExpired_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="UtilityRoom_SuppliesNotExpired_ActionDone" value="FU" class="action-radio" data-target="Supply_SuppliesNotExpired" disabled /> FU
+                        <input type="radio" asp-for="UtilityRoom_SuppliesNotExpired_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_SuppliesNotExpired_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="UtilityRoom_SuppliesNotExpired_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Sterilized instruments and trays unopened, free of dust, tears</td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_SterileTraysClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="UtilityRoom_SterileTraysClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_SterileTraysClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="UtilityRoom_SterileTraysClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="UtilityRoom_SterileTraysClean_ActionDone" value="FU" class="action-radio" data-target="Supply_SterileTraysClean" disabled /> FU
+                        <input type="radio" asp-for="UtilityRoom_SterileTraysClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="UtilityRoom_SterileTraysClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="UtilityRoom_SterileTraysClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+
+
+                <tr>
+                    <td colspan="5"><strong>Soiled Utility Room:</strong></td>
+                </tr>
+
+                <tr>
+                    <td>Floors and walls clean</td>
+                    <td>
+                        <input type="radio" asp-for="SoiledRoom_FloorsWallsClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="SoiledRoom_FloorsWallsClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="SoiledRoom_FloorsWallsClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="SoiledRoom_FloorsWallsClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="SoiledRoom_FloorsWallsClean_ActionDone" value="FU" class="action-radio" data-target="Soiled_FloorsWallsClean" disabled /> FU
+                        <input type="radio" asp-for="SoiledRoom_FloorsWallsClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="SoiledRoom_FloorsWallsClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="SoiledRoom_FloorsWallsClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Free of patient supplies and sterilized trays</td>
+                    <td>
+                        <input type="radio" asp-for="SoiledRoom_NoPatientSupplies_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="SoiledRoom_NoPatientSupplies_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="SoiledRoom_NoPatientSupplies_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="SoiledRoom_NoPatientSupplies_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="SoiledRoom_NoPatientSupplies_ActionDone" value="FU" class="action-radio" data-target="Soiled_NoPatientSupplies" disabled /> FU
+                        <input type="radio" asp-for="SoiledRoom_NoPatientSupplies_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="SoiledRoom_NoPatientSupplies_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="SoiledRoom_NoPatientSupplies_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Soiled linen is bagged and appropriately placed for transport</td>
+                    <td>
+                        <input type="radio" asp-for="SoiledRoom_LinenBagged_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="SoiledRoom_LinenBagged_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="SoiledRoom_LinenBagged_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="SoiledRoom_LinenBagged_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="SoiledRoom_LinenBagged_ActionDone" value="FU" class="action-radio" data-target="Soiled_LinenBagged" disabled /> FU
+                        <input type="radio" asp-for="SoiledRoom_LinenBagged_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="SoiledRoom_LinenBagged_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="SoiledRoom_LinenBagged_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+
+
+
+
+
+
+                <tr>
+                    <td colspan="5"><strong>Waste Management:</strong></td>
+                </tr>
+
+                <tr>
+                    <td>Color-coded trash bins with appropriate plastic liners are available and has proper labels</td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_ColorBinsAvailable_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WasteMgmt_ColorBinsAvailable_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_ColorBinsAvailable_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_ColorBinsAvailable_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WasteMgmt_ColorBinsAvailable_ActionDone" value="FU" class="action-radio" data-target="Waste_ColorBinsAvailable" disabled /> FU
+                        <input type="radio" asp-for="WasteMgmt_ColorBinsAvailable_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_ColorBinsAvailable_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WasteMgmt_ColorBinsAvailable_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Proper waste disposal and segregation are observed</td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_ProperDisposal_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WasteMgmt_ProperDisposal_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_ProperDisposal_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_ProperDisposal_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WasteMgmt_ProperDisposal_ActionDone" value="FU" class="action-radio" data-target="Waste_ProperDisposal" disabled /> FU
+                        <input type="radio" asp-for="WasteMgmt_ProperDisposal_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_ProperDisposal_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WasteMgmt_ProperDisposal_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Trash bins are not overfilled and covered</td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_BinsNotOverfilled_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WasteMgmt_BinsNotOverfilled_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_BinsNotOverfilled_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_BinsNotOverfilled_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WasteMgmt_BinsNotOverfilled_ActionDone" value="FU" class="action-radio" data-target="Waste_BinsNotOverfilled" disabled /> FU
+                        <input type="radio" asp-for="WasteMgmt_BinsNotOverfilled_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_BinsNotOverfilled_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WasteMgmt_BinsNotOverfilled_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Trash bins are in good condition and visibly clean</td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_BinsClean_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WasteMgmt_BinsClean_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_BinsClean_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_BinsClean_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WasteMgmt_BinsClean_ActionDone" value="FU" class="action-radio" data-target="Waste_BinsClean" disabled /> FU
+                        <input type="radio" asp-for="WasteMgmt_BinsClean_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_BinsClean_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WasteMgmt_BinsClean_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Sharps containers are available and has proper labels</td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_SharpsLabeled_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WasteMgmt_SharpsLabeled_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_SharpsLabeled_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_SharpsLabeled_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WasteMgmt_SharpsLabeled_ActionDone" value="FU" class="action-radio" data-target="Waste_SharpsLabeled" disabled /> FU
+                        <input type="radio" asp-for="WasteMgmt_SharpsLabeled_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_SharpsLabeled_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WasteMgmt_SharpsLabeled_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Sharps containers are not overfilled, and locked if full</td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_SharpsNotOverfilled_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="WasteMgmt_SharpsNotOverfilled_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_SharpsNotOverfilled_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="WasteMgmt_SharpsNotOverfilled_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="WasteMgmt_SharpsNotOverfilled_ActionDone" value="FU" class="action-radio" data-target="Waste_SharpsNotOverfilled" disabled /> FU
+                        <input type="radio" asp-for="WasteMgmt_SharpsNotOverfilled_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="WasteMgmt_SharpsNotOverfilled_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="WasteMgmt_SharpsNotOverfilled_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+
+
+
+                <tr>
+                    <td colspan="5"><strong>Medications and IV Solutions:</strong></td>
+                </tr>
+
+                <tr>
+                    <td>No outdated IV solutions or medications</td>
+                    <td>
+                        <input type="radio" asp-for="Medications_NoExpired_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="Medications_NoExpired_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="Medications_NoExpired_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="Medications_NoExpired_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="Medications_NoExpired_ActionDone" value="FU" class="action-radio" data-target="Medications_NoExpired" disabled /> FU
+                        <input type="radio" asp-for="Medications_NoExpired_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="Medications_NoExpired_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="Medications_NoExpired_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Open vials dated and timed as per policy</td>
+                    <td>
+                        <input type="radio" asp-for="Medications_VialsDated_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="Medications_VialsDated_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="Medications_VialsDated_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="Medications_VialsDated_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="Medications_VialsDated_ActionDone" value="FU" class="action-radio" data-target="Medications_VialsDated" disabled /> FU
+                        <input type="radio" asp-for="Medications_VialsDated_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="Medications_VialsDated_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="Medications_VialsDated_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Vaccines stored appropriately, if applicable</td>
+                    <td>
+                        <input type="radio" asp-for="Medications_VaccinesStored_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="Medications_VaccinesStored_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="Medications_VaccinesStored_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="Medications_VaccinesStored_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="Medications_VaccinesStored_ActionDone" value="FU" class="action-radio" data-target="Medications_VaccinesStored" disabled /> FU
+                        <input type="radio" asp-for="Medications_VaccinesStored_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="Medications_VaccinesStored_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="Medications_VaccinesStored_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>No loose syringes and needles observed</td>
+                    <td>
+                        <input type="radio" asp-for="Medications_NoLooseNeedles_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="Medications_NoLooseNeedles_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="Medications_NoLooseNeedles_Remarks" class="form-control" />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="Medications_NoLooseNeedles_ActionDone" value="CAC" /> CAC
+                        <input type="radio" asp-for="Medications_NoLooseNeedles_ActionDone" value="FU" class="action-radio" data-target="Medications_NoLooseNeedles" /> FU
+                        <input type="radio" asp-for="Medications_NoLooseNeedles_ActionDone" value="NA" /> NA
+                    </td>
+                    <td>
+                        <input asp-for="Medications_NoLooseNeedles_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="Medications_NoLooseNeedles_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+
+
+
+
+                <tr>
+                    <td colspan="5"><strong>Miscellaneous:</strong></td>
+                </tr>
+
+                <tr>
+                    <td>Specimens being bagged, handled, labeled as per policy; with safety devices available</td>
+                    <td>
+                        <input type="radio" asp-for="Misc_SpecimensLabeled_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="Misc_SpecimensLabeled_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="Misc_SpecimensLabeled_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="Misc_SpecimensLabeled_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="Misc_SpecimensLabeled_ActionDone" value="FU" class="action-radio" data-target="Misc_SpecimensLabeled" disabled /> FU
+                        <input type="radio" asp-for="Misc_SpecimensLabeled_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="Misc_SpecimensLabeled_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="Misc_SpecimensLabeled_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Healthcare workers observed to follow proper respiratory hygiene and cough etiquette, including correct PPE use</td>
+                    <td>
+                        <input type="radio" asp-for="Misc_StaffHygienePPE_Finding" value="C" disabled /> C
+                        <input type="radio" asp-for="Misc_StaffHygienePPE_Finding" value="NC" disabled /> NC
+                    </td>
+                    <td>
+                        <input asp-for="Misc_StaffHygienePPE_Remarks" class="form-control" disabled />
+                    </td>
+                    <td>
+                        <input type="radio" asp-for="Misc_StaffHygienePPE_ActionDone" value="CAC" disabled /> CAC
+                        <input type="radio" asp-for="Misc_StaffHygienePPE_ActionDone" value="FU" class="action-radio" data-target="Misc_StaffHygienePPE" disabled /> FU
+                        <input type="radio" asp-for="Misc_StaffHygienePPE_ActionDone" value="NA" disabled /> NA
+                    </td>
+                    <td>
+                        <input asp-for="Misc_StaffHygienePPE_FuDate" class="form-control mt-1" disabled />
+                        <input asp-for="Misc_StaffHygienePPE_FuRemarks" class="form-control mt-1" placeholder="Follow-up Remarks" disabled />
+                    </td>
+                </tr>
+
+                <!-- Continue with all other sections in the same pattern -->
+                <!-- Final Form Elements -->
+                <tr>
+                    <td colspan="5"><strong>Unit/Area Staff:</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <input asp-for="UnitAreaStaffSignature" class="form-control" placeholder="Name and Signature" disabled />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="5"><strong>Date for follow-up:</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="5">
+                        <input asp-for="FollowUpDate" type="date" class="form-control" disabled />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="mt-6 flex justify-between">
+
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</form>

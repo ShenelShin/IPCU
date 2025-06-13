@@ -51,7 +51,7 @@ public class StationController : Controller
         int notOccupiedCount = 0;
         int totalRooms = 0;
 
-        string connectionString = _configuration.GetConnectionString("Build_FileConnection");
+        string connectionString = _configuration.GetConnectionString("BuildFileConnection");
 
         using (SqlConnection conn = new SqlConnection(connectionString))
         {
@@ -110,7 +110,7 @@ public class StationController : Controller
     public async Task<IActionResult> ViewRooms(string stationId, string station)
     {
         var rooms = new List<Dictionary<string, object>>();
-        string connectionString = _configuration.GetConnectionString("Build_FileConnection");
+        string connectionString = _configuration.GetConnectionString("BuildFileConnection");
 
         using (SqlConnection conn = new SqlConnection(connectionString))
         {

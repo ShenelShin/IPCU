@@ -113,7 +113,7 @@ namespace IPCU.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Fname,Mname,Lname,EmployeeId,Area,ObserverName,Date,IsEquipmentAndCartPrepared,IsCleaningSolutionPrepared,IsProperAttireAndPPEWorn,IsHandHygieneAndGlovesDone,IsSignageChecked,IsSpillSoakedWithSolution,IsWallsCleaned,IsDoorFrameWiped,IsWindowSillAndWindowCleaned,IsHighTouchAreasWiped,IsVerticalSurfacesWiped,IsLooseDebrisPickedUp,IsRoomFloorMopped,IsUsedClothsDisposed,IsWasteContainersEmptied,IsInfectiousWasteRemoved,IsMirrorCleaned,IsSinkAreaCleaned,IsFaucetAndHandlesCleaned,IsToiletAndFlushHandlesCleaned,IsOtherBathroomSurfacesCleaned,IsBathroomFloorScrubbed,IsColorCodedWasteEmptied,IsPPERemoved,IsHandHygieneAfterPPE,IsGlovesRemovedAndHandHygieneDone,PreCleaningItems,PostCleaningItems,RecommendationsOrActions,UnitAreaStaffSignature,DateOfObservation")] TCSkillsChecklistReal tCSkillsChecklistReal)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Area,ObserverName,Date,IsEquipmentAndCartPrepared,IsCleaningSolutionPrepared,IsProperAttireAndPPEWorn,IsHandHygieneAndGlovesDone,IsSignageChecked,IsSpillSoakedWithSolution,IsWallsCleaned,IsDoorFrameWiped,IsWindowSillAndWindowCleaned,IsHighTouchAreasWiped,IsVerticalSurfacesWiped,IsLooseDebrisPickedUp,IsRoomFloorMopped,IsUsedClothsDisposed,IsWasteContainersEmptied,IsInfectiousWasteRemoved,IsMirrorCleaned,IsSinkAreaCleaned,IsFaucetAndHandlesCleaned,IsToiletAndFlushHandlesCleaned,IsOtherBathroomSurfacesCleaned,IsBathroomFloorScrubbed,IsColorCodedWasteEmptied,IsPPERemoved,IsHandHygieneAfterPPE,IsGlovesRemovedAndHandHygieneDone,PreCleaningItems,PostCleaningItems,RecommendationsOrActions,UnitAreaStaffSignature,DateOfObservation")] TCSkillsChecklistReal tCSkillsChecklistReal)
         {
             if (id != tCSkillsChecklistReal.Id)
             {
@@ -124,7 +124,48 @@ namespace IPCU.Controllers
             {
                 try
                 {
-                    _context.Update(tCSkillsChecklistReal);
+                    var existing = await _context.TCSkillsChecklistReal.FindAsync(id);
+                    if (existing == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existing.Area = tCSkillsChecklistReal.Area;
+                    existing.ObserverName = tCSkillsChecklistReal.ObserverName;
+                    existing.Date = tCSkillsChecklistReal.Date;
+                    existing.IsEquipmentAndCartPrepared = tCSkillsChecklistReal.IsEquipmentAndCartPrepared;
+                    existing.IsCleaningSolutionPrepared = tCSkillsChecklistReal.IsCleaningSolutionPrepared;
+                    existing.IsProperAttireAndPPEWorn = tCSkillsChecklistReal.IsProperAttireAndPPEWorn;
+                    existing.IsHandHygieneAndGlovesDone = tCSkillsChecklistReal.IsHandHygieneAndGlovesDone;
+                    existing.IsSignageChecked = tCSkillsChecklistReal.IsSignageChecked;
+                    existing.IsSpillSoakedWithSolution = tCSkillsChecklistReal.IsSpillSoakedWithSolution;
+                    existing.IsWallsCleaned = tCSkillsChecklistReal.IsWallsCleaned;
+                    existing.IsDoorFrameWiped = tCSkillsChecklistReal.IsDoorFrameWiped;
+                    existing.IsWindowSillAndWindowCleaned = tCSkillsChecklistReal.IsWindowSillAndWindowCleaned;
+                    existing.IsHighTouchAreasWiped = tCSkillsChecklistReal.IsHighTouchAreasWiped;
+                    existing.IsVerticalSurfacesWiped = tCSkillsChecklistReal.IsVerticalSurfacesWiped;
+                    existing.IsLooseDebrisPickedUp = tCSkillsChecklistReal.IsLooseDebrisPickedUp;
+                    existing.IsRoomFloorMopped = tCSkillsChecklistReal.IsRoomFloorMopped;
+                    existing.IsUsedClothsDisposed = tCSkillsChecklistReal.IsUsedClothsDisposed;
+                    existing.IsWasteContainersEmptied = tCSkillsChecklistReal.IsWasteContainersEmptied;
+                    existing.IsInfectiousWasteRemoved = tCSkillsChecklistReal.IsInfectiousWasteRemoved;
+                    existing.IsMirrorCleaned = tCSkillsChecklistReal.IsMirrorCleaned;
+                    existing.IsSinkAreaCleaned = tCSkillsChecklistReal.IsSinkAreaCleaned;
+                    existing.IsFaucetAndHandlesCleaned = tCSkillsChecklistReal.IsFaucetAndHandlesCleaned;
+                    existing.IsToiletAndFlushHandlesCleaned = tCSkillsChecklistReal.IsToiletAndFlushHandlesCleaned;
+                    existing.IsOtherBathroomSurfacesCleaned = tCSkillsChecklistReal.IsOtherBathroomSurfacesCleaned;
+                    existing.IsBathroomFloorScrubbed = tCSkillsChecklistReal.IsBathroomFloorScrubbed;
+                    existing.IsColorCodedWasteEmptied = tCSkillsChecklistReal.IsColorCodedWasteEmptied;
+                    existing.IsPPERemoved = tCSkillsChecklistReal.IsPPERemoved;
+                    existing.IsHandHygieneAfterPPE = tCSkillsChecklistReal.IsHandHygieneAfterPPE;
+                    existing.IsGlovesRemovedAndHandHygieneDone = tCSkillsChecklistReal.IsGlovesRemovedAndHandHygieneDone;
+                    existing.PreCleaningItems = tCSkillsChecklistReal.PreCleaningItems;
+                    existing.PostCleaningItems = tCSkillsChecklistReal.PostCleaningItems;
+                    existing.RecommendationsOrActions = tCSkillsChecklistReal.RecommendationsOrActions;
+                    existing.UnitAreaStaffSignature = tCSkillsChecklistReal.UnitAreaStaffSignature;
+                    existing.DateOfObservation = tCSkillsChecklistReal.DateOfObservation;
+
+                    // Now save changes
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -138,10 +179,14 @@ namespace IPCU.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction(nameof(Index), new { roomId = tCSkillsChecklistReal.Area });
             }
+
             return View(tCSkillsChecklistReal);
         }
+
+
 
         // GET: TCSkillsChecklistReals/Delete/5
         public async Task<IActionResult> Delete(int? id)
