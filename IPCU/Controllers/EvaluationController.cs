@@ -37,7 +37,7 @@ namespace IPCU.Controllers
             {
                 _context.Evaluations.Add(evaluationViewModel);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("TakeTest", "Test");
             }
             return View(evaluationViewModel);
         }
@@ -423,15 +423,24 @@ namespace IPCU.Controllers
             var trainingDate = DateTime.ParseExact(id, "yyyyMMdd", null);
 
             // Retrieve the specific evaluation summary
-            var evaluation = await _context.Evaluations
+            // Load the evaluations for that date into memory first
+            var evaluations = await _context.Evaluations
                 .Where(e => e.TrainingDate == trainingDate)
+                .ToListAsync();
+
+            if (!evaluations.Any())
+            {
+                return NotFound("Evaluation not found.");
+            }
+
+            var grouped = evaluations
                 .GroupBy(e => e.TrainingDate)
                 .Select(g => new EvaluationSummaryViewModel
                 {
                     TrainingDate = g.Key,
                     TotalParticipants = g.Count(),
-                    MaleCount = g.Count(e => e.Sex == "Male"),
-                    FemaleCount = g.Count(e => e.Sex == "Female"),
+                    MaleCount = g.Count(e => e.Sex?.Trim().ToLower() == "male"),
+                    FemaleCount = g.Count(e => e.Sex?.Trim().ToLower() == "female"),
                     AverageFlowFollowed = g.Average(e => (double?)e.FlowFollowed) ?? 0,
                     AverageRulesEstablished = g.Average(e => (double?)e.RulesEstablished) ?? 0,
                     AverageInitiateDiscussion = g.Average(e => (double?)e.InitiateDiscussion) ?? 0,
@@ -454,50 +463,56 @@ namespace IPCU.Controllers
                     AverageVoicePersonality = g.Average(e => (double?)e.VoicePersonality) ?? 0,
                     AverageTimeManagement = g.Average(e => (double?)e.TimeManagement) ?? 0,
 
-                    FinalRating = Math.Round((
-                        g.Average(e => e.FlowFollowed) +
-                        g.Average(e => e.RulesEstablished) +
-                        g.Average(e => e.InitiateDiscussion) +
-                        g.Average(e => e.TechnicalCapability) +
-                        g.Average(e => e.ContentOrganization) +
-                        g.Average(e => e.ObjectiveStated) +
-                        g.Average(e => e.ContentQuality) +
-                        g.Average(e => e.FlowOfTopic) +
-                        g.Average(e => e.RelevanceOfTopic) +
-                        g.Average(e => e.PracticeApplication) +
-                        g.Average(e => e.LearningActivities) +
-                        g.Average(e => e.VisualAids) +
-                        g.Average(e => e.PresentKnowledge) +
-                        g.Average(e => e.BalancePrinciples) +
-                        g.Average(e => e.AddressClarifications) +
-                        g.Average(e => e.Preparedness) +
-                        g.Average(e => e.TeachingPersonality) +
-                        g.Average(e => e.EstablishRapport) +
-                        g.Average(e => e.RespectForParticipants) +
-                        g.Average(e => e.VoicePersonality) +
-                        g.Average(e => e.TimeManagement)) / 21, 2),
+                    FinalRating = Math.Round(
+                        (
+                            g.Average(e => e.FlowFollowed) +
+                            g.Average(e => e.RulesEstablished) +
+                            g.Average(e => e.InitiateDiscussion) +
+                            g.Average(e => e.TechnicalCapability) +
+                            g.Average(e => e.ContentOrganization) +
+                            g.Average(e => e.ObjectiveStated) +
+                            g.Average(e => e.ContentQuality) +
+                            g.Average(e => e.FlowOfTopic) +
+                            g.Average(e => e.RelevanceOfTopic) +
+                            g.Average(e => e.PracticeApplication) +
+                            g.Average(e => e.LearningActivities) +
+                            g.Average(e => e.VisualAids) +
+                            g.Average(e => e.PresentKnowledge) +
+                            g.Average(e => e.BalancePrinciples) +
+                            g.Average(e => e.AddressClarifications) +
+                            g.Average(e => e.Preparedness) +
+                            g.Average(e => e.TeachingPersonality) +
+                            g.Average(e => e.EstablishRapport) +
+                            g.Average(e => e.RespectForParticipants) +
+                            g.Average(e => e.VoicePersonality) +
+                            g.Average(e => e.TimeManagement)
+                        ) / 21, 2),
+
                     SMELecturer = g
-                        .Where(e => !string.IsNullOrEmpty(e.SMELecturer)) // Filter out null/empty values
-                        .GroupBy(e => e.SMELecturer)                     // Group by SMELecturer
-                        .OrderByDescending(group => group.Count())       // Order groups by count (descending)
-                        .Select(group => group.Key)                      // Select the most common value
-                        .FirstOrDefault(),                               // Get the majority answer or null if none exists
+                        .Where(e => !string.IsNullOrEmpty(e.SMELecturer))
+                        .GroupBy(e => e.SMELecturer)
+                        .OrderByDescending(group => group.Count())
+                        .Select(group => group.Key)
+                        .FirstOrDefault(),
 
                     Venue = g
-                        .Where(e => !string.IsNullOrEmpty(e.Venue))      // Filter out null/empty values
-                        .GroupBy(e => e.Venue)                           // Group by Venue
-                        .OrderByDescending(group => group.Count())       // Order groups by count (descending)
-                        .Select(group => group.Key)                      // Select the most common value
-                        .FirstOrDefault(),                               // Get the majority answer or null if none exists
+                        .Where(e => !string.IsNullOrEmpty(e.Venue))
+                        .GroupBy(e => e.Venue)
+                        .OrderByDescending(group => group.Count())
+                        .Select(group => group.Key)
+                        .FirstOrDefault(),
 
+                    CombinedSuggestions = string.Join("; ", g
+                        .Where(e => !string.IsNullOrEmpty(e.SuggestionsForImprovement))
+                        .Select(e => e.SuggestionsForImprovement)),
 
-                    CombinedSuggestions = string.Join("; ", g.Where(e => !string.IsNullOrEmpty(e.SuggestionsForImprovement))
-                                     .Select(e => e.SuggestionsForImprovement)),
-
-                    CombinedSayToSpeaker = string.Join("; ", g.Where(e => !string.IsNullOrEmpty(e.SayToSpeaker))
-                                      .Select(e => e.SayToSpeaker))
+                    CombinedSayToSpeaker = string.Join("; ", g
+                        .Where(e => !string.IsNullOrEmpty(e.SayToSpeaker))
+                        .Select(e => e.SayToSpeaker))
                 })
-                .FirstOrDefaultAsync();
+                .FirstOrDefault();
+
+            var evaluation = grouped;
 
             if (evaluation == null)
             {
@@ -522,7 +537,5 @@ namespace IPCU.Controllers
             // Return the PDF file as a download
             return File(pdfBytes, "application/pdf", $"Evaluation_Summary_{id}.pdf");
         }
-
-
     }
 }

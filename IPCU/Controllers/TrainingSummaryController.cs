@@ -210,6 +210,7 @@ namespace IPCU.Controllers
                     ft => ft.EmployeeId,
                     (ts, fitTests) => new
                     {
+                        ts.Id,
                         ts.FullName,
                         ts.EmployeeId,
                         ts.AgeGroup,
@@ -229,6 +230,7 @@ namespace IPCU.Controllers
                 .ToList()
                 .Select(ts => new TrainingSummary // Convert anonymous type to model
                 {
+                    Id = ts.Id,
                     FullName = ts.FullName,
                     EmployeeId = ts.EmployeeId,
                     AgeGroup = ts.AgeGroup,
