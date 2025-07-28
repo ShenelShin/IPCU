@@ -22,49 +22,12 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label asp-for="Area" class="form-label">Area</label>
-                    <select asp-for="Area" class="form-select" required>
+                    <select asp-for="Area" class="form-select" asp-items="@(ViewBag.StationList as List<SelectListItem>)" required>
                         <option value="">-- Select Area --</option>
-                        <option value="Unit 2A">Unit 2A</option>
-                        <option value="Unit 2B">Unit 2B</option>
-                        <option value="Unit 2C">Unit 2C</option>
-                        <option value="Unit 2D">Unit 2D</option>
-                        <option value="Unit 2E">Unit 2E</option>
-                        <option value="Unit 2F">Unit 2F</option>
-                        <option value="Unit 2G">Unit 2G</option>
-                        <option value="Unit 2H">Unit 2H</option>
-                        <option value="2B Extension">2B Extension</option>
-                        <option value="2D Extension">2D Extension</option>
-                        <option value="2E Extension">2E Extension</option>
-                        <option value="Unit 3A">Unit 3A</option>
-                        <option value="Unit 3B">Unit 3B</option>
-                        <option value="Unit 3C">Unit 3C</option>
-                        <option value="Unit 3D">Unit 3D</option>
-                        <option value="Unit 3E">Unit 3E</option>
-                        <option value="Unit 3F">Unit 3F</option>
-                        <option value="CTU">CTU</option>
-                        <option value="PDU">PDU</option>
-                        <option value="CCRU">CCRU</option>
-                        <option value="Cardiology">Cardiology</option>
-                        <option value="Laboratory">Laboratory</option>
-                        <option value="Radiology">Radiology</option>
-                        <option value="Rehab">Rehab</option>
-                        <option value="OR-RR">OR-RR</option>
-                        <option value="OPS">OPS</option>
-                        <option value="AITU">AITU</option>
-                        <option value="IVASC">IVASC</option>
-                        <option value="AUEC">AUEC</option>
-                        <option value="ICU/IMCU">ICU/IMCU</option>
-                        <option value="ER">ER</option>
-                        <option value="PULMO">PULMO</option>
-                        <option value="HD Annex">HD Annex</option>
-                        <option value="HD Main">HD Main</option>
-                        <option value="ICN/OBSERVER">ICN/OBSERVER</option>
-                        <option value="MVML">MVML</option>
-                        <option value="VVR">VVR</option>
-                        <option value="ABV">ABV</option>
                     </select>
                     <span asp-validation-for="Area" class="text-danger"></span>
                 </div>
+
                 <div class="col-md-6 mb-3">
                     <label asp-for="Observer" class="form-label">Observer</label>
                     <select asp-for="Observer" class="form-select" required>
@@ -72,6 +35,7 @@
                         <option value="MVML">MVML</option>
                         <option value="VVR">VVR</option>
                         <option value="ABV">ABV</option>
+                        <option value="IPM">IPM</option>
                     </select>
                     <span asp-validation-for="Observer" class="text-danger"></span>
                 </div>
@@ -189,6 +153,18 @@
                                 <div class="form-check">
                                     <input type="radio" class="form-check-input" name="RoomType" id="ward" value="Ward">
                                     <label class="form-check-label" for="ward">Ward</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="RoomType" id="sigle-room" value="SingleRoom">
+                                    <label class="form-check-label" for="sigle-room">Single Room</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="RoomType" id="outpatient" value="OutPatient">
+                                    <label class="form-check-label" for="outpatient">OutPatient</label>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
@@ -322,11 +298,22 @@
                 <span asp-validation-for="ObsvPatientEnvironment" class="text-danger"></span>
             </div>
 
+            <!-- TEXTAREA: User input -->
             <div class="mb-3">
                 <label asp-for="ObsvPatientContact" class="form-label">Objects HCW Had Contact With</label>
                 <textarea asp-for="ObsvPatientContact" class="form-control" rows="3" placeholder="List objects the healthcare worker had contact with in the room before touching the patient"></textarea>
                 <span asp-validation-for="ObsvPatientContact" class="text-danger"></span>
             </div>
+
+            <!-- TOGGLE: Not applicable switch -->
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="obj-hcw-toggle">
+                <label class="form-check-label" for="obj-hcw-toggle">Not Applicable?</label>
+            </div>
+
+            <!-- HIDDEN FIELD: Actual value submitted -->
+            <input type="hidden" id="ObsvPatientContactHidden" name="ObsvPatientContact">
+
         </div>
     </div>
 
@@ -409,6 +396,26 @@
             document.getElementById('room-other-text').disabled = true;
             document.getElementById('obsv-other-text').disabled = true;
         });
+
+        //for object hcw toggle
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggle = document.getElementById('obj-hcw-toggle');
+            const textarea = document.querySelector('textarea[name="ObsvPatientContact"]');
+            const hiddenInput = document.getElementById('ObsvPatientContactHidden');
+
+            toggle.addEventListener('change', function () {
+                if (this.checked) {
+                    textarea.disabled = true;
+                    textarea.removeAttribute('name');
+                    hiddenInput.value = 'Not Applicable';
+                } else {
+                    textarea.disabled = false;
+                    textarea.setAttribute('name', 'ObsvPatientContact');
+                    hiddenInput.value = '';
+                }
+            });
+        });
+
 
         // Form validation
         (function () {

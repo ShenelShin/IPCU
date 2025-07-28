@@ -2,19 +2,23 @@
 using IPCU.Models;
 using IPCU.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
-using System.Diagnostics;
+using Microsoft.Data.SqlClient;
+
 
 namespace IPCU.Controllers
 {
     public class HandHygieneFormsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public HandHygieneFormsController(ApplicationDbContext context)
+        public HandHygieneFormsController(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         // GET: HandHygieneForms
@@ -78,35 +82,48 @@ namespace IPCU.Controllers
         //}
 
         // GET: HandHygieneForms/Create
+        private List<SelectListItem> GetStations()
+        {
+            var stations = new List<SelectListItem>();
+            string connectionString = _configuration.GetConnectionString("BuildFileConnection");
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT DISTINCT Station FROM tbCoStation WHERE Station IS NOT NULL";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string station = reader["Station"].ToString();
+                            stations.Add(new SelectListItem
+                            {
+                                Text = station,
+                                Value = station
+                            });
+                        }
+                    }
+                }
+            }
+
+            return stations;
+        }
+
+        // GET: HandHygieneForms/Create
         public IActionResult Create()
         {
+            ViewBag.StationList = GetStations(); // Use the method here
             return View();
         }
 
-        // POST: HandHygieneForms/Create
         // POST: HandHygieneForms/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(HandHygieneForm handHygieneForm)
         {
-            // Debug: Check what's coming in from the form
-            Debug.WriteLine($"Received form data: Area={handHygieneForm.Area}, Observer={handHygieneForm.Observer}");
-
-            // Ensure HHId is NOT set manually
-            ModelState.Remove("HHId");  // This line prevents validation on HHId
-
-            // Debug: Check ModelState before validation
-            if (!ModelState.IsValid)
-            {
-                Debug.WriteLine("ModelState is invalid. Validation errors:");
-                foreach (var state in ModelState)
-                {
-                    foreach (var error in state.Value.Errors)
-                    {
-                        Debug.WriteLine($"- {state.Key}: {error.ErrorMessage}");
-                    }
-                }
-            }
+            ModelState.Remove("HHId");
 
             if (ModelState.IsValid)
             {
@@ -114,25 +131,18 @@ namespace IPCU.Controllers
                 {
                     _context.HandHygieneForms.Add(handHygieneForm);
                     await _context.SaveChangesAsync();
-                    Debug.WriteLine($"Form saved successfully with ID: {handHygieneForm.HHId}");
                     return RedirectToAction("AddActivities", new { id = handHygieneForm.HHId });
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine($"Error saving form: {ex.Message}");
                     ModelState.AddModelError("", $"Database error: {ex.Message}");
-                    return View(handHygieneForm);
                 }
             }
 
-            // If we got here, something failed, redisplay form
+            // Repopulate stations if validation fails
+            ViewBag.StationList = GetStations();
             return View(handHygieneForm);
         }
-
-
-
-
-
 
         public IActionResult AddActivities(int id)
         {
@@ -142,7 +152,7 @@ namespace IPCU.Controllers
                 return NotFound();
             }
 
-            ViewBag.HHId = id; // Pass the ID to the view
+            ViewBag.HHId = id; 
             return View();
         }
 

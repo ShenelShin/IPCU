@@ -15,7 +15,7 @@ namespace IPCU.Models
         [Required]
         public string HCW_Name { get; set; }
 
-        [Required]
+        [Required] 
         public string DUO { get; set; }
         [Required]
         public string Professional_Category { get; set; }
