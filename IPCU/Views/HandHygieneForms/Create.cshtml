@@ -30,12 +30,8 @@
 
                 <div class="col-md-6 mb-3">
                     <label asp-for="Observer" class="form-label">Observer</label>
-                    <select asp-for="Observer" class="form-select" required>
+                    <select asp-for="Observer" class="form-select" asp-items="@(ViewBag.ObserverList as List<SelectListItem>)" required>
                         <option value="">-- Select ICN/Observer --</option>
-                        <option value="MVML">MVML</option>
-                        <option value="VVR">VVR</option>
-                        <option value="ABV">ABV</option>
-                        <option value="IPM">IPM</option>
                     </select>
                     <span asp-validation-for="Observer" class="text-danger"></span>
                 </div>

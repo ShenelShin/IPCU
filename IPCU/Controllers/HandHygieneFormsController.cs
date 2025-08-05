@@ -111,10 +111,41 @@ namespace IPCU.Controllers
             return stations;
         }
 
+        private List<SelectListItem> GetObserver()
+        {
+            var observerList = new List<SelectListItem>();
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                string query = "SELECT DISTINCT Observer FROM HHAObserver WHERE Observer IS NOT NULL";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string observerName = reader["Observer"].ToString();
+                            observerList.Add(new SelectListItem
+                            {
+                                Text = observerName,
+                                Value = observerName
+                            });
+                        }
+                    }
+                }
+            }
+
+            return observerList;
+        }
+
+
         // GET: HandHygieneForms/Create
         public IActionResult Create()
         {
             ViewBag.StationList = GetStations(); // Use the method here
+            ViewBag.ObserverList = GetObserver();
             return View();
         }
 
@@ -141,6 +172,7 @@ namespace IPCU.Controllers
 
             // Repopulate stations if validation fails
             ViewBag.StationList = GetStations();
+            ViewBag.ObserverList = GetObserver();
             return View(handHygieneForm);
         }
 
