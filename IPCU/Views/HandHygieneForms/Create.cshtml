@@ -111,8 +111,14 @@
                             </div>
                             <div class="col-md-4 mb-2">
                                 <div class="form-check">
-                                    <input type="radio" class="form-check-input" name="HCWType" id="nursing-aide" value="Nursing Aide">
-                                    <label class="form-check-label" for="nursing-aide">Nursing Aide</label>
+                                    <input type="radio" class="form-check-input" name="HCWType" id="medical-service" value="Medical Service Technician">
+                                    <label class="form-check-label" for="medical-service">Medical Service Technician</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-2">
+                                <div class="form-check">
+                                    <input type="radio" class="form-check-input" name="HCWType" id="physical-therapist" value="Physical Therapist">
+                                    <label class="form-check-label" for="physical-therapist">Physical Therapist</label>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
@@ -298,7 +304,6 @@
             <div class="mb-3">
                 <label asp-for="ObsvPatientContact" class="form-label">Objects HCW Had Contact With</label>
                 <textarea asp-for="ObsvPatientContact" class="form-control" rows="3" placeholder="List objects the healthcare worker had contact with in the room before touching the patient"></textarea>
-                <span asp-validation-for="ObsvPatientContact" class="text-danger"></span>
             </div>
 
             <!-- TOGGLE: Not applicable switch -->

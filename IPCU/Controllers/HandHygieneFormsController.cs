@@ -81,7 +81,7 @@ namespace IPCU.Controllers
         //    public List<ObserverComplianceSummary> ObserverSummaries { get; set; }
         //}
 
-        // GET: HandHygieneForms/Create
+        // populate station dropdown
         private List<SelectListItem> GetStations()
         {
             var stations = new List<SelectListItem>();
@@ -111,6 +111,7 @@ namespace IPCU.Controllers
             return stations;
         }
 
+        // populate observer dropdown
         private List<SelectListItem> GetObserver()
         {
             var observerList = new List<SelectListItem>();
@@ -141,15 +142,13 @@ namespace IPCU.Controllers
         }
 
 
-        // GET: HandHygieneForms/Create
         public IActionResult Create()
         {
-            ViewBag.StationList = GetStations(); // Use the method here
+            ViewBag.StationList = GetStations(); 
             ViewBag.ObserverList = GetObserver();
             return View();
         }
 
-        // POST: HandHygieneForms/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(HandHygieneForm handHygieneForm)
@@ -170,7 +169,6 @@ namespace IPCU.Controllers
                 }
             }
 
-            // Repopulate stations if validation fails
             ViewBag.StationList = GetStations();
             ViewBag.ObserverList = GetObserver();
             return View(handHygieneForm);
@@ -331,7 +329,7 @@ namespace IPCU.Controllers
             {
                 if (string.IsNullOrEmpty(entry)) continue;
                 var parts = entry.Split(',');
-                if (parts.Length == 2 && parts[1] == "1") // Change from "✓" to "1"
+                if (parts.Length == 2 && parts[1] == "1") 
                 {
                     compliantCount++;
                 }
