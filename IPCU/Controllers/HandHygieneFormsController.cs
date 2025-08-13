@@ -22,6 +22,8 @@ namespace IPCU.Controllers
         }
 
         // GET: HandHygieneForms
+
+        // GET: HandHygieneForms
         public async Task<IActionResult> Index()
         {
             var forms = await _context.HandHygieneForms
